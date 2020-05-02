@@ -27,5 +27,5 @@ https://github.com/koreanbots/docs/blob/master/version.md
 OS 정보와 브라우저의 버전을 알려주세요!
 
 ## 확인
-[ ] 중복되는 이슈는 없나요?
-[ ] 해당 버그를 다시 발생시킬 수 있나요?
+- [ ] 중복되는 이슈는 없나요?
+- [ ] 해당 버그를 다시 발생시킬 수 있나요?

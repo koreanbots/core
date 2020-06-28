@@ -2,7 +2,7 @@
 name: 📝 제안
 about: 기능/UI 등을 제안해주세요
 title: "[제안] "
-labels: 'enchantment'
+labels: '> enhancement'
 assignees: ''
 
 ---

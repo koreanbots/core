@@ -9,7 +9,7 @@
 ### 지원하지 않는 기기
 
 ```md
-- 어떠한 확장프로그램 (AddBlock, Darkmode etc.)
+- 어떠한 확장프로그램 (AdBlock, Darkmode etc.)
 - 브라우저: IE, Pre 17 Edge.
 - Windows 7 이전의 OS
 - 3.5" 아이폰

@@ -8,6 +8,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "got": "^11.5.1",
+    "knex": "^0.21.2",
     "next": "9.5.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",

@@ -2,7 +2,7 @@
 name: 🐛 버그 제보
 about: 버그를 제보해주세요!
 title: "[버그] "
-labels: ''
+labels: 'bug'
 assignees: ''
 
 ---

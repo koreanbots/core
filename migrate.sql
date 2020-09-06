@@ -33,7 +33,7 @@ CREATE TABLE `submits` (
   `git` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `url` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `category` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT '\'[]\'',
-  `status` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '\'???\'',
+  `status` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `name` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `avatar` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tag` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,

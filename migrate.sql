@@ -1,4 +1,5 @@
 -- KOREANBOTSv2 마이그레이션 SQL쿼리문입니다.
+use discordbots
 
 -- ALTER bots TABLE
 ALTER TABLE `bots` CHANGE `servers` `servers` INT(11) NULL DEFAULT NULL, CHANGE `web` `web` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL, CHANGE `git` `git` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL, CHANGE `url` `url` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL, CHANGE `category` `category` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '\'[]\'', CHANGE `status` `status` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL, CHANGE `avatar` `avatar` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL, CHANGE `tag` `tag` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, CHANGE `discord` `discord` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL, CHANGE `state` `state` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '\'ok\'', CHANGE `vanity` `vanity` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL, CHANGE `bg` `bg` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL, CHANGE `banner` `banner` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
@@ -46,3 +47,6 @@ CREATE TABLE `submits` (
 
 -- FULLTEXT INDEX
 ALTER TABLE `bots` ADD FULLTEXT(`name`, `desc`, `intro`);
+SET GLOBAL innodb_ft_aux_table = 'discordbots/bots';
+
+SET GLOBAL innodb_optimize_fulltext_only=ON;

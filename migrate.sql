@@ -43,3 +43,6 @@ CREATE TABLE `submits` (
   `state` int(1) NOT NULL DEFAULT 0,
   `reason` tinytext COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+
+-- FULLTEXT INDEX
+ALTER TABLE `bots` ADD FULLTEXT(`name`, `desc`, `intro`);

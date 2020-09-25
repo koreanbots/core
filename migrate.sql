@@ -16,6 +16,7 @@ UPDATE `bots` SET banner=NULL where banner='false';
 ALTER TABLE `bots` ADD COLUMN partnered BOOLEAN NOT NULL DEFAULT 0;
 
 -- ALTER users TABLE
+UPDATE `users` SET perm=1;
 ALTER TABLE `users` CHANGE `perm` `perm` INT(5) NOT NULL DEFAULT '0';
 
 -- ALTER submitted TABLE

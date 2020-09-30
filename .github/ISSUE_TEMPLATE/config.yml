@@ -1,5 +1,9 @@
 blank_issues_enabled: false
 contact_links:
+  - name: 제안사항
+    url: https://github.com/koreanbots/koreanbots/discussions
+    about: 제안사항은 Discussions에서 받고있습니다.
+contact_links:
   - name: KOREANBOTS 공식 디스코드
     url: https://discord.gg/JEh53MQ
-    about: 질문이나 문의는 이슈에서 하지 마시고 디스코드를 이용해주세요.
+    about: 문의는 이슈에서 하지 마시고 디스코드를 이용해주세요.

@@ -50,7 +50,7 @@ CREATE TABLE `submits` (
 
 -- reports TABLE
 
-CREATE TABLE `discordbots-beta`.`reports` ( `id` INT NOT NULL AUTO_INCREMENT , `issuer` TEXT NOT NULL , `type` TEXT NOT NULL , `reported` INT NOT NULL , `state` INT(1) NOT NULL DEFAULT '0' , `category` TEXT NOT NULL , `desc` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+CREATE TABLE `reports` ( `id` INT NOT NULL AUTO_INCREMENT , `issuer` TEXT NOT NULL , `type` TEXT NOT NULL , `reported` INT NOT NULL , `state` INT(1) NOT NULL DEFAULT '0' , `category` TEXT NOT NULL , `desc` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
 -- FULLTEXT INDEX
 ALTER TABLE `bots` ADD FULLTEXT(`name`, `desc`, `intro`);

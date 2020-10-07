@@ -48,6 +48,10 @@ CREATE TABLE `submits` (
   `reason` tinytext COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- reports TABLE
+
+CREATE TABLE `discordbots-beta`.`reports` ( `id` INT NOT NULL AUTO_INCREMENT , `issuer` TEXT NOT NULL , `type` TEXT NOT NULL , `reported` INT NOT NULL , `state` INT(1) NOT NULL DEFAULT '0' , `category` TEXT NOT NULL , `desc` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
 -- FULLTEXT INDEX
 ALTER TABLE `bots` ADD FULLTEXT(`name`, `desc`, `intro`);
 SET GLOBAL innodb_ft_aux_table = 'discordbots/bots';

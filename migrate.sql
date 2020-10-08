@@ -53,6 +53,7 @@ CREATE TABLE `submits` (
 CREATE TABLE `reports` ( `id` INT NOT NULL AUTO_INCREMENT , `issuer` TEXT NOT NULL , `type` TEXT NOT NULL , `reported` INT NOT NULL , `state` INT(1) NOT NULL DEFAULT '0' , `category` TEXT NOT NULL , `desc` TEXT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 ALTER TABLE `reports` ADD `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `id`;
 ALTER TABLE `reports` CHANGE `reported` `reported` TEXT NOT NULL;
+ALTER TABLE `reports` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT, CHANGE `date` `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, CHANGE `issuer` `issuer` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, CHANGE `type` `type` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, CHANGE `reported` `reported` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, CHANGE `category` `category` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, CHANGE `desc` `desc` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 
 -- FULLTEXT INDEX
 ALTER TABLE `bots` ADD FULLTEXT(`name`, `desc`, `intro`);

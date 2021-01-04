@@ -4,6 +4,10 @@ import { ThemeProvider } from 'next-themes'
 
 import Navbar from '../components/Navbar'
 
+import 'core-js/es/promise'
+import 'core-js/es/set'
+import 'core-js/es/map'
+
 import './app.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import { useEffect } from 'react'

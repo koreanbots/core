@@ -11,6 +11,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 14
+    - name: yarn install
+      run: yarn install
     - name: run eslint
       run: yarn lint
       env:

@@ -5,7 +5,7 @@ const Navbar = (): JSX.Element => {
 	const [navbarOpen, setNavbarOpen] = useState<boolean>(false)
 	return (
 		<>
-			<nav className="z-50 top-0 flex flex-wrap items-center justify-between px-2 py-3 w-full text-gray-100 bg-discord-blurple dark:bg-discord-black">
+			<nav className="absolute bg-transparent z-50 top-0 flex flex-wrap items-center justify-between px-2 py-3 w-full text-gray-100 bg-discord-blurple dark:bg-discord-black" style={{ background: 'transparent' }}>
 				<div className="container flex flex-wrap items-center justify-between mx-auto px-4">
 					<div className="relative flex justify-between w-full lg:static lg:block lg:justify-start lg:w-auto">
 						<a

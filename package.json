@@ -13,6 +13,7 @@
     "@fortawesome/fontawesome-free": "^5.15.1",
     "autoprefixer": "^10.1.0",
     "core-js": "^3.8.2",
+    "dataloader": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.15",
     "next": "10.0.4",

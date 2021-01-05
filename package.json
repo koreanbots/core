@@ -13,6 +13,8 @@
     "@fortawesome/fontawesome-free": "^5.15.1",
     "autoprefixer": "^10.1.0",
     "core-js": "^3.8.2",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.21.15",
     "next": "10.0.4",
     "next-themes": "^0.0.10",
     "postcss": "^8.2.2",
@@ -24,7 +26,9 @@
   },
   "devDependencies": {
     "@types/core-js": "^2.5.4",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/node": "^14.14.19",
+    "@types/node-fetch": "^2.5.7",
     "@types/react": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.11.1",
     "@typescript-eslint/parser": "^4.11.1",

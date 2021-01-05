@@ -9,7 +9,7 @@ const Navbar = (): JSX.Element => {
 				<div className="container flex flex-wrap items-center justify-between mx-auto px-4">
 					<div className="relative flex justify-between w-full lg:static lg:block lg:justify-start lg:w-auto">
 						<a
-							className="logofont  text-large whitespace-no-wrap inline-block mr-4 py-2 hover:text-gray-200 font-semibold leading-relaxed uppercase sm:text-2xl"
+							className="logofont text-large whitespace-no-wrap inline-block mr-4 py-2 hover:text-gray-200 font-semibold leading-relaxed uppercase sm:text-2xl"
 							href="/"
 						>
 							KOREANBOTS

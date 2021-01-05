@@ -6,8 +6,8 @@ const Footer = ():JSX.Element => {
 	return <>
 		<Wave color='currentColor' className='text-white dark:text-discord-dark bg-discord-black'/>
 		<div className='bottom-0 bg-discord-black text-white'>
-			<Container className='w-11/12 sm:w-3/5 pt-10 sm:pt-0 pb-20 sm:flex'>
-				<div className='w-full sm:flex-grow'>
+			<Container className='w-11/12 lg:w-3/5 pt-10 lg:pt-0 pb-20 lg:flex' ignoreColor>
+				<div className='w-full lg:flex-grow'>
 					<h1 className='text-koreanbots-blue text-3xl font-extrabold'>국내봇을 한 곳에서.</h1>
 					<span className='text-base'>2020 Koreanbots, All rights reserved.</span>
 					<div className='text-2xl'>
@@ -21,7 +21,7 @@ const Footer = ():JSX.Element => {
 						</a>
 					</div>
 				</div>
-				<div className='flex-col w-full sm:w-1/3'>
+				<div className='flex-col w-full lg:w-1/3 mb-2'>
 					<h2 className='text-base text-koreanbots-blue font-bold'>한국 디스코드봇 리스트</h2>
 					<ul className='text-sm'>
 						<li>
@@ -36,7 +36,7 @@ const Footer = ():JSX.Element => {
 						</li>
 					</ul>
 				</div>
-				<div className='flex-col w-full sm:w-1/5'>
+				<div className='flex-col w-full lg:w-1/5 mb-2'>
 					<h2 className='text-base text-koreanbots-blue font-bold'>커뮤니티</h2>
 					<ul className='text-sm'>
 						<li>
@@ -51,7 +51,7 @@ const Footer = ():JSX.Element => {
 						</li>
 					</ul>
 				</div>
-				<div className='flex-col w-full sm:w-1/5'>
+				<div className='flex-col w-full lg:w-1/5 mb-2'>
 					<h2 className='text-base text-koreanbots-blue font-bold'>약관</h2>
 					<ul className='text-sm'>
 						<li>

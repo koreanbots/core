@@ -2,6 +2,7 @@ import fetch from 'node-fetch'
 import jwt from 'jsonwebtoken'
 import fs from 'fs'
 import knsexy from 'knex'
+import { Bot, User } from '../types'
 
 const publicPem = fs.readFileSync('./public.pem')
 const privateKey = fs.readFileSync('./private.key')
@@ -16,7 +17,7 @@ export const knex = knsexy({
 	},
 })
 
-export async function getBot(id: string, owners=true) {
+export async function getBot(id: string, owners=true):Promise<Bot> {
 	const res = await knex('bots').select(['id', 'owners', 'lib', 'prefix', 'votes', 'servers', 'intro', 'desc', 'web', 'git', 'url', 'category', 'status', 'name', 'avatar', 'tag', 'verified', 'trusted', 'partnered', 'discord', 'boosted', 'state', 'vanity', 'bg', 'banner']).where({ id }).orWhere({ vanity: id, boosted: 1 })
 	if(res[0]) {
 		res[0].category = JSON.parse(res[0].category)
@@ -30,7 +31,7 @@ export async function getBot(id: string, owners=true) {
 	return res[0] || null
 }
 
-export async function getUser(id: string, bots=true) {
+export async function getUser(id: string, bots=true):Promise<User> {
 	const res = await knex('users').select(['id', 'avatar', 'tag', 'username', 'perm', 'github']).where({ id })
 	if(res[0]) {
 		const owned = await knex('bots').select(['id']).where('owners', 'like', `%${id}%`)

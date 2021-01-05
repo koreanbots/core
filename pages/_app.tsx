@@ -11,18 +11,19 @@ import 'core-js/es/map'
 import './app.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import { useEffect } from 'react'
+import Footer from '../components/Footer'
 
 let systemColor
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
-	console.log(
-		'%c' + 'KOREANBOTS',
-		'color: #3366FF; -webkit-text-stroke: 2px black; font-size: 72px; font-weight: bold;'
-	)
-	console.log(
-		'%c' + '이곳에 코드를 붙여넣으면 공격자에게 엑세스 토큰을 넘겨줄 수 있습니다!!',
-		'color: #ff0000; font-size: 20px; font-weight: bold;'
-	)
 	useEffect(() => {
+		console.log(
+			'%c' + 'KOREANBOTS',
+			'color: #3366FF; -webkit-text-stroke: 2px black; font-size: 72px; font-weight: bold;'
+		)
+		console.log(
+			'%c' + '이곳에 코드를 붙여넣으면 공격자에게 엑세스 토큰을 넘겨줄 수 있습니다!!',
+			'color: #ff0000; font-size: 20px; font-weight: bold;'
+		)
 		try {
 			systemColor = window.matchMedia('(prefers-color-scheme: dark)')?.matches ? 'dark' : 'light'
 		} catch (e) {
@@ -47,7 +48,10 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
 				<meta name="theme-color" content="#3366FF" />
 			</Head>
 			<Navbar />
-			<Component {...pageProps} />
+			<div className='iu h-screen'>
+				<Component {...pageProps} />
+			</div>
+			<Footer />
 		</ThemeProvider>
 	)
 }

@@ -8,7 +8,7 @@ const Container = ({ className, children }:ContainerProps): JSX.Element => {
 
 interface ContainerProps {
   className?: string
-  children: JSX.Element
+  children: JSX.Element | JSX.Element[]
 }
 
 export default Container

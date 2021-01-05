@@ -48,9 +48,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
 				<meta name="theme-color" content="#3366FF" />
 			</Head>
 			<Navbar />
-			<div className='iu h-screen'>
-				<Component {...pageProps} />
-			</div>
+			<Component {...pageProps} />
 			<Footer />
 		</ThemeProvider>
 	)

@@ -2,8 +2,8 @@ import { NextPage } from 'next'
 import Container from '../components/Container'
 
 const NotFound: NextPage = () => {
-	return <Container>
-		<h1>GG</h1>
+	return <Container paddingTop>
+		<h1>Not Found</h1>
 	</Container>
 }
 

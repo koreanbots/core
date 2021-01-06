@@ -23,7 +23,7 @@ export async function getBot(id: string, owners=true):Promise<Bot> {
 		res[0].category = JSON.parse(res[0].category)
 		res[0].owners = JSON.parse(res[0].owners)
 		if(owners) res[0].owners = res[0].owners.map(async (u: string) => await getUser(u))
-		res[0].owners = await Promise.all(res[0].owners.filter((el: any)=> el))
+		res[0].owners = await Promise.all(res[0].owners.filter((el: User|null)=> el))
 		res[0].vanity = res[0].vanity && ( res[0].boosted || res[0].trusted || res[0].partnered )
     
 	}
@@ -37,7 +37,7 @@ export async function getUser(id: string, bots=true):Promise<User> {
 		const owned = await knex('bots').select(['id']).where('owners', 'like', `%${id}%`)
 		if(bots) res[0].bots = owned.map(async b=> await getBot(b.id, false))
 		else res[0].bots = owned.map(async b=> b.id)
-		res[0].bots = await Promise.all(res[0].bots.filter(el=> el))
+		res[0].bots = await Promise.all(res[0].bots.filter((el:Bot|null)=> el))
 	}
   
 	return res[0] || null

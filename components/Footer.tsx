@@ -3,7 +3,7 @@ import Container from './Container'
 import Wave from './Wave'
 
 const Footer = ():JSX.Element => {
-	return <>
+	return <div className='releative'>
 		<Wave color='currentColor' className='text-white dark:text-discord-dark bg-discord-black'/>
 		<div className='bottom-0 bg-discord-black text-white'>
 			<Container className='w-11/12 lg:w-3/5 pt-10 lg:pt-0 pb-20 lg:flex' ignoreColor>
@@ -68,7 +68,7 @@ const Footer = ():JSX.Element => {
 				</div>
 			</Container>
 		</div>
-	</>
+	</div>
 }
 
 export default Footer

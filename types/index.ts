@@ -1,37 +1,37 @@
 export interface Bot {
-  id: string
-  name: string
-  tag: string
-  avatar: string
-  status: Status
-  lib: Library
-  prefix: string
-  votes: number
-  servers: number
-  intro: string
-  desc: string
-  category: Category[]
-  web?: string
-  git?: string
-  url?: string
-  discord?: string
-  verified: boolean
-  trusted: boolean
-  partnered: boolean
-  vanity: string | null
-  bg: string
-  banner: string
-  owners: User[] | string[]
+	id: string
+	name: string
+	tag: string
+	avatar: string
+	status: Status
+	lib: Library
+	prefix: string
+	votes: number
+	servers: number
+	intro: string
+	desc: string
+	category: Category[]
+	web?: string
+	git?: string
+	url?: string
+	discord?: string
+	verified: boolean
+	trusted: boolean
+	partnered: boolean
+	vanity: string | null
+	bg: string
+	banner: string
+	owners: User[] | string[]
 }
 
 export interface User {
-  id: string
-  avatar: string
-  tag: string
-  username: string
-  perm: number
-  github: string
-  bots: Bot[] | string[]
+	id: string
+	avatar: string
+	tag: string
+	username: string
+	perm: number
+	github: string
+	bots: Bot[] | string[]
 }
 
 export type Status = 'online' | 'offline' | 'dnd' | 'idle' | 'streaming'

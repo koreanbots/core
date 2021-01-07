@@ -43,11 +43,13 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
 				<meta
 					name="description"
 					content="국내 디스코드봇들을 확인하고, 초대해보세요!"
-					data-react-helmet="true"
 				/>
+				<meta name="og:title" content="한국 디스코드봇 리스트" />
+				<meta name="og:url" content="https://koreanbots.dev" />
+				<meta name="og:description" content="국내 디스코드봇들을 확인하고, 초대해보세요!" />
+				<meta name="og:image" content="/logo.png" />
 				<meta charSet="utf-8" />
 				<link rel="shortcut icon" href="/logo.png" />
-				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<meta name="theme-color" content="#3366FF" />
 			</Head>
 			<Navbar />

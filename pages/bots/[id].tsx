@@ -1,4 +1,5 @@
 import { NextPage, NextPageContext } from 'next'
+import Head from 'next/head'
 import { SnowflakeUtil } from 'discord.js'
 import Day from '../../utils/Day'
 import { ParsedUrlQuery } from 'querystring'
@@ -12,11 +13,13 @@ import Segment from '../../components/Segment'
 import { Bot, User } from '../../types'
 import Fetch from '../../utils/Fetch'
 import NotFound from '../404'
+import SEO from '../../components/SEO'
 
 const Bots:NextPage<BotsProps> = ({ data, date }) => {
 	console.log(data)
 	if(!data.id) return <NotFound />
 	return <Container paddingTop className='py-10'>
+		<SEO title={data.name} description={data.intro} image={data.avatar ? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png?size=1024` : `https://cdn.discordapp.com/embed/avatars/${Number(data.tag) % 5}.png?size=1024`} />
 		<div className='lg:flex'>
 			<div className='w-full lg:w-1/3 text-center'>
 				<DiscordImage userID={data.id} avatarHash={data.avatar} tag={data.tag} className='w-full'/>
@@ -25,7 +28,7 @@ const Bots:NextPage<BotsProps> = ({ data, date }) => {
 				<div className='flex'>
 					<h1 className='text-4xl font-bold mb-2'>{data.name} {data.trusted && <span className='text-koreanbots-blue text-3xl'><i className='fas fa-award' /></span>}</h1>
 				</div>
-				<p className='text-base text-gray-800 dark:text-gray-300'>{data.desc}</p>
+				<p className='text-base text-gray-800 dark:text-gray-300'>{data.intro}</p>
 			</div>
 		</div>
 		<Divider className='px-5' />

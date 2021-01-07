@@ -1,17 +1,20 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import { ThemeProvider } from 'next-themes'
+import { useEffect } from 'react'
 
+import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 
 import 'core-js/es/promise'
 import 'core-js/es/set'
 import 'core-js/es/map'
 
-import './app.css'
+import '../app.css'
 import '@fortawesome/fontawesome-free/css/all.css'
-import { useEffect } from 'react'
-import Footer from '../components/Footer'
+import '../github-markdown.css'
+
+
 
 let systemColor
 export default function App({ Component, pageProps }: AppProps): JSX.Element {

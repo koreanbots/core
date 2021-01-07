@@ -24,6 +24,10 @@ body {
   animation: dropdown 0.1s linear;
 }
 
+.iu-is-the-best {
+  min-height: 100vh;
+}
+
 i {
   width: 20px
 }

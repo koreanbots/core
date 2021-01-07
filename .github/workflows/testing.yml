@@ -28,6 +28,8 @@ jobs:
         node-version: 14
     - name: yarn install
       run: yarn install
+    - name: Create needed files
+      run: touch public.pem & touch private.key
     - name: Build
       run: yarn build
       env:

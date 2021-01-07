@@ -6,7 +6,7 @@ const Docs = ({ header, description, subheader, children }:DocsProps):JSX.Elemen
 		<div className='bg-discord-blurple dark:bg-discord-black'>
 			<Container className='pt-20 pb-28' ignoreColor>
 				<h1 className='mt-10 text-4xl text-gray-100 font-bold sm:text-left text-center'>{header}</h1>
-        <h2 className='mt-5 text-2xl text-gray-200 font-medium sm:text-left text-center'>{description}</h2>
+				<h2 className='mt-5 text-2xl text-gray-200 font-medium sm:text-left text-center'>{description}</h2>
 				<h2 className='mt-5 text-2xl text-gray-200 font-medium sm:text-left text-center'>{subheader}</h2>
 			</Container>
 		</div>

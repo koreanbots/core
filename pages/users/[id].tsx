@@ -2,20 +2,24 @@ import { NextPage, NextPageContext } from 'next'
 import { SnowflakeUtil } from 'discord.js'
 import { Fetch } from '../../utils'
 import { ParsedUrlQuery } from 'querystring'
-import NotFound from '../404'
+import { josa } from 'josa'
 import { Bot, User } from '../../types'
+
+import NotFound from '../404'
 import Container from '../../components/Container'
 import SEO from '../../components/SEO'
 import DiscordImage from '../../components/DiscordImage'
 import Divider from '../../components/Divider'
 import BotCard from '../../components/BotCard'
 import Tag from '../../components/Tag'
+import { checkPerm } from '../../utils/Tools'
 const Users: NextPage<UserProps> = ({ data }) => {
 	if (!data.id) return <NotFound />
 	return (
 		<Container paddingTop className="py-10">
 			<SEO
 				title={data.username}
+				description={josa(`${(data.bots as Bot[]).slice(0, 5).map(el=> el.name).join(', ')}#{을}`)}
 				image={
 					data.avatar
 						? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png?size=1024`
@@ -33,9 +37,20 @@ const Users: NextPage<UserProps> = ({ data }) => {
 				</div>
 				<div className="flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left">
 					<div>
-						<h1 className="mb-2 mt-3 text-4xl font-bold">{data.username}</h1>
-						<span className="text-gray-400 text-3xl font-semibold">#{data.tag}</span>
+						<h1 className="mb-2 mt-3 text-4xl font-bold">{data.username}</h1><span className="text-gray-400 text-4xl font-semibold ml-0.5">#{data.tag}</span>
 						<br />
+						<div className='badges flex'>
+							{
+								checkPerm(data.perm, 'staff') && <div className='text-koreanbots-blue text-2xl pr-5'>
+									<i className='fas fa-hammer' />
+								</div>
+							}
+							{
+								checkPerm(data.perm, 'bughunter') && <div className='text-green-400 text-2xl pr-5'>
+									<i className='fas fa-bug' />
+								</div>
+							}
+						</div>
 						<br />
 						{data.github && (
 							<Tag
@@ -45,7 +60,6 @@ const Users: NextPage<UserProps> = ({ data }) => {
 									</>
 								}
 								github
-								circular
 								href={`https://github.com/${data.github}`}
 							/>
 						)}

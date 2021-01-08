@@ -18,7 +18,8 @@ module.exports = {
 				'discord-dark': '#2C2F33',
 				'discord-dark-hover': '#383f48',
 				'discord-black': '#23272A',
-				'discord-pink': '#FF73FA'
+				'discord-pink': '#FF73FA',
+				'very-black': '#1b1e23'
 			}
 		},
 	},

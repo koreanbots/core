@@ -1,28 +1,35 @@
 export const Status = {
 	online: {
 		text: '온라인',
-		color: 'green-400'
+		color: 'green-400',
 	},
 	idle: {
 		text: '자리 비움',
-		color: 'yellow-300'
+		color: 'yellow-300',
 	},
 	dnd: {
 		text: '다른 용무중',
-		color: 'red-500'	
+		color: 'red-500',
 	},
 	offline: {
 		text: '오프라인',
-		color: 'gray-500'
+		color: 'gray-500',
 	},
 	null: {
 		text: '알 수 없음',
-		color : 'gray-500'
+		color: 'gray-500',
 	},
 	'???': {
 		text: '알 수 없음',
-		color: 'gray-500'
-	}
+		color: 'gray-500',
+	},
+}
+
+export const perms = {
+	general: 0x0,
+	staff: 0x1,
+	bughunter: 0x2,
+	booster: 0x4,
 }
 
 export const libs = [

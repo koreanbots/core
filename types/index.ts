@@ -1,6 +1,9 @@
+export type UserPemissionFlags = 'general' | 'staff' | 'bughunter' | 'booster'
+
 export interface Bot {
 	id: string
 	name: string
+	state: BotState
 	tag: string
 	avatar: string
 	status: Status
@@ -35,6 +38,8 @@ export interface User {
 }
 
 export type Status = 'online' | 'offline' | 'dnd' | 'idle' | 'streaming'
+
+export type BotState = 'ok' | 'reported' | 'archived' | 'private'
 
 export type Library =
 	| 'discord.js'

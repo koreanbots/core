@@ -1,4 +1,4 @@
-const Wave = ({ color, className }:WaveProps):JSX.Element => {
+const Wave = ({ color, className }: WaveProps): JSX.Element => {
 	return (
 		<svg viewBox="0 0 1440 320" className={className}>
 			<path
@@ -10,8 +10,8 @@ const Wave = ({ color, className }:WaveProps):JSX.Element => {
 }
 
 interface WaveProps {
-  color: string
-  className?: string
+	color: string
+	className?: string
 }
 
 export default Wave

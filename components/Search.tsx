@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Search = ({query, result}:SearchProps):JSX.Element => {
+const Search = ({ query, result }: SearchProps): JSX.Element => {
 	return (
 		<div>
 			<input />
@@ -9,8 +9,8 @@ const Search = ({query, result}:SearchProps):JSX.Element => {
 }
 
 interface SearchProps {
-  query: string
-  result: string
+	query: string
+	result: string
 }
 
 export default Search

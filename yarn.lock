@@ -3156,6 +3156,18 @@ jest-worker@24.9.0:
     merge-stream "^2.0.0"
     supports-color "^6.1.0"
 
+jongseong@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/jongseong/-/jongseong-0.4.2.tgz#5008c13332829257304c54641f550087d2f4caa9"
+  integrity sha1-UAjBMzKCklcwTFRkH1UAh9L0yqk=
+
+josa@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/josa/-/josa-3.0.1.tgz#e1fa94fc7c78be1d81e965fec0ae43be0a1df352"
+  integrity sha1-4fqU/Hx4vh2B6WX+wK5Dvgod81I=
+  dependencies:
+    jongseong "^0.4.2"
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"

@@ -77,7 +77,7 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 									target="_blank"
 									href={
 										bot.url ??
-										`https://discordapp.com/oauth2/authorize?client_id=${data.id}&scope=bot&permissions=0`
+										`https://discordapp.com/oauth2/authorize?client_id=${bot.id}&scope=bot&permissions=0`
 									}
 									className="bg py-3 w-full text-center text-discord-blurple hover:text-white text-sm font-bold hover:bg-discord-blurple hover:shadow-lg"
 								>

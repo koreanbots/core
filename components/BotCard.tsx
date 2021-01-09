@@ -11,7 +11,7 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 			<div className="relative">
 				<div className="container mx-auto">
 					<div className="h-full">
-						<div className="relative mx-auto h-full text-black dark:text-white dark:bg-discord-black bg-little-white rounded-sm shadow-xl">
+						<div className="relative mx-auto h-full text-black dark:text-white dark:bg-discord-black bg-little-white rounded-2xl shadow-xl">
 							<div className="flex mb-16 h-48">
 								<div className="w-2/3">
 									<div className="flex justify-start">
@@ -23,7 +23,7 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 													: `https://cdn.discordapp.com/embed/avatars/${Number(bot.tag) %
 															5}.png?size=1024`
 											}
-											className="absolute -left-2 -top-8 mx-auto w-32 h-32 bg-white"
+											className="rounded-full absolute -left-2 -top-8 mx-auto w-32 h-32 bg-white"
 										/>
 									</div>
 
@@ -67,7 +67,7 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 										(bot.partnered || bot.trusted) && bot.vanity ? bot.vanity : bot.id
 									}`}
 								>
-									<a className="bg py-3 w-full text-center text-koreanbots-blue hover:text-white text-sm font-bold hover:bg-koreanbots-blue hover:shadow-lg">
+									<a className="rounded-bl-2xl py-3 w-full text-center text-koreanbots-blue hover:text-white text-sm font-bold hover:bg-koreanbots-blue hover:shadow-lg">
 										보기
 									</a>
 								</Link>
@@ -78,7 +78,7 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 										bot.url ??
 										`https://discordapp.com/oauth2/authorize?client_id=${bot.id}&scope=bot&permissions=0`
 									}
-									className="bg py-3 w-full text-center text-discord-blurple hover:text-white text-sm font-bold hover:bg-discord-blurple hover:shadow-lg"
+									className="rounded-br-2xl py-3 w-full text-center text-discord-blurple hover:text-white text-sm font-bold hover:bg-discord-blurple hover:shadow-lg"
 								>
 									초대하기
 								</a>

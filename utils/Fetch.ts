@@ -11,19 +11,13 @@ const privateKey = fs.readFileSync('./private.key')
 
 const bot = new DataLoader(
 	async (ids: string[]) =>
-		(await Promise.all(ids.map(async (el: string) => getBot(el)))).map(row => ({ ...row })),
-	{
-		batchScheduleFn: callback => setTimeout(callback, 100),
-	}
+		(await Promise.all(ids.map(async (el: string) => getBot(el)))).map(row => ({ ...row }))
 )
 
 new DataLoader(async ()=> { return []})
 const botWithNoUser = new DataLoader(
 	async (ids: string[]) =>
-		(await Promise.all(ids.map(async (el: string) => getBot(el, false)))).map(row => ({ ...row })),
-	{
-		batchScheduleFn: callback => setTimeout(callback, 100),
-	}
+		(await Promise.all(ids.map(async (el: string) => getBot(el, false)))).map(row => ({ ...row }))
 )
 
 const user = new DataLoader(
@@ -36,9 +30,28 @@ const userWithNoBot = new DataLoader(
 		(await Promise.all(ids.map((el: string) => getUser(el, false)))).map(row => ({ ...row }))
 )
 
-const botList = new DataLoader(
-	async (argument: botListArgument[]) =>
-		(await Promise.all(argument.map((el) => getBotList(el.type, el.page, el.query)))).map(row => ({ ...row }))
+const botListVotes = new DataLoader(
+	async (page: number[]) =>
+		(await Promise.all(page.map((el) => getBotList('VOTE', el)))).map(row => ({ ...row })),
+	{
+		batchScheduleFn: callback => setTimeout(callback, 100),
+	}
+)
+
+const botListNew = new DataLoader(
+	async (page: number[]) =>
+		(await Promise.all(page.map((el) => getBotList('NEW', el)))).map(row => ({ ...row })),
+	{
+		batchScheduleFn: callback => setTimeout(callback, 100),
+	}
+)
+
+const botListTrusted = new DataLoader(
+	async (page: number[]) =>
+		(await Promise.all(page.map((el) => getBotList('TRUSTED', el)))).map(row => ({ ...row })),
+	{
+		batchScheduleFn: callback => setTimeout(callback, 100),
+	}
 )
 
 async function getBot(id: string, owners = true): Promise<Bot> {
@@ -71,8 +84,8 @@ async function getBot(id: string, owners = true): Promise<Bot> {
 			'banner',
 		])
 		.where({ id })
-		.orWhere({ vanity: id, trusted: 1 })
-		.orWhere({ vanity: id, partnered: 1 })
+		.orWhere({ vanity: id, trusted: true })
+		.orWhere({ vanity: id, partnered: true })
 	if (res[0]) {
 		res[0].category = JSON.parse(res[0].category)
 		res[0].owners = JSON.parse(res[0].owners)
@@ -117,21 +130,18 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 	} else if (type === 'TRUSTED') {
 		count = (
 			await knex('bots')
-				.where({ trusted: 1 })
+				.where({ trusted: true })
 				.count()
 		)[0]['count(*)']
 		res = await knex('bots')
 			.where({ trusted: true })
-			.orderBy(await knex.raw('RAND()'))
-			.orderBy('votes', 'desc')
-			.orderBy('servers', 'desc')
+			.orderByRaw('RAND()')
 			.limit(16)
 			.offset(((page ? Number(page) : 1) - 1) * 16)
 			.select(['id'])
 	} else if (type === 'NEW') {
 		count = (
 			await knex('bots')
-				.where({ trusted: 1 })
 				.count()
 		)[0]['count(*)']
 		res = await knex('bots')
@@ -142,14 +152,12 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 	} else if (type === 'PARTNERED') {
 		count = (
 			await knex('bots')
-				.where({ partnered: 1 })
+				.where({ partnered: true })
 				.count()
 		)[0]['count(*)']
 		res = await knex('bots')
-			.where({ partnered: 1 })
-			.orderBy(await knex.raw('RAND()'))
-			.orderBy('votes', 'desc')
-			.orderBy('servers', 'desc')
+			.where({ partnered: true })
+			.orderByRaw('RAND()')
 			.limit(16)
 			.offset(((page ? Number(page) : 1) - 1) * 16)
 			.select(['id'])
@@ -217,7 +225,7 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 		res = []
 	}
 
-	return { type, data: await Promise.all(res.map(async el => await getBot(el.id))), currentPage: page, totalPage: Math.ceil(Number(count) / 16) }
+	return { type, data: (await Promise.all(res.map(async el => await getBot(el.id)))).map(r=> ({...r})), currentPage: page, totalPage: Math.ceil(Number(count) / 16) }
 }
 
-export default { bot, user, botList }
+export default { bot, user, botListVotes, botListNew, botListTrusted }

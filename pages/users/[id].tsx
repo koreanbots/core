@@ -15,11 +15,17 @@ import Tag from '../../components/Tag'
 import { checkPerm } from '../../utils/Tools'
 const Users: NextPage<UserProps> = ({ data }) => {
 	if (!data.id) return <NotFound />
+	console.log(data.bots[0])
 	return (
 		<Container paddingTop className="py-10">
 			<SEO
 				title={data.username}
-				description={josa(`${(data.bots as Bot[]).slice(0, 5).map(el=> el.name).join(', ')}#{을}`)}
+				description={josa(
+					`${(data.bots as Bot[])
+						.slice(0, 5)
+						.map(el => el.name)
+						.join(', ')}#{을}`
+				)}
 				image={
 					data.avatar
 						? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png?size=1024`
@@ -37,19 +43,20 @@ const Users: NextPage<UserProps> = ({ data }) => {
 				</div>
 				<div className="flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left">
 					<div>
-						<h1 className="mb-2 mt-3 text-4xl font-bold">{data.username}</h1><span className="text-gray-400 text-4xl font-semibold ml-0.5">#{data.tag}</span>
+						<h1 className="mb-2 mt-3 text-4xl font-bold">{data.username}</h1>
+						<span className="ml-0.5 text-gray-400 text-4xl font-semibold">#{data.tag}</span>
 						<br />
-						<div className='badges flex'>
-							{
-								checkPerm(data.perm, 'staff') && <div className='text-koreanbots-blue text-2xl pr-5'>
-									<i className='fas fa-hammer' />
+						<div className="badges flex">
+							{checkPerm(data.perm, 'staff') && (
+								<div className="pr-5 text-koreanbots-blue text-2xl">
+									<i className="fas fa-hammer" />
 								</div>
-							}
-							{
-								checkPerm(data.perm, 'bughunter') && <div className='text-green-400 text-2xl pr-5'>
-									<i className='fas fa-bug' />
+							)}
+							{checkPerm(data.perm, 'bughunter') && (
+								<div className="pr-5 text-green-500 text-2xl">
+									<i className="fas fa-bug" />
 								</div>
-							}
+							)}
 						</div>
 						<br />
 						{data.github && (

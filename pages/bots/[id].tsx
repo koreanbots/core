@@ -13,9 +13,10 @@ import Segment from '../../components/Segment'
 import NotFound from '../404'
 import SEO from '../../components/SEO'
 import LongButton from '../../components/LongButton'
-import { Status } from '../../utils/Constants'
+import { git, Status } from '../../utils/Constants'
 import { Fetch, formatNumber } from '../../utils'
 import Advertisement from '../../components/Advertisement'
+import Link from 'next/link'
 
 const Bots: NextPage<BotsProps> = ({ data, date, votes }) => {
 	if (!data.id) return <NotFound />
@@ -64,7 +65,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, votes }) => {
 				<div className="w-full lg:w-1/4">
 					<LongButton
 						href={
-							data.url ||
+							data.url ??
 							`https://discordapp.com/oauth2/authorize?client_id=${data.id}&scope=bot&permissions=0`
 						}
 					>
@@ -90,7 +91,9 @@ const Bots: NextPage<BotsProps> = ({ data, date, votes }) => {
 						<div>
 							<i className="far fa-flag" /> 접두사
 						</div>
-						<div>{data.prefix}</div>
+						<div className="markdown-body text-black dark:text-gray-400">
+							<code>{data.prefix}</code>
+						</div>
 						<div>
 							<i className="fas fa-users" /> 서버수
 						</div>
@@ -103,6 +106,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, votes }) => {
 							<i className="fas fa-check text-discord-blurple" /> 디스코드 인증됨
 						</div>
 					</div>
+					<Advertisement />
 					<h2 className="3xl mb-2 mt-2 font-bold">카테고리</h2>
 					<div className="flex flex-wrap">
 						{data.category.map(el => (
@@ -119,7 +123,47 @@ const Bots: NextPage<BotsProps> = ({ data, date, votes }) => {
 							username={el.username}
 						/>
 					))}
-					<Advertisement />
+					<div className="list grid">
+						<Link href={`/bots/${data.id}/report`}>
+							<a className="text-red-600 hover:underline">
+								<i className="far fa-flag" />
+								신고하기
+							</a>
+						</Link>
+						{data.discord && (
+							<a
+								rel="noopener noreferrer"
+								target="_blank"
+								className="text-discord-blurple hover:underline"
+								href={`https://discord.gg/${data.discord}`}
+							>
+								<i className="fab fa-discord" />
+								디스코드 서버
+							</a>
+						)}
+						{data.web && (
+							<a
+								rel="noopener noreferrer"
+								target="_blank"
+								className="text-blue-500 hover:underline"
+								href={data.web}
+							>
+								<i className="fas fa-globe" />
+								웹사이트
+							</a>
+						)}
+						{data.git && (
+							<a
+								rel="noopener noreferrer"
+								target="_blank"
+								className="hover:underline"
+								href={data.git}
+							>
+								<i className={`fab fa-${git?.[new URL(data.git).hostname].icon ?? 'git-alt'}`} />
+								{git?.[new URL(data.git).hostname].text ?? 'Git'}
+							</a>
+						)}
+					</div>
 				</div>
 				<div className="markdown-body pt-10 w-full lg:pr-5 lg:w-3/4">
 					<Advertisement />

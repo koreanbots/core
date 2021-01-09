@@ -13,6 +13,7 @@ import Divider from '../../components/Divider'
 import BotCard from '../../components/BotCard'
 import Tag from '../../components/Tag'
 import { checkPerm } from '../../utils/Tools'
+import Advertisement from '../../components/Advertisement'
 const Users: NextPage<UserProps> = ({ data }) => {
 	if (!data.id) return <NotFound />
 	console.log(data.bots[0])
@@ -80,6 +81,7 @@ const Users: NextPage<UserProps> = ({ data }) => {
 					<BotCard key={bot.id} bot={bot} />
 				))}
 			</div>
+			<Advertisement />
 		</Container>
 	)
 }

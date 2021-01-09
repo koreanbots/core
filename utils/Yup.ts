@@ -6,11 +6,13 @@ Yup.setLocale(YupKorean)
 
 export const botListArgumentSchema = Yup.object({
 	type: Yup.string().oneOf(['VOTE', 'TRUSTED', 'NEW', 'PARTNERED', 'CATEGORY', 'SEARCH']).required(),
-	page: Yup.number().positive().integer().optional().default(1),
-	query: Yup.string().optional()
+	page: Yup.number().positive().integer().notRequired().default(1),
+	query: Yup.string().notRequired()
 })
 
-export interface botListArgument extends Yup.Asserts<typeof botListArgumentSchema>  {
+export interface botListArgument  {
 	type: ListType
+	page?: number
+	query?: string
 } 
 export default Yup

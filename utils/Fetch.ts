@@ -1,11 +1,10 @@
 import DataLoader from 'dataloader'
-import * as Query from './Query'
-import fetch from 'node-fetch'
-import jwt from 'jsonwebtoken'
 import fs from 'fs'
-import { Bot, ListType, User } from '../types'
+import { Bot, ListType, User, BotList } from '../types'
 import knex from './Knex'
 import { cats } from './Constants'
+import { botListArgument } from './Yup'
+import { ReactText } from 'react'
 
 const publicPem = fs.readFileSync('./public.pem')
 const privateKey = fs.readFileSync('./private.key')
@@ -18,6 +17,7 @@ const bot = new DataLoader(
 	}
 )
 
+new DataLoader(async ()=> { return []})
 const botWithNoUser = new DataLoader(
 	async (ids: string[]) =>
 		(await Promise.all(ids.map(async (el: string) => getBot(el, false)))).map(row => ({ ...row })),
@@ -28,18 +28,17 @@ const botWithNoUser = new DataLoader(
 
 const user = new DataLoader(
 	async (ids: string[]) =>
-		(await Promise.all(ids.map((el: string) => getUser(el)))).map(row => ({ ...row })),
-	{
-		batchScheduleFn: callback => setTimeout(callback, 100),
-	}
+		(await Promise.all(ids.map((el: string) => getUser(el)))).map(row => ({ ...row }))
 )
 
 const userWithNoBot = new DataLoader(
 	async (ids: string[]) =>
-		(await Promise.all(ids.map((el: string) => getUser(el, false)))).map(row => ({ ...row })),
-	{
-		batchScheduleFn: callback => setTimeout(callback, 100),
-	}
+		(await Promise.all(ids.map((el: string) => getUser(el, false)))).map(row => ({ ...row }))
+)
+
+const botList = new DataLoader(
+	async (argument: botListArgument[]) =>
+		(await Promise.all(argument.map((el) => getBotList(el.type, el.page, el.query)))).map(row => ({ ...row }))
 )
 
 async function getBot(id: string, owners = true): Promise<Bot> {
@@ -104,9 +103,9 @@ async function getUser(id: string, bots = true): Promise<User> {
 	return res[0] || null
 }
 
-async function getBotList(type:ListType, page = 1, query?: string) {
-	let res
-	let count
+async function getBotList(type: ListType, page = 1, query?: string):Promise<BotList> {
+	let res: { id: string }[]
+	let count: ReactText
 	if (type === 'VOTE') {
 		count = (await knex('bots').count())[0]['count(*)']
 		res = await knex('bots')
@@ -114,33 +113,7 @@ async function getBotList(type:ListType, page = 1, query?: string) {
 			.orderBy('servers', 'desc')
 			.limit(16)
 			.offset(((page ? Number(page) : 1) - 1) * 16)
-			.select([
-				'id',
-				'owners',
-				'lib',
-				'prefix',
-				'votes',
-				'servers',
-				'intro',
-				'desc',
-				'web',
-				'git',
-				'url',
-				'category',
-				'status',
-				'name',
-				'avatar',
-				'tag',
-				'verified',
-				'trusted',
-				'partnered',
-				'discord',
-				'boosted',
-				'state',
-				'vanity',
-				'bg',
-				'banner',
-			])
+			.select(['id'])
 	} else if (type === 'TRUSTED') {
 		count = (
 			await knex('bots')
@@ -154,33 +127,7 @@ async function getBotList(type:ListType, page = 1, query?: string) {
 			.orderBy('servers', 'desc')
 			.limit(16)
 			.offset(((page ? Number(page) : 1) - 1) * 16)
-			.select([
-				'id',
-				'owners',
-				'lib',
-				'prefix',
-				'votes',
-				'servers',
-				'intro',
-				'desc',
-				'web',
-				'git',
-				'url',
-				'category',
-				'status',
-				'name',
-				'avatar',
-				'tag',
-				'verified',
-				'trusted',
-				'partnered',
-				'discord',
-				'boosted',
-				'state',
-				'vanity',
-				'bg',
-				'banner',
-			])
+			.select(['id'])
 	} else if (type === 'NEW') {
 		count = (
 			await knex('bots')
@@ -191,33 +138,7 @@ async function getBotList(type:ListType, page = 1, query?: string) {
 			.orderBy('date', 'desc')
 			.limit(16)
 			.offset(((page ? Number(page) : 1) - 1) * 16)
-			.select([
-				'id',
-				'owners',
-				'lib',
-				'prefix',
-				'votes',
-				'servers',
-				'intro',
-				'desc',
-				'web',
-				'git',
-				'url',
-				'category',
-				'status',
-				'name',
-				'avatar',
-				'tag',
-				'verified',
-				'trusted',
-				'partnered',
-				'discord',
-				'boosted',
-				'state',
-				'vanity',
-				'bg',
-				'banner',
-			])
+			.select(['id'])
 	} else if (type === 'PARTNERED') {
 		count = (
 			await knex('bots')
@@ -231,33 +152,7 @@ async function getBotList(type:ListType, page = 1, query?: string) {
 			.orderBy('servers', 'desc')
 			.limit(16)
 			.offset(((page ? Number(page) : 1) - 1) * 16)
-			.select([
-				'id',
-				'owners',
-				'lib',
-				'prefix',
-				'votes',
-				'servers',
-				'intro',
-				'desc',
-				'web',
-				'git',
-				'url',
-				'category',
-				'status',
-				'name',
-				'avatar',
-				'tag',
-				'verified',
-				'trusted',
-				'partnered',
-				'discord',
-				'boosted',
-				'state',
-				'vanity',
-				'bg',
-				'banner',
-			])
+			.select(['id'])
 	} else if (type === 'CATEGORY') {
 		if (!query) throw new Error('쿼리가 누락되었습니다.')
 		if (!cats.includes(query)) throw new Error('알 수 없는 카테고리입니다.')
@@ -272,33 +167,7 @@ async function getBotList(type:ListType, page = 1, query?: string) {
 			.orderBy('servers', 'desc')
 			.limit(16)
 			.offset(((page ? Number(page) : 1) - 1) * 16)
-			.select([
-				'id',
-				'owners',
-				'lib',
-				'prefix',
-				'votes',
-				'servers',
-				'intro',
-				'desc',
-				'web',
-				'git',
-				'url',
-				'category',
-				'status',
-				'name',
-				'avatar',
-				'tag',
-				'verified',
-				'trusted',
-				'partnered',
-				'discord',
-				'boosted',
-				'state',
-				'vanity',
-				'bg',
-				'banner',
-			])
+			.select(['id'])
 	} else if (type === 'SEARCH') {
 		if (!query) throw new Error('쿼리가 누락되었습니다.')
 		try {
@@ -321,32 +190,7 @@ async function getBotList(type:ListType, page = 1, query?: string) {
 				.orderBy('servers', 'desc')
 				.limit(16)
 				.offset(((page ? Number(page) : 1) - 1) * 16)
-				.select([
-					'id',
-					'owners',
-					'lib',
-					'prefix',
-					'votes',
-					'servers',
-					'intro',
-					'desc',
-					'web',
-					'git',
-					'url',
-					'category',
-					'status',
-					'name',
-					'avatar',
-					'tag',
-					'verified',
-					'trusted',
-					'discord',
-					'boosted',
-					'state',
-					'vanity',
-					'bg',
-					'banner',
-				])
+				.select(['id'])
 		} catch (e) {
 			count = (
 				await knex('bots')
@@ -366,43 +210,14 @@ async function getBotList(type:ListType, page = 1, query?: string) {
 				.orderBy('servers', 'desc')
 				.limit(16)
 				.offset(((page ? Number(page) : 1) - 1) * 16)
-				.select([
-					'id',
-					'owners',
-					'lib',
-					'prefix',
-					'votes',
-					'servers',
-					'intro',
-					'desc',
-					'web',
-					'git',
-					'url',
-					'category',
-					'status',
-					'name',
-					'avatar',
-					'tag',
-					'verified',
-					'trusted',
-					'discord',
-					'boosted',
-					'state',
-					'vanity',
-					'bg',
-					'banner',
-				])
+				.select(['id'])
 		}
 	} else {
 		count = 1
 		res = []
 	}
-	res.map(el => {
-		el.category = JSON.parse(el.category)
-		return el
-	})
 
-	return { type, data: res, currentPage: page, totalPage: Math.ceil(count / 16) }
+	return { type, data: await Promise.all(res.map(async el => await getBot(el.id))), currentPage: page, totalPage: Math.ceil(Number(count) / 16) }
 }
 
-export default { bot, user }
+export default { bot, user, botList }

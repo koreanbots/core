@@ -1,21 +1,13 @@
 import fetch from 'node-fetch'
 import jwt from 'jsonwebtoken'
 import fs from 'fs'
-import knsexy from 'knex'
+
 import { Bot, User } from '../types'
+
+import knex from './Knex'
 
 const publicPem = fs.readFileSync('./public.pem')
 const privateKey = fs.readFileSync('./private.key')
-
-export const knex = knsexy({
-	client: 'mysql',
-	connection: {
-		host: process.env.MYSQL_HOST || 'localhost',
-		user: process.env.MYSQL_USER || 'root',
-		password: process.env.MYSQL_PASSWORD,
-		database: process.env.MYSQL_DATABASE || 'discordbots',
-	},
-})
 
 export async function getBot(id: string, owners = true): Promise<Bot> {
 	const res = await knex('bots')

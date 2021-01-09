@@ -37,6 +37,13 @@ export interface User {
 	bots: Bot[] | string[]
 }
 
+export interface BotList {
+	type: ListType
+	data: Bot[]
+	currentPage: number
+	totalPage: number
+}
+
 export type Status = 'online' | 'offline' | 'dnd' | 'idle' | 'streaming'
 
 export type BotState = 'ok' | 'reported' | 'archived' | 'private'

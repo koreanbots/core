@@ -6,7 +6,6 @@ import Tag from './Tag'
 import Link from 'next/link'
 
 const BotCard = ({ bot }: BotProps): JSX.Element => {
-	console.log(`${bot.vanity}`)
 	return (
 		<div className="container mb-20">
 			<div className="relative">
@@ -33,7 +32,7 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 											<i className={`fas fa-circle text-${Status[bot.status]?.color}`} />
 											{Status[bot.status]?.text}
 										</h2>
-										<h1 className="mb-3 text-left text-3xl font-bold">
+										<h1 className="mb-3 text-left text-2xl font-bold truncate">
 											{bot.name}{' '}
 											{bot.trusted && (
 												<span className="text-koreanbots-blue text-3xl">
@@ -56,9 +55,9 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 									<Tag blurple text={<>{formatNumber(bot.servers)} 서버</>} dark />
 								</div>
 							</div>
-							<div className="category">
-								{bot.category.slice(5).map(el => (
-									<Tag key={el} text={el} href={`/categories/${el}`} />
+							<div className="category px-2">
+								{bot.category.slice(0, 5).map(el => (
+									<Tag key={el} text={el} href={`/categories/${el}`} dark/>
 								))}
 							</div>
 							<Divider />

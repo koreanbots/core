@@ -106,7 +106,6 @@ const Bots: NextPage<BotsProps> = ({ data, date, votes }) => {
 							<i className="fas fa-check text-discord-blurple" /> 디스코드 인증됨
 						</div>
 					</div>
-					<Advertisement />
 					<h2 className="3xl mb-2 mt-2 font-bold">카테고리</h2>
 					<div className="flex flex-wrap">
 						{data.category.map(el => (
@@ -164,6 +163,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, votes }) => {
 							</a>
 						)}
 					</div>
+					<Advertisement />
 				</div>
 				<div className="markdown-body pt-10 w-full lg:pr-5 lg:w-3/4">
 					<Advertisement />

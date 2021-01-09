@@ -83,3 +83,5 @@ export const reportCats = [
 	'Koreanbots 가이드라인 위반',
 	'기타',
 ]
+
+export const git = { 'github.com': { icon: 'github', text: 'Github' },  'gitlab.com':  { icon: 'gitlab', text: 'Gitlab' }}

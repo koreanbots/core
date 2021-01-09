@@ -91,3 +91,5 @@ export type ReportCategory =
 	| 'Discord ToS 위반'
 	| 'Koreanbots 가이드라인 위반'
 	| '기타'
+
+export type ListType = 'VOTE' | 'TRUSTED' | 'NEW' | 'PARTNERED' | 'CATEGORY' | 'SEARCH'

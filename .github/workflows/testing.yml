@@ -29,7 +29,7 @@ jobs:
     - name: yarn install
       run: yarn install
     - name: Create needed files
-      run: touch public.pem & touch private.key & echo '{}' > secret.json
+      run: touch public.pem & touch private.key & echo '{"tester":"DEMO_KEY"}' > secret.json
     - name: Build
       run: yarn build
       env:

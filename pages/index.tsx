@@ -19,7 +19,7 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 			</div>
 			<Wave
 				color='currentColor'
-				className='-mt-18 sm:mt-0 dark:text-discord-black text-discord-blurple dark:bg-discord-dark bg-white'
+				className='dark:text-discord-black text-discord-blurple dark:bg-discord-dark bg-white hidden md:block'
 			/>
 
 			<Container>

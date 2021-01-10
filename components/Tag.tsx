@@ -14,8 +14,8 @@ const Tag = ({
 	return href ? newTab ? (
 		<a
 			href={href}
-			rel="noopener noreferrer"
-			target="_blank"
+			rel='noopener noreferrer'
+			target='_blank'
 			className={`${className ?? ''} text-center text-base  ${
 				dark
 					? blurple

@@ -18,7 +18,7 @@ const Users: NextPage<UserProps> = ({ data }) => {
 	if (!data.id) return <NotFound />
 	console.log(data.bots[0])
 	return (
-		<Container paddingTop className="py-10">
+		<Container paddingTop className='py-10'>
 			<SEO
 				title={data.username}
 				description={josa(
@@ -33,29 +33,29 @@ const Users: NextPage<UserProps> = ({ data }) => {
 						: `https://cdn.discordapp.com/embed/avatars/${Number(data.tag) % 5}.png?size=1024`
 				}
 			/>
-			<div className="lg:flex">
-				<div className="w-full text-center lg:w-1/4">
+			<div className='lg:flex'>
+				<div className='w-full text-center lg:w-1/4'>
 					<DiscordImage
 						userID={data.id}
 						avatarHash={data.avatar}
 						tag={data.tag}
-						className="w-full"
+						className='w-full'
 					/>
 				</div>
-				<div className="flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left">
+				<div className='flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left'>
 					<div>
-						<h1 className="mb-2 mt-3 text-4xl font-bold">{data.username}</h1>
-						<span className="ml-0.5 text-gray-400 text-4xl font-semibold">#{data.tag}</span>
+						<h1 className='mb-2 mt-3 text-4xl font-bold'>{data.username}</h1>
+						<span className='ml-0.5 text-gray-400 text-4xl font-semibold'>#{data.tag}</span>
 						<br />
-						<div className="badges flex">
+						<div className='badges flex'>
 							{checkPerm(data.perm, 'staff') && (
-								<div className="pr-5 text-koreanbots-blue text-2xl">
-									<i className="fas fa-hammer" />
+								<div className='pr-5 text-koreanbots-blue text-2xl'>
+									<i className='fas fa-hammer' />
 								</div>
 							)}
 							{checkPerm(data.perm, 'bughunter') && (
-								<div className="pr-5 text-green-500 text-2xl">
-									<i className="fas fa-bug" />
+								<div className='pr-5 text-green-500 text-2xl'>
+									<i className='fas fa-bug' />
 								</div>
 							)}
 						</div>
@@ -65,7 +65,7 @@ const Users: NextPage<UserProps> = ({ data }) => {
 								newTab
 								text={
 									<>
-										<i className="fab fa-github" /> {data.github}
+										<i className='fab fa-github' /> {data.github}
 									</>
 								}
 								github
@@ -76,8 +76,8 @@ const Users: NextPage<UserProps> = ({ data }) => {
 				</div>
 			</div>
 			<Divider />
-			<h2 className="mt-8 text-3xl font-bold">제작한 봇</h2>
-			<div className="grid gap-4 mt-20 2xl:grid-cols-4 md:grid-cols-2">
+			<h2 className='mt-8 text-3xl font-bold'>제작한 봇</h2>
+			<div className='grid gap-4 mt-20 2xl:grid-cols-4 md:grid-cols-2'>
 				{(data.bots as Bot[]).map((bot: Bot) => (
 					<BotCard key={bot.id} bot={bot} />
 				))}

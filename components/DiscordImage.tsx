@@ -17,7 +17,7 @@ const DiscordImage = (props: {
 			}
 			width={props.size || 256}
 			height={props.size || 256}
-			data-fallback-image="/img/default.png"
+			data-fallback-image='/img/default.png'
 		/>
 	)
 }

@@ -27,6 +27,7 @@ module.exports = {
 		'@typescript-eslint'
 	],
 	rules: {
+		'jsx-quotes': ['error', 'prefer-single'],
 		'react/no-unescaped-entities': 'off',
 		'react/prop-types': 'off',
 		'react/react-in-jsx-scope': 'off',

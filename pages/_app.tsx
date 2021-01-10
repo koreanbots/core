@@ -34,21 +34,21 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
 			localStorage.setItem('theme', systemColor)
 	}, [])
 	return (
-		<ThemeProvider defaultTheme={systemColor} attribute="class" storageKey="theme">
+		<ThemeProvider defaultTheme={systemColor} attribute='class' storageKey='theme'>
 			<Head>
-				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+				<meta name='viewport' content='width=device-width, initial-scale=1.0' />
 				<title>한국 디스코드봇 리스트</title>
-				<meta name="description" content="국내 디스코드봇들을 확인하고, 초대해보세요!" />
-				<meta name="og:title" content="한국 디스코드봇 리스트" />
-				<meta name="og:url" content="https://koreanbots.dev" />
-				<meta name="og:description" content="국내 디스코드봇들을 확인하고, 초대해보세요!" />
-				<meta name="og:image" content="/logo.png" />
-				<meta charSet="utf-8" />
-				<link rel="shortcut icon" href="/logo.png" />
-				<meta name="theme-color" content="#3366FF" />
+				<meta name='description' content='국내 디스코드봇들을 확인하고, 초대해보세요!' />
+				<meta name='og:title' content='한국 디스코드봇 리스트' />
+				<meta name='og:url' content='https://koreanbots.dev' />
+				<meta name='og:description' content='국내 디스코드봇들을 확인하고, 초대해보세요!' />
+				<meta name='og:image' content='/logo.png' />
+				<meta charSet='utf-8' />
+				<link rel='shortcut icon' href='/logo.png' />
+				<meta name='theme-color' content='#3366FF' />
 			</Head>
 			<Navbar />
-			<div className="iu-is-the-best h-full text-black dark:text-gray-100 dark:bg-discord-dark bg-white">
+			<div className='iu-is-the-best h-full text-black dark:text-gray-100 dark:bg-discord-dark bg-white'>
 				<Component {...pageProps} />
 			</div>
 			<Footer />

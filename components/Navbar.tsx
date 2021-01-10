@@ -65,7 +65,7 @@ const Navbar = (): JSX.Element => {
 				</div>
 			</nav>
 			<div
-				className={`z-30 w-full h-full fixed bg-discord-blurple dark:bg-discord-black mt-8 sm:mt-0 z-19 ${
+				className={`z-30 w-full h-full fixed bg-discord-blurple dark:bg-discord-black mt-8 sm:mt-0 lg:hidden ${
 					navbarOpen ? 'block' : 'hidden'
 				}`}
 			>

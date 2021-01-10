@@ -77,7 +77,7 @@ const Users: NextPage<UserProps> = ({ data }) => {
 			</div>
 			<Divider />
 			<h2 className="mt-8 text-3xl font-bold">제작한 봇</h2>
-			<div className="grid gap-4 mt-20 lg:grid-cols-4">
+			<div className="grid gap-4 mt-20 2xl:grid-cols-4 md:grid-cols-2">
 				{(data.bots as Bot[]).map((bot: Bot) => (
 					<BotCard key={bot.id} bot={bot} />
 				))}

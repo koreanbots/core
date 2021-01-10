@@ -1,10 +1,12 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import { ThemeProvider } from 'next-themes'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
+
+import secret from '../secret.json'
 
 import 'core-js/es/promise'
 import 'core-js/es/set'
@@ -16,7 +18,9 @@ import '../github-markdown.css'
 
 let systemColor
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
+	const [ betaKey, setBetaKey ] = useState('')
 	useEffect(() => {
+		setBetaKey(localStorage.betaKey)
 		console.log(
 			'%c' + 'KOREANBOTS',
 			'color: #3366FF; -webkit-text-stroke: 2px black; font-size: 72px; font-weight: bold;'
@@ -49,7 +53,12 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
 			</Head>
 			<Navbar />
 			<div className='iu-is-the-best h-full text-black dark:text-gray-100 dark:bg-discord-dark bg-white'>
-				<Component {...pageProps} />
+				{
+					secret.tester === betaKey ? <Component {...pageProps} /> : <div className='text-center py-40 px-10'>
+						<h1 className='text-3xl font-bold'>주어진 테스터키를 입력해주세요.</h1><br/>
+						<input value={betaKey} name='field_name' className='text-black border outline-none px-4 py-2 rounded-2xl' type='text' placeholder='테스터 키' onChange={(e)=> { localStorage.setItem('betaKey', e.target.value); setBetaKey(e.target.value) }} />
+					</div>
+				}
 			</div>
 			<Footer />
 		</ThemeProvider>

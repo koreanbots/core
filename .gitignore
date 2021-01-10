@@ -36,3 +36,5 @@ yarn-error.log*
 
 # Prevent commiting  lock file.
 package-lock.json
+
+secret.json

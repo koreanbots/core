@@ -104,9 +104,13 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 							<i className='fas fa-calendar-day' /> 봇 생성일
 						</div>
 						<div>{Day(date).fromNow(false)}</div>
-						<div>
-							<i className='fas fa-check text-discord-blurple' /> 디스코드 인증됨
-						</div>
+						{
+							data.verified ? 
+								<div>
+									<i className='fas fa-check text-discord-blurple' /> 디스코드 인증됨
+								</div>
+								: ''
+						}
 					</div>
 					<h2 className='3xl mb-2 mt-2 font-bold'>카테고리</h2>
 					<div className='flex flex-wrap'>

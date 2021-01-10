@@ -6,7 +6,7 @@ const Footer = (): JSX.Element => {
 	return (
 		<div className='releative'>
 			<Wave color='currentColor' className='dark:text-discord-dark text-white bg-discord-black -mb-10' />
-			<div className='bottom-0 text-white bg-discord-black'>
+			<div className='bottom-0 text-white bg-discord-black mt-5'>
 				<Container className='pb-20 pt-10 w-11/12 lg:flex lg:pt-0 lg:w-3/5' ignoreColor>
 					<div className='w-full lg:flex-grow'>
 						<h1 className='text-koreanbots-blue text-3xl font-extrabold'>국내봇을 한 곳에서.</h1>

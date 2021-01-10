@@ -14,11 +14,12 @@ import NotFound from '../404'
 import SEO from '../../components/SEO'
 import LongButton from '../../components/LongButton'
 import { git, Status } from '../../utils/Constants'
-import { Fetch, formatNumber } from '../../utils'
+import { Fetch } from '../../utils'
+import { formatNumber } from '../../utils/Tools'
 import Advertisement from '../../components/Advertisement'
 import Link from 'next/link'
 
-const Bots: NextPage<BotsProps> = ({ data, date, votes }) => {
+const Bots: NextPage<BotsProps> = ({ data, date }) => {
 	if (!data.id) return <NotFound />
 	return (
 		<Container paddingTop className="py-10">
@@ -78,7 +79,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, votes }) => {
 							<i className="fas fa-heart text-red-600" /> 하트 추가
 						</h4>
 						<span className="ml-1 px-2 py-1 text-center text-black dark:text-gray-400 text-sm bg-little-white-hover dark:bg-very-black rounded-lg">
-							{votes}
+							{formatNumber(data.votes)}
 						</span>
 					</LongButton>
 				</div>
@@ -206,8 +207,7 @@ export const getServerSideProps = async (ctx: Context) => {
 	return {
 		props: {
 			data,
-			date: SnowflakeUtil.deconstruct(data.id ?? '0').date.toJSON(),
-			votes: formatNumber(data.votes ?? 0, 3),
+			date: SnowflakeUtil.deconstruct(data.id ?? '0').date.toJSON()
 		},
 	}
 }

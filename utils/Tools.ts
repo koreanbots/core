@@ -1,26 +1,18 @@
 import { UserPemissionFlags } from '../types'
 import { perms } from './Constants'
 
-function formatNumber(num: number, digits = 1) {
-	const si = [
-		{ value: 1, symbol: '' },
-		{ value: 1e3, symbol: '천' },
-		{ value: 1e4, symbol: '만' },
-		{ value: 1e8, symbol: '억' },
-		{ value: 1e12, symbol: '조' },
-		{ value: 1e16, symbol: '해' },
-	]
-	const rx = /\.0+$|(\.[0-9]*[1-9])0+$/
-	let i
-	for (i = si.length - 1; i > 0; i--) {
-		if (num >= si[i].value) {
-			break
-		}
+function formatNumber(value: number):string  {
+	const suffixes = ['', '만', '억', '조','해']
+	const suffixNum = Math.floor((''+value).length/4)
+	let shortValue:string|number = parseFloat((suffixNum != 0 ? (value / Math.pow(10000,suffixNum)) : value).toPrecision(2))
+	if (shortValue % 1 != 0) {
+		shortValue = shortValue.toFixed(1)
 	}
-	return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
+	if(suffixNum ===  1 && shortValue < 1) return Number(shortValue) * 10 + '천'
+	return shortValue+suffixes[suffixNum]
 }
 
-function checkPerm(base: number, required: number | UserPemissionFlags) {
+function checkPerm(base: number, required: number | UserPemissionFlags):boolean {
 	required = typeof required === 'number' ? required : perms[required]
 	if (typeof required !== 'number' && !required) throw new Error('올바르지 않은 권한입니다.')
 	return (base & required) === required

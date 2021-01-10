@@ -15,6 +15,10 @@ export const Status = {
 		text: '오프라인',
 		color: 'gray-500',
 	},
+	streaming: {
+		text: '방송중',
+		color: 'purple-500'
+	},
 	null: {
 		text: '알 수 없음',
 		color: 'gray-500',

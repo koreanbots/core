@@ -44,7 +44,7 @@ export interface BotList {
 	totalPage: number
 }
 
-export type Status = 'online' | 'offline' | 'dnd' | 'idle' | 'streaming'
+export type Status = 'online' | 'offline' | 'dnd' | 'idle' | 'streaming' | null
 
 export type BotState = 'ok' | 'reported' | 'archived' | 'private'
 

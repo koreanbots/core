@@ -33,10 +33,10 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 						votes.data.slice(0, 8).map(bot=> <BotCard key={bot.id} bot={bot} />)
 					}
 				</div>
-				<LongButton href='/list/votes' center>
-					<h1 className='text-2xl'>더보기</h1>
-				</LongButton>
-				<h1 className='text-3xl font-bold mt-5'>
+				<a className='mx-auto w-1/2 justify-center text-2xl bg-little-white dark:bg-discord-black text-black dark:text-gray-400 rounded flex hover:bg-little-white-hover dark:hover:bg-discord-dark-hover cursor-pointer px-4 py-4 mb-1'>
+					더보기
+				</a>
+				<h1 className='text-3xl font-bold mt-20'>
 					<i className='far fa-star mr-3 text-yellow-500' /> 새로운 봇
 				</h1>
 				<p className='text-base'>최근에 한국 디스코드봇 리스트에 추가된 따끈따끈한 봇입니다.</p>

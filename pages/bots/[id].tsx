@@ -53,11 +53,11 @@ const Bots: NextPage<BotsProps> = ({ data, date, votes }) => {
 						/>
 						<h1 className="mb-2 mt-3 text-4xl font-bold">
 							{data.name}{' '}
-							{data.trusted && (
+							{data.trusted ? (
 								<span className="text-koreanbots-blue text-3xl">
 									<i className="fas fa-award" />
 								</span>
-							)}
+							) : ''}
 						</h1>
 					</div>
 					<p className="dark:text-gray-300 text-gray-800 text-base">{data.intro}</p>

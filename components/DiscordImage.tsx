@@ -12,8 +12,8 @@ const DiscordImage = (props: {
 			className={props.className}
 			src={
 				props.avatarHash
-					? `https://cdn.discordapp.com/avatars/${props.userID}/${props.avatarHash}.png?size=1024`
-					: `https://cdn.discordapp.com/embed/avatars/${Number(props.tag) % 5}.png?size=1024`
+					? `https://cdn.discordapp.com/avatars/${props.userID}/${props.avatarHash}.png?size=128`
+					: `https://cdn.discordapp.com/embed/avatars/${Number(props.tag) % 5}.png?size=128`
 			}
 			width={props.size || 256}
 			height={props.size || 256}

@@ -55,7 +55,7 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 									<Tag blurple text={<>{formatNumber(bot.servers)} 서버</>} dark />
 								</div>
 							</div>
-							<div className="category px-2">
+							<div className="category px-2 flex flex-wrap">
 								{bot.category.slice(0, 5).map(el => (
 									<Tag key={el} text={el} href={`/categories/${el}`} dark/>
 								))}

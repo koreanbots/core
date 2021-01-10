@@ -12,7 +12,7 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 				<div className='container mx-auto'>
 					<div className='h-full'>
 						<div className='relative mx-auto h-full text-black dark:text-white dark:bg-discord-black bg-little-white rounded-2xl shadow-xl'>
-							<div className='flex mb-16 h-48'>
+							<div className='flex h-44'>
 								<div className='w-2/3'>
 									<div className='flex justify-start'>
 										<img
@@ -40,7 +40,6 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 												</span>
 											) : ''}
 										</h1>
-										<p className='text-left text-gray-400 text-sm font-medium'>{bot.intro}</p>
 									</div>
 								</div>
 								<div className='grid grid-cols-1 pr-5 py-5 w-1/3 h-0'>
@@ -55,6 +54,7 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 									<Tag blurple text={<>{formatNumber(bot.servers)} 서버</>} dark />
 								</div>
 							</div>
+							<p className='px-4 text-left text-gray-400 text-sm font-medium mb-10 h-6'>{bot.intro}</p>
 							<div className='category px-2 flex flex-wrap'>
 								{bot.category.slice(0, 5).map(el => (
 									<Tag key={el} text={el} href={`/categories/${el}`} dark/>

@@ -34,11 +34,11 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 										</h2>
 										<h1 className="mb-3 text-left text-2xl font-bold truncate">
 											{bot.name}{' '}
-											{bot.trusted && (
+											{bot.trusted ? (
 												<span className="text-koreanbots-blue text-3xl">
 													<i className="fas fa-award" />
 												</span>
-											)}
+											) : ''}
 										</h1>
 										<p className="text-left text-gray-400 text-sm font-medium">{bot.intro}</p>
 									</div>

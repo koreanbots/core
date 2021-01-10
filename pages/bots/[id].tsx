@@ -65,6 +65,7 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 				</div>
 				<div className="w-full lg:w-1/4">
 					<LongButton
+						newTab
 						href={
 							data.url ??
 							`https://discordapp.com/oauth2/authorize?client_id=${data.id}&scope=bot&permissions=0`

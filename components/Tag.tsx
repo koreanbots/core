@@ -9,8 +9,29 @@ const Tag = ({
 	circular = false,
 	dark = false,
 	marginBottom = 2,
+	newTab = false
 }: LabelProps): JSX.Element => {
-	return href ? (
+	return href ? newTab ? (
+		<a
+			href={href}
+			rel="noopener noreferrer"
+			target="_blank"
+			className={`${className ?? ''} text-center text-base  ${
+				dark
+					? blurple
+						? 'bg-discord-blurple'
+						: 'bg-little-white-hover dark:bg-very-black'
+					: github
+						? 'bg-gray-900 text-white'
+						: 'bg-little-white dark:bg-discord-black'
+			} ${!blurple && !github ? 'text-black dark:text-gray-400' : ''} ${
+				circular ? 'rounded-3xl px-2.5 py-1.5' : 'rounded px-2 py-1'
+			} mr-1 mb-${marginBottom} hover:bg-little-white-hover dark:hover:bg-discord-dark-hover`}
+		>
+			{text}
+		</a>
+
+	) : (
 		<Link href={href}>
 			<a
 				className={`${className ?? ''} text-center text-base  ${
@@ -57,6 +78,7 @@ interface LabelProps {
 	circular?: boolean
 	dark?: boolean
 	marginBottom?: number
+	newTab?: boolean
 }
 
 export default Tag

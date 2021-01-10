@@ -62,6 +62,7 @@ const Users: NextPage<UserProps> = ({ data }) => {
 						<br />
 						{data.github && (
 							<Tag
+								newTab
 								text={
 									<>
 										<i className="fab fa-github" /> {data.github}

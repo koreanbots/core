@@ -5,6 +5,7 @@
 html {
   scroll-behavior: smooth;
   min-height: 100%;
+  overflow-x: hidden;
 }
 
 body {

@@ -8,12 +8,13 @@ const Navbar = (): JSX.Element => {
 			<nav className='fixed z-40 top-0 flex flex-wrap items-center justify-between px-2 py-3 w-full text-gray-100 dark:bg-discord-black bg-discord-blurple bg-transparent lg:absolute'>
 				<div className='container flex flex-wrap items-center justify-between mx-auto px-4'>
 					<div className='relative static block flex justify-between w-full lg:justify-start lg:w-auto'>
-						<a
-							className='logofont text-large whitespace-no-wrap inline-block mr-4 py-2 hover:text-gray-300 font-semibold leading-relaxed uppercase sm:text-2xl'
-							href='/'
-						>
+						<Link href='/'>
+							<a
+								className='logofont text-large whitespace-no-wrap inline-block mr-4 py-2 hover:text-gray-300 font-semibold leading-relaxed uppercase sm:text-2xl'
+							>
 							KOREANBOTS
-						</a>
+							</a>
+						</Link>
 						<button
 							className='block px-3 py-1 dark:text-gray-200 text-xl leading-none bg-transparent border border-solid border-transparent rounded outline-none focus:outline-none cursor-pointer lg:hidden'
 							type='button'
@@ -25,12 +26,13 @@ const Navbar = (): JSX.Element => {
 					<div className='hidden flex-grow items-center bg-white lg:flex lg:bg-transparent lg:shadow-none'>
 						<ul className='flex flex-col list-none lg:flex-row lg:ml-auto'>
 							<li className='flex items-center'>
-								<a
-									href='/discord'
-									className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'
-								>
+								<Link href='/discord'>
+									<a
+										className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'
+									>
 									디스코드
-								</a>
+									</a>
+								</Link>
 							</li>
 							<li className='flex items-center'>
 								<Link href='/about'>
@@ -90,7 +92,7 @@ const Navbar = (): JSX.Element => {
 							<span className='px-2 font-medium'>소개</span>
 						</a>
 					</Link>
-					<Link href='/about'>
+					<Link href='/api'>
 						<a className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
 							<i className='fas fa-tools' />
 

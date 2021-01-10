@@ -2,7 +2,7 @@ const Advertisement = (): JSX.Element => {
 	if (process.env.NODE_ENV === 'production')
 		return (
 			<ins
-				className="adsbygoogle mb-5"
+				className="adsbygoogle mb-5 w-full"
 				style={{ display: 'block' }}
 				data-ad-client="ca-pub-4856582423981759"
 				data-ad-slot="3250141451"

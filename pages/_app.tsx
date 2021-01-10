@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
-import { ThemeProvider } from 'next-themes'
+import { ThemeProvider, useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 
 import Footer from '../components/Footer'
@@ -19,6 +19,8 @@ import '../github-markdown.css'
 let systemColor
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
 	const [ betaKey, setBetaKey ] = useState('')
+	const [ theme, setDefaultTheme ] = useState<string|undefined>(undefined)
+	const { setTheme } = useTheme()
 	useEffect(() => {
 		setBetaKey(localStorage.betaKey)
 		console.log(
@@ -29,16 +31,22 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
 			'%c' + '이곳에 코드를 붙여넣으면 공격자에게 엑세스 토큰을 넘겨줄 수 있습니다!!',
 			'color: #ff0000; font-size: 20px; font-weight: bold;'
 		)
+	}, [])
+
+	useEffect(()=> {
 		try {
 			systemColor = window.matchMedia('(prefers-color-scheme: dark)')?.matches ? 'dark' : 'light'
 		} catch (e) {
 			systemColor = 'dark'
 		}
-		if (!localStorage.theme || !['dark', 'light'].includes(localStorage.theme))
+		if (!localStorage.theme || !['dark', 'light'].includes(localStorage.theme)) {
 			localStorage.setItem('theme', systemColor)
+			setDefaultTheme(systemColor)
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 	return (
-		<ThemeProvider defaultTheme={systemColor} attribute='class' storageKey='theme'>
+		<ThemeProvider forcedTheme={theme} attribute='class' storageKey='theme' enableSystem>
 			<Head>
 				<meta name='viewport' content='width=device-width, initial-scale=1.0' />
 				<title>한국 디스코드봇 리스트</title>

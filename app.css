@@ -15,6 +15,7 @@ body {
 @font-face {
   font-family: "Uni Sans Heavy CAPS";
   src: url("/logofont.otf");
+  font-display: swap;
 }
 
 .logofont {

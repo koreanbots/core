@@ -21,3 +21,13 @@ export function checkPerm(base: number, required: number | UserPemissionFlags):b
 export function makeImageURL(root:string, { format='png', size=256 }:ImageOptions):string {
 	return `${root}.${format}?size=${size}`
 }
+
+export function supportsWebP() {
+	const elem = document.createElement('canvas')
+	if (elem.getContext && elem.getContext('2d')) {
+		// was able or not to get WebP representation
+		return elem.toDataURL('image/webp').indexOf('data:image/webp') == 0
+	}
+	// very old browser like IE 8, canvas not supported
+	return false
+}

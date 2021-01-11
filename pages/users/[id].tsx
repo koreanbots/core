@@ -16,7 +16,6 @@ import { checkPerm } from '../../utils/Tools'
 import Advertisement from '../../components/Advertisement'
 const Users: NextPage<UserProps> = ({ data }) => {
 	if (!data.id) return <NotFound />
-	console.log(data.bots[0])
 	return (
 		<Container paddingTop className='py-10'>
 			<SEO
@@ -25,7 +24,7 @@ const Users: NextPage<UserProps> = ({ data }) => {
 					`${(data.bots as Bot[])
 						.slice(0, 5)
 						.map(el => el.name)
-						.join(', ')}#{을}`
+						.join(', ')}#{을} 제작합니다.`
 				)}
 				image={
 					data.avatar

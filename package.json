@@ -14,7 +14,7 @@
     "autoprefixer": "^10.1.0",
     "core-js": "^3.8.2",
     "dataloader": "^2.0.0",
-    "dayjs": "^1.10.2",
+    "dayjs": "^1.10.3",
     "discord.js": "^12.5.1",
     "josa": "^3.0.1",
     "jsonwebtoken": "^8.5.1",

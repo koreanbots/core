@@ -4,6 +4,7 @@ import { Status } from '../utils/Constants'
 import Divider from './Divider'
 import Tag from './Tag'
 import Link from 'next/link'
+import DiscordAvatar from './DiscordAvatar'
 
 const BotCard = ({ bot }: BotProps): JSX.Element => {
 	return (
@@ -15,16 +16,7 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 							<div className='flex h-44'>
 								<div className='w-2/3'>
 									<div className='flex justify-start'>
-										<img
-											alt='Avatar'
-											src={
-												bot.avatar
-													? `https://cdn.discordapp.com/avatars/${bot.id}/${bot.avatar}.png?size=1024`
-													: `https://cdn.discordapp.com/embed/avatars/${Number(bot.tag) %
-															5}.png?size=1024`
-											}
-											className='rounded-full absolute -left-2 -top-8 mx-auto w-32 h-32 bg-white'
-										/>
+										<DiscordAvatar size={128} userID={bot.id} avatarHash={bot.avatar} tag={bot.tag} alt='Avatar' 	className='rounded-full absolute -left-2 -top-8 mx-auto w-32 h-32 bg-white'/> 
 									</div>
 
 									<div className='mt-28 px-4'>

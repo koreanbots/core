@@ -100,3 +100,16 @@ export type ReportCategory =
 	| '기타'
 
 export type ListType = 'VOTE' | 'TRUSTED' | 'NEW' | 'PARTNERED' | 'CATEGORY' | 'SEARCH'
+
+export type ImageFormat = 'webp' | 'png' | 'jpg' | 'gif'
+export type ImageSize = 16 | 32 | 64 | 128 | 256 | 512 | 1024 | 2048 | 4096
+export interface ImageOptions {
+	format?: ImageFormat
+	size?: ImageSize
+}
+export enum DiscordImageType {
+	EMOJI = 'emoji',
+	GUILD = 'guild',
+	USER = 'user',
+	FALLBACK = 'default'
+}

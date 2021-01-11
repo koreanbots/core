@@ -5,7 +5,7 @@ import Container from '../components/Container'
 import LongButton from '../components/LongButton'
 import Wave from '../components/Wave'
 import { BotList } from '../types'
-import { Fetch } from '../utils'
+import { Query } from '../utils'
 
 const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 	return (
@@ -61,9 +61,9 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 }
 
 export const getServerSideProps = async() => {
-	const votes = await Fetch.botListVotes.load(1)
-	const newBots = await Fetch.botListNew.load(1)
-	const trusted = await Fetch.botListTrusted.load(1)
+	const votes = await Query.get.list.votes.load(1)
+	const newBots = await Query.get.list.new.load(1)
+	const trusted = await Query.get.list.trusted.load(1)
 
 	return { props: { votes, newBots, trusted }}
 

@@ -1,6 +1,6 @@
 import { NextPage, NextPageContext } from 'next'
 import { SnowflakeUtil } from 'discord.js'
-import { Fetch } from '../../utils'
+import { Query } from '../../utils'
 import { ParsedUrlQuery } from 'querystring'
 import { josa } from 'josa'
 import { Bot, User } from '../../types'
@@ -88,7 +88,7 @@ const Users: NextPage<UserProps> = ({ data }) => {
 }
 
 export const getServerSideProps = async (ctx: Context) => {
-	const data = await Fetch.user.load(ctx.query.id)
+	const data = await Query.get.user.load(ctx.query.id)
 	return { props: { data, date: SnowflakeUtil.deconstruct(data.id ?? '0')?.date?.toJSON() } }
 }
 

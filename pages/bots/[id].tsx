@@ -14,13 +14,13 @@ import NotFound from '../404'
 import SEO from '../../components/SEO'
 import LongButton from '../../components/LongButton'
 import { git, Status } from '../../utils/Constants'
-import { Fetch } from '../../utils'
+import { Query } from '../../utils'
 import { formatNumber } from '../../utils/Tools'
 import Advertisement from '../../components/Advertisement'
 import Link from 'next/link'
 
 const Bots: NextPage<BotsProps> = ({ data, date }) => {
-	if (!data.id) return <NotFound />
+	if (!data || !data.id) return <NotFound />
 	return (
 		<Container paddingTop className='py-10'>
 			<SEO
@@ -208,11 +208,11 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 }
 
 export const getServerSideProps = async (ctx: Context) => {
-	const data = await Fetch.bot.load(ctx.query.id)
+	const data = await Query.get.bot.load(ctx.query.id) ?? {}
 	return {
 		props: {
 			data,
-			date: SnowflakeUtil.deconstruct(data.id ?? '0').date.toJSON()
+			date: SnowflakeUtil.deconstruct(data?.id ?? '0').date.toJSON()
 		},
 	}
 }
@@ -225,9 +225,9 @@ interface BotsProps {
 	votes: string
 }
 interface Context extends NextPageContext {
-	query: Query
+	query: URLQuery
 }
 
-interface Query extends ParsedUrlQuery {
+interface URLQuery extends ParsedUrlQuery {
 	id: string
 }

@@ -97,10 +97,10 @@ interface UserProps {
 }
 
 interface Context extends NextPageContext {
-	query: Query
+	query: URLQuery
 }
 
-interface Query extends ParsedUrlQuery {
+interface URLQuery extends ParsedUrlQuery {
 	id: string
 }
 

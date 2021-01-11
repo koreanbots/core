@@ -1,7 +1,7 @@
-import { UserPemissionFlags } from '../types'
-import { perms } from './Constants'
+import { ImageFormat, ImageOptions, ImageSize, UserPemissionFlags } from '../types'
+import { BASE_URLs, perms } from './Constants'
 
-function formatNumber(value: number):string  {
+export function formatNumber(value: number):string  {
 	const suffixes = ['', '만', '억', '조','해']
 	const suffixNum = Math.floor((''+value).length/4)
 	let shortValue:string|number = parseFloat((suffixNum != 0 ? (value / Math.pow(10000,suffixNum)) : value).toPrecision(2))
@@ -12,10 +12,12 @@ function formatNumber(value: number):string  {
 	return shortValue+suffixes[suffixNum]
 }
 
-function checkPerm(base: number, required: number | UserPemissionFlags):boolean {
+export function checkPerm(base: number, required: number | UserPemissionFlags):boolean {
 	required = typeof required === 'number' ? required : perms[required]
 	if (typeof required !== 'number' && !required) throw new Error('올바르지 않은 권한입니다.')
 	return (base & required) === required
 }
 
-export { formatNumber, checkPerm }
+export function makeImageURL(root:string, { format='png', size=256 }:ImageOptions):string {
+	return `${root}.${format}?size=${size}`
+}

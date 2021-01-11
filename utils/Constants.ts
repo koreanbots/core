@@ -1,3 +1,6 @@
+import { ImageOptions } from '../types'
+import { makeImageURL } from './Tools'
+
 export const Status = {
 	online: {
 		text: '온라인',
@@ -87,5 +90,18 @@ export const reportCats = [
 	'Koreanbots 가이드라인 위반',
 	'기타',
 ]
+
+export const BASE_URLs = {
+	cdn: 'https://cdn.discordapp.com'
+}
+export const DiscordEnpoints = {
+	CDN: class CDN {
+		static root = BASE_URLs.cdn
+		static emoji (id: string, options:ImageOptions={}) { return makeImageURL(`${this.root}/emojis/${id}`, options) }
+		static guild (id: string, hash: string, options:ImageOptions={}) { return makeImageURL(`${this.root}/icons/${id}/${hash}`, options) }
+		static default (tag: string, options:ImageOptions={}) { return makeImageURL(`${this.root}/embed/avatars/${isNaN(Number(tag)) ? Number(tag) % 5 : 0}`, options) }
+		static user (id: string, hash: string, options:ImageOptions={}) { return makeImageURL(`${this.root}/avatars/${id}/${hash}`, options) }
+	}
+}
 
 export const git = { 'github.com': { icon: 'github', text: 'Github' },  'gitlab.com':  { icon: 'gitlab', text: 'Gitlab' }}

@@ -8,7 +8,7 @@ import { Bot, User } from '../../types'
 import NotFound from '../404'
 import Container from '../../components/Container'
 import SEO from '../../components/SEO'
-import DiscordImage from '../../components/DiscordImage'
+import DiscordAvatar from '../../components/DiscordAvatar'
 import Divider from '../../components/Divider'
 import BotCard from '../../components/BotCard'
 import Tag from '../../components/Tag'
@@ -35,7 +35,7 @@ const Users: NextPage<UserProps> = ({ data }) => {
 			/>
 			<div className='lg:flex'>
 				<div className='w-full text-center lg:w-1/4'>
-					<DiscordImage
+					<DiscordAvatar
 						userID={data.id}
 						avatarHash={data.avatar}
 						tag={data.tag}

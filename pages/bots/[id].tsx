@@ -5,7 +5,7 @@ import { ParsedUrlQuery } from 'querystring'
 import { Bot, User } from '../../types'
 
 import Container from '../../components/Container'
-import DiscordImage from '../../components/DiscordImage'
+import DiscordAvatar from '../../components/DiscordAvatar'
 import Divider from '../../components/Divider'
 import Tag from '../../components/Tag'
 import Owner from '../../components/Owner'
@@ -34,7 +34,7 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 			/>
 			<div className='lg:flex'>
 				<div className='w-full text-center lg:w-1/4'>
-					<DiscordImage
+					<DiscordAvatar
 						userID={data.id}
 						avatarHash={data.avatar}
 						tag={data.tag}

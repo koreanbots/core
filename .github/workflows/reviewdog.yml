@@ -3,7 +3,7 @@ on: [pull_request]
 
 jobs:
   reviewdog:
-    name: eslint
+    name: EsLint Review
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -12,4 +12,4 @@ jobs:
         with:
           reporter: github-pr-review
           reviewdog_version: latest
-          eslint_flags: --ext js,jsx,ts,tsx src
+          eslint_flags: --ext js,jsx,ts,tsx .

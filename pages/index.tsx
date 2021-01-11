@@ -1,11 +1,13 @@
-import { NextPage, NextPageContext } from 'next'
-import Advertisement from '../components/Advertisement'
-import BotCard from '../components/BotCard'
-import Container from '../components/Container'
-import LongButton from '../components/LongButton'
-import Wave from '../components/Wave'
+import { NextPage, } from 'next'
+import dynamic from 'next/dynamic'
+
 import { BotList } from '../types'
 import { Query } from '../utils'
+
+const Advertisement = dynamic(()=> import('../components/Advertisement'))
+const Container = dynamic(()=> import('../components/Container'))
+const BotCard = dynamic(()=> import('../components/BotCard'))
+const Wave  = dynamic(()=> import('../components/Wave'))
 
 const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 	return (

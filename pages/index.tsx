@@ -11,7 +11,7 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 	return (
 		<>
 			<div className='dark:bg-discord-black bg-discord-blurple'>
-				<Container className='pb-28 pt-20' ignoreColor>
+				<Container className='pb-24 pt-20' ignoreColor>
 					<h1 className='text-center text-gray-100 text-3xl font-bold sm:text-left'>
 						한국 디스코드봇 리스트
 					</h1>

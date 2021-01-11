@@ -27,6 +27,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "tailwindcss": "^2.0.2",
+    "tlru": "^1.0.2",
     "yup": "^0.32.8",
     "yup-locales-ko": "^1.0.0"
   },

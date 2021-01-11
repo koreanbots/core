@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "browser": {
-    "fs": false
+    "fs": false,
+    "knex": false
   },
   "scripts": {
     "dev": "next dev",

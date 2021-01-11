@@ -3,7 +3,9 @@ module.exports = {
 		removeDeprecatedGapUtilities: true,
 		purgeLayersByDefault: true,
 	},
-	purge: [],
+	purge: [
+		'./**/*.{ts,tsx}',
+	],
 	darkMode: 'class', // or 'media' or 'class'
 	theme: {
 		extend: {

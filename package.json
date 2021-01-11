@@ -2,6 +2,9 @@
   "name": "client-next",
   "version": "0.1.0",
   "private": true,
+  "browser": {
+    "fs": false
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",

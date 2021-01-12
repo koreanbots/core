@@ -5,6 +5,5 @@ services:
     ports:
       - 4000:3000
       - 3306:3306
-    dockerfile: Dockerfile
     env_file:
       - .env.production.local

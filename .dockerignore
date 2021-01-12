@@ -1,0 +1,7 @@
+.next/
+node_modules/
+Dockerfile
+yarn-error.log
+.dockerignore
+.git
+.gitignore

@@ -2,6 +2,7 @@ version: "3"
 
 services:
   koreanbots:
+    build: .
     ports:
       - 4000:3000
       - 3306:3306

@@ -15,11 +15,10 @@ import 'core-js/es/map'
 import '../app.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '../github-markdown.css'
-
-let systemColor
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
 	const [ betaKey, setBetaKey ] = useState('')
 	const [ theme, setDefaultTheme ] = useState<string|undefined>(undefined)
+	let systemColor:string
 
 	useEffect(() => {
 		setBetaKey(localStorage.betaKey)
@@ -37,6 +36,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
 			systemColor = 'dark'
 		}
 		if (!localStorage.theme || !['dark', 'light'].includes(localStorage.theme)) {
+			console.log(`[THEME] ${systemColor.toUpperCase()} THEME DETECTED`)
 			localStorage.setItem('theme', systemColor)
 			setDefaultTheme(systemColor)
 		}

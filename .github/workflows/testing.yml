@@ -27,11 +27,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 14
-    - name: yarn install
-      run: yarn install
     - name: Create needed files
       run: touch public.pem & touch private.key & echo '{"tester":"DEMO_KEY"}' > secret.json
-    - name: Build
-      run: yarn build
-      env:
-        CI: false
+    - name: Docker Compose
+      run: docker-compose up -d

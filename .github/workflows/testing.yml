@@ -28,6 +28,6 @@ jobs:
       with:
         node-version: 14
     - name: Create needed files
-      run: touch public.pem & touch private.key & echo '{"tester":"DEMO_KEY"}' > secret.json
+      run: touch public.pem & touch .env.production.local & touch private.key & echo '{"tester":"DEMO_KEY"}' > secret.json
     - name: Docker Compose
       run: docker-compose up -d

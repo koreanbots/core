@@ -5,6 +5,5 @@ services:
     build: .
     ports:
       - 4000:3000
-      - 3306:3306
     env_file:
       - .env.production.local

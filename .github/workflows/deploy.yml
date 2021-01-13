@@ -54,7 +54,11 @@ jobs:
       with:
         node-version: 14
     - name: Generate RSA Key Pair
-      run:  ssh-keygen -b 2048 -t rsa -f key -q -P "" && ssh-keygen -b 2048 -e -m pem -f key -q -P "" > private.key && mv key public.pem && rm key.pub
+      run: |
+        ssh-keygen -b 2048 -t rsa -f key -q -P ""
+        ssh-keygen -b 2048 -e -m pem -f key -q -P "" > private.key
+        mv key public.pem 
+        rm key.pub
     - name: Setup environments
       run: mv .env.demo.local .env.production.local & echo 'MYSQL_ROOT_PASSWORD=YOUSHALLNOTPASS' > .env
     - name: Create needed files

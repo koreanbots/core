@@ -3,6 +3,7 @@ version: "3"
 services:
   mysql:
     image: mariadb/server:10.5
+    hostname: mysql
     container_name: mysql
     environment:
       MARIADB_ROOT_PASSWORD: "${MARIADB_ROOT_PASSWORD}"

@@ -61,3 +61,17 @@ jobs:
       run:  echo '{"tester":"DEMO_KEY"}' > secret.json
     - name: Docker Compose
       run: docker-compose up -d
+  deployBeta:
+    needs:
+      - Docker Image CI
+    name: Deploy Beta
+    runs-on: ubuntu-latest
+    if: {{ github.ref == 'ref/head/master' && github.event_name == 'push' }}
+    steps:
+      - name: Deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        command: cd ${{ secrets.BETA_DIR }} && git stash && git pull && docker-compose up --build

@@ -60,7 +60,9 @@ jobs:
         mv key public.pem 
         rm key.pub
     - name: Setup environments
-      run: mv .env.demo.local .env.production.local & echo 'MYSQL_ROOT_PASSWORD=YOUSHALLNOTPASS' > .env
+      run: |
+      mv .env.demo.local .env.production.local
+      echo 'MARIADB_ROOT_PASSWORD=YOUSHALLNOTPASS' > .env
     - name: Create needed files
       run:  echo '{"tester":"DEMO_KEY"}' > secret.json
     - name: Docker Compose

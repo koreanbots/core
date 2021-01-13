@@ -19,7 +19,7 @@ jobs:
       env:
         CI: true
   build:
-    name: Test Build
+    name: Build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
@@ -36,7 +36,7 @@ jobs:
   test:
     needs:
       - ESLint
-      - Test Build
+      - Build
     name: Docker Image CI
     runs-on: ubuntu-latest
     steps:

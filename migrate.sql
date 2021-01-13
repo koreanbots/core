@@ -19,7 +19,7 @@ ALTER TABLE `bots` ADD COLUMN partnered BOOLEAN NOT NULL DEFAULT 0;
 UPDATE `users` SET perm=0;
 ALTER TABLE `users` CHANGE `perm` `perm` INT(5) NOT NULL DEFAULT '0';
 ALTER TABLE `users` ADD `email` TEXT NULL AFTER `id`;
-ALTER TABLE `users` ADD `stared` TEXT NOT NULL DEFAULT '[]' AFTER `github
+ALTER TABLE `users` ADD `stared` TEXT NOT NULL DEFAULT '[]';
 ALTER TABLE `users` ADD `discord` TEXT NOT NULL AFTER `token`;
 UPDATE `users` SET `stared` = `votes` WHERE `id`=`id`;
 ALTER TABLE `users` CHANGE `votes` `votes` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{}';

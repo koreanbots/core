@@ -29,8 +29,12 @@ jobs:
         node-version: 14
     - name: yarn install
       run: yarn install
+    - name: Generate RSA Key Pair
+      run:  ssh-keygen -b 2048 -t rsa -f public -q -P "" & ssh-keygen -b 2048 -e -m pem -f public -q -P "" > private.key & mv public public.pem
+    - name: Setup environments
+      run: mv .env.demo.local .env.production.local & echo 'MYSQL_ROOT_PASSWORD=YOUSHALLNOTPASS' > .env
     - name: Create needed files
-      run: touch public.pem & mv .env.demo.local .env.production.local & touch .env.production.local & echo 'MYSQL_ROOT_PASSWORD=YOUSHALLNOTPASS' > .env & echo '{"tester":"DEMO_KEY"}' > secret.json
+      run:  echo '{"tester":"DEMO_KEY"}' > secret.json
     - name: Build
       run: yarn build
       env:
@@ -47,7 +51,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 14
+    - name: Generate RSA Key Pair
+      run:  ssh-keygen -b 2048 -t rsa -f public -q -P "" & ssh-keygen -b 2048 -e -m pem -f public -q -P "" > private.key & mv public public.pem
+    - name: Setup environments
+      run: mv .env.demo.local .env.production.local & echo 'MYSQL_ROOT_PASSWORD=YOUSHALLNOTPASS' > .env
     - name: Create needed files
-      run: touch public.pem & mv .env.demo.local .env.production.local & touch .env.production.local & echo 'MYSQL_ROOT_PASSWORD=YOUSHALLNOTPASS' > .env & echo '{"tester":"DEMO_KEY"}' > secret.json
+      run:  echo '{"tester":"DEMO_KEY"}' > secret.json
     - name: Docker Compose
       run: docker-compose up -d

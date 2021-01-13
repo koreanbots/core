@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
-import { ThemeProvider, useTheme } from 'next-themes'
+import { ThemeProvider } from 'next-themes'
 import { useEffect, useState } from 'react'
 
 import Footer from '../components/Footer'
@@ -31,6 +31,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
 			'color: #ff0000; font-size: 20px; font-weight: bold;'
 		)
 		try {
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 			systemColor = window.matchMedia('(prefers-color-scheme: dark)')?.matches ? 'dark' : 'light'
 		} catch (e) {
 			systemColor = 'dark'

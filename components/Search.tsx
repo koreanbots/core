@@ -1,8 +1,9 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 
 const Search = ({ query, result }: SearchProps): JSX.Element => {
 	return (
 		<div>
+			{query} { result }
 			<input />
 		</div>
 	)

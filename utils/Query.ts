@@ -1,6 +1,6 @@
-import fetch from 'node-fetch'
-import jwt from 'jsonwebtoken'
-import fs from 'fs'
+// import fetch from 'node-fetch'
+// import jwt from 'jsonwebtoken'
+// import fs from 'fs'
 import { TLRU } from 'tlru'
 
 import { Bot, User, ListType, BotList } from '../types'
@@ -9,8 +9,8 @@ import { cats } from './Constants'
 import knex from './Knex'
 import DataLoader from 'dataloader'
 
-const publicPem = fs.readFileSync('./public.pem')
-const privateKey = fs.readFileSync('./private.key')
+// const publicPem = fs.readFileSync('./public.pem')
+// const privateKey = fs.readFileSync('./private.key')
 
 async function getBot(id: string, owners=true) {
 	const res = await knex('bots')

@@ -1,5 +1,4 @@
 import { NextPage } from 'next'
-import Container from '../components/Container'
 import Notice from '../components/Notice'
 import { ErrorText } from '../utils/Constants'
 

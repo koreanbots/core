@@ -1,4 +1,4 @@
-name: Tests
+name: CI
 on:
   - pull_request
   - push
@@ -18,8 +18,26 @@ jobs:
       run: yarn lint
       env:
         CI: true
+  build:
+    name: Test Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: install node v14
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14
+    - name: yarn install
+      run: yarn install
+    - name: Build
+      run: yarn build
+      env:
+        CI: true
   test:
-    name: Build Test
+    needs:
+      - ESLint
+      - Test Build
+    name: Docker Image CI
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2

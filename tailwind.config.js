@@ -8,7 +8,7 @@ module.exports = {
 			'./**/*.{ts,tsx}',
 		],
 		options: {
-			whitelist: ['bg-green-400', 'bg-yellow-300', 'bg-red-500', 'bg-gray-500', 'bg-purple-500'],
+			whitelist: ['text-green-400', 'text-yellow-300', 'text-red-500', 'text-gray-500', 'text-purple-500'],
 		}
 	},
 	darkMode: 'class', // or 'media' or 'class'

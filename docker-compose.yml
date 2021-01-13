@@ -1,6 +1,18 @@
 version: "3"
 
 services:
+  mysql:
+    image: mariadb/server:10.5
+    hostname: mysqlBeta
+    ports:
+      - "3307:3306"
+    env_file:
+      - .env.mysql.local
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - /home/ubuntu/mysql-beta:/var/lib/mysql
   koreanbots:
     build: .
     ports:

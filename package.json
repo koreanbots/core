@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint --ext ts,tsx .",
     "lint:fix": "eslint --ext ts,tsx . --fix",
-    "docker": "docker-compose up -d"
+    "docker": "docker-compose up -d --build"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",

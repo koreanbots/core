@@ -3,7 +3,8 @@ version: "3"
 services:
   mysql:
     image: mariadb/server:10.5
-    hostname: mysqlbeta
+    container_name: mysqlBeta
+    hostname: mysql
     ports:
       - "3307:3306"
     env_file:
@@ -14,8 +15,11 @@ services:
     volumes:
       - /home/ubuntu/mysql-beta:/var/lib/mysql
   koreanbots:
+    container_name: koreanbots
     build: .
     ports:
       - 4000:3000
     env_file:
       - .env.production.local
+    link:
+      - "mysqlBeta:mysql"

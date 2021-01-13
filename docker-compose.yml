@@ -5,13 +5,13 @@ services:
     image: mariadb/server:10.5
     container_name: mysqlBeta
     hostname: mysql
+    env_file:
+      - .env.mysql.local
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
     volumes:
       - /home/ubuntu/mysql-beta:/var/lib/mysql
-    environment:
-      - MARIADB_ROOT_PASSWORD=FAKE_PASSWORD
   koreanbots:
     container_name: koreanbots
     build: .

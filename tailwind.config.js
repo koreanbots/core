@@ -3,9 +3,14 @@ module.exports = {
 		removeDeprecatedGapUtilities: true,
 		purgeLayersByDefault: true,
 	},
-	purge: [
-		'./**/*.{ts,tsx}',
-	],
+	purge: {
+		content: [
+			'./**/*.{ts,tsx}',
+		],
+		options: {
+			whitelist: ['bg-green-400', 'bg-yellow-300', 'bg-red-500', 'bg-gray-500', 'bg-purple-500'],
+		}
+	},
 	darkMode: 'class', // or 'media' or 'class'
 	theme: {
 		extend: {

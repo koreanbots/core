@@ -3,7 +3,7 @@ version: "3"
 services:
   mysql:
     image: mariadb/server:10.5
-    hostname: mysqlBeta
+    hostname: mysqlbeta
     ports:
       - "3307:3306"
     env_file:

@@ -5,7 +5,7 @@ services:
     image: mariadb/server:10.5
     container_name: mysqlBeta
     hostname: mysql
-    environments:
+    environment:
       MARIADB_ROOT_PASSWORD: "${MARIADB_ROOT_PASSWORD}"
     command:
       - --character-set-server=utf8mb4

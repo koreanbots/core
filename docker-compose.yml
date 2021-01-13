@@ -10,12 +10,12 @@ services:
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - /home/ubuntu/mysql-beta:/var/lib/mysql
   web:
     container_name: web
     build: .
     ports:
       - 4000:3000
-    volumes:
-      - /home/ubuntu/.cache/yarn/beta:/usr/local/share/.cache/yarn/v6
     links:
       - mysql

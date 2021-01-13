@@ -17,5 +17,7 @@ services:
     build: .
     ports:
       - 4000:3000
+    volumes:
+      - /home/ubuntu/.cache/yarn/beta:/usr/local/share/.cache/yarn/v6
     links:
       - mysql

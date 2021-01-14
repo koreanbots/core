@@ -15,8 +15,8 @@
 
 # Contact
 
-- [개발자 이메일](mailto:wonderlandpark@callisto.team)
-- [디스코드](https://discord.gg/JEh53MQ)
+- [Developer Email](mailto:wonderlandpark@callisto.team)
+- [Discord](https://discord.gg/JEh53MQ)
 
 # Contributing
 
@@ -67,7 +67,7 @@ If a bug is approved by more than two user as reproducible, the bug waits for co
 
 If a bug is rejected by more than one user because it is not reproducible, the bug gets a `deny` label and the issue is `Closed`.
 
-### 제안
+### Suggestions
 
 Please feel free to make suggestions at [Discussions](https://github.com/koreanbots/koreanbots/discussions)!
 

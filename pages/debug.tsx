@@ -78,7 +78,7 @@ https://github.com/koreanbots
 					<textarea className='resize-none w-full h-full dark:bg-discord-dark outline-none p-5' name='markdown' value={formik.values.markdown} onChange={formik.handleChange}/>
 				</div>
 				<div className='w-full lg:w-1/2 p-10 markdown-body'>
-					<MarkdownView markdown={ formik.values.markdown } extensions={[ anchorHeader ]} options={{ openLinksInNewWindow: true, underline: true, emoji: true, omitExtraWLInCodeBlocks: true, literalMidWordUnderscores: true, tables: true, strikethrough: true, smoothLivePreview: true, tasklists: true, ghCompatibleHeaderId: true, encodeEmails: true }} sanitizeHtml={(html)=> sanitizeHtml(html, {
+					<MarkdownView markdown={ formik.values.markdown } extensions={[ anchorHeader ]} options={{ openLinksInNewWindow: true, underline: true, emoji: true, omitExtraWLInCodeBlocks: true, literalMidWordUnderscores: true, simplifiedAutoLink: true, tables: true, strikethrough: true, smoothLivePreview: true, tasklists: true, ghCompatibleHeaderId: true, encodeEmails: true }} sanitizeHtml={(html)=> sanitizeHtml(html, {
 						allowedTags: false,
 						allowedAttributes: false
 					})} />

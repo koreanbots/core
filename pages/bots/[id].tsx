@@ -218,7 +218,7 @@ export const getServerSideProps = async (ctx: Context) => {
 	return {
 		props: {
 			data,
-			date: SnowflakeUtil.deconstruct(data?.id ?? '0').date.toJSON()
+			date: SnowflakeUtil.deconstruct(data.id ?? '0').date.toJSON()
 		},
 	}
 }

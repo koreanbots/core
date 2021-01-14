@@ -183,11 +183,17 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 						<hr />
 
 						<table>
-							<th>foo</th>
-							<th>bar</th>
+							<thead>
+								<tr>
+									<th>foo</th>
+									<th>bar</th>
+								</tr>
+							</thead>
 							<tbody>
-								<td>pizza</td>
-								<td>apple</td>
+								<tr>
+									<td>pizza</td>
+									<td>apple</td>
+								</tr>
 							</tbody>
 						</table>
 						<ul className='list-disc'>

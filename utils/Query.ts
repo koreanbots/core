@@ -48,12 +48,12 @@ async function getBot(id: string, owners=true) {
 		res[0].category = JSON.parse(res[0].category)
 		res[0].owners = JSON.parse(res[0].owners)
 		res[0].vanity = ((res[0].trusted || res[0].partnered) && res[0].vanity) ?? null
+		if (owners)
+			res[0].owners = await Promise.all(
+				res[0].owners.map(async (u: string) => await get._rawUser.load(u))
+			)
+		res[0].owners = res[0].owners.filter((el: User | null) => el).map((row: User) => ({ ...row }))
 	}
-	if (owners)
-		res[0].owners = await Promise.all(
-			res[0].owners.map(async (u: string) => await get._rawUser.load(u))
-		)
-	res[0].owners = res[0].owners.filter((el: User | null) => el).map((row: User) => ({ ...row }))
 
 	return res[0] ?? null
 }

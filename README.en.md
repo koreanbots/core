@@ -1,5 +1,8 @@
 # koreanbots
-![Logo](././.github/assets/koreanbots-en.png)
+
+<div align="center">
+  <img src="./.github/assets/koreanbots-en.png">
+</div>
 
 ![Tests](https://github.com/koreanbots/koreanbots/workflows/Tests/badge.svg)
 ![Deploy](https://github.com/koreanbots/koreanbots/workflows/Deploy/badge.svg)

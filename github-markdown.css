@@ -281,18 +281,20 @@
   padding-left: 0;
   margin-top: 0;
   margin-bottom: 0;
+  list-style-type: decimal
 }
 
 .markdown-body ol ol,
-.markdown-body ul ol {
-  list-style-type: lower-roman;
+.markdown-body ul ol 
+.markdown-body ol {
+  list-style-type: decimal
 }
 
 .markdown-body ol ol ol,
 .markdown-body ol ul ol,
 .markdown-body ul ol ol,
 .markdown-body ul ul ol {
-  list-style-type: lower-alpha;
+  list-style-type: decimal
 }
 
 .markdown-body dd {
@@ -734,6 +736,10 @@
 .markdown-body ul ul {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.markdown-body ul li {
+  list-style-type: disc;
 }
 
 .markdown-body li {

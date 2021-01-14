@@ -79,4 +79,4 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          command: cd ${{ secrets.BETA_DIR }} && git stash && git pull && docker-compose up --build -d
+          script: cd ${{ secrets.BETA_DIR }} && git stash && git pull && docker-compose up --build -d

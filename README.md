@@ -1,6 +1,6 @@
 # koreanbots
 
-![Logo](./.github/assets/koreanbots-en.png)
+![Logo](./.github/assets/koreanbots-ko.png)
 
 ![Tests](https://github.com/koreanbots/koreanbots/workflows/Tests/badge.svg)
 ![Deploy](https://github.com/koreanbots/koreanbots/workflows/Deploy/badge.svg)

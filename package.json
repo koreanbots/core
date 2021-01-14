@@ -11,7 +11,7 @@
     "docker": "docker-compose up -d --build"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.1",
+    "@fortawesome/fontawesome-free": "^5.15.2",
     "@sentry/browser": "^5.30.0",
     "@sentry/node": "^5.30.0",
     "@sentry/webpack-plugin": "^1.14.0",

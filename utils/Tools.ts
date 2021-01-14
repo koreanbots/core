@@ -48,3 +48,5 @@ export function checkBrowser(){
 	if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1])
 	return M.join(' ')
 }
+
+export { anchorHeader } from './ShowdownExtensions'

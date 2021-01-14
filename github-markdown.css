@@ -784,7 +784,7 @@
   border: 1px solid #3b434b;
 }
 
-.markdown-body table tr {
+.dark .markdown-body table tr {
   background-color: #0d1117;
   border-top: 1px solid #c6cbd1;
 }

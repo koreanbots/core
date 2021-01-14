@@ -5,7 +5,7 @@ import Container from '../components/Container'
 import Divider from '../components/Divider'
 import Segment from '../components/Segment'
 import Package from '../package.json'
-import { checkBrowser } from '../utils/Tools'
+import { anchorHeader, checkBrowser } from '../utils/Tools'
 import MarkdownView from 'react-showdown'
 import sanitizeHtml from 'sanitize-html'
 
@@ -77,8 +77,11 @@ https://github.com/koreanbots
 				<div className='w-full lg:w-1/2'>
 					<textarea className='resize-none w-full h-full dark:bg-discord-dark outline-none p-5' name='markdown' value={formik.values.markdown} onChange={formik.handleChange}/>
 				</div>
-				<div className='w-full lg:w-1/2 p-5 markdown-body'>
-					<MarkdownView markdown={ formik.values.markdown } flavor='github' options={{ openLinksInNewWindow: true, underline: true }} sanitizeHtml={(html)=> sanitizeHtml(html)} />
+				<div className='w-full lg:w-1/2 p-10 markdown-body'>
+					<MarkdownView markdown={ formik.values.markdown } extensions={[ anchorHeader ]} options={{ openLinksInNewWindow: true, underline: true, emoji: true, omitExtraWLInCodeBlocks: true, literalMidWordUnderscores: true, tables: true, strikethrough: true, smoothLivePreview: true, tasklists: true, ghCompatibleHeaderId: true, encodeEmails: true }} sanitizeHtml={(html)=> sanitizeHtml(html, {
+						allowedTags: false,
+						allowedAttributes: false
+					})} />
 				</div>
 			</div>
 		</Segment>

@@ -1,5 +1,3 @@
-# koreanbots
-
 <div align="center">
   <img src="./.github/assets/koreanbots-ko.png">
 </div>
@@ -12,17 +10,17 @@
 
 > 국내 디스코드봇을 한곳에서.
 
-## SNS
+# SNS
 
 - [Twitter](https://twitter.com/koreanbots)
 - [Instagram](https://instagram.com/koreanbots)
 
-## 문의
+# 문의
 
 - [개발자 이메일](mailto:wonderlandpark@callisto.team)
 - [디스코드](https://discord.gg/JEh53MQ)
 
-## 기여하기
+# 기여하기
 
 이슈와 PR은 언제든지 환영입니다.
 

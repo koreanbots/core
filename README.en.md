@@ -1,5 +1,3 @@
-# koreanbots
-
 <div align="center">
   <img src="./.github/assets/koreanbots-en.png">
 </div>
@@ -10,27 +8,27 @@
 
 > Korean Discord Bots in one place.
 
-## SNS
+# SNS
 
 - [Twitter](https://twitter.com/koreanbots)
 - [Instagram](https://instagram.com/koreanbots)
 
-## Contact
+# Contact
 
 - [개발자 이메일](mailto:wonderlandpark@callisto.team)
 - [디스코드](https://discord.gg/JEh53MQ)
 
-## Contributing
+# Contributing
 
 Issues and PRs are always welcomed.
 
-### Before submitting an Issue
+## Before submitting an Issue
 
-#### Bug
+### Bug
 
 First, check if the device supports it.
 
-#### Devices not supported
+### Devices not supported
 
 ```md
 - Any extension program (AdBlock, Darkmode etc.)
@@ -57,23 +55,23 @@ If you see an issue, please leave a comment like these.
 - `CNR` Means **Can Not Reproduce**
 - `NAB` Means **Not a Bug**
 
-#### Approval and deny
+### Approval and deny
 
 When a bug receives two reproducible approvals or denial, the approval and rejection are decided.
 
-##### Approve
+#### Approve
 
 If a bug is approved by more than two user as reproducible, the bug waits for confirmation from the developer and obtains a `approved` label.
 
-##### Deny
+#### Deny
 
 If a bug is rejected by more than one user because it is not reproducible, the bug gets a `deny` label and the issue is `Closed`.
 
-#### 제안
+### 제안
 
 Please feel free to make suggestions at [Discussions](https://github.com/koreanbots/koreanbots/discussions)!
 
-### Submit Pull Request
+## Submit Pull Request
 
 Contributions are always welcome. We appreciate your commit messages if you follow the rules below!
 

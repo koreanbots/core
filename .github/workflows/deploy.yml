@@ -62,7 +62,7 @@ jobs:
     - name: Setup environments
       run: |
         mv .env.demo.local .env.production.local
-        echo 'MARIADB_ROOT_PASSWORD=YOUSHALLNOTPASS' > .env
+        printf 'MARIADB_ROOT_PASSWORD=YOUSHALLNOTPASS\nCOMMIT_HASH=${{ github.sha }}' > .env
     - name: Create needed files
       run:  echo '{"tester":"DEMO_KEY"}' > secret.json
     - name: Docker Compose
@@ -79,4 +79,4 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          script: cd ${{ secrets.BETA_DIR }} && git stash && git pull && docker-compose up --build -d
+          script: cd ${{ secrets.BETA_DIR }} && git stash && git pull && printf "NEXT_PUBLIC_COMMIT_HASH=$(git rev-parse HEAD)\nNEXT_PUBLIC_BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')" > .env.local && docker-compose up --build -d

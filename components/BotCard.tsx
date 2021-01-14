@@ -25,12 +25,7 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 											{Status[bot.status]?.text}
 										</h2>
 										<h1 className='mb-3 text-left text-2xl font-bold truncate'>
-											{bot.name}{' '}
-											{bot.trusted ? (
-												<span className='text-koreanbots-blue text-3xl'>
-													<i className='fas fa-award' />
-												</span>
-											) : ''}
+											{bot.name}
 										</h1>
 									</div>
 								</div>

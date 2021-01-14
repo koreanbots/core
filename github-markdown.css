@@ -1,3 +1,6 @@
+.dark .markdown-body {
+  color: #ffffff
+}
 .markdown-body .octicon {
   display: inline-block;
   fill: currentColor;
@@ -843,7 +846,7 @@
   word-wrap: normal;
 }
 
-.markdown-body pre>code {
+.markdown-body pre>code, .dark .markdown-body pre>code {
   padding: 0;
   margin: 0;
   font-size: 100%;

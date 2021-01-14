@@ -37,10 +37,36 @@ jobs:
     - name: Setup environments
       run: |
         mv .env.demo.local .env.production.local
-        echo 'MARIADB_ROOT_PASSWORD=YOUSHALLNOTPASS' > .env
+        printf 'MARIADB_ROOT_PASSWORD=YOUSHALLNOTPASS\nCOMMIT_HASH=${{ github.sha }}' > .env
     - name: Create needed files
       run:  echo '{"tester":"DEMO_KEY"}' > secret.json
     - name: Build
       run: yarn build
       env:
         CI: true
+  docker:
+    needs:
+      - eslint
+      - build
+    name: Docker Image CI
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install node v14
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14
+    - name: Generate RSA Key Pair
+      run: |
+        ssh-keygen -b 2048 -t rsa -f key -q -P ""
+        ssh-keygen -b 2048 -e -m pem -f key -q -P "" > private.key
+        mv key public.pem 
+        rm key.pub
+    - name: Setup environments
+      run: |
+        mv .env.demo.local .env.production.local
+        printf 'MARIADB_ROOT_PASSWORD=YOUSHALLNOTPASS\nCOMMIT_HASH=${{ github.sha }}' > .env
+    - name: Create needed files
+      run:  echo '{"tester":"DEMO_KEY"}' > secret.json
+    - name: Docker Compose
+      run: docker-compose up -d

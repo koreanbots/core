@@ -5,3 +5,4 @@ yarn-error.log
 .dockerignore
 .git
 .gitignore
+.github

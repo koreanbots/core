@@ -14,6 +14,7 @@ import BotCard from '../../components/BotCard'
 import Tag from '../../components/Tag'
 import { checkPerm } from '../../utils/Tools'
 import Advertisement from '../../components/Advertisement'
+import Tooltip from '../../components/Tooltip'
 const Users: NextPage<UserProps> = ({ data }) => {
 	if (!data.id) return <NotFound />
 	return (
@@ -48,14 +49,18 @@ const Users: NextPage<UserProps> = ({ data }) => {
 						<br />
 						<div className='badges flex'>
 							{checkPerm(data.perm, 'staff') && (
-								<div className='pr-5 text-koreanbots-blue text-2xl'>
-									<i className='fas fa-hammer' />
-								</div>
+								<Tooltip text='한국 디스코드봇 리스트 스탭입니다.' direction='left'>
+									<div className='pr-5 text-koreanbots-blue text-2xl'>
+										<i className='fas fa-hammer' />
+									</div>
+								</Tooltip>
 							)}
 							{checkPerm(data.perm, 'bughunter') && (
-								<div className='pr-5 text-green-500 text-2xl'>
-									<i className='fas fa-bug' />
-								</div>
+								<Tooltip text='버그를 많이 제보해주신 분입니다.' direction='left'>
+									<div className='pr-5 text-green-500 text-2xl'>
+										<i className='fas fa-bug' />
+									</div>
+								</Tooltip>
 							)}
 						</div>
 						<br />

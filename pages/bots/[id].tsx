@@ -18,6 +18,7 @@ import { Query } from '../../utils'
 import { formatNumber } from '../../utils/Tools'
 import Advertisement from '../../components/Advertisement'
 import Link from 'next/link'
+import Tooltip from '../../components/Tooltip'
 
 const Bots: NextPage<BotsProps> = ({ data, date }) => {
 	if (!data || !data.id) return <NotFound />
@@ -55,9 +56,11 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 						<h1 className='mb-2 mt-3 text-4xl font-bold'>
 							{data.name}{' '}
 							{data.trusted ? (
-								<span className='text-koreanbots-blue text-3xl'>
-									<i className='fas fa-award' />
-								</span>
+								<Tooltip text='해당봇은 한국 디스코드봇 리스트에서 엄격한 기준을 통과한 봇입니다!' direction='left' size='large' href='/verification'>
+									<span className='text-koreanbots-blue text-3xl'>
+										<i className='fas fa-award' />
+									</span>
+								</Tooltip>
 							) : ''}
 						</h1>
 					</div>
@@ -105,10 +108,12 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 						</div>
 						<div>{Day(date).fromNow(false)}</div>
 						{
-							data.verified ? 
-								<div>
-									<i className='fas fa-check text-discord-blurple' /> 디스코드 인증됨
-								</div>
+							data.verified ?
+								<Tooltip direction='left' text='해당 봇은 디스코드측에서 인증된 봇입니다.'>
+									<div>
+										<i className='fas fa-check text-discord-blurple' /> 디스코드 인증됨
+									</div>
+								</Tooltip>
 								: ''
 						}
 					</div>

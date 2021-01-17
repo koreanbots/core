@@ -827,13 +827,11 @@
 .markdown-body img {
   max-width: 100%;
   box-sizing: initial;
-  background-color: #fff;
 }
 
 .dark .markdown-body img {
   max-width: 100%;
   box-sizing: initial;
-  background-color: #0d1117;
 }
 
 

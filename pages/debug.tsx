@@ -29,10 +29,6 @@ https://github.com/koreanbots
 		},
 		onSubmit: ()=>{ alert('Pong') }
 	})
-	useEffect(()=> {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		window.document.querySelectorAll('pre code').forEach(el=> (window as any).hljs.highlightBlock(el))
-	}, [formik.values.markdown])
 	const { theme, systemTheme } = useTheme()
 	return <Container paddingTop className='mb-10'>
 		<h1 className='text-4xl font-bold mb-3 mt-3'>개발자모드</h1>

@@ -78,8 +78,8 @@ https://github.com/koreanbots
 		<h2 className='text-3xl font-semibold mb-2'>테스트</h2>
 		<h3 className='text-2xl font-semibold mb-2'>마크다운</h3>
 		<Segment>
-			<div className='flex'>
-				<div className='w-full lg:w-1/2'>
+			<div className='lg:flex'>
+				<div className='w-full lg:w-1/2 min-h-48'>
 					<textarea className='resize-none w-full h-full dark:bg-discord-dark outline-none p-5' name='markdown' value={formik.values.markdown} onChange={formik.handleChange}/>
 				</div>
 				<div className='w-full lg:w-1/2 p-10 markdown-body'>

@@ -90,8 +90,7 @@ https://github.com/koreanbots
 							'col', 'colgroup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', 'del',
 							'img', 'svg', 'input'
 						],
-						allowedAttributes: false,
-						disallowedTagsMode: 'escape'
+						allowedAttributes: false
 					})} />
 				</div>
 			</div>

@@ -33,7 +33,7 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 						: `https://cdn.discordapp.com/embed/avatars/${Number(data.tag) % 5}.png?size=1024`
 				}
 			/>
-			<div className='lg:flex'>
+			<div className='lg:flex w-full'>
 				<div className='w-full text-center lg:w-1/4'>
 					<DiscordAvatar
 						userID={data.id}
@@ -42,7 +42,7 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 						className='w-full'
 					/>
 				</div>
-				<div className='flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left'>
+				<div className='flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left w-full'>
 					<div>
 						<Tag
 							circular

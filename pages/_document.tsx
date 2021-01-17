@@ -28,7 +28,7 @@ class MyDocument extends Document {
 						}}
 					/>
 				</Head>
-				<body className='h-full text-black dark:text-gray-100 dark:bg-discord-dark bg-white'>
+				<body className='h-full overflow-x-hidden text-black dark:text-gray-100 dark:bg-discord-dark bg-white'>
 					<Main />
 					<NextScript />
 				</body>

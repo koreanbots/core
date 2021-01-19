@@ -42,7 +42,7 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 						className='w-full'
 					/>
 				</div>
-				<div className='flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left w-full'>
+				<div className='flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left'>
 					<div>
 						<Tag
 							circular

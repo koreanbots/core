@@ -1,20 +1,24 @@
 import { NextPage, NextPageContext } from 'next'
+import dynamic from 'next/dynamic'
 import { SnowflakeUtil } from 'discord.js'
-import * as Query from '@utils/Query'
 import { ParsedUrlQuery } from 'querystring'
 import { josa } from 'josa'
+
 import { Bot, User } from '@types'
+import * as Query from '@utils/Query'
+import { checkPerm } from '@utils/Tools'
 
 import NotFound from '../404'
-import Container from '@components/Container'
-import SEO from '@components/SEO'
-import DiscordAvatar from '@components/DiscordAvatar'
-import Divider from '@components/Divider'
-import BotCard from '@components/BotCard'
-import Tag from '@components/Tag'
-import { checkPerm } from '@utils/Tools'
-import Advertisement from '@components/Advertisement'
-import Tooltip from '@components/Tooltip'
+
+const Container = dynamic(()=> import('@components/Container'))
+const SEO = dynamic(()=> import('@components/SEO'))
+const DiscordAvatar = dynamic(()=> import('@components/DiscordAvatar'))
+const Divider = dynamic(()=> import('@components/Divider'))
+const BotCard = dynamic(()=> import('@components/BotCard'))
+const Tag = dynamic(()=> import('@components/Tag'))
+const Advertisement = dynamic(()=> import('@components/Advertisement'))
+const Tooltip = dynamic(()=> import('@components/Tooltip'))
+
 const Users: NextPage<UserProps> = ({ data }) => {
 	if (!data.id) return <NotFound />
 	return (

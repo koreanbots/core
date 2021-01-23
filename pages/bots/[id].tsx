@@ -1,4 +1,5 @@
 import { NextPage, NextPageContext } from 'next'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { SnowflakeUtil } from 'discord.js'
 import { ParsedUrlQuery } from 'querystring'
@@ -9,17 +10,20 @@ import * as Query from '@utils/Query'
 import Day from '@utils/Day'
 import { formatNumber } from '@utils/Tools'
 
-import Container from '@components/Container'
-import DiscordAvatar from '@components/DiscordAvatar'
-import Divider from '@components/Divider'
-import Tag from '@components/Tag'
-import Owner from '@components/Owner'
-import Segment from '@components/Segment'
-import SEO from '@components/SEO'
-import LongButton from '@components/LongButton'
-import Advertisement from '@components/Advertisement'
-import Tooltip from '@components/Tooltip'
 import NotFound from '../404'
+
+const Container = dynamic(()=> import('@components/Container'))
+const DiscordAvatar = dynamic(()=> import('@components/DiscordAvatar'))
+const Divider = dynamic(()=> import('@components/Divider'))
+const Tag = dynamic(()=> import('@components/Tag'))
+const Owner = dynamic(()=> import('@components/Owner'))
+const Segment = dynamic(()=> import('@components/Segment'))
+const SEO = dynamic(()=> import('@components/SEO'))
+const LongButton = dynamic(()=> import('@components/LongButton'))
+const Advertisement = dynamic(()=> import('@components/Advertisement'))
+const Tooltip = dynamic(()=> import('@components/Tooltip'))
+
+
 
 const Bots: NextPage<BotsProps> = ({ data, date }) => {
 	if (!data || !data.id) return <NotFound />

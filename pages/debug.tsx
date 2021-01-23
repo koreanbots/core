@@ -1,15 +1,17 @@
 import { useTheme } from 'next-themes'
+import dynamic from 'next/dynamic'
 import { useFormik } from 'formik'
 import MarkdownView from 'react-showdown'
 import sanitizeHtml from 'sanitize-html'
 
 import { anchorHeader, checkBrowser } from '@utils/Tools'
 
-import Container from '@components/Container'
-import Divider from '@components/Divider'
-import Segment from '@components/Segment'
+const Container = dynamic(()=> import('@components/Container'))
+const Divider = dynamic(()=> import('@components/Divider'))
+const Segment = dynamic(()=> import('@components/Segment'))
 
 import Package from '../package.json'
+
 
 
 const ClientInfo = ( ):JSX.Element => {

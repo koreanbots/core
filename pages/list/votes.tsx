@@ -1,14 +1,16 @@
 import { NextPage, NextPageContext } from 'next'
+import dynamic from 'next/dynamic'
 import { ParsedUrlQuery } from 'querystring'
 
 import { BotList } from '@types'
 import * as Query from '@utils/Query'
 
-import Advertisement from '@components/Advertisement'
-import BotCard from '@components/BotCard'
-import Container from '@components/Container'
-import Paginator from '@components/Paginator'
 import NotFound from '../404'
+
+const Advertisement = dynamic(()=> import('@components/Advertisement'))
+const BotCard = dynamic(()=> import('@components/BotCard'))
+const Container = dynamic(()=> import('@components/Container'))
+const Paginator = dynamic(()=> import('@components/Paginator'))
 
 const Votes:NextPage<VotesProps> = ({ data }:VotesProps) => {
 	if(!data) return <NotFound />

@@ -1,5 +1,7 @@
 import { NextPage } from 'next'
-import Docs from '@components/Docs'
+import dynamic from 'next/dynamic'
+
+const Docs = dynamic(()=> import('@components/Docs'))
 
 const Privacy: NextPage = () => {
 	return (

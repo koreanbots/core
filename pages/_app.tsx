@@ -1,10 +1,12 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import { ThemeProvider } from 'next-themes'
+import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 
-import Footer from '@components/Footer'
-import Navbar from '@components/Navbar'
+const Footer = dynamic(()=> import('@components/Footer'))
+const Navbar = dynamic(()=> import('@components/Navbar'))
+
 import Crypto from 'crypto'
 
 import secret from '../secret.json'

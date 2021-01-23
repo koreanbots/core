@@ -14,9 +14,8 @@ services:
       - /home/ubuntu/mysql-beta:/var/lib/mysql
   web:
     container_name: web
-    build: .
     ports:
       - 4000:3000
     links:
       - mysql
-    image: web:latest
+    image: koreanbots:latest

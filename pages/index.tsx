@@ -1,8 +1,12 @@
-import { NextPage, } from 'next'
+import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
+import Paginator from '../components/Paginator'
+import Search from '../components/Search'
+import Tag from '../components/Tag'
 
 import { BotList } from '../types'
 import { Query } from '../utils'
+import { cats } from '../utils/Constants'
 
 const Advertisement = dynamic(()=> import('../components/Advertisement'))
 const Container = dynamic(()=> import('../components/Container'))
@@ -17,6 +21,11 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 					<h1 className='text-center text-gray-100 text-3xl font-bold sm:text-left'>
 						한국 디스코드봇 리스트
 					</h1>
+					<Search />
+					<h2 className='text-xl font-bold mt-10 mb-1'>카테고리로 찾아보기</h2>
+					<div className='flex flex-wrap '>
+						{ cats.map(t=> <Tag key={t} text={t} dark href={`/categories/${t}`}/>) }
+					</div>
 				</Container>
 			</div>
 			<Wave
@@ -35,9 +44,7 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 						votes.data.slice(0, 8).map(bot=> <BotCard key={bot.id} bot={bot} />)
 					}
 				</div>
-				<a className='mx-auto w-1/2 justify-center text-2xl bg-little-white dark:bg-discord-black text-black dark:text-gray-400 rounded flex hover:bg-little-white-hover dark:hover:bg-discord-dark-hover cursor-pointer px-4 py-4 mb-1'>
-					더보기
-				</a>
+				<Paginator totalPage={votes.totalPage} currentPage={votes.currentPage}/>
 				<h1 className='text-3xl font-bold mt-20'>
 					<i className='far fa-star mr-3 text-yellow-500' /> 새로운 봇
 				</h1>

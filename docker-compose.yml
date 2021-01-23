@@ -19,3 +19,4 @@ services:
       - 4000:3000
     links:
       - mysql
+    image: web:latest

@@ -1,17 +1,17 @@
 import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
-import Paginator from '../components/Paginator'
-import Search from '../components/Search'
-import Tag from '../components/Tag'
+import Paginator from '@components/Paginator'
+import Search from '@components/Search'
+import Tag from '@components/Tag'
 
-import { BotList } from '../types'
-import { Query } from '../utils'
-import { cats } from '../utils/Constants'
+import { BotList } from '@types'
+import * as Query from '@utils/Query'
+import { cats } from '@utils/Constants'
 
-const Advertisement = dynamic(()=> import('../components/Advertisement'))
-const Container = dynamic(()=> import('../components/Container'))
-const BotCard = dynamic(()=> import('../components/BotCard'))
-const Wave  = dynamic(()=> import('../components/Wave'))
+const Advertisement = dynamic(()=> import('@components/Advertisement'))
+const Container = dynamic(()=> import('@components/Container'))
+const BotCard = dynamic(()=> import('@components/BotCard'))
+const Wave  = dynamic(()=> import('@components/Wave'))
 
 const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 	return (

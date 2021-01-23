@@ -1,9 +1,8 @@
 import { NextPage, NextPageContext } from 'next'
-import Notice from '../components/Notice'
-import { ErrorText } from '../utils/Constants'
+import { ErrorText } from '@utils/Constants'
 
 const CustomError:NextPage<ErrorProps> = ({ statusCode, statusText }) => {
-	return <Notice header={String(statusCode)} desc={statusText} />
+	return <div className='h-screen flex flex-col items-center'></div>
 }
 
 export const getServerSideProps = ({ res, err }:NextPageContext) => {
@@ -30,5 +29,5 @@ export default CustomError
 
 interface ErrorProps {
   statusCode: number
-  statusText: string
+  statusText?: string
 }

@@ -1,14 +1,16 @@
 import { useTheme } from 'next-themes'
 import { useFormik } from 'formik'
-
-import Container from '../components/Container'
-import Divider from '../components/Divider'
-import Segment from '../components/Segment'
-import Package from '../package.json'
-import { anchorHeader, checkBrowser } from '../utils/Tools'
 import MarkdownView from 'react-showdown'
 import sanitizeHtml from 'sanitize-html'
-import { useEffect } from 'react'
+
+import { anchorHeader, checkBrowser } from '@utils/Tools'
+
+import Container from '@components/Container'
+import Divider from '@components/Divider'
+import Segment from '@components/Segment'
+
+import Package from '../package.json'
+
 
 const ClientInfo = ( ):JSX.Element => {
 	const formik = useFormik({

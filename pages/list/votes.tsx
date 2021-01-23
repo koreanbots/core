@@ -1,12 +1,13 @@
 import { NextPage, NextPageContext } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import Advertisement from '../../components/Advertisement'
-import BotCard from '../../components/BotCard'
 
-import Container from '../../components/Container'
-import Paginator from '../../components/Paginator'
-import { BotList } from '../../types'
-import { Query } from '../../utils'
+import { BotList } from '@types'
+import * as Query from '@utils/Query'
+
+import Advertisement from '@components/Advertisement'
+import BotCard from '@components/BotCard'
+import Container from '@components/Container'
+import Paginator from '@components/Paginator'
 import NotFound from '../404'
 
 const Votes:NextPage<VotesProps> = ({ data }:VotesProps) => {

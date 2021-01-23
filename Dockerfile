@@ -18,7 +18,7 @@ RUN printf "NEXT_PUBLIC_COMMIT_HASH=$(git rev-parse HEAD)\nNEXT_PUBLIC_BRANCH=$(
 
 # secret.json
 
-RUN echo "{\"tester\": \"${TESTER_KEY}\"}"
+RUN echo "{\"tester\": \"${TESTER_KEY}\"}" > secret.json
 
 
 # Building app

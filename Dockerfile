@@ -16,6 +16,10 @@ COPY . /usr/src/app
 
 RUN printf "NEXT_PUBLIC_COMMIT_HASH=$(git rev-parse HEAD)\nNEXT_PUBLIC_BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')" > .env.local
 
+# secret.json
+
+RUN echo "{\"tester\": \"${TESTER_KEY}\"}"
+
 
 # Building app
 RUN yarn build

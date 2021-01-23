@@ -17,12 +17,12 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 	return (
 		<>
 			<div className='dark:bg-discord-black bg-discord-blurple'>
-				<Container className='pb-24 pt-20' ignoreColor>
+				<Container className='pb-24 pt-20' ignoreColor paddingTop>
 					<h1 className='text-center text-gray-100 text-3xl font-bold sm:text-left'>
 						한국 디스코드봇 리스트
 					</h1>
 					<Search />
-					<h2 className='text-xl font-bold mt-10 mb-1'>카테고리로 찾아보기</h2>
+					<h2 className='text-xl font-bold mt-10 mb-1 text-black dark:text-gray-100'>카테고리로 찾아보기</h2>
 					<div className='flex flex-wrap '>
 						{ cats.map(t=> <Tag key={t} text={t} dark href={`/categories/${t}`}/>) }
 					</div>

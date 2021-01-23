@@ -18,4 +18,4 @@ services:
       - 4000:3000
     links:
       - mysql
-    image: koreanbots:latest
+    image: wonderlandpark/koreanbots:latest

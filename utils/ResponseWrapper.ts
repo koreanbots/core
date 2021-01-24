@@ -8,7 +8,7 @@ export default function ResponseWrapper(
 	if (!http.STATUS_CODES[code]) throw new Error('Invalid http code.')
 	res.statusCode = code
 
-	return { code, message: message || http.STATUS_CODES[code], data, errors, version }
+	res.json({ code, message: message || http.STATUS_CODES[code], data, errors, version })
 }
 
 interface ResponseProps {

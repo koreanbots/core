@@ -6,7 +6,6 @@ import { DiscordEnpoints } from '@utils/Constants'
 import { get, ratelimit } from '@utils/Query'
 import RateLimitHandler from '@utils/RateLimitHandler'
 import { ImageOptionsSchema } from '@utils/Yup'
-import { ImageSize } from '@types'
 
 const Avatar = nc<ApiRequest, NextApiResponse>()
 	.get(async(req, res) => {
@@ -49,10 +48,8 @@ const Avatar = nc<ApiRequest, NextApiResponse>()
 interface ApiRequest extends NextApiRequest {
 	query: {
 		id: string
-		size?: ImageSize
+		size?: '128' | '256'  | '512'
 	}
 }
-
-type Ext = 'webp' | 'png' | 'gif'
 
 export default Avatar

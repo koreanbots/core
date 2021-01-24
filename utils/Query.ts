@@ -1,13 +1,17 @@
-// import fetch from 'node-fetch'
+import fetch from 'node-fetch'
 // import jwt from 'jsonwebtoken'
 // import fs from 'fs'
 import { TLRU } from 'tlru'
+import StreamCache from 'stream-cache'
 
-import { Bot, User, ListType, BotList } from '../types'
-import { cats } from './Constants'
+import { Bot, User, ListType, BotList } from '@types'
+import { cats, DiscordEnpoints } from './Constants'
 
 import knex from './Knex'
 import DataLoader from 'dataloader'
+import DiscordBot from './DiscordBot'
+import bufferToStream from './Tools'
+import { User as DiscordUser } from 'discord.js'
 
 // const publicPem = fs.readFileSync('./public.pem')
 // const privateKey = fs.readFileSync('./private.key')
@@ -186,7 +190,27 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 	return { type, data: (await Promise.all(res.map(async el => await getBot(el.id)))).map(r=> ({...r})), currentPage: page, totalPage: Math.ceil(Number(count) / 16) }
 }
 
+async function getImage(url: string){
+	const res = await fetch(url)
+	if(!res.ok) throw new Error(`unexpected response ${res.statusText}`)
+	// const buf = await res.buffer()
+	// const readable = bufferToStream(buf)
+	// await readable.read()
+	const cache = new StreamCache()
+	return res.body.pipe(cache)
+}
+
+async function getDiscordUser(id: string):Promise<DiscordUser> {
+	return DiscordBot.users.cache.get(id) ?? await DiscordBot.users.fetch(id, false, true).then(u => u).catch(()=>null)
+}
+
 export const get = {
+	discord: {
+		user: new DataLoader(
+			async (ids: string[]) =>
+				(await Promise.all(ids.map(async (id: string) => await getDiscordUser(id))))
+			, { cacheMap: new TLRU({ maxStoreSize: 5000, maxAgeMs: 43200000 }) }),
+	},
 	bot: new DataLoader(
 		async (ids: string[]) =>
 			(await Promise.all(ids.map(async (el: string) => await getBot(el)))).map(row => ({ ...row }))
@@ -216,5 +240,11 @@ export const get = {
 			async (pages: number[]) =>
 				(await Promise.all(pages.map(async (page: number) => await getBotList('TRUSTED', page)))).map(row => ({ ...row }))
 			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 3600000 }) }),
+	},
+	images: {
+		user: new DataLoader(
+			async (urls: string[]) =>
+				(await Promise.all(urls.map(async (url: string) => await getImage(url))))
+			, { cacheMap: new TLRU({ maxStoreSize: 1000, maxAgeMs: 43200000 }) }),
 	}
 }

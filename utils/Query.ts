@@ -3,15 +3,17 @@ import fetch from 'node-fetch'
 // import fs from 'fs'
 import { TLRU } from 'tlru'
 import StreamCache from 'stream-cache'
+import DataLoader from 'dataloader'
+import { User as DiscordUser } from 'discord.js'
+import { Stream } from 'stream'
 
 import { Bot, User, ListType, BotList } from '@types'
-import { cats, DiscordEnpoints } from './Constants'
+import { cats } from './Constants'
 
 import knex from './Knex'
-import DataLoader from 'dataloader'
 import DiscordBot from './DiscordBot'
-import bufferToStream from './Tools'
-import { User as DiscordUser } from 'discord.js'
+
+export const imageRateLimit = new TLRU<unknown, number>({ maxAgeMs: 60000 })
 
 // const publicPem = fs.readFileSync('./public.pem')
 // const privateKey = fs.readFileSync('./private.key')
@@ -190,9 +192,9 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 	return { type, data: (await Promise.all(res.map(async el => await getBot(el.id)))).map(r=> ({...r})), currentPage: page, totalPage: Math.ceil(Number(count) / 16) }
 }
 
-async function getImage(url: string){
+async function getImage(url: string):Promise<Stream> {
 	const res = await fetch(url)
-	if(!res.ok) throw new Error(`unexpected response ${res.statusText}`)
+	if(!res.ok) return null
 	// const buf = await res.buffer()
 	// const readable = bufferToStream(buf)
 	// await readable.read()
@@ -202,6 +204,11 @@ async function getImage(url: string){
 
 async function getDiscordUser(id: string):Promise<DiscordUser> {
 	return DiscordBot.users.cache.get(id) ?? await DiscordBot.users.fetch(id, false, true).then(u => u).catch(()=>null)
+}
+
+async function addRequest(ip: string, map: TLRU<unknown, number>) {
+	if(!map.has(ip)) map.set(ip, 0)
+	map.set(ip, map.get(ip) + 1)
 }
 
 export const get = {
@@ -245,6 +252,13 @@ export const get = {
 		user: new DataLoader(
 			async (urls: string[]) =>
 				(await Promise.all(urls.map(async (url: string) => await getImage(url))))
-			, { cacheMap: new TLRU({ maxStoreSize: 1000, maxAgeMs: 43200000 }) }),
+			, { cacheMap: new TLRU({ maxStoreSize: 5000, maxAgeMs: 43200000 }) }),
+	}
+}
+
+export const ratelimit = {
+	image: (ip: string) => {
+		addRequest(ip, imageRateLimit)
+		return imageRateLimit.get(ip)
 	}
 }

@@ -16,7 +16,7 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 							<div className='flex h-44'>
 								<div className='w-2/3'>
 									<div className='flex justify-start'>
-										<DiscordAvatar size={128} userID={bot.id} avatarHash={bot.avatar} tag={bot.tag} alt='Avatar' 	className='rounded-full absolute -left-2 -top-8 mx-auto w-32 h-32 bg-white'/> 
+										<DiscordAvatar size={128} userID={bot.id} alt='Avatar' 	className='rounded-full absolute -left-2 -top-8 mx-auto w-32 h-32 bg-white'/> 
 									</div>
 
 									<div className='mt-28 px-4'>

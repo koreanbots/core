@@ -41,8 +41,6 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 			<div className='w-full text-center lg:w-1/4'>
 				<DiscordAvatar
 					userID={data.id}
-					avatarHash={data.avatar}
-					tag={data.tag}
 					className='w-full'
 				/>
 			</div>

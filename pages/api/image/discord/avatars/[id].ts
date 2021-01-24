@@ -5,10 +5,13 @@ import ResponseWrapper from '@utils/ResponseWrapper'
 import { DiscordEnpoints } from '@utils/Constants'
 import { get, ratelimit } from '@utils/Query'
 import RateLimitHandler from '@utils/RateLimitHandler'
+import { ImageOptionsSchema } from '@utils/Yup'
+import { ImageSize } from '@types'
 
 const Avatar = nc<ApiRequest, NextApiResponse>()
 	.get(async(req, res) => {
 		const { imageRateLimit } = await import('@utils/Query')
+		const { id: param, size=256 } = req.query
 		const rate = ratelimit.image(req.socket.remoteAddress)
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const ratelimited = RateLimitHandler(res, { used: rate, limit: 600, reset: (<any>imageRateLimit).scheduler.get(req.socket.remoteAddress).expiry, onLimitExceed: async(res) => {
@@ -16,20 +19,23 @@ const Avatar = nc<ApiRequest, NextApiResponse>()
 			res.setHeader('Content-Type', 'image/png')
 			img.pipe(res)
 		} })
-		console.log(ratelimited)
 		if(ratelimited) return
-		const splitted = req.query.id.split('.')
+		const splitted = param.split('.')
 		let ext = splitted[1]
 		const id = splitted[0]
-		if(splitted.length !== 2) return ResponseWrapper(res, { code: 400, message: '올바르지 않은 형식입니다.' })
-		if(!['webp', 'png', 'gif'].includes(ext)) return ResponseWrapper(res, { code: 400, message: '올바르지 않은 확장자입니다.' })
+		const validated = await ImageOptionsSchema.validate({ id, ext, size }, { abortEarly: false }).then(el=> el).catch(e=> {
+			ResponseWrapper(res, { code: 400, errors: e.errors })
+			return null
+		})
+		if(!validated) return
+		console.log(validated)
 
 		const user = await get.discord.user.load(id)
 		if(!user) return ResponseWrapper(res, { code: 400, message: '올바르지 않은 유저입니다.' })
 
-		let img = await get.images.user.load(DiscordEnpoints.CDN.user(id, user.avatar, { format: ext === 'gif' && !user.avatar.startsWith('a_') ? 'png' : (ext as Ext) }))
+		let img = await get.images.user.load(DiscordEnpoints.CDN.user(id, user.avatar, { format: validated.ext === 'gif' && !user.avatar.startsWith('a_') ? 'png' : validated.ext }))
 		if(!user.avatar || !img) {
-			img = await get.images.user.load(DiscordEnpoints.CDN.default(user.discriminator, { format: 'png' }))
+			img = await get.images.user.load(DiscordEnpoints.CDN.default(user.discriminator, { format: 'png', size: validated.size }))
 			ext = 'png'
 		}
 
@@ -43,6 +49,7 @@ const Avatar = nc<ApiRequest, NextApiResponse>()
 interface ApiRequest extends NextApiRequest {
 	query: {
 		id: string
+		size?: ImageSize
 	}
 }
 

@@ -14,5 +14,22 @@ export interface botListArgument  {
 	type: ListType
 	page?: number
 	query?: string
-} 
+}
+
+export const ImageOptionsSchema: Yup.SchemaOf<ImageOptions> = Yup.object({
+	id: Yup.string().required(),
+	ext: Yup.mixed<ext>().oneOf(['webp', 'png', 'gif']).required(),
+	size: Yup.mixed<ImageSize>().oneOf([128, 256, 512]).required()
+})
+
+interface ImageOptions {
+	id: string
+	ext: ext
+	size: ImageSize
+}
+
+type ext = 'webp' | 'png' | 'gif'
+type ImageSize = 128 | 256  | 512
+
+
 export default Yup

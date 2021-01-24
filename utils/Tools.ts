@@ -1,5 +1,6 @@
-import { ImageOptions, UserPemissionFlags } from '../types'
-import { perms } from './Constants'
+import { Readable } from 'stream'
+import { ImageOptions, UserPemissionFlags } from '@types'
+import { Oauth, perms } from './Constants'
 
 export function formatNumber(value: number):string  {
 	const suffixes = ['', '만', '억', '조','해']
@@ -48,5 +49,22 @@ export function checkBrowser(){
 	if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1])
 	return M.join(' ')
 }
+
+export function generateOauthURL(provider: 'discord', clientID: string, scope: string) {
+	return Oauth[provider](clientID, scope)
+}
+
+export default function bufferToStream(binary: Buffer) {
+
+	const readableInstanceStream = new Readable({
+		read() {
+			this.push(binary)
+			this.push(null)
+		}
+	})
+
+	return readableInstanceStream
+}
+
 
 export { anchorHeader } from './ShowdownExtensions'

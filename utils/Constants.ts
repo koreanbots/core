@@ -99,7 +99,7 @@ export const DiscordEnpoints = {
 		static root = BASE_URLs.cdn
 		static emoji (id: string, options:ImageOptions={}) { return makeImageURL(`${this.root}/emojis/${id}`, options) }
 		static guild (id: string, hash: string, options:ImageOptions={}) { return makeImageURL(`${this.root}/icons/${id}/${hash}`, options) }
-		static default (tag: string, options:ImageOptions={}) { return makeImageURL(`${this.root}/embed/avatars/${isNaN(Number(tag)) ? Number(tag) % 5 : 0}`, options) }
+		static default (tag: string|number, options:ImageOptions={}) { return makeImageURL(`${this.root}/embed/avatars/${!isNaN(Number(tag)) ? Number(tag) % 5 : 0}`, options) }
 		static user (id: string, hash: string, options:ImageOptions={}) { return makeImageURL(`${this.root}/avatars/${id}/${hash}`, options) }
 	}
 }

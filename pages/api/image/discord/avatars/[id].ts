@@ -27,7 +27,6 @@ const Avatar = nc<ApiRequest, NextApiResponse>()
 			return null
 		})
 		if(!validated) return
-		console.log(validated)
 
 		const user = await get.discord.user.load(id)
 		if(!user) return ResponseWrapper(res, { code: 400, message: '올바르지 않은 유저입니다.' })

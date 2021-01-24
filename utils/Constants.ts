@@ -1,4 +1,4 @@
-import { ImageOptions } from '@types'
+import { ImageOptions, KoreanbotsImageOptions } from '@types'
 import { makeImageURL } from './Tools'
 
 export const Status = {
@@ -101,6 +101,12 @@ export const DiscordEnpoints = {
 		static guild (id: string, hash: string, options:ImageOptions={}) { return makeImageURL(`${this.root}/icons/${id}/${hash}`, options) }
 		static default (tag: string|number, options:ImageOptions={}) { return makeImageURL(`${this.root}/embed/avatars/${!isNaN(Number(tag)) ? Number(tag) % 5 : 0}`, options) }
 		static user (id: string, hash: string, options:ImageOptions={}) { return makeImageURL(`${this.root}/avatars/${id}/${hash}`, options) }
+	}
+}
+
+export const KoreanbotsEndPoints = {
+	CDN: class CDN {
+		static avatar (id: string, options: KoreanbotsImageOptions) { return makeImageURL(`/api/image/discord/avatars/${id}`, options) }
 	}
 }
 

@@ -107,6 +107,12 @@ export interface ImageOptions {
 	format?: ImageFormat
 	size?: ImageSize
 }
+
+export interface KoreanbotsImageOptions {
+	format?: 'webp' | 'png' | 'gif'
+	size?: 128 | 256 | 512
+}
+
 export enum DiscordImageType {
 	EMOJI = 'emoji',
 	GUILD = 'guild',

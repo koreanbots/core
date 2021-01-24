@@ -19,7 +19,7 @@ export interface botListArgument  {
 export const ImageOptionsSchema: Yup.SchemaOf<ImageOptions> = Yup.object({
 	id: Yup.string().required(),
 	ext: Yup.mixed<ext>().oneOf(['webp', 'png', 'gif']).required(),
-	size: Yup.mixed<ImageSize>().oneOf([128, 256, 512]).required()
+	size: Yup.mixed<ImageSize>().oneOf(['128', '256', '512']).required()
 })
 
 interface ImageOptions {
@@ -29,7 +29,7 @@ interface ImageOptions {
 }
 
 type ext = 'webp' | 'png' | 'gif'
-type ImageSize = 128 | 256  | 512
+type ImageSize = '128' | '256' | '512'
 
 
 export default Yup

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 const Paginator = ({ currentPage, totalPage }:PaginatorProps):JSX.Element => {
-	const pages = [1, currentPage === 1 ? 2 : currentPage - 1, currentPage === 1 ? 3 : currentPage, currentPage + 1, totalPage ]
+	const pages = [1, currentPage === 1 ? 2 : currentPage - 1, currentPage === 1 ? 3 : totalPage === currentPage ? currentPage - 2 : currentPage, currentPage + 1, totalPage ]
 	return <div className='flex flex-col items-center my-12 text-center justify-center'>
 		<div className='flex text-gray-700 dark:text-gray-400'>
 			<Link href={{ pathname: '/list/votes', query: { page: currentPage - 1} }}>

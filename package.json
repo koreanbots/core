@@ -19,7 +19,7 @@
     "autoprefixer": "^10.2.3",
     "core-js": "^3.8.3",
     "dataloader": "^2.0.0",
-    "dayjs": "^1.10.3",
+    "dayjs": "^1.10.4",
     "discord.js": "^12.5.1",
     "formik": "^2.2.6",
     "josa": "^3.0.1",

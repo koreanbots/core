@@ -22,9 +22,9 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 						한국 디스코드봇 리스트
 					</h1>
 					<Search />
-					<h2 className='text-xl font-bold mt-10 mb-1 text-black dark:text-gray-100'>카테고리로 찾아보기</h2>
+					<h2 className='text-xl font-bold mt-10 mb-1 text-gray-100'>카테고리로 찾아보기</h2>
 					<div className='flex flex-wrap '>
-						{ cats.map(t=> <Tag key={t} text={t} dark href={`/categories/${t}`}/>) }
+						{ cats.map(t=> <Tag key={t} text={t} dark href={`/categories/${t}`} />) }
 					</div>
 				</Container>
 			</div>

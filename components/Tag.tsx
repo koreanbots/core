@@ -20,13 +20,13 @@ const Tag = ({
 				dark
 					? blurple
 						? 'bg-discord-blurple'
-						: 'bg-little-white-hover dark:bg-very-black'
+						: 'bg-little-white-hover hover:bg-little-white dark:bg-very-black'
 					: github
 						? 'bg-gray-900 text-white'
-						: 'bg-little-white dark:bg-discord-black'
+						: 'bg-little-white dark:bg-discord-black hover:bg-little-white-hover'
 			} ${!blurple && !github ? 'text-black dark:text-gray-400' : ''} ${
 				circular ? 'rounded-3xl px-2.5 py-1.5' : 'rounded px-2 py-1'
-			} mr-1 mb-${marginBottom} hover:bg-little-white-hover dark:hover:bg-discord-dark-hover`}
+			} mr-1 mb-${marginBottom} dark:hover:bg-discord-dark-hover transition duration-100 ease-in`}
 		>
 			{text}
 		</a>
@@ -38,13 +38,13 @@ const Tag = ({
 					dark
 						? blurple
 							? 'bg-discord-blurple'
-							: 'bg-little-white-hover dark:bg-very-black'
+							: 'bg-little-white-hover hover:bg-little-white dark:bg-very-black'
 						: github
 							? 'bg-gray-900 text-white'
-							: 'bg-little-white dark:bg-discord-black'
-				} ${!blurple && !github ? 'text-black dark:text-gray-400' : ''} ${
+							: 'bg-little-white dark:bg-discord-black hover:bg-little-white-hover'
+				} ${!blurple && !github ? 'text-black dark:text-gray-400' : 'hover:bg-little-white-hover'} ${
 					circular ? 'rounded-3xl px-2.5 py-1.5' : 'rounded px-2 py-1'
-				} mr-1 mb-${marginBottom} hover:bg-little-white-hover dark:hover:bg-discord-dark-hover`}
+				} mr-1 mb-${marginBottom} dark:hover:bg-discord-dark-hover transition duration-100 ease-in`}
 			>
 				{text}
 			</a>

@@ -48,7 +48,8 @@ async function getBot(id: string, owners=true) {
 		.orWhere({ vanity: id, trusted: true })
 		.orWhere({ vanity: id, partnered: true })
 	if (res[0]) {
-		const discordBot = await get.discord.user.load(id)
+		const discordBot = await get.discord.user.load(res[0].id)
+		if(!discordBot) return null
 		res[0].tag = discordBot.discriminator
 		res[0].name = discordBot.username
 		res[0].category = JSON.parse(res[0].category)

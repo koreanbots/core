@@ -131,7 +131,6 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 						key={el.id}
 						id={el.id}
 						tag={el.tag}
-						avatarHash={el.avatar}
 						username={el.username}
 					/>
 				))}

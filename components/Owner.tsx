@@ -20,6 +20,5 @@ export default Owner
 interface OwnerProps {
   id: string
   tag: string
-  avatarHash: string
   username: string
 }

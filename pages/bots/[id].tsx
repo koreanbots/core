@@ -1,4 +1,5 @@
 import { NextPage, NextPageContext } from 'next'
+import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { SnowflakeUtil } from 'discord.js'
@@ -23,10 +24,10 @@ const LongButton = dynamic(()=> import('@components/LongButton'))
 const Advertisement = dynamic(()=> import('@components/Advertisement'))
 const Tooltip = dynamic(()=> import('@components/Tooltip'))
 
-
-
 const Bots: NextPage<BotsProps> = ({ data, date }) => {
+	const router = useRouter()
 	if (!data || !data.id) return <NotFound />
+	if(data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}`)
 	return <Container paddingTop className='py-10'>
 		<SEO
 			title={data.name}
@@ -80,7 +81,7 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 						<i className='fas fa-user-plus text-discord-blurple' /> 초대하기
 					</h4>
 				</LongButton>
-				<LongButton>
+				<LongButton href={`/bots/${router.query.id}/vote`}>
 					<h4>
 						<i className='fas fa-heart text-red-600' /> 하트 추가
 					</h4>

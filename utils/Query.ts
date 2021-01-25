@@ -34,9 +34,6 @@ async function getBot(id: string, owners=true) {
 			'url',
 			'category',
 			'status',
-			'name',
-			'avatar',
-			'tag',
 			'verified',
 			'trusted',
 			'partnered',
@@ -51,6 +48,9 @@ async function getBot(id: string, owners=true) {
 		.orWhere({ vanity: id, trusted: true })
 		.orWhere({ vanity: id, partnered: true })
 	if (res[0]) {
+		const discordBot = await get.discord.user.load(id)
+		res[0].tag = discordBot.discriminator
+		res[0].name = discordBot.username
 		res[0].category = JSON.parse(res[0].category)
 		res[0].owners = JSON.parse(res[0].owners)
 		res[0].vanity = ((res[0].trusted || res[0].partnered) && res[0].vanity) ?? null
@@ -66,12 +66,15 @@ async function getBot(id: string, owners=true) {
 
 async function getUser(id: string, bots = true) {
 	const res = await knex('users')
-		.select(['id', 'avatar', 'tag', 'username', 'perm', 'github'])
+		.select(['id', 'perm', 'github'])
 		.where({ id })
 	if (res[0]) {
 		const owned = await knex('bots')
 			.select(['id'])
 			.where('owners', 'like', `%${id}%`)
+		const discordUser = await get.discord.user.load(id)
+		res[0].tag = discordUser.discriminator
+		res[0].username = discordUser.username
 		if (bots) res[0].bots = await Promise.all(owned.map(async b => await get._rawBot.load(b.id)))
 		else res[0].bots = owned.map(async b => b.id)
 		res[0].bots = res[0].bots.filter((el: Bot | null) => el).map((row: User) => ({ ...row }))
@@ -238,7 +241,7 @@ export const get = {
 		votes: new DataLoader(
 			async (pages: number[]) =>
 				(await Promise.all(pages.map(async (page: number) => await getBotList('VOTE', page)))).map(row => ({ ...row }))
-			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 600000 }) }),
+			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 3000000 }) }),
 		new: new DataLoader(
 			async (pages: number[]) =>
 				(await Promise.all(pages.map(async (page: number) => await getBotList('NEW', page)))).map(row => ({ ...row }))

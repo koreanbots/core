@@ -22,6 +22,8 @@ export const ImageOptionsSchema: Yup.SchemaOf<ImageOptions> = Yup.object({
 	size: Yup.mixed<ImageSize>().oneOf(['128', '256', '512']).required()
 })
 
+export const PageCount = Yup.number().integer().positive()
+
 interface ImageOptions {
 	id: string
 	ext: ext

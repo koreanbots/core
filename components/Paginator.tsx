@@ -4,11 +4,11 @@ const Paginator = ({ currentPage, totalPage, pathname }:PaginatorProps):JSX.Elem
 	return <div className='flex flex-col items-center my-12 text-center justify-center'>
 		<div className='flex text-gray-700 dark:text-gray-400'>
 			<Link href={{ pathname, query: { page: currentPage - 1} }}>
-				<a className={`${currentPage === 1 ? 'hidden' : ''} h-12 w-12 mr-1 flex justify-center items-center rounded-full transition duration-150 ease-in bg-gray-200 dark:bg-discord-black hover:bg-gray-300 dark:hover:bg-discord-dark-hover cursor-pointer text-center`}>
+				<a className={`${currentPage === 1 ? 'invisible' : ''} h-12 w-12 mr-1 flex justify-center items-center rounded-full transition duration-150 ease-in bg-gray-200 dark:bg-discord-black hover:bg-gray-300 dark:hover:bg-discord-dark-hover cursor-pointer text-center`}>
 					<i className='fas fa-chevron-left'></i>
 				</a>
 			</Link>
-			<div className='flex h-12 font-medium rounded-full bg-gray-200 dark:bg-discord-black'>
+			<div className='hidden lg:flex h-12 font-medium rounded-full bg-gray-200 dark:bg-discord-black'>
 				<Link href={{ pathname, query: { page: pages[0] } }}>
 					<a className={`w-12 md:flex justify-center items-center cursor-pointer leading-5 transition duration-150 ease-in rounded-l-full ${pages[0] === currentPage ? 'bg-gray-300 dark:bg-discord-dark-hover' : ' hover:bg-gray-300 dark:hover:bg-discord-dark-hover'}`}>{pages[0]}</a>
 				</Link>
@@ -35,8 +35,11 @@ const Paginator = ({ currentPage, totalPage, pathname }:PaginatorProps):JSX.Elem
 					<a className={`w-12 md:flex justify-center items-center cursor-pointer leading-5 transition duration-150 ease-in rounded-r-full ${pages[4] === currentPage ? 'bg-gray-300 dark:bg-discord-dark-hover' : ' hover:bg-gray-300 dark:hover:bg-discord-dark-hover'}`}>{pages[4]}</a>
 				</Link>
 			</div>
+			<a className='flex lg:hidden h-12 w-12 ml-1 justify-center items-center rounded-full transition duration-150 ease-in bg-gray-200 dark:bg-discord-black hover:bg-gray-300 dark:hover:bg-discord-dark-hover cursor-pointer text-center'>
+				{currentPage}
+			</a>
 			<Link href={{ pathname, query: { page: currentPage + 1} }}>
-				<a className={`${currentPage === totalPage ? 'hidden' : '' } h-12 w-12 ml-1 flex justify-center items-center rounded-full transition duration-150 ease-in bg-gray-200 dark:bg-discord-black hover:bg-gray-300 dark:hover:bg-discord-dark-hover cursor-pointer text-center`}>
+				<a className={`${currentPage === totalPage ? 'invisible' : '' } h-12 w-12 ml-1 flex justify-center items-center rounded-full transition duration-150 ease-in bg-gray-200 dark:bg-discord-black hover:bg-gray-300 dark:hover:bg-discord-dark-hover cursor-pointer text-center`}>
 					<i className='fas fa-chevron-right'></i>
 				</a>
 			</Link>

@@ -1,22 +1,18 @@
 import fetch from 'node-fetch'
-// import jwt from 'jsonwebtoken'
-// import fs from 'fs'
 import { TLRU } from 'tlru'
 import StreamCache from 'stream-cache'
 import DataLoader from 'dataloader'
 import { User as DiscordUser } from 'discord.js'
 import { Stream } from 'stream'
 
-import { Bot, User, ListType, BotList } from '@types'
+import { Bot, User, ListType, BotList, TokenRegister } from '@types'
 import { cats } from './Constants'
 
 import knex from './Knex'
 import DiscordBot from './DiscordBot'
+import { sign, verify } from './Jwt'
 
 export const imageRateLimit = new TLRU<unknown, number>({ maxAgeMs: 60000 })
-
-// const publicPem = fs.readFileSync('./public.pem')
-// const privateKey = fs.readFileSync('./private.key')
 
 async function getBot(id: string, owners=true) {
 	const res = await knex('bots')
@@ -210,6 +206,22 @@ async function getDiscordUser(id: string):Promise<DiscordUser> {
 	return DiscordBot.users.cache.get(id) ?? await DiscordBot.users.fetch(id, false, true).then(u => u).catch(()=>null)
 }
 
+async function assignToken(info: TokenRegister):Promise<string> {
+	const token = await knex('users').select(['token']).where({ id: info.id })
+	let t: string
+	if(token.length === 0) {
+		await knex('users').insert({ date: Math.round(Number(new Date()) / 1000), id: info.id, email: info.email, tag: info.discriminator, username: info.username, discord: sign({ access_token: info.access_token, expires_in: info.expires_in, refresh_token: info.refresh_token })  })
+	} else await knex('users').update({ email: info.email, tag: info.discriminator, username: info.username, discord: sign({ access_token: info.access_token, expires_in: info.expires_in, refresh_token: info.refresh_token }) }).where({ id: info.id })
+	console.log(verify(token[0]?.token))
+	if(!verify(token[0]?.token ?? '')) {
+		t = sign({ id: info.id }, { expiresIn: '30d' })
+		await knex('users').update({ token: t }).where({ id: info.id })
+	} else t = token[0].token
+
+	
+	return t
+}
+
 async function addRequest(ip: string, map: TLRU<unknown, number>) {
 	if(!map.has(ip)) map.set(ip, 0)
 	map.set(ip, map.get(ip) + 1)
@@ -258,6 +270,10 @@ export const get = {
 				(await Promise.all(urls.map(async (url: string) => await getImage(url))))
 			, { cacheMap: new TLRU({ maxStoreSize: 500, maxAgeMs: 43200000 }) }),
 	}
+}
+
+export const update = {
+	assignToken
 }
 
 export const ratelimit = {

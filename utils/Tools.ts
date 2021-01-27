@@ -33,7 +33,7 @@ export function supportsWebP() {
 	return false
 }
 
-export function checkBrowser(){
+export function checkBrowser() {
 	const ua = navigator.userAgent
 	let tem
 	let M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+(\.\d+)?(\.\d+)?)/i) || []
@@ -54,7 +54,18 @@ export function generateOauthURL(provider: 'discord', clientID: string, scope: s
 	return Oauth[provider](clientID, scope)
 }
 
-export default function bufferToStream(binary: Buffer) {
+export function formData(details: { [key: string]: string | number | boolean }) {
+	const formBody = []
+	for (const property in details) {
+		const encodedKey = encodeURIComponent(property)
+		const encodedValue = encodeURIComponent(details[property])
+		formBody.push(encodedKey + '=' + encodedValue)
+	}
+	return formBody.join('&')
+	
+}
+
+export function bufferToStream(binary: Buffer) {
 
 	const readableInstanceStream = new Readable({
 		read() {
@@ -65,6 +76,5 @@ export default function bufferToStream(binary: Buffer) {
 
 	return readableInstanceStream
 }
-
 
 export { anchorHeader } from './ShowdownExtensions'

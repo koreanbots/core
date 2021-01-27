@@ -52,7 +52,7 @@ const Callback = nc<ApiRequest, NextApiResponse>()
 			secure: process.env.NODE_ENV === 'production',
 			path: '/'
 		}))
-		res.redirect(301, '/')
+		res.redirect(301, '/callback/discord')
 	})
 
 interface ApiRequest extends NextApiRequest {

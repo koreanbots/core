@@ -14,7 +14,7 @@ import { sign, verify } from './Jwt'
 
 export const imageRateLimit = new TLRU<unknown, number>({ maxAgeMs: 60000 })
 
-async function getBot(id: string, owners=true) {
+async function getBot(id: string, owners=true):Promise<Bot> {
 	const res = await knex('bots')
 		.select([
 			'id',
@@ -61,7 +61,7 @@ async function getBot(id: string, owners=true) {
 	return res[0] ?? null
 }
 
-async function getUser(id: string, bots = true) {
+async function getUser(id: string, bots = true):Promise<User> {
 	const res = await knex('users')
 		.select(['id', 'perm', 'github'])
 		.where({ id })
@@ -203,7 +203,7 @@ async function getImage(url: string):Promise<Stream> {
 }
 
 async function getDiscordUser(id: string):Promise<DiscordUser> {
-	return DiscordBot.users.cache.get(id) ?? await DiscordBot.users.fetch(id, false, true).then(u => u).catch(()=>null)
+	return DiscordBot.users.cache.get(id) ?? await DiscordBot.users.fetch(id, false, true).then(u => u.toJSON()).catch(()=>null)
 }
 
 async function assignToken(info: TokenRegister):Promise<string> {

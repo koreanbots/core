@@ -44,6 +44,39 @@ export interface BotList {
 	totalPage: number
 }
 
+export interface DiscordTokenInfo {
+	access_token?: string
+	expires_in?: number
+	refresh_token?: string
+	scope?: string
+	token_type?: string
+	error?: string
+}
+
+export interface TokenRegister {
+	id: string
+	access_token: string
+	expires_in: number
+	refresh_token: string
+	email: string
+	username: string
+	discriminator: string
+}
+
+export interface DiscordUserInfo {
+	id: string
+	username: string
+	avatar: string
+	discriminator: string
+	public_flags: number
+	flags: number
+	email: string
+	verified: boolean
+	locale: string
+	mfa_enabled: boolean
+	premium_type: 0 | 1 | 2
+}
+
 export type Status = 'online' | 'offline' | 'dnd' | 'idle' | 'streaming' | null
 
 export type BotState = 'ok' | 'reported' | 'archived' | 'private'

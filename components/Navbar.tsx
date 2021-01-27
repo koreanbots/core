@@ -2,7 +2,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import Link from 'next/link'
 import { useState } from 'react'
-import DiscordAvatar from './DiscordAvatar'
 
 const Navbar = (): JSX.Element => {
 	let userCache
@@ -65,7 +64,10 @@ const Navbar = (): JSX.Element => {
 							</li>
 							<li className='flex items-center'>
 								<Link href={userCache ? `/users/${userCache.id}` : '/api/auth/discord'}>
-									<a onClick={()=> setNavbarOpen(false)} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
+									<a onClick={()=> {
+										localStorage.redirectTo = window.location.href
+										setNavbarOpen(false)
+									}} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
 										{ userCache ? 
 											<>
 												{userCache.username}
@@ -117,7 +119,10 @@ const Navbar = (): JSX.Element => {
 						</a>
 					</Link>
 					<Link href={userCache ? `/users/${userCache.id}` : '/api/auth/discord'}>
-						<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+						<a onClick={()=> {
+							localStorage.redirectTo = window.location.href
+							setNavbarOpen(false)
+						}} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
 							<i className='far fa-user' />
 							<span className='px-2 font-medium'>{ userCache ? 
 								<>

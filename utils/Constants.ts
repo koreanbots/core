@@ -92,9 +92,12 @@ export const reportCats = [
 ]
 
 export const BASE_URLs = {
+	api: 'https://discord.com/api',
 	cdn: 'https://cdn.discordapp.com'
 }
 export const DiscordEnpoints = {
+	Token: BASE_URLs.api + '/oauth2/token',
+	Me: BASE_URLs.api + '/v8/users/@me',
 	CDN: class CDN {
 		static root = BASE_URLs.cdn
 		static emoji (id: string, options:ImageOptions={}) { return makeImageURL(`${this.root}/emojis/${id}`, options) }

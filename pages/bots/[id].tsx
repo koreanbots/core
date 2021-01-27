@@ -220,7 +220,7 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 }
 
 export const getServerSideProps = async (ctx: Context) => {
-	const data = await Query.get.bot.load(ctx.query.id) ?? {}
+	const data = await Query.get.bot.load(ctx.query.id) ?? { id: '' }
 	return {
 		props: {
 			data,

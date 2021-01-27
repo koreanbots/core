@@ -22,8 +22,6 @@ export const ImageOptionsSchema: Yup.SchemaOf<ImageOptions> = Yup.object({
 	size: Yup.mixed<ImageSize>().oneOf(['128', '256', '512']).required()
 })
 
-export const PageCount = Yup.number().integer().positive()
-
 interface ImageOptions {
 	id: string
 	ext: ext
@@ -32,6 +30,16 @@ interface ImageOptions {
 
 type ext = 'webp' | 'png' | 'gif'
 type ImageSize = '128' | '256' | '512'
+
+export const PageCount = Yup.number().integer().positive()
+
+export const OauthCallbackSchema: Yup.SchemaOf<OauthCallback> = Yup.object({
+	code: Yup.string().required()
+})
+
+interface OauthCallback {
+	code: string
+}
 
 
 export default Yup

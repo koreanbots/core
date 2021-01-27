@@ -1,7 +1,17 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import Link from 'next/link'
 import { useState } from 'react'
+import DiscordAvatar from './DiscordAvatar'
 
 const Navbar = (): JSX.Element => {
+	let userCache
+	try {
+		userCache = JSON.parse(localStorage.userCache)
+	} catch {
+		userCache = null
+	}
+
 	const [navbarOpen, setNavbarOpen] = useState<boolean>(false)
 	return (
 		<>
@@ -9,8 +19,7 @@ const Navbar = (): JSX.Element => {
 				<div className='container flex flex-wrap items-center justify-between mx-auto px-4'>
 					<div className='relative flex justify-between w-full lg:justify-start lg:w-auto'>
 						<Link href='/'>
-							<a
-								className='logofont text-large whitespace-no-wrap inline-block mr-4 py-2 hover:text-gray-300 font-semibold leading-relaxed uppercase sm:text-2xl'
+							<a onClick={()=> setNavbarOpen(false)} className='logofont text-large whitespace-no-wrap inline-block mr-4 py-2 hover:text-gray-300 font-semibold leading-relaxed uppercase sm:text-2xl'
 							>
 							KOREANBOTS
 							</a>
@@ -27,8 +36,7 @@ const Navbar = (): JSX.Element => {
 						<ul className='flex flex-col list-none lg:flex-row lg:ml-auto'>
 							<li className='flex items-center'>
 								<Link href='/discord'>
-									<a
-										className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'
+									<a onClick={()=> setNavbarOpen(false)} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'
 									>
 									디스코드
 									</a>
@@ -36,29 +44,32 @@ const Navbar = (): JSX.Element => {
 							</li>
 							<li className='flex items-center'>
 								<Link href='/about'>
-									<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
+									<a onClick={()=> setNavbarOpen(false)} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
 										소개
 									</a>
 								</Link>
 							</li>
 							<li className='flex items-center'>
 								<Link href='/api'>
-									<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
+									<a onClick={()=> setNavbarOpen(false)} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
 										API
 									</a>
 								</Link>
 							</li>
 							<li className='flex items-center'>
 								<Link href='/addbot'>
-									<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
+									<a onClick={()=> setNavbarOpen(false)} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
 										봇 추가하기
 									</a>
 								</Link>
 							</li>
 							<li className='flex items-center'>
-								<Link href='/api/auth/discord'>
-									<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
-										로그인
+								<Link href={userCache ? `/users/${userCache.id}` : '/api/auth/discord'}>
+									<a onClick={()=> setNavbarOpen(false)} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
+										{ userCache ? 
+											<>
+												{userCache.username}
+											</> : '로그인' }
 									</a>
 								</Link>
 							</li>
@@ -73,7 +84,7 @@ const Navbar = (): JSX.Element => {
 			>
 				<nav className='mt-20'>
 					<Link href='/about'>
-						<a className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+						<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
 							<svg
 								className='w-5 h-5'
 								viewBox='0 0 24 24'
@@ -93,33 +104,35 @@ const Navbar = (): JSX.Element => {
 						</a>
 					</Link>
 					<Link href='/api'>
-						<a className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+						<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
 							<i className='fas fa-tools' />
 
 							<span className='px-2 font-medium'>API</span>
 						</a>
 					</Link>
 					<Link href='/addbot'>
-						<a className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+						<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
 							<i className='fas fa-plus'></i>
 							<span className='px-2 font-medium'>봇 추가하기</span>
 						</a>
 					</Link>
-
-					<Link href='/api/auth/login'>
-						<a className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+					<Link href={userCache ? `/users/${userCache.id}` : '/api/auth/discord'}>
+						<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
 							<i className='far fa-user' />
-							<span className='px-2 font-medium'>로그인</span>
+							<span className='px-2 font-medium'>{ userCache ? 
+								<>
+									{userCache.username}
+								</> : '로그인' }</span>
 						</a>
 					</Link>
 				</nav>
 
 				<div className='absolute bottom-0 my-10'>
-					<a className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+					<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
 						<i className='fab fa-discord' />
 
 						<Link href='/discord'>
-							<a className='px-2 font-medium'>디스코드 서버</a>
+							<a onClick={()=> setNavbarOpen(false)} className='px-2 font-medium'>디스코드 서버</a>
 						</Link>
 					</a>
 				</div>

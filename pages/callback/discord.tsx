@@ -1,0 +1,52 @@
+import { NextPage, NextPageContext } from 'next'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+
+import { verify } from '@utils/Jwt'
+import { get } from '@utils/Query'
+import { parseCookie, redirectTo } from '@utils/Tools'
+import Loader from '@components/Loader'
+import { User } from '@types'
+
+const DiscordCallback:NextPage<DiscordCallbackProps> = ({ data }) => {
+	const router = useRouter()
+	const [ redirect, setRedirect ] = useState(false)
+	useEffect(() => {
+		localStorage.userCache = JSON.stringify({
+			id: data.id,
+			username: data.username,
+			tag: data.tag,
+			perm: data.perm
+		})
+		setRedirect(true)
+	}, [ data ])
+	if(!data) {
+		router.push('/api/auth/discord')
+		return <div className='absolute right-1/2 bottom-1/2 text-center'>
+			<h1 className='text-3xl text-bold'>리다이랙트중입니다.</h1>
+		</div>
+	}
+  
+	return <>
+		<Loader text='로그인중입니다. 잠시만 기다려주세요.' />
+		{
+			redirect ? redirectTo(router, localStorage.redirectTo ?? '/') : ''
+		}
+	</>
+}
+
+export const getServerSideProps = async(ctx: NextPageContext) => {
+	const parsed = parseCookie(ctx)
+	const token = verify(parsed?.token ?? '')
+	if(!token) return { props: { data: null } }
+  
+	const userinfo = await get.user.load(token.id)
+  
+	return { props: { data: userinfo } }
+}
+
+interface DiscordCallbackProps {
+  data: User | null
+}
+
+export default DiscordCallback

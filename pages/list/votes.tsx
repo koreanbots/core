@@ -7,14 +7,16 @@ import * as Query from '@utils/Query'
 
 import NotFound from '../404'
 import { PageCount } from '@utils/Yup'
+import { useRouter } from 'next/router'
 
 const Advertisement = dynamic(()=> import('@components/Advertisement'))
 const BotCard = dynamic(()=> import('@components/BotCard'))
 const Container = dynamic(()=> import('@components/Container'))
 const Paginator = dynamic(()=> import('@components/Paginator'))
 
-const Votes:NextPage<VotesProps> = ({ data }:VotesProps) => {
-	if(!data || data.data.length === 0) return <NotFound />
+const Votes:NextPage<VotesProps> = ({ data }) => {
+	const router = useRouter()
+	if(!data || data.data.length === 0 || data.totalPage < Number(router.query.page)) return <NotFound />
 	return <Container paddingTop>
 		<h1 className='text-3xl font-bold mt-5'>
 			<i className='far fa-heart mr-3 text-pink-600' /> 하트 랭킹 - {data.currentPage}페이지
@@ -30,9 +32,11 @@ const Votes:NextPage<VotesProps> = ({ data }:VotesProps) => {
 	</Container>
 }
 export const getServerSideProps = async (ctx:Context) => {
+	let data: BotList
+	if(!ctx.query.page) ctx.query.page = '1'
 	const validate = await PageCount.validate(ctx.query.page).then(el => el).catch(() => null)
-	if(isNaN(Number(ctx.query.page)) || !validate) ctx.query.page = '1'
-	const data = await Query.get.list.votes.load(Number(ctx.query.page))
+	if(!validate) data = null
+	else data = await Query.get.list.votes.load(Number(ctx.query.page))
 	return {
 		props: {
 			data

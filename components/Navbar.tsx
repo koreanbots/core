@@ -7,7 +7,7 @@ const Navbar = (): JSX.Element => {
 		<>
 			<nav className='fixed z-40 top-0 flex flex-wrap items-center justify-between px-2 py-3 w-full text-gray-100 dark:bg-discord-black bg-discord-blurple bg-transparent lg:absolute'>
 				<div className='container flex flex-wrap items-center justify-between mx-auto px-4'>
-					<div className='relative static block flex justify-between w-full lg:justify-start lg:w-auto'>
+					<div className='relative flex justify-between w-full lg:justify-start lg:w-auto'>
 						<Link href='/'>
 							<a
 								className='logofont text-large whitespace-no-wrap inline-block mr-4 py-2 hover:text-gray-300 font-semibold leading-relaxed uppercase sm:text-2xl'

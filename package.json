@@ -14,7 +14,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
     "@sentry/browser": "^5.30.0",
-    "@sentry/node": "^5.30.0",
+    "@sentry/node": "^6.0.2",
     "@sentry/webpack-plugin": "^1.14.0",
     "autoprefixer": "^10.2.3",
     "core-js": "^3.8.3",

@@ -33,9 +33,11 @@ const Votes:NextPage<VotesProps> = ({ data }) => {
 }
 export const getServerSideProps = async (ctx:Context) => {
 	let data: BotList
+	console.log(ctx.query.page)
 	if(!ctx.query.page) ctx.query.page = '1'
 	const validate = await PageCount.validate(ctx.query.page).then(el => el).catch(() => null)
-	if(!validate) data = null
+	console.log(validate)
+	if(!validate || isNaN(Number(ctx.query.page))) data = null
 	else data = await Query.get.list.votes.load(Number(ctx.query.page))
 	return {
 		props: {

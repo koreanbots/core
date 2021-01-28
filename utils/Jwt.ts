@@ -1,8 +1,7 @@
-import * as fs from 'fs'
 import * as jwt from 'jsonwebtoken'
 
-const publicPem = fs.readFileSync('./public.pem')
-const privateKey = fs.readFileSync('./private.key')
+const publicPem = process.env.PUBLIC_PEM
+const privateKey = process.env.PRIVATE_KEY
 
 export function sign(payload: string | Record<string, unknown>, options?: JWTSignOption): string | null {
 	try {

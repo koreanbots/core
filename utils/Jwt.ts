@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken'
 
-const publicPem = process.env.PUBLIC_PEM
-const privateKey = process.env.PRIVATE_KEY
+const publicPem = process.env.PUBLIC_PEM?.replace(/\\n/g, '\n')
+const privateKey = process.env.PRIVATE_KEY?.replace(/\\n/g, '\n')
 
 export function sign(payload: string | Record<string, unknown>, options?: JWTSignOption): string | null {
 	try {

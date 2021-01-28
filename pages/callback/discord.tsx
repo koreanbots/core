@@ -20,6 +20,11 @@ const DiscordCallback:NextPage<DiscordCallbackProps> = ({ data }) => {
 		})
 		setRedirect(true)
 	}, [ data ])
+	function redirectWhere() {
+		redirectTo(router, localStorage.redirectTo ?? '/')
+		localStorage.removeItem('redirectTo')
+		return
+	}
 	if(!data) {
 		router.push('/api/auth/discord')
 		return <div className='absolute right-1/2 bottom-1/2 text-center'>
@@ -30,7 +35,7 @@ const DiscordCallback:NextPage<DiscordCallbackProps> = ({ data }) => {
 	return <>
 		<Loader text='로그인중입니다. 잠시만 기다려주세요.' />
 		{
-			redirect ? redirectTo(router, localStorage.redirectTo ?? '/') : ''
+			redirect ? redirectWhere() : ''
 		}
 	</>
 }

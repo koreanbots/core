@@ -6,7 +6,7 @@ import { User as DiscordUser } from 'discord.js'
 import { Stream } from 'stream'
 
 import { Bot, User, ListType, BotList, TokenRegister } from '@types'
-import { cats } from './Constants'
+import { categories } from './Constants'
 
 import knex from './Knex'
 import DiscordBot from './DiscordBot'
@@ -127,7 +127,7 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 			.select(['id'])
 	} else if (type === 'CATEGORY') {
 		if (!query) throw new Error('쿼리가 누락되었습니다.')
-		if (!cats.includes(query)) throw new Error('알 수 없는 카테고리입니다.')
+		if (!categories.includes(query)) throw new Error('알 수 없는 카테고리입니다.')
 		count = (
 			await knex('bots')
 				.where('category', 'like', `%${decodeURI(query)}%`)

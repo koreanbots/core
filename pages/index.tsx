@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 
 import { BotList } from '@types'
 import * as Query from '@utils/Query'
-import { cats } from '@utils/Constants'
+import { categories, categoryIcon } from '@utils/Constants'
 
 const Advertisement = dynamic(()=> import('@components/Advertisement'))
 const Container = dynamic(()=> import('@components/Container'))
@@ -22,9 +22,16 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 						한국 디스코드봇 리스트
 					</h1>
 					<Search />
-					<h2 className='text-xl font-bold mt-10 mb-1 text-gray-100'>카테고리로 찾아보기</h2>
-					<div className='flex flex-wrap '>
-						{ cats.map(t=> <Tag key={t} text={t} dark href={`/categories/${t}`} />) }
+					<div className='flex flex-wrap mt-5'>
+						<Tag key='list' text={<>
+							<i className='fas fa-heart text-red-600'/> 하트 랭킹
+						</>} dark bigger href='/list/votes' />
+						{ categories.slice(0, 5).map(t=> <Tag key={t} text={<>
+							<i className={categoryIcon[t]} /> {t}
+						</>} dark bigger href={`/categories/${t}`} />) }
+						<Tag key='tag' text={<>
+							<i className='fas fa-tag'/> 카테고리 더보기
+						</>} dark bigger href='/categories' />
 					</div>
 				</Container>
 			</div>

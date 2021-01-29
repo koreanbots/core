@@ -9,14 +9,15 @@ const Tag = ({
 	circular = false,
 	dark = false,
 	marginBottom = 2,
-	newTab = false
+	newTab = false,
+	bigger = false
 }: LabelProps): JSX.Element => {
 	return href ? newTab ? (
 		<a
 			href={href}
 			rel='noopener noreferrer'
 			target='_blank'
-			className={`${className ?? ''} text-center text-base  ${
+			className={`${className ?? ''} text-center text-base ${
 				dark
 					? blurple
 						? 'bg-discord-blurple'
@@ -25,7 +26,7 @@ const Tag = ({
 						? 'bg-gray-900 text-white'
 						: 'bg-little-white dark:bg-discord-black hover:bg-little-white-hover'
 			} ${!blurple && !github ? 'text-black dark:text-gray-400' : ''} ${
-				circular ? 'rounded-3xl px-2.5 py-1.5' : 'rounded px-2 py-1'
+				circular ? `rounded-3xl ${bigger ? 'px-3.5 py-2.5' : 'px-2.5 py-1.5'}` : `rounded ${bigger ? 'px-3 py-2' : 'px-2 py-1'}`
 			} mr-1 mb-${marginBottom} dark:hover:bg-discord-dark-hover transition duration-100 ease-in`}
 		>
 			{text}
@@ -43,7 +44,7 @@ const Tag = ({
 							? 'bg-gray-900 text-white'
 							: 'bg-little-white dark:bg-discord-black hover:bg-little-white-hover'
 				} ${!blurple && !github ? 'text-black dark:text-gray-400' : 'hover:bg-little-white-hover'} ${
-					circular ? 'rounded-3xl px-2.5 py-1.5' : 'rounded px-2 py-1'
+					circular ? `rounded-3xl ${bigger ? 'px-3.5 py-2.5' : 'px-2.5 py-1.5'}` : `rounded ${bigger ? 'px-3 py-2' : 'px-2 py-1'}`
 				} mr-1 mb-${marginBottom} dark:hover:bg-discord-dark-hover transition duration-100 ease-in`}
 			>
 				{text}
@@ -54,13 +55,13 @@ const Tag = ({
 			className={`${className ?? ''} text-center text-base ${
 				dark
 					? blurple
-						? 'font-bg text-white bg-discord-blurple text-black'
+						? 'font-bg dark:text-white bg-discord-blurple text-black'
 						: github
 							? 'bg-gray-900 text-white'
 							: 'bg-little-white-hover dark:bg-very-black'
 					: 'bg-little-white dark:bg-discord-black'
 			} ${!blurple && !github ? 'text-black dark:text-gray-400' : ''} ${
-				circular ? 'rounded-3xl px-2.5 py-1.5' : 'rounded px-2 py-1'
+				circular ? `rounded-3xl ${bigger ? 'px-3.5 py-2.5' : 'px-2.5 py-1.5'}` : `rounded ${bigger ? 'px-3 py-2' : 'px-2 py-1'}`
 			} mr-1 mb-${marginBottom}`}
 		>
 			{text}
@@ -79,6 +80,7 @@ interface LabelProps {
 	dark?: boolean
 	marginBottom?: number
 	newTab?: boolean
+	bigger?: boolean
 }
 
 export default Tag

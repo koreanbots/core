@@ -1,12 +1,14 @@
 import { NextPage, NextPageContext } from 'next'
-import { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
 import { verify } from '@utils/Jwt'
 import { get } from '@utils/Query'
 import { parseCookie, redirectTo } from '@utils/Tools'
-import Loader from '@components/Loader'
 import { User } from '@types'
+
+const Loader = dynamic(() => import('@components/Loader'))
 
 const DiscordCallback:NextPage<DiscordCallbackProps> = ({ data }) => {
 	const router = useRouter()

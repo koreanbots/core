@@ -9,10 +9,10 @@ import NotFound from '../404'
 import { PageCount } from '@utils/Yup'
 import { useRouter } from 'next/router'
 
-const Advertisement = dynamic(()=> import('@components/Advertisement'))
-const BotCard = dynamic(()=> import('@components/BotCard'))
-const Container = dynamic(()=> import('@components/Container'))
-const Paginator = dynamic(()=> import('@components/Paginator'))
+const Advertisement = dynamic(() => import('@components/Advertisement'))
+const BotCard = dynamic(() => import('@components/BotCard'))
+const Container = dynamic(() => import('@components/Container'))
+const Paginator = dynamic(() => import('@components/Paginator'))
 
 const Votes:NextPage<VotesProps> = ({ data }) => {
 	const router = useRouter()

@@ -10,14 +10,14 @@ import { checkPerm } from '@utils/Tools'
 
 import NotFound from '../404'
 
-const Container = dynamic(()=> import('@components/Container'))
-const SEO = dynamic(()=> import('@components/SEO'))
-const DiscordAvatar = dynamic(()=> import('@components/DiscordAvatar'))
-const Divider = dynamic(()=> import('@components/Divider'))
-const BotCard = dynamic(()=> import('@components/BotCard'))
-const Tag = dynamic(()=> import('@components/Tag'))
-const Advertisement = dynamic(()=> import('@components/Advertisement'))
-const Tooltip = dynamic(()=> import('@components/Tooltip'))
+const Container = dynamic(() => import('@components/Container'))
+const SEO = dynamic(() => import('@components/SEO'))
+const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
+const Divider = dynamic(() => import('@components/Divider'))
+const BotCard = dynamic(() => import('@components/BotCard'))
+const Tag = dynamic(() => import('@components/Tag'))
+const Advertisement = dynamic(() => import('@components/Advertisement'))
+const Tooltip = dynamic(() => import('@components/Tooltip'))
 
 const Users: NextPage<UserProps> = ({ data }) => {
 	if (!data.id) return <NotFound />

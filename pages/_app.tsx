@@ -4,8 +4,8 @@ import { ThemeProvider } from 'next-themes'
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 
-const Footer = dynamic(()=> import('@components/Footer'))
-const Navbar = dynamic(()=> import('@components/Navbar'))
+const Footer = dynamic(() => import('@components/Footer'))
+const Navbar = dynamic(() => import('@components/Navbar'))
 
 import Crypto from 'crypto'
 

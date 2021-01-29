@@ -13,16 +13,17 @@ import { formatNumber } from '@utils/Tools'
 
 import NotFound from '../404'
 
-const Container = dynamic(()=> import('@components/Container'))
-const DiscordAvatar = dynamic(()=> import('@components/DiscordAvatar'))
-const Divider = dynamic(()=> import('@components/Divider'))
-const Tag = dynamic(()=> import('@components/Tag'))
-const Owner = dynamic(()=> import('@components/Owner'))
-const Segment = dynamic(()=> import('@components/Segment'))
-const SEO = dynamic(()=> import('@components/SEO'))
-const LongButton = dynamic(()=> import('@components/LongButton'))
-const Advertisement = dynamic(()=> import('@components/Advertisement'))
-const Tooltip = dynamic(()=> import('@components/Tooltip'))
+const Container = dynamic(() => import('@components/Container'))
+const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
+const Divider = dynamic(() => import('@components/Divider'))
+const Tag = dynamic(() => import('@components/Tag'))
+const Owner = dynamic(() => import('@components/Owner'))
+const Segment = dynamic(() => import('@components/Segment'))
+const SEO = dynamic(() => import('@components/SEO'))
+const LongButton = dynamic(() => import('@components/LongButton'))
+const Advertisement = dynamic(() => import('@components/Advertisement'))
+const Tooltip = dynamic(() => import('@components/Tooltip'))
+const Markdown = dynamic(() => import ('@components/Markdown'))
 
 const Bots: NextPage<BotsProps> = ({ data, date }) => {
 	const router = useRouter()

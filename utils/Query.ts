@@ -268,7 +268,7 @@ export const get = {
 		user: new DataLoader(
 			async (urls: string[]) =>
 				(await Promise.all(urls.map(async (url: string) => await getImage(url))))
-			, { cacheMap: new TLRU({ maxStoreSize: 500, maxAgeMs: 43200000 }) }),
+			, { cacheMap: new TLRU({ maxStoreSize: 500, maxAgeMs: 3600000 }) }),
 	}
 }
 

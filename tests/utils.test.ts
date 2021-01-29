@@ -13,8 +13,8 @@ test('format Number', () => {
 
 test('checking Permission', () => {
 	expect(checkPerm(0x0, 0x0)).toBe(true)
-	expect(checkPerm(0x1, 0x2)).toBe(false)
-	expect(checkPerm(7, 'booster')).toBe(true)
+	expect(checkPerm(0x1, 0x4)).toBe(false)
+	expect(checkPerm(9, 'booster')).toBe(true)
 	expect(checkPerm(0, 'staff')).toBe(false)
 	expect(checkPerm(0x2, 'staff')).toBe(false)
 })

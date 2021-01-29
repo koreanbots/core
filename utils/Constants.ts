@@ -64,22 +64,56 @@ export const libs = [
 	'기타',
 	'비공개',
 ]
-export const cats = [
+export const categories = [
+	// 상위 카테고리
 	'관리',
 	'뮤직',
 	'전적',
-	'웹 대시보드',
-	'로깅',
 	'도박',
 	'게임',
+	'로깅',
+	'웹 대시보드',
 	'밈',
 	'레벨링',
 	'유틸리티',
-	'번역',
 	'대화',
 	'NSFW',
 	'검색',
+	// 검색
+	'학교',
+	'코로나19',
+	// 유틸리티
+	'번역',
+	// 전적
+	'오버워치',
+	'리그 오브 레전드',
+	'배틀그라운드',
+	'마인크래프트'
 ]
+
+export const categoryIcon = {
+	'관리': 'fas fa-cogs',
+	'뮤직': 'fas fa-music',
+	'전적': 'fas fa-puzzle-piece',
+	'웹 대시보드': 'fas fa-sliders-h',
+	'로깅': 'fas fa-pencil-alt',
+	'도박': 'fas fa-money-bill-alt',
+	'게임': 'fas fa-gamepad',
+	'밈': 'fas fa-image',
+	'레벨링': 'fas fa-angle-double-up',
+	'유틸리티': 'fas fa-tools',
+	'번역': 'fas fa-language',
+	'대화': 'fas fa-comments',
+	'NSFW': 'fas fa-exclamation-triangle',
+	'검색': 'fas fa-search',
+	'학교': 'fas fa-school',
+	'코로나19': 'fas fa-viruses',
+	'오버워치': 'fas fa-mask',
+	'리그 오브 레전드': 'fas fa-chess',
+	'배틀그라운드': 'fas fa-meteor',
+	'마인크래프트': 'fas fa-cubes'
+}
+
 export const reportCats = [
 	'불법',
 	'괴롭힘, 모욕, 명예훼손',

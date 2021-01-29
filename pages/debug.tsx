@@ -1,10 +1,8 @@
 import { useTheme } from 'next-themes'
 import dynamic from 'next/dynamic'
 import { useFormik } from 'formik'
-import MarkdownView from 'react-showdown'
-import sanitizeHtml from 'sanitize-html'
 
-import { anchorHeader, checkBrowser } from '@utils/Tools'
+import { checkBrowser } from '@utils/Tools'
 
 const Container = dynamic(()=> import('@components/Container'))
 const Divider = dynamic(()=> import('@components/Divider'))

@@ -11,7 +11,7 @@ const Categories:NextPage = () => {
 	return <Container paddingTop>
 		<h1 className='text-2xl font-bold mb-5'>전체 카테고리</h1>
 		<Segment>
-			<div className='text-center flex flex-wrap'>
+			<div className='text-center flex flex-wrap mt-1.5'>
 				{
 					categories.map(t => <Tag key={t} text={<>
 						<i className={categoryIcon[t]} /> {t}

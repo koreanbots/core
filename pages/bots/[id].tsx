@@ -182,37 +182,7 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 			<div className='markdown-body pt-10 w-full lg:pr-5 lg:w-3/4'>
 				<Advertisement />
 				<Segment>
-					<h1>이 메세지는 테스트 메세지입니다.</h1>
-					<h2>아이유 짱</h2>
-					<code>yee</code>
-					<br />
-					<br />
-					<pre>멋진 코드블럭</pre>
-					<hr />
-
-					<table>
-						<thead>
-							<tr>
-								<th>foo</th>
-								<th>bar</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>pizza</td>
-								<td>apple</td>
-							</tr>
-						</tbody>
-					</table>
-					<ul className='list-disc'>
-						<li>first</li>
-						<li>second</li>
-					</ul>
-
-					<ul className='list-decimal'>
-						<li>first</li>
-						<li>second</li>
-					</ul>
+					<Markdown text={data.desc}/>
 				</Segment>
 				<Advertisement />
 			</div>

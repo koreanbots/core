@@ -11,10 +11,9 @@ const Divider = dynamic(()=> import('@components/Divider'))
 const Segment = dynamic(()=> import('@components/Segment'))
 
 import Package from '../package.json'
+import Markdown from '@components/Markdown'
 
-
-
-const ClientInfo = ( ):JSX.Element => {
+const ClientInfo = ():JSX.Element => {
 	const formik = useFormik({
 		initialValues: {
 			markdown: `<div align="center">
@@ -82,20 +81,8 @@ https://github.com/koreanbots
 				<div className='w-full lg:w-1/2 min-h-48'>
 					<textarea className='resize-none w-full h-full dark:bg-discord-dark outline-none p-5' name='markdown' value={formik.values.markdown} onChange={formik.handleChange}/>
 				</div>
-				<div className='w-full lg:w-1/2 p-10 markdown-body'>
-					<MarkdownView markdown={ formik.values.markdown } extensions={[ anchorHeader ]} options={{ openLinksInNewWindow: true, underline: true, emoji: true, omitExtraWLInCodeBlocks: true, literalMidWordUnderscores: true, simplifiedAutoLink: true, tables: true, strikethrough: true, smoothLivePreview: true, tasklists: true, ghCompatibleHeaderId: true, encodeEmails: true }} sanitizeHtml={(html)=> sanitizeHtml(html, {
-						allowedTags: [
-							'addr', 'address', 'article', 'aside', 'h1', 'h2', 'h3', 'h4',
-							'h5', 'h6', 'section', 'blockquote', 'dd', 'div',
-							'dl', 'dt', 'hr', 'li', 'ol', 'p', 'pre',
-							'ul', 'a', 'abbr', 'b', 'bdi', 'bdo', 'br', 'cite', 'code', 'data', 'dfn',
-							'em', 'i', 'kbd', 'mark', 'q', 'rb', 'rp', 'rt', 'rtc', 'ruby', 's', 'samp',
-							'small', 'span', 'strong', 'sub', 'sup', 'time', 'u', 'var', 'wbr', 'caption',
-							'col', 'colgroup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', 'del',
-							'img', 'svg', 'input'
-						],
-						allowedAttributes: false
-					})} />
+				<div className='w-full lg:w-1/2 p-10'>
+					<Markdown text={formik.values.markdown} />
 				</div>
 			</div>
 		</Segment>

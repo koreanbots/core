@@ -125,6 +125,13 @@ export const reportCats = [
 	'기타',
 ]
 
+export const MessageColor = {
+	success: 'bg-green-200 text-green-800',
+	error: 'bg-red-200 text-red-800',
+	warning: 'bg-yellow-50 text-yellow-700',
+	info: 'bg-blue-200 text-blue-800'
+}
+
 export const BASE_URLs = {
 	api: 'https://discord.com/api',
 	cdn: 'https://cdn.discordapp.com'

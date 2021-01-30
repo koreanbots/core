@@ -96,7 +96,7 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 		<div className='lg:flex lg:flex-row-reverse'>
 			<div className='mb-1 w-full lg:w-1/4'>
 				<h2 className='3xl mb-2 font-bold'>정보</h2>
-				<div className='grid gap-4 grid-cols-2 px-4 py-4 text-black dark:text-gray-400 dark:bg-discord-black bg-little-white'>
+				<div className='grid gap-4 grid-cols-2 px-4 py-4 text-black dark:text-gray-400 dark:bg-discord-black bg-little-white rounded-sm'>
 					<div>
 						<i className='far fa-flag' /> 접두사
 					</div>

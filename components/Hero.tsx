@@ -10,9 +10,12 @@ const Search = dynamic(()=> import('@components/Search'))
 const Hero = ({ header, description }:HeroProps):JSX.Element => {
 	return <>
 		<div className='dark:bg-discord-black bg-discord-blurple'>
-			<Container className='pt-12' ignoreColor paddingTop>
-				<h1 className='text-center sm:text-left text-gray-100 text-3xl font-bold'>
+			<Container className='pt-2 md:pt-10' ignoreColor paddingTop>
+				<h1 className='hidden md:block text-left text-gray-100 text-3xl font-bold'>
 					{ header && `${header} - `}한국 디스코드봇 리스트
+				</h1>
+				<h1 className='md:hidden text-center text-gray-100 text-3xl font-semibold'>
+					{ header && <span className='text-4xl'>{header}<br/></span>}한국 디스코드봇 리스트
 				</h1>
 				<p className='text-center sm:text-left text-xl font-base mt-2'>{description || '다양한 국내 디스코드봇을 한곳에서 확인하세요!'}</p>
 				<Search />

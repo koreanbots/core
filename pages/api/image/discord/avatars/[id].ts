@@ -39,6 +39,7 @@ const Avatar = nc<ApiRequest, NextApiResponse>()
 
 
 		res.setHeader('Content-Type', `image/${ext}`)
+		res.setHeader('Cache-Control', 'public, max-age=86400')
 		img.pipe(res)
 	})
 

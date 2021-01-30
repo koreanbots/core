@@ -74,7 +74,7 @@ const Navbar = (): JSX.Element => {
 									if(!userCache) {
 										localStorage.redirectTo = window.location.href
 										setNavbarOpen(false)
-										redirectTo(router, 'logout')
+										redirectTo(router, 'login')
 									}
 								}} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100 cursor-pointer'>
 									{ userCache ? 
@@ -99,8 +99,8 @@ const Navbar = (): JSX.Element => {
 										{/* <li><hr className='border-t mx-2'/></li> */}
 										<li>
 											<a onClick={() => { 
-												localStorage.removeItem('token')
-												redirectTo(router, '/api/auth/discord/logout')
+												localStorage.removeItem('userCache')
+												redirectTo(router, 'logout')
 											}} className='px-4 py-2 block text-red-500 hover:bg-gray-100 dark:hover:bg-discord-dark-hover rounded-b cursor-pointer'><i className='fas fa-sign-out-alt' /> 로그아웃</a>
 										</li>
 									</ul>

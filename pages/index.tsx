@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 
 import { BotList } from '@types'
 import * as Query from '@utils/Query'
+import LongButton from '@components/LongButton'
 
 const Advertisement = dynamic(()=> import('@components/Advertisement'))
 const Container = dynamic(()=> import('@components/Container'))
@@ -35,6 +36,7 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 						newBots.data.slice(0, 4).map(bot=> <BotCard key={bot.id} bot={bot} />)
 					}
 				</div>
+				<LongButton href='/list/new' center>더보기</LongButton>
 				<h1 className='text-3xl font-bold'>
 					<i className='fa fa-check mr-3 mt-10 text-green-500' /> 신뢰된 봇
 				</h1>

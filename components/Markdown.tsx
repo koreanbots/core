@@ -13,7 +13,7 @@ const Markdown = ({ text }:MarkdownProps):JSX.Element => {
 				'em', 'i', 'kbd', 'mark', 'q', 'rb', 'rp', 'rt', 'rtc', 'ruby', 's', 'samp',
 				'small', 'span', 'strong', 'sub', 'sup', 'time', 'u', 'var', 'wbr', 'caption',
 				'col', 'colgroup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', 'del',
-				'img', 'svg', 'input'
+				'img', 'svg', 'path', 'input'
 			],
 			allowedAttributes: false
 		})} />

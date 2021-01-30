@@ -222,6 +222,13 @@ async function assignToken(info: TokenRegister):Promise<string> {
 	return t
 }
 
+async function Authorization(token: string) {
+	const tokenInfo = verify(token)
+	const user = await knex('users').select(['id']).where({ id: tokenInfo?.id, token })
+	if(user.length === 0) return false
+	else return user[0].id
+}
+
 async function addRequest(ip: string, map: TLRU<unknown, number>) {
 	if(!map.has(ip)) map.set(ip, 0)
 	map.set(ip, map.get(ip) + 1)
@@ -269,7 +276,8 @@ export const get = {
 			async (urls: string[]) =>
 				(await Promise.all(urls.map(async (url: string) => await getImage(url))))
 			, { cacheMap: new TLRU({ maxStoreSize: 500, maxAgeMs: 3600000 }) }),
-	}
+	},
+	Authorization
 }
 
 export const update = {

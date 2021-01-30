@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import nc from 'next-connect'
 import fetch from 'node-fetch'
-import cookie from 'cookie'
+import { serialize } from 'cookie'
 
 import { DiscordEnpoints } from '@utils/Constants'
 import { formData } from '@utils/Tools'
@@ -47,7 +47,7 @@ const Callback = nc<ApiRequest, NextApiResponse>()
 
 		const userToken = await update.assignToken({ id: user.id, access_token: token.access_token, expires_in: token.expires_in, refresh_token: token.refresh_token, email: user.email, username: user.username, discriminator: user.discriminator  })
 		const info = verify(userToken)
-		res.setHeader('set-cookie', cookie.serialize('token', userToken, {
+		res.setHeader('set-cookie', serialize('token', userToken, {
 			expires: new Date(info.exp * 1000),
 			secure: process.env.NODE_ENV === 'production',
 			path: '/'

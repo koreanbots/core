@@ -3,43 +3,17 @@ import dynamic from 'next/dynamic'
 
 import { BotList } from '@types'
 import * as Query from '@utils/Query'
-import { categories, categoryIcon } from '@utils/Constants'
 
 const Advertisement = dynamic(()=> import('@components/Advertisement'))
 const Container = dynamic(()=> import('@components/Container'))
 const BotCard = dynamic(()=> import('@components/BotCard'))
-const Wave  = dynamic(()=> import('@components/Wave'))
-const Tag = dynamic(()=> import('@components/Tag'))
-const Search = dynamic(()=> import('@components/Search'))
 const Paginator = dynamic(()=> import('@components/Paginator'))
+const Hero = dynamic(() => import('@components/Hero'))
 
 const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 	return (
 		<>
-			<div className='dark:bg-discord-black bg-discord-blurple'>
-				<Container className='pb-24 pt-20' ignoreColor paddingTop>
-					<h1 className='text-center text-gray-100 text-3xl font-bold sm:text-left'>
-						한국 디스코드봇 리스트
-					</h1>
-					<Search />
-					<div className='flex flex-wrap mt-5'>
-						<Tag key='list' text={<>
-							<i className='fas fa-heart text-red-600'/> 하트 랭킹
-						</>} dark bigger href='/list/votes' />
-						{ categories.slice(0, 5).map(t=> <Tag key={t} text={<>
-							<i className={categoryIcon[t]} /> {t}
-						</>} dark bigger href={`/categories/${t}`} />) }
-						<Tag key='tag' text={<>
-							<i className='fas fa-tag'/> 카테고리 더보기
-						</>} dark bigger href='/categories' />
-					</div>
-				</Container>
-			</div>
-			<Wave
-				color='currentColor'
-				className='dark:text-discord-black text-discord-blurple dark:bg-discord-dark bg-white hidden md:block'
-			/>
-
+			<Hero />
 			<Container>
 				<Advertisement />
 				<h1 className='text-3xl font-bold'>

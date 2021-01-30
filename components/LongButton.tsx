@@ -32,7 +32,7 @@ export default LongButton
 interface LongButtonProps {
 		newTab?: boolean
     onClick?: (event: React.KeyboardEvent<HTMLDivElement>|React.MouseEvent<HTMLDivElement>) => void
-    children: JSX.Element | JSX.Element[]
+    children: string | JSX.Element | JSX.Element[]
 		href?: string
 		center?: boolean
 }

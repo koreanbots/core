@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import { ParsedUrlQuery } from 'querystring'
 
 import { BotList } from '@types'
-import * as Query from '@utils/Query'
+import { get }from '@utils/Query'
 
 import NotFound from '../404'
 import { PageCount } from '@utils/Yup'
@@ -34,12 +34,10 @@ const Votes:NextPage<VotesProps> = ({ data }) => {
 }
 export const getServerSideProps = async (ctx:Context) => {
 	let data: BotList
-	console.log(ctx.query.page)
 	if(!ctx.query.page) ctx.query.page = '1'
 	const validate = await PageCount.validate(ctx.query.page).then(el => el).catch(() => null)
-	console.log(validate)
 	if(!validate || isNaN(Number(ctx.query.page))) data = null
-	else data = await Query.get.list.votes.load(Number(ctx.query.page))
+	else data = await get.list.votes.load(Number(ctx.query.page))
 	return {
 		props: {
 			data

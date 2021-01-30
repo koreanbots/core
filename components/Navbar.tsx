@@ -1,7 +1,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+import { redirectTo } from '@utils/Tools'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
+import DiscordAvatar from './DiscordAvatar'
 
 const Navbar = (): JSX.Element => {
 	let userCache
@@ -12,6 +15,8 @@ const Navbar = (): JSX.Element => {
 	}
 
 	const [navbarOpen, setNavbarOpen] = useState<boolean>(false)
+	const [dropdownOpen, setDropdownOpen] = useState<boolean>(false)
+	const router = useRouter()
 	return (
 		<>
 			<nav className='fixed z-40 top-0 flex flex-wrap items-center justify-between px-2 py-3 w-full text-gray-100 dark:bg-discord-black bg-discord-blurple bg-transparent lg:absolute'>
@@ -30,8 +35,6 @@ const Navbar = (): JSX.Element => {
 						>
 							<i className={`fas ${!navbarOpen ? 'fa-bars' : 'fa-times'}`}></i>
 						</button>
-					</div>
-					<div className='hidden flex-grow items-center bg-white lg:flex lg:bg-transparent lg:shadow-none'>
 						<ul className='flex flex-col list-none lg:flex-row lg:ml-auto'>
 							<li className='flex items-center'>
 								<Link href='/discord'>
@@ -62,18 +65,46 @@ const Navbar = (): JSX.Element => {
 									</a>
 								</Link>
 							</li>
-							<li className='flex items-center'>
-								<Link href={userCache ? `/users/${userCache.id}` : '/api/auth/discord'}>
-									<a onClick={()=> {
+						</ul>
+					</div>
+					<div className='hidden flex-grow items-center bg-white lg:flex lg:bg-transparent lg:shadow-none'>
+						<ul className='flex flex-col list-none lg:flex-row lg:ml-auto'>
+							<li className='flex items-center' onFocus={() => setDropdownOpen(true)} onMouseOver={() => setDropdownOpen(true)} onMouseOut={() => setDropdownOpen(false)} onBlur={() => setDropdownOpen(false)}>
+								<a onClick={()=> {
+									if(!userCache) {
 										localStorage.redirectTo = window.location.href
 										setNavbarOpen(false)
-									}} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
-										{ userCache ? 
-											<>
-												{userCache.username}
-											</> : '로그인' }
-									</a>
-								</Link>
+										redirectTo(router, 'logout')
+									}
+								}} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100 cursor-pointer'>
+									{ userCache ? 
+										<>
+											<DiscordAvatar userID={userCache.id} className='w-8 h-8 rounded-full mr-1.5' size={128}/>
+											{userCache.username} <i className='ml-2 fas fa-sort-down' /> 
+										</> : '로그인' }
+								</a>
+								
+								{ userCache ? <div className={`rounded shadow-md absolute mt-36 pin-t pin-r w-48 bg-white text-black dark:bg-very-black dark:text-gray-300 text-sm ${dropdownOpen ? 'block' : 'hidden'}`}>
+									<ul>
+										<li>
+											<Link href={`/users/${userCache.id}`}>
+												<a className='px-4 py-2 block hover:bg-gray-100 dark:hover:bg-discord-dark-hover rounded-t'><i className='fas fa-user' /> 프로필</a>
+											</Link>
+										</li>
+										<li>
+											<Link href='/panel'>
+												<a className='px-4 py-2 block hover:bg-gray-100 dark:hover:bg-discord-dark-hover'><i className='fas fa-cogs' /> 관리패널</a>
+											</Link>
+										</li>
+										{/* <li><hr className='border-t mx-2'/></li> */}
+										<li>
+											<a onClick={() => { 
+												localStorage.removeItem('token')
+												redirectTo(router, '/api/auth/discord/logout')
+											}} className='px-4 py-2 block text-red-500 hover:bg-gray-100 dark:hover:bg-discord-dark-hover rounded-b cursor-pointer'><i className='fas fa-sign-out-alt' /> 로그아웃</a>
+										</li>
+									</ul>
+								</div> : ''}
 							</li>
 						</ul>
 					</div>

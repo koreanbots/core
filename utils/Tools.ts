@@ -3,7 +3,7 @@ import { NextPageContext } from 'next'
 import cookie from 'cookie'
 
 import { ImageOptions, UserPemissionFlags } from '@types'
-import { Oauth, perms } from './Constants'
+import { KoreanbotsEndPoints, Oauth, perms } from './Constants'
 import { NextRouter } from 'next/router'
 
 export function formatNumber(value: number):string  {
@@ -81,12 +81,12 @@ export function bufferToStream(binary: Buffer) {
 	return readableInstanceStream
 }
 
-export function parseCookie(ctx: NextPageContext) {
+export function parseCookie(ctx: NextPageContext): { [key: string]: string } {
 	return cookie.parse(ctx.req.headers.cookie || '')
 }
 
 export function redirectTo(router: NextRouter, to: string) {
-	router.push(to)
+	router.push(KoreanbotsEndPoints[to] || to)
 	return
 }
 

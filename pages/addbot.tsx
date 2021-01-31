@@ -1,0 +1,146 @@
+import { NextPage, NextPageContext } from 'next'
+import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
+import Link from 'next/link'
+import { Form, Formik } from 'formik'
+
+import { get } from '@utils/Query'
+import { parseCookie, redirectTo } from '@utils/Tools'
+import { AddBotSubmitSchema } from '@utils/Yup'
+import CheckBox from '@components/Form/CheckBox'
+import Label from '@components/Form/Label'
+import Input from '@components/Form/Input'
+import Divider from '@components/Divider'
+import TextArea from '@components/Form/TextArea'
+import Segment from '@components/Segment'
+import Markdown from '@components/Markdown'
+import { categories, library } from '@utils/Constants'
+import Select from '@components/Form/Select'
+import Selects from '@components/Form/Selects'
+
+const Container = dynamic(() => import('@components/Container'))
+const Message = dynamic(() => import('@components/Message'))
+const SEO = dynamic(() => import('@components/SEO'))
+
+const AddBot:NextPage<AddBotProps> = ({ logged }) => {
+	const router = useRouter()
+	if(!logged) {
+		localStorage.redirectTo = window.location.href
+		redirectTo(router, 'login')
+		return <SEO title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.'/>
+	}
+	return <Container paddingTop>
+		<SEO title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.'/>
+		<h1 className='text-3xl font-bold'>새로운 봇 추가하기</h1>
+		<Formik initialValues={{
+			agree: false,
+			id: '',
+			prefix: '',
+			library: '',
+			website: '',
+			git: '',
+			url: '',
+			discord: '',
+			category: [],
+			intro: '',
+			desc: ''
+		}}
+		validationSchema={AddBotSubmitSchema}
+		onSubmit={() => { alert('Submit') }}>
+			{({ errors, touched, values }) => (
+				<Form>
+					{JSON.stringify(errors)}
+					{JSON.stringify(touched)}
+					<Message type='warning'>
+						<h2 className='text-lg font-black'>신청하시기전에 다음 사항을 확인해주세요!</h2>
+						<ul className='list-disc list-inside'>
+							<li><Link href='/discord'><a className='text-blue-500 hover:text-blue-600'>디스코드</a></Link>에 참가하셨나요?</li>
+							<li>봇이 <Link href='/guidelines'><a className='text-blue-500 hover:text-blue-600'>가이드라인</a></Link>을 지키고 있나요?</li>
+							<li>봇 소유자가 두 명 이상인가요? 봇 소유자는 봇이 승인된 뒤, 더 추가하실 수 있습니다.</li>
+							<li>본인이 봇의 소유자라는 것을 증명할 수 있나요? 본인이 봇 소유자임을 증명하려면, 태그가 포함되어야합니다.</li>
+				다음 명령어(접두사로 시작하는) 중 하나 이상에 소유자를 표시하셔야합니다.
+
+							<ul>
+								<li>- 도움 명령어: 도움, 도움말, 명령어, help, commands</li>
+								<li>- 도움 명령어에 소유자임을 나타내고 싶지 않으시다면, 아래 명령어를 만들어주세요<br/>
+						명령어: [접두사]hellothisisverification 응답: 유저#태그(아이디)</li>
+							</ul>
+							<li>또한, 봇을 등록하게되면 작성하신 모든 정보는 웹과 API에 공개됩니다.</li>
+						</ul>
+					</Message>
+					<Label For='agree' error={errors.agree && touched.agree ? errors.agree : null} grid={false}>
+						<CheckBox name='agree' />
+						<strong className='text-sm'>해당 내용을 숙지하였으며, 모두 이행하였고 위 내용에 해당하는 거부 사유는 답변받지 않는다는 점을 이해합니다.</strong>
+					</Label>
+					<Divider />
+
+					<Label For='id' label='봇 ID' labelDesc='봇의 클라이언트 ID를 의미합니다.' error={errors.id && touched.id ? errors.id : null} short required>
+						<Input name='id' placeholder='653534001742741552' />
+					</Label>
+					<Label For='prefix' label='접두사' labelDesc='봇의 사용시 앞 쪽에 붙은 기호를 의미합니다. (Prefix)' error={errors.prefix && touched.prefix ? errors.prefix : null} short required>
+						<Input name='prefix' placeholder='!' />
+					</Label>
+					<Label For='library' label='라이브러리' labelDesc='봇에 사용된 라이브러리를 선택해주세요. 해당되는 라이브러리가 없다면 기타를 선택해주세요.' short required error={errors.library && touched.library ? errors.library : null}>
+						<Select name='library' options={library} />
+					</Label>
+					<Label For='category' label='카테고리' labelDesc='봇에 해당되는 카테고리를 선택해주세요' required error={errors.category && touched.category ? errors.category : null}>
+						<Selects name='category' value={values.category} options={categories} />
+					</Label>
+					<Divider />
+					<Label For='website' label='웹사이트' labelDesc='봇의 웹사이트를 작성해주세요.' error={errors.website && touched.website ? errors.website : null}>
+						<Input name='website' placeholder='https://koreanbots.dev' />
+					</Label>
+					<Label For='git' label='깃' labelDesc='봇의 소스코드 깃 주소를 입력해주세요 (오픈소스인 경우)' error={errors.git && touched.git ? errors.git : null}>
+						<Input name='git' placeholder='https://github.com/koreanbots/koreanbots'/>
+					</Label>
+					<Label For='inviteLink' label='초대링크' labelDesc='봇의 초대링크입니다. 비워두시면 자동으로 생성합니다.' error={errors.url && touched.url ? errors.url : null}>
+						<Input name='url' placeholder='https://discord.com/oauth2/authorize?client_id=653534001742741552&scope=bot&permissions=0' />
+					</Label>
+					<Label For='discord' label='지원 디스코드 서버' labelDesc='봇의 지원 디스코드 서버를 입력해주세요. (봇에 대해 도움을 받을 수 있는 공간입니다.)' error={errors.discord && touched.discord ? errors.discord : null} short>
+						<>
+						discord.gg/<Input name='discord' placeholder='JEh53MQ' />
+						</>
+					</Label>
+					<Divider />
+					<Label For='intro' label='봇 소개' labelDesc='봇을 소개할 수 있는 간단한 설명을 적어주세요. (최대 60자)' error={errors.intro && touched.intro ? errors.intro : null} required>
+						<Input name='intro' placeholder='국내 봇을 한 곳에서.' />
+					</Label>
+					<Label For='intro' label='봇 설명' labelDesc='봇을 자세하게 설명해주세요! (최대 1500자)' error={errors.desc && touched.desc ? errors.desc : null} required>
+						<TextArea name='desc' placeholder='마크다운을 지원합니다' />
+					</Label>
+					<Label For='preview' label='설명 미리보기' labelDesc='다음 결과는 실제와 다를 수 있습니다'>
+						<Segment>
+							<Markdown text={values.desc} />
+						</Segment>
+					</Label>
+					{/* <div className='md:grid grid-cols-6 gap-4'>
+						<div className='flex-1'>
+							<Label For='id' error={errors.id && touched.id ? errors.id : null} label='봇 ID'>
+								<Input />
+							</Label>
+						</div>
+						<div className='flex-1'>
+							<Label For='prefix' error={errors.prefix && touched.prefix ? errors.prefix : null} label='접두사'>
+								<Field name='prefix' />
+							</Label>
+						</div>
+					</div> */}
+					<button type='submit'>제출</button>
+				</Form>
+			)}
+		</Formik>
+		
+	</Container>
+}
+
+export const getServerSideProps = async (ctx: NextPageContext) => {
+	const parsed = parseCookie(ctx)
+	const user = get.Authorization(parsed?.token)
+	return { props: { logged: !!user } }
+}
+
+interface AddBotProps {
+  logged: boolean
+}
+
+export default AddBot

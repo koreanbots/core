@@ -29,6 +29,16 @@ module.exports = {
 				'very-black': '#1b1e23'
 			}
 		},
+		minHeight: {
+			'1': '5rem',
+			'2': '14rem',
+			'3': '30rem'
+		},
+		maxHeight: {
+			'1': '5rem',
+			'2': '14rem',
+			'3': '30rem'
+		}
 	},
 	variants: {
 		extend: {},

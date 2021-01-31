@@ -10,7 +10,8 @@ const Tag = ({
 	dark = false,
 	marginBottom = 2,
 	newTab = false,
-	bigger = false
+	bigger = false,
+	...props
 }: LabelProps): JSX.Element => {
 	return href ? newTab ? (
 		<a
@@ -52,6 +53,7 @@ const Tag = ({
 		</Link>
 	) : (
 		<a
+			{...props}
 			className={`${className ?? ''} text-center text-base ${
 				dark
 					? blurple
@@ -59,7 +61,7 @@ const Tag = ({
 						: github
 							? 'bg-gray-900 text-white'
 							: 'bg-little-white-hover dark:bg-very-black'
-					: 'bg-little-white dark:bg-discord-black'
+					: `bg-little-white dark:bg-discord-black ${props.onClick ? 'hover:bg-little-white-hover dark:hover:bg-discord-dark-hover transition duration-100 ease-in' : '' }`
 			} ${!blurple && !github ? 'text-black dark:text-gray-400' : ''} ${
 				circular ? `rounded-3xl ${bigger ? 'px-3.5 py-2.5' : 'px-2.5 py-1.5'}` : `rounded ${bigger ? 'px-3 py-2' : 'px-2 py-1'}`
 			} mr-1 mb-${marginBottom}`}
@@ -81,6 +83,7 @@ interface LabelProps {
 	marginBottom?: number
 	newTab?: boolean
 	bigger?: boolean
+	[key: string]: unknown
 }
 
 export default Tag

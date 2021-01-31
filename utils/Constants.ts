@@ -39,7 +39,7 @@ export const perms = {
 	booster: 0x8,
 }
 
-export const libs = [
+export const library = [
 	'discord.js',
 	'Eris',
 	'discord.py',

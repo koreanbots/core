@@ -35,7 +35,7 @@ const Navbar = (): JSX.Element => {
 						>
 							<i className={`fas ${!navbarOpen ? 'fa-bars' : 'fa-times'}`}></i>
 						</button>
-						<ul className='flex flex-col list-none lg:flex-row lg:ml-auto'>
+						<ul className='hidden lg:flex flex-col list-none lg:flex-row lg:ml-auto'>
 							<li className='flex items-center'>
 								<Link href='/discord'>
 									<a onClick={()=> setNavbarOpen(false)} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'

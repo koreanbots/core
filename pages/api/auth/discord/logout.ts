@@ -5,6 +5,7 @@ import { serialize } from 'cookie'
 
 const Logout = nc<NextApiRequest, NextApiResponse>()
 	.get(async(req, res) => {
+		res.setHeader('Cache-control', 'no-cache')
 		res.setHeader('set-cookie', serialize('token', '', {
 			maxAge: -1,
 			path: '/'

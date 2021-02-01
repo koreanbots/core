@@ -2,7 +2,7 @@ import { NextPage, NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { FieldArray, Form, Formik } from 'formik'
+import { Form, Formik } from 'formik'
 
 import { get } from '@utils/Query'
 import { parseCookie, redirectTo } from '@utils/Tools'
@@ -46,11 +46,9 @@ const AddBot:NextPage<AddBotProps> = ({ logged }) => {
 			desc: ''
 		}}
 		validationSchema={AddBotSubmitSchema}
-		onSubmit={() => { alert('Submit') }}>
+		onSubmit={(values) => { alert(values) }}>
 			{({ errors, touched, values, setFieldTouched, setFieldValue }) => (
 				<Form>
-					{JSON.stringify(errors)}
-					{JSON.stringify(touched)}
 					<Message type='warning'>
 						<h2 className='text-lg font-black'>신청하시기전에 다음 사항을 확인해주세요!</h2>
 						<ul className='list-disc list-inside'>
@@ -128,7 +126,11 @@ const AddBot:NextPage<AddBotProps> = ({ logged }) => {
 							</Label>
 						</div>
 					</div> */}
-					<button type='submit'>제출</button>
+					<Button type='submit' onClick={() => window.scrollTo({ top: 0 })}>
+						<>
+							<i className='far fa-paper-plane'/> 제출
+						</>
+					</Button>
 				</Form>
 			)}
 		</Formik>

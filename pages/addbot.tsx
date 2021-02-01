@@ -8,6 +8,7 @@ import { get } from '@utils/Query'
 import { parseCookie, redirectTo } from '@utils/Tools'
 import { AddBotSubmitSchema } from '@utils/Yup'
 import { categories, library } from '@utils/Constants'
+import { User } from '@types'
 
 const CheckBox = dynamic(() => import('@components/Form/CheckBox'))
 const Label = dynamic(() => import('@components/Form/Label'))
@@ -23,16 +24,22 @@ const Container = dynamic(() => import('@components/Container'))
 const Message = dynamic(() => import('@components/Message'))
 const SEO = dynamic(() => import('@components/SEO'))
 
-const AddBot:NextPage<AddBotProps> = ({ logged }) => {
+const AddBot:NextPage<AddBotProps> = ({ logged, user }) => {
 	const router = useRouter()
-	if(!logged) {
+	function toLogin() {
 		localStorage.redirectTo = window.location.href
 		redirectTo(router, 'login')
+	}
+	if(!logged) {
+		toLogin()
 		return <SEO title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.'/>
 	}
 	return <Container paddingTop>
 		<SEO title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.'/>
 		<h1 className='text-3xl font-bold'>새로운 봇 추가하기</h1>
+		<div className='mt-1'>
+			안녕하세요, <span className='font-semibold'>{user.tag}</span>님! <a role='button' tabIndex={0} onKeyDown={toLogin} onClick={toLogin} className='text-discord-blurple cursor-pointer outline-none'>본인이 아니신가요?</a>
+		</div>
 		<Formik initialValues={{
 			agree: false,
 			id: '',
@@ -114,21 +121,12 @@ const AddBot:NextPage<AddBotProps> = ({ logged }) => {
 					</Label>
 					<Label For='preview' label='설명 미리보기' labelDesc='다음 결과는 실제와 다를 수 있습니다'>
 						<Segment>
-							<Markdown text={values.desc} />
+							<div className='px-5 py-5'>
+								<Markdown text={values.desc} />
+							</div>
 						</Segment>
 					</Label>
-					{/* <div className='md:grid grid-cols-6 gap-4'>
-						<div className='flex-1'>
-							<Label For='id' error={errors.id && touched.id ? errors.id : null} label='봇 ID'>
-								<Input />
-							</Label>
-						</div>
-						<div className='flex-1'>
-							<Label For='prefix' error={errors.prefix && touched.prefix ? errors.prefix : null} label='접두사'>
-								<Field name='prefix' />
-							</Label>
-						</div>
-					</div> */}
+					<Divider />
 					<Button type='submit' onClick={() => window.scrollTo({ top: 0 })}>
 						<>
 							<i className='far fa-paper-plane'/> 제출
@@ -143,12 +141,13 @@ const AddBot:NextPage<AddBotProps> = ({ logged }) => {
 
 export const getServerSideProps = async (ctx: NextPageContext) => {
 	const parsed = parseCookie(ctx)
-	const user = get.Authorization(parsed?.token)
-	return { props: { logged: !!user } }
+	const user = await get.Authorization(parsed?.token)
+	return { props: { logged: !!user, user: await get.discord.user.load(user || '') } }
 }
 
 interface AddBotProps {
-  logged: boolean
+	logged: boolean,
+	user: User
 }
 
 export default AddBot

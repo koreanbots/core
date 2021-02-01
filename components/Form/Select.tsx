@@ -1,18 +1,28 @@
-import { Field } from 'formik'
+import ReactSelect from 'react-select'
 
-const Select = ({ name, options }:SelectProps):JSX.Element => {
-	return <Field as='select' name={name} className='text-black w-full h-10 border border-grey-light rounded px-3 relative focus:shadow outline-none'>
-		{
-			options.map(o => (
-				<option key={o}>{o}</option>
-			))
+const Select = ({ placeholder, options, handleChange, handleTouch }:SelectProps):JSX.Element => {
+	return <ReactSelect styles={{
+		control: (provided) => {
+			return { ...provided, border: 'none' }
+		},
+		option: (provided) => {
+			return { ...provided, cursor: 'pointer', ':hover': {
+				opacity: '0.7'
+			} }
 		}
-	</Field>
+	}} className='border border-grey-light dark:border-transparent' classNamePrefix='outline-none text-black dark:bg-very-black dark:text-white ' placeholder={placeholder || '선택해주세요.'} options={options} onChange={handleChange} onBlur={handleTouch} noOptionsMessage={() => '검색 결과가 없습니다.'}/>
 }
 
 interface SelectProps {
-  name: string
-  options: string[]
+  placeholder?: string
+  handleChange: (value: Option) => void
+  handleTouch: () => void
+  options: Option[]
+}
+
+interface Option {
+  value: string
+  label: string
 }
 
 export default Select

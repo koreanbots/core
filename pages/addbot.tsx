@@ -2,7 +2,7 @@ import { NextPage, NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { Form, Formik } from 'formik'
+import { FieldArray, Form, Formik } from 'formik'
 
 import { get } from '@utils/Query'
 import { parseCookie, redirectTo } from '@utils/Tools'
@@ -47,7 +47,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged }) => {
 		}}
 		validationSchema={AddBotSubmitSchema}
 		onSubmit={() => { alert('Submit') }}>
-			{({ errors, touched, values }) => (
+			{({ errors, touched, values, setFieldTouched, setFieldValue }) => (
 				<Form>
 					{JSON.stringify(errors)}
 					{JSON.stringify(touched)}
@@ -81,10 +81,13 @@ const AddBot:NextPage<AddBotProps> = ({ logged }) => {
 						<Input name='prefix' placeholder='!' />
 					</Label>
 					<Label For='library' label='라이브러리' labelDesc='봇에 사용된 라이브러리를 선택해주세요. 해당되는 라이브러리가 없다면 기타를 선택해주세요.' short required error={errors.library && touched.library ? errors.library : null}>
-						<Select name='library' options={library} />
+						<Select options={library.map(el=> ({ label: el, value: el }))} handleChange={(value) => setFieldValue('library', value.value)} handleTouch={() => setFieldTouched('library', true)} />
 					</Label>
-					<Label For='category' label='카테고리' labelDesc='봇에 해당되는 카테고리를 선택해주세요' required error={errors.category && touched.category ? errors.category : null}>
-						<Selects name='category' value={values.category} options={categories} />
+					<Label For='category' label='카테고리' labelDesc='봇에 해당되는 카테고리를 선택해주세요' required error={errors.category as string}>
+						<Selects options={categories.map(el=> ({ label: el, value: el }))} handleChange={(value) => {
+							console.log(value)
+							setFieldValue('category', value.map(v=> v.value))
+						}} handleTouch={() => setFieldTouched('category', true)} />
 					</Label>
 					<Divider />
 					<Label For='website' label='웹사이트' labelDesc='봇의 웹사이트를 작성해주세요.' error={errors.website && touched.website ? errors.website : null}>

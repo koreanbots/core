@@ -1,47 +1,28 @@
-import Tag from '@components/Tag'
-import { FieldArray, useFormik } from 'formik'
+import ReactSelect from 'react-select'
 
-const Selects = ({ name, value, options }:SelectsProps):JSX.Element => {
-	const formik = useFormik({
-		initialValues: {
-			search: ''
+const Select = ({ placeholder, options, handleChange, handleTouch }:SelectProps):JSX.Element => {
+	return <ReactSelect styles={{
+		control: (provided) => {
+			return { ...provided, border: 'none' }
 		},
-		onSubmit: () => { console.log('Submit') }
-	})
-	return <div className='w-full'>
-		<input name='search' className='text-black w-full h-10 border border-grey-light rounded px-3 focus:shadow outline-none' value={formik.values.search} onChange={formik.handleChange}/>
-		<FieldArray name={name} >
-			{
-				({ insert, remove, push }) => (
-					<>
-						<div className='rounded shadow-md my-2 pin-t pin-l dark:bg-very-black h-60 overflow-y-scroll w-full'>
-							<ul>
-								{
-									options.filter(el => el.includes(formik.values.search) && !value.includes(el)).length !== 0 ? options.filter(el => el.includes(formik.values.search) && !value.includes(el)).map(el=> (
-										<li key={el} className='cursor-pointer px-3 py-3.5 hover:bg-discord-dark-hover' onClick={()=> push(el)} onKeyPress={()=> push(el)} >{el}</li>
-									)) : <li className='px-3 py-3.5'>검색 결과가 없습니다.</li>
-								}
-							</ul>
-						</div>
-						<div className='flex flex-wrap'>
-							{
-								value.map(el => (
-									<Tag key={el} text={<>{el} <i className='fas fa-times' /></>} className='cursor-pointer' onClick={() => remove(value.indexOf(el))} />
-								))
-							}
-						</div>
-					</>
-				)
-			}
-		</FieldArray>
-	</div>
-
+		option: (provided) => {
+			return { ...provided, cursor: 'pointer', ':hover': {
+				opacity: '0.7'
+			} }
+		}
+	}} isMulti className='border border-grey-light dark:border-transparent' classNamePrefix='outline-none text-black dark:bg-very-black dark:text-white cursor-pointer ' placeholder={placeholder || '선택해주세요.'} options={options} onChange={handleChange} onBlur={handleTouch} noOptionsMessage={() => '검색 결과가 없습니다.'}/>
 }
 
-interface SelectsProps {
-  name: string
-  value: string[]
-  options: string[]
+interface SelectProps {
+  placeholder?: string
+  handleChange: (value: Option[]) => void
+  handleTouch: () => void
+  options: Option[]
 }
 
-export default Selects
+interface Option {
+  value: string
+  label: string
+}
+
+export default Select

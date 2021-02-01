@@ -72,3 +72,7 @@ i {
   background: #2e3338;
   border-radius: 0;
 }
+
+.dark .__multi-value, .dark .__multi-value__label, .dark .__multi-value__remove {
+  background: #2e3338 !important;
+}

@@ -76,3 +76,7 @@ i {
 .dark .__multi-value, .dark .__multi-value__label, .dark .__multi-value__remove {
   background: #2e3338 !important;
 }
+
+button {
+  outline: none !important;
+}

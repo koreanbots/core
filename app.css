@@ -30,6 +30,45 @@ body {
   min-height: 100vh;
 }
 
+.__control--is-focused {
+  border: none !important;
+  box-shadow: none !important;
+}
+
 i {
   width: 20px
+}
+
+* ::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 8px;
+  height: 8px;
+}
+
+* ::-webkit-scrollbar-thumb, html ::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  border-radius: 5px;
+  background: #ccc;
+  -webkit-transition: color .2s ease;
+  transition: color .2s ease;
+}
+
+.dark * ::-webkit-scrollbar-thumb, html.dark ::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  border-radius: 5px;
+  background: #202225;
+  -webkit-transition: color .2s ease;
+  transition: color .2s ease;
+}
+
+* ::-webkit-scrollbar-track, html ::-webkit-scrollbar-track {
+  background: #f2f2f2;
+  border-radius: 0;
+  border: 4px solid transparent;
+  border-radius: 8px;
+}
+
+.dark * ::-webkit-scrollbar-track, html.dark ::-webkit-scrollbar-track {
+  background: #2e3338;
+  border-radius: 0;
 }

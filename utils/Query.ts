@@ -207,12 +207,13 @@ async function getDiscordUser(id: string):Promise<DiscordUser> {
 }
 
 async function assignToken(info: TokenRegister):Promise<string> {
-	const token = await knex('users').select(['token']).where({ id: info.id })
+	let token = await knex('users').select(['token']).where({ id: info.id })
 	let t: string
 	if(token.length === 0) {
-		await knex('users').insert({ date: Math.round(Number(new Date()) / 1000), id: info.id, email: info.email, tag: info.discriminator, username: info.username, discord: sign({ access_token: info.access_token, expires_in: info.expires_in, refresh_token: info.refresh_token })  })
+		t = sign({ id: info.id }, { expiresIn: '30d' })
+		await knex('users').insert({ token: t, date: Math.round(Number(new Date()) / 1000), id: info.id, email: info.email, tag: info.discriminator, username: info.username, discord: sign({ access_token: info.access_token, expires_in: info.expires_in, refresh_token: info.refresh_token })  })
+		token = await knex('users').select(['token']).where({ id: info.id })
 	} else await knex('users').update({ email: info.email, tag: info.discriminator, username: info.username, discord: sign({ access_token: info.access_token, expires_in: info.expires_in, refresh_token: info.refresh_token }) }).where({ id: info.id })
-	console.log(verify(token[0]?.token))
 	if(!verify(token[0]?.token ?? '')) {
 		t = sign({ id: info.id }, { expiresIn: '30d' })
 		await knex('users').update({ token: t }).where({ id: info.id })
@@ -222,9 +223,9 @@ async function assignToken(info: TokenRegister):Promise<string> {
 	return t
 }
 
-async function Authorization(token: string) {
+async function Authorization(token: string):Promise<string|false> {
 	const tokenInfo = verify(token)
-	const user = await knex('users').select(['id']).where({ id: tokenInfo?.id, token })
+	const user = await knex('users').select(['id']).where({ id: tokenInfo?.id ?? '', token: token ?? '' })
 	if(user.length === 0) return false
 	else return user[0].id
 }

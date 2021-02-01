@@ -17,6 +17,7 @@ import Markdown from '@components/Markdown'
 import { categories, library } from '@utils/Constants'
 import Select from '@components/Form/Select'
 import Selects from '@components/Form/Selects'
+import Button from '@components/Button'
 
 const Container = dynamic(() => import('@components/Container'))
 const Message = dynamic(() => import('@components/Message'))
@@ -46,7 +47,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged }) => {
 			desc: ''
 		}}
 		validationSchema={AddBotSubmitSchema}
-		onSubmit={(values) => { alert(values) }}>
+		onSubmit={(values) => { alert(JSON.stringify(values)) }}>
 			{({ errors, touched, values, setFieldTouched, setFieldValue }) => (
 				<Form>
 					<Message type='warning'>
@@ -67,8 +68,10 @@ const AddBot:NextPage<AddBotProps> = ({ logged }) => {
 						</ul>
 					</Message>
 					<Label For='agree' error={errors.agree && touched.agree ? errors.agree : null} grid={false}>
-						<CheckBox name='agree' />
-						<strong className='text-sm'>해당 내용을 숙지하였으며, 모두 이행하였고 위 내용에 해당하는 거부 사유는 답변받지 않는다는 점을 이해합니다.</strong>
+						<div className='flex items-center'>
+							<CheckBox name='agree' />
+							<strong className='text-sm'>해당 내용을 숙지하였으며, 모두 이행하였고 위 내용에 해당하는 거부 사유는 답변받지 않는다는 점을 이해합니다.</strong>
+						</div>
 					</Label>
 					<Divider />
 
@@ -81,7 +84,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged }) => {
 					<Label For='library' label='라이브러리' labelDesc='봇에 사용된 라이브러리를 선택해주세요. 해당되는 라이브러리가 없다면 기타를 선택해주세요.' short required error={errors.library && touched.library ? errors.library : null}>
 						<Select options={library.map(el=> ({ label: el, value: el }))} handleChange={(value) => setFieldValue('library', value.value)} handleTouch={() => setFieldTouched('library', true)} />
 					</Label>
-					<Label For='category' label='카테고리' labelDesc='봇에 해당되는 카테고리를 선택해주세요' required error={errors.category as string}>
+					<Label For='category' label='카테고리' labelDesc='봇에 해당되는 카테고리를 선택해주세요' required error={errors.category && touched.website ? errors.category as string : null}>
 						<Selects options={categories.map(el=> ({ label: el, value: el }))} handleChange={(value) => {
 							console.log(value)
 							setFieldValue('category', value.map(v=> v.value))
@@ -98,9 +101,9 @@ const AddBot:NextPage<AddBotProps> = ({ logged }) => {
 						<Input name='url' placeholder='https://discord.com/oauth2/authorize?client_id=653534001742741552&scope=bot&permissions=0' />
 					</Label>
 					<Label For='discord' label='지원 디스코드 서버' labelDesc='봇의 지원 디스코드 서버를 입력해주세요. (봇에 대해 도움을 받을 수 있는 공간입니다.)' error={errors.discord && touched.discord ? errors.discord : null} short>
-						<>
+						<div className='flex items-center'>
 						discord.gg/<Input name='discord' placeholder='JEh53MQ' />
-						</>
+						</div>
 					</Label>
 					<Divider />
 					<Label For='intro' label='봇 소개' labelDesc='봇을 소개할 수 있는 간단한 설명을 적어주세요. (최대 60자)' error={errors.intro && touched.intro ? errors.intro : null} required>

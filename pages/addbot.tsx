@@ -7,18 +7,18 @@ import { Form, Formik } from 'formik'
 import { get } from '@utils/Query'
 import { parseCookie, redirectTo } from '@utils/Tools'
 import { AddBotSubmitSchema } from '@utils/Yup'
-import CheckBox from '@components/Form/CheckBox'
-import Label from '@components/Form/Label'
-import Input from '@components/Form/Input'
-import Divider from '@components/Divider'
-import TextArea from '@components/Form/TextArea'
-import Segment from '@components/Segment'
-import Markdown from '@components/Markdown'
 import { categories, library } from '@utils/Constants'
-import Select from '@components/Form/Select'
-import Selects from '@components/Form/Selects'
-import Button from '@components/Button'
 
+const CheckBox = dynamic(() => import('@components/Form/CheckBox'))
+const Label = dynamic(() => import('@components/Form/Label'))
+const Input = dynamic(() => import('@components/Form/Input'))
+const Divider = dynamic(() => import('@components/Divider'))
+const TextArea = dynamic(() => import('@components/Form/TextArea'))
+const Segment = dynamic(() => import('@components/Segment'))
+const Markdown = dynamic(() => import('@components/Markdown'))
+const Select = dynamic(() => import('@components/Form/Select'))
+const Selects = dynamic(() => import('@components/Form/Selects'))
+const Button = dynamic(() => import('@components/Button'))
 const Container = dynamic(() => import('@components/Container'))
 const Message = dynamic(() => import('@components/Message'))
 const SEO = dynamic(() => import('@components/SEO'))

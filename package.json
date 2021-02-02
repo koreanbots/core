@@ -17,7 +17,7 @@
     "@sentry/node": "^6.0.3",
     "@sentry/webpack-plugin": "^1.14.0",
     "@types/cookie": "^0.4.0",
-    "@types/react-select": "^4.0.9",
+    "@types/react-select": "^4.0.11",
     "@types/sanitize-html": "^1.27.1",
     "autoprefixer": "^10.2.4",
     "cookie": "^0.4.1",

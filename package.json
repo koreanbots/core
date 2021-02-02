@@ -19,7 +19,7 @@
     "@types/cookie": "^0.4.0",
     "@types/react-select": "^4.0.9",
     "@types/sanitize-html": "^1.27.1",
-    "autoprefixer": "^10.2.3",
+    "autoprefixer": "^10.2.4",
     "cookie": "^0.4.1",
     "core-js": "^3.8.3",
     "dataloader": "^2.0.0",

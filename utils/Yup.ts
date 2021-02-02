@@ -43,7 +43,7 @@ interface OauthCallback {
 }
 
 export const AddBotSubmitSchema = Yup.object({
-	agree: Yup.boolean().oneOf([true], '상단의 동의 버튼을 클릭해주세요.').required('상단의 동의 버튼을 클릭해주세요.'),
+	agree: Yup.boolean().oneOf([true], '상단의 체크박스를 클릭해주세요.').required('상단의 체크박스를 클릭해주세요.'),
 	id: Yup.string().matches(/[0-9]{17,}/, '올바른 봇 ID를 입력해주세요.').required('봇 ID는 필수 항목입니다.'),
 	prefix: Yup.string().min(1, '접두사는 최소 1자여야합니다.').max(32, '접두사는 최대 32자여야합니다.').required('접두사는 필수 항목입니다.'),
 	library: Yup.string().oneOf(library).required('라이브러리는 필수 항목입니다.'),

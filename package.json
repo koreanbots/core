@@ -43,6 +43,7 @@
     "stream-cache": "^0.0.2",
     "tailwindcss": "^2.0.2",
     "tlru": "^1.0.2",
+    "url-regex": "^5.0.0",
     "yup": "^0.32.8",
     "yup-locales-ko": "^1.0.2"
   },

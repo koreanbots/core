@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
-    "@sentry/browser": "^6.0.2",
+    "@sentry/browser": "^6.0.4",
     "@sentry/node": "^6.0.3",
     "@sentry/webpack-plugin": "^1.14.0",
     "@types/cookie": "^0.4.0",

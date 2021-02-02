@@ -91,7 +91,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user }) => {
 					<Label For='library' label='라이브러리' labelDesc='봇에 사용된 라이브러리를 선택해주세요. 해당되는 라이브러리가 없다면 기타를 선택해주세요.' short required error={errors.library && touched.library ? errors.library : null}>
 						<Select options={library.map(el=> ({ label: el, value: el }))} handleChange={(value) => setFieldValue('library', value.value)} handleTouch={() => setFieldTouched('library', true)} />
 					</Label>
-					<Label For='category' label='카테고리' labelDesc='봇에 해당되는 카테고리를 선택해주세요' required error={errors.category && touched.website ? errors.category as string : null}>
+					<Label For='category' label='카테고리' labelDesc='봇에 해당되는 카테고리를 선택해주세요' required error={errors.category && touched.category ? errors.category as string : null}>
 						<Selects options={categories.map(el=> ({ label: el, value: el }))} handleChange={(value) => {
 							console.log(value)
 							setFieldValue('category', value.map(v=> v.value))

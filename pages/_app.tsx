@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import { ThemeProvider } from 'next-themes'
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
+import { init } from '@utils/Sentry'
 
 const Footer = dynamic(() => import('@components/Footer'))
 const Navbar = dynamic(() => import('@components/Navbar'))
@@ -17,7 +18,9 @@ import '../app.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '../github-markdown.css'
 
-export default function App({ Component, pageProps }: AppProps): JSX.Element {
+init()
+
+export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX.Element {
 	const [ betaKey, setBetaKey ] = useState('')
 	const [ theme, setDefaultTheme ] = useState<string|undefined>(undefined)
 	let systemColor:string
@@ -63,7 +66,7 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
 			<Navbar />
 			<div className='iu-is-the-best h-full text-black dark:text-gray-100 dark:bg-discord-dark bg-white'>
 				{
-					process.env.NEXT_PUBLIC_TESTER_KEY === Crypto.createHmac('sha256', betaKey ?? '').digest('hex') ? <Component {...pageProps} /> : <div className='text-center py-40 px-10'>
+					process.env.NEXT_PUBLIC_TESTER_KEY === Crypto.createHmac('sha256', betaKey ?? '').digest('hex') ? <Component {...pageProps} err={err} /> : <div className='text-center py-40 px-10'>
 						<h1 className='text-3xl font-bold'>주어진 테스터키를 입력해주세요.</h1><br/>
 						<input value={betaKey} name='field_name' className='text-black border outline-none px-4 py-2 rounded-2xl' type='text' placeholder='테스터 키' onChange={(e)=> { localStorage.setItem('betaKey', e.target.value); setBetaKey(e.target.value) }} />
 					</div>
@@ -72,4 +75,8 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
 			<Footer />
 		</ThemeProvider>
 	)
+}
+
+interface KoreanbotsProps extends AppProps {
+	err: unknown
 }

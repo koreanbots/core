@@ -21,7 +21,7 @@ const Tag = ({
 			className={`${className ?? ''} text-center text-base ${
 				dark
 					? blurple
-						? 'bg-discord-blurple'
+						? 'bg-discord-blurple text-white'
 						: 'bg-little-white-hover hover:bg-little-white dark:bg-very-black'
 					: github
 						? 'bg-gray-900 text-white'
@@ -39,7 +39,7 @@ const Tag = ({
 				className={`${className ?? ''} text-center text-base  ${
 					dark
 						? blurple
-							? 'bg-discord-blurple'
+							? 'bg-discord-blurple text-white'
 							: 'bg-little-white-hover hover:bg-little-white dark:bg-very-black'
 						: github
 							? 'bg-gray-900 text-white'
@@ -57,7 +57,7 @@ const Tag = ({
 			className={`${className ?? ''} text-center text-base ${
 				dark
 					? blurple
-						? 'font-bg dark:text-white bg-discord-blurple text-black'
+						? 'font-bg bg-discord-blurple text-white'
 						: github
 							? 'bg-gray-900 text-white'
 							: `bg-little-white-hover dark:bg-very-black ${props.onClick ? 'hover:bg-little-white dark:hover:bg-discord-dark-hover transition duration-100 ease-in' : '' }`

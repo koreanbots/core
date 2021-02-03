@@ -1,6 +1,6 @@
 import { Bot } from '../types'
-import { formatNumber } from '../utils/Tools'
-import { Status } from '../utils/Constants'
+import { formatNumber } from '@utils/Tools'
+import { Status } from '@utils/Constants'
 import Divider from './Divider'
 import Tag from './Tag'
 import Link from 'next/link'

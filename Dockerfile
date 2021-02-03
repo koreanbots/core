@@ -4,6 +4,13 @@ FROM node:14.15-alpine
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
+# Get Argument
+ARG SOURCE_COMMIT
+ENV SOURCE_COMMIT $SOURCE_COMMIT
+
+ARG SOURCE_BRANCH
+ENV SOURCE_BRANCH $SOURCE_BRANCH
+
 # Installing dependencies
 COPY package*.json /usr/src/app/
 COPY yarn.lock /usr/src/app/

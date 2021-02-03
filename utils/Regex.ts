@@ -1,4 +1,4 @@
-import urlRegex from 'url-regex'
+import urlRegex from 'url-regex-safe'
 
 export const ID = /^[0-9]{17,}$/
 export const Vanity = /^[A-Za-z\d-]+$/

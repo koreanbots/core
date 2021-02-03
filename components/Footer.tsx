@@ -20,6 +20,9 @@ const Footer = (): JSX.Element => {
 							<a href='https://github.com/koreanbots' className='mr-2'>
 								<i className='fab fa-github' />
 							</a>
+							<a href='https://twitter.com/koreanbots' className='mr-2'>
+								<i className='fab fa-twitter' />
+							</a>
 						</div>
 					</div>
 					<div className='flex-grow grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-2'>
@@ -75,5 +78,4 @@ const Footer = (): JSX.Element => {
 		</div>
 	)
 }
-
 export default Footer

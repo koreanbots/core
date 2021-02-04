@@ -77,7 +77,7 @@ const Navbar = (): JSX.Element => {
 										redirectTo(router, 'login')
 									}
 								}} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100 cursor-pointer'>
-									{ userCache ? 
+									{ userCache?.id ? 
 										<>
 											<DiscordAvatar userID={userCache.id} className='w-8 h-8 rounded-full mr-1.5' size={128}/>
 											{userCache.username} <i className='ml-2 fas fa-sort-down' /> 
@@ -111,11 +111,18 @@ const Navbar = (): JSX.Element => {
 				</div>
 			</nav>
 			<div
-				className={`z-30 w-full h-full fixed bg-discord-blurple dark:bg-discord-black mt-8 sm:mt-0 lg:hidden ${
+				className={`z-30 w-full h-full fixed bg-discord-blurple dark:bg-discord-black mt-8 sm:mt-0 lg:hidden overflow-y-scroll scroll-none ${
 					navbarOpen ? 'block' : 'hidden'
 				}`}
 			>
 				<nav className='mt-20'>
+					<Link href='/discord'>
+						<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+							<i className='fab fa-discord' />
+							<span className='px-2 font-medium'>디스코드 서버</span>
+						
+						</a>
+					</Link>
 					<Link href='/about'>
 						<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
 							<svg
@@ -149,28 +156,41 @@ const Navbar = (): JSX.Element => {
 							<span className='px-2 font-medium'>봇 추가하기</span>
 						</a>
 					</Link>
-					<Link href={userCache ? `/users/${userCache.id}` : '/api/auth/discord'}>
-						<a onClick={()=> {
-							localStorage.redirectTo = window.location.href
-							setNavbarOpen(false)
-						}} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
-							<i className='far fa-user' />
-							<span className='px-2 font-medium'>{ userCache ? 
-								<>
-									{userCache.username}
-								</> : '로그인' }</span>
-						</a>
-					</Link>
+					
 				</nav>
 
-				<div className='absolute bottom-0 my-10'>
-					<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
-						<i className='fab fa-discord' />
-
-						<Link href='/discord'>
-							<a onClick={()=> setNavbarOpen(false)} className='px-2 font-medium'>디스코드 서버</a>
+				<div className='my-10'>
+					{
+						userCache?.id ? <>
+							<Link href={`/users/${userCache.id}`}>
+								<a className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+									<i className='far fa-user' />
+									<span className='px-2 font-medium'>{userCache.username}</span>
+								</a>
+							</Link>
+							<Link href='/panel'>
+								<a className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+									<i className='fas fa-cogs' />
+									<span className='px-2 font-medium'>관리패널</span>
+								</a>
+							</Link>
+							<a onClick={()=> {
+								localStorage.removeItem('userCache')
+								redirectTo(router, 'logout')
+							}} className='flex items-center px-8 py-2 text-red-500 hover:text-red-400'>
+								<i className='fas fa-sign-out-alt' />
+								<span className='px-2 font-medium'>로그아웃</span>
+							</a>
+						</> : <Link href='/api/auth/discord'>
+							<a onClick={()=> {
+								localStorage.redirectTo = window.location.href
+								setNavbarOpen(false)
+							}} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+								<i className='far fa-user' />
+								<span className='px-2 font-medium'>로그인</span>
+							</a>
 						</Link>
-					</a>
+					}
 				</div>
 			</div>
 		</>

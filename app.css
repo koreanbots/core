@@ -77,6 +77,15 @@ i {
   background: #2e3338 !important;
 }
 
+.scroll-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scroll-none ::-webkit-scrollbar {
+  display: none;
+}
+
 button {
   outline: none !important;
 }

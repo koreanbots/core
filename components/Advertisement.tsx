@@ -1,5 +1,8 @@
+import { useEffect } from 'react'
+
 const Advertisement = (): JSX.Element => {
-	return <div className='my-5 mx-auto py-12 w-full text-center text-white bg-gray-700'>
+	useEffect(() => window.adsbygoogle.push({}), [])
+	return <div className={`my-1 mx-auto py-12 w-full text-center text-white ${process.env.NODE_ENV === 'production' ? '' : 'bg-gray-700'}`}>
 		{
 			process.env.NODE_ENV === 'production' ?  <ins
 				className='adsbygoogle mb-5 w-full'
@@ -11,6 +14,13 @@ const Advertisement = (): JSX.Element => {
 				data-full-width-responsive='true'
 			></ins> : 'Advertisement'
 		}</div>
+}
+
+declare global {
+	interface Window { adsbygoogle: {
+		loaded: boolean
+		push(obj: unknown): void
+	} }
 }
 
 export default Advertisement

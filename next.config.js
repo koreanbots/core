@@ -29,7 +29,7 @@ module.exports = {
 				),
 			})
 		)
-
+		console.log(process.env)
 		if (
 			SENTRY_DSN &&
       SENTRY_ORG &&

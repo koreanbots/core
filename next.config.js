@@ -39,6 +39,7 @@ module.exports = {
 			VERSION &&
       NODE_ENV === 'production'
 		) {
+			console.log('Upload Release')
 			config.plugins.push(
 				new SentryWebpackPlugin({
 					include: '.next',
@@ -49,6 +50,7 @@ module.exports = {
 				})
 			)
 		}
+		else console.log('Upload Release Ignored')
 		return config
 	},
 	experimental: { scrollRestoration: true },

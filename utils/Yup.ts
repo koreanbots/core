@@ -6,8 +6,8 @@ import { HTTPProtocol, ID, Prefix, Url, Vanity } from './Regex'
 
 Yup.setLocale(YupKorean)
 
-export const botListArgumentSchema = Yup.object({
-	type: Yup.string().oneOf(['VOTE', 'TRUSTED', 'NEW', 'PARTNERED', 'CATEGORY', 'SEARCH']).required(),
+export const botListArgumentSchema: Yup.SchemaOf<botListArgument> = Yup.object({
+	type: Yup.mixed().oneOf(['VOTE', 'TRUSTED', 'NEW', 'PARTNERED', 'CATEGORY', 'SEARCH']).required(),
 	page: Yup.number().positive().integer().notRequired().default(1),
 	query: Yup.string().notRequired()
 })
@@ -33,14 +33,31 @@ interface ImageOptions {
 type ext = 'webp' | 'png' | 'gif'
 type ImageSize = '128' | '256' | '512'
 
-export const PageCount = Yup.number().integer().positive()
+export const PageCount = Yup.number().integer().positive().required()
 
 export const OauthCallbackSchema: Yup.SchemaOf<OauthCallback> = Yup.object({
 	code: Yup.string().required()
 })
 
+export const botCategoryListArgumentSchema: Yup.SchemaOf<botCategoryListArgument> = Yup.object({
+	page: PageCount,
+	category: Yup.mixed().oneOf(categories).required()
+})
+
+interface botCategoryListArgument {
+	page: number
+	category: string
+}
 interface OauthCallback {
 	code: string
+}
+
+export const SearchQuerySchema: Yup.SchemaOf<SearchQuery> = Yup.object({
+	q: Yup.string().min(2, '최소 2글자 이상 입력해주세요.').required()
+})
+
+interface SearchQuery {
+	q: string
 }
 
 export const AddBotSubmitSchema = Yup.object({

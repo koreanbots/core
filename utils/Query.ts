@@ -259,6 +259,13 @@ export const get = {
 			(await Promise.all(ids.map(async (el: string) => await getUser(el, false)))).map(row => ({ ...row }))
 		, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 60000 }) }),
 	list: {
+		category: new DataLoader(
+			async (key: string[]) => 
+				(await Promise.all(key.map(async (k: string) => {
+					const json = JSON.parse(k)
+					return await getBotList('CATEGORY', json.page, json.category)
+				}))).map(row => ({ ...row }))
+			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 3000000 }) }),
 		votes: new DataLoader(
 			async (pages: number[]) =>
 				(await Promise.all(pages.map(async (page: number) => await getBotList('VOTE', page)))).map(row => ({ ...row }))

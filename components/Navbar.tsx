@@ -84,8 +84,8 @@ const Navbar = (): JSX.Element => {
 										</> : '로그인' }
 								</a>
 								
-								{ userCache ? <div className={`rounded shadow-md absolute mt-36 pin-t pin-r w-48 bg-white text-black dark:bg-very-black dark:text-gray-300 text-sm ${dropdownOpen ? 'block' : 'hidden'}`}>
-									<ul>
+								{ userCache ? <div className={`rounded shadow-md absolute mt-14 top-0 w-48 bg-white text-black dark:bg-very-black dark:text-gray-300 text-sm ${dropdownOpen ? 'block' : 'hidden'}`}>
+									<ul className='relative'>
 										<li>
 											<Link href={`/users/${userCache.id}`}>
 												<a className='px-4 py-2 block hover:bg-gray-100 dark:hover:bg-discord-dark-hover rounded-t'><i className='fas fa-user' /> 프로필</a>

@@ -1,10 +1,11 @@
-import { Emoji, Heading } from './Regex'
+import { Emoji, EmojiSyntax, Heading } from './Regex'
 import Twemoji from 'twemoji'
+import { KoreanbotsEmoji } from './Constants'
 
 export const anchorHeader = {
 	type:    'output',
 	regex:   Heading,
-	replace: function (__match, id:string, title:string, level:number) {
+	replace: function (__match: string, id:string, title:string, level:number) {
 
 		// github anchor style
 		const octicon_html = `<a class="anchor mr-1 align-middle" aria-hidden="true" href="#${id}">
@@ -19,11 +20,20 @@ export const anchorHeader = {
 
 export const twemoji = {
 	type: 'output',
-	regex: Emoji,
-	replace: function(__match, emoji: string) {
-		console.log(emoji)
-		const emoj = Twemoji.parse(emoji, { folder: 'svg', ext: '.svg' })
-		if(!emoj) return emoji
+	regex: `${Emoji}{2}|${Emoji}`,
+	replace: function(__match: string, two: string, one: string) {
+		const parsed = __match || two || one
+		const emoj = Twemoji.parse(parsed, { folder: 'svg', ext: '.svg' })
+		if(!emoj) return parsed
 		return emoj
 	} 
+}
+
+export const customEmoji = {
+	type: 'output',
+	regex: EmojiSyntax,
+	replace: function(__match: string, name: string) {
+		if(!name) return `:${name}:`
+		return `<img class="emoji" draggable="false" alt="${name}" src="${KoreanbotsEmoji[name]}"/>`
+	}
 }

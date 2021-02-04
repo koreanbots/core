@@ -163,6 +163,9 @@ export const git = { 'github.com': { icon: 'github', text: 'Github' },  'gitlab.
 
 export const KoreanbotsDiscord = 'https://discord.gg/JEh53MQ'
 export const ThemeColors = [{ name: '파랑', rgb: 'rgb(51, 102, 255)', hex: '#3366FF', color: 'koreanbots-blue' }, { name: '하양', rgb: 'rgb(251, 251, 251)', hex: '#FBFBFB', color: 'little-white' }, { name: '검정', rgb: 'rgb(27, 30, 35)', hex: '#1B1E23', color: 'very-black' }, { name: '보라', rgb: 'rgb(114, 137, 218)', hex: '#7289DA', color: 'discord-blurple' } ]
+export const KoreanbotsEmoji = {
+	koreanbots: '/logo.png'
+}
 export const ErrorText = {
 	DEFAULT: '예상치 못한 에러가 발생하였습니다.',
 	200: '문제가 없는데 여기를 어떻게 오셨죠?',

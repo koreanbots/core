@@ -39,7 +39,7 @@ const About:NextPage = () => {
 						<h2 className='font-semibold text-xl py-10 text-center'>
 							<i className='fas fa-quote-left text-xs align-top' />
                 국내 디스코드봇을 한 곳에서.
-							<i className='fas fa-quote-right text-xs align-top' />
+							<i className='fas fa-quote-right text-xs align-bottom' />
 						</h2>
 					</Segment>
 					<Divider className='mt-7' />

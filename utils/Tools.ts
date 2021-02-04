@@ -90,4 +90,4 @@ export function redirectTo(router: NextRouter, to: string) {
 	return
 }
 
-export { anchorHeader } from './ShowdownExtensions'
+export { anchorHeader, twemoji } from './ShowdownExtensions'

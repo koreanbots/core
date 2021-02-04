@@ -1,6 +1,9 @@
+import { Emoji, Heading } from './Regex'
+import Twemoji from 'twemoji'
+
 export const anchorHeader = {
 	type:    'output',
-	regex:   '<h\\d id="(.+?)">(.*?)<\\/h(\\d)>',
+	regex:   Heading,
 	replace: function (__match, id:string, title:string, level:number) {
 
 		// github anchor style
@@ -14,3 +17,13 @@ export const anchorHeader = {
 	}
 }
 
+export const twemoji = {
+	type: 'output',
+	regex: Emoji,
+	replace: function(__match, emoji: string) {
+		console.log(emoji)
+		const emoj = Twemoji.parse(emoji, { folder: 'svg', ext: '.svg' })
+		if(!emoj) return emoji
+		return emoj
+	} 
+}

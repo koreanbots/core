@@ -1063,3 +1063,9 @@
 .markdown-body input:not([type=checkbox]) {
   display: none;
 }
+
+.markdown-body .emoji {
+  width: 1.5rem;
+  height: 1.5rem;
+  vertical-align: center;
+}

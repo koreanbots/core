@@ -30,7 +30,11 @@ RUN env
 
 RUN env > .env.production.local
 
-RUN printf "NEXT_PUBLIC_COMMIT_HASH=$(git rev-parse HEAD)\nNEXT_PUBLIC_BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')" > .env.local
+RUN printf "NEXT_PUBLIC_TESTER_KEY=9f9c4a7ae9afeb045fe818ed8b741c70b1d25ec236b189566a0db020c5596441\nNEXT_PUBLIC_COMMIT_HASH=$(git rev-parse HEAD)\nNEXT_PUBLIC_BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')" > .env.local
+
+# Building app
+RUN yarn build
+
 
 # Building app
 RUN yarn build

@@ -21,9 +21,11 @@ COPY . /usr/src/app
 
 # env to file
 
+RUN env
+
 RUN env > .env.production.local
 
-# RUN printf "NEXT_PUBLIC_COMMIT_HASH=$(git rev-parse HEAD)\nNEXT_PUBLIC_BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')" > .env.local
+RUN printf "NEXT_PUBLIC_COMMIT_HASH=$(git rev-parse HEAD)\nNEXT_PUBLIC_BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')" > .env.local
 
 # Building app
 RUN yarn build

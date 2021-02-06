@@ -14,7 +14,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
     "@sentry/browser": "^6.1.0",
-    "@sentry/integrations": "^6.0.4",
+    "@sentry/integrations": "^6.1.0",
     "@sentry/node": "^6.1.0",
     "@sentry/webpack-plugin": "^1.14.0",
     "@types/twemoji": "^12.1.1",

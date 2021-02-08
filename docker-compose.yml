@@ -2,7 +2,7 @@ version: "3"
 
 services:
   mysql:
-    image: mariadb/server:10.5
+    image: wonderlandpark/mariadb-mroonga:latest
     hostname: mysql
     container_name: mysql
     environment:

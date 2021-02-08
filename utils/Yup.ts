@@ -48,16 +48,19 @@ interface botCategoryListArgument {
 	page: number
 	category: string
 }
+
 interface OauthCallback {
 	code: string
 }
 
 export const SearchQuerySchema: Yup.SchemaOf<SearchQuery> = Yup.object({
-	q: Yup.string().min(2, '최소 2글자 이상 입력해주세요.').required()
+	q: Yup.string().min(2, '최소 2글자 이상 입력해주세요.').required('검색어를 입력해주세요.'),
+	page: Yup.number().positive().integer().notRequired().default(1)
 })
 
 interface SearchQuery {
 	q: string
+	page: number
 }
 
 export const AddBotSubmitSchema = Yup.object({

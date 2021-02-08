@@ -152,6 +152,7 @@ export const KoreanbotsEndPoints = {
 	CDN: class CDN {
 		static avatar (id: string, options: KoreanbotsImageOptions) { return makeImageURL(`/api/image/discord/avatars/${id}`, options) }
 	},
+	baseAPI: '/api/v2',
 	login: '/api/auth/discord',
 	logout: '/api/auth/discord/logout'
 }

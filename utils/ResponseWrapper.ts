@@ -1,8 +1,9 @@
 import http from 'http'
 import { NextApiResponse } from 'next'
-export default function ResponseWrapper(
+import { ResponseProps } from '@types'
+export default function ResponseWrapper<T=unknown>(
 	res: NextApiResponse,
-	{ code, message, version = 2, data, errors }: ResponseProps
+	{ code=200, message, version = 2, data, errors }: ResponseProps<T>
 ) {
 	if (!code) throw new Error('`code` is required.')
 	if (!http.STATUS_CODES[code]) throw new Error('Invalid http code.')
@@ -11,14 +12,3 @@ export default function ResponseWrapper(
 	res.json({ code, message: message || http.STATUS_CODES[code], data, errors, version })
 }
 
-interface ResponseProps {
-	code: number
-	message?: string
-	version?: number
-	data?: Data
-	errors?: string[]
-}
-
-interface Data {
-	[key: string]: unknown
-}

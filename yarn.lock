@@ -1045,10 +1045,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-select@^4.0.12":
-  version "4.0.12"
-  resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-4.0.12.tgz#5dde0f1bbd000f7366d2dea225443a8ae0efda99"
-  integrity sha512-7AACEwGNafPDZ+l8oOp83Y6KAgBPKk8KlEZAvPYmfgvsm85g2wKZ6NAcBNXmFcHFG+tc1q7cDoNWayvEhbM+cA==
+"@types/react-select@^4.0.13":
+  version "4.0.13"
+  resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-4.0.13.tgz#8d2c41a0df7fbf67ab0b995797b0e9b4e6b38cde"
+  integrity sha512-rXYEc565IzzjgQzs9C0YCFxV/QajMZnCHG5QwRQ5BZMfH0Lj90VI/xohawemRkD46IvpaLRbO6xzSquJlgBGUA==
   dependencies:
     "@emotion/serialize" "^1.0.0"
     "@types/react" "*"

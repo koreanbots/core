@@ -1,5 +1,5 @@
 import { Bot } from '../types'
-import { formatNumber } from '@utils/Tools'
+import { formatNumber, makeBotURL } from '@utils/Tools'
 import { Status } from '@utils/Constants'
 import Divider from './Divider'
 import Tag from './Tag'
@@ -50,9 +50,7 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 							<Divider />
 							<div className='flex justify-evenly'>
 								<Link
-									href={`/bots/${
-										(bot.partnered || bot.trusted) && bot.vanity ? bot.vanity : bot.id
-									}`}
+									href={makeBotURL(bot)}
 								>
 									<a className='rounded-bl-2xl py-3 w-full text-center text-koreanbots-blue hover:text-white text-sm font-bold hover:bg-koreanbots-blue hover:shadow-lg transition duration-100 ease-in'>
 										보기

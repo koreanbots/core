@@ -2,7 +2,7 @@ import { Readable } from 'stream'
 import { NextPageContext } from 'next'
 import cookie from 'cookie'
 
-import { ImageOptions, UserPemissionFlags } from '@types'
+import { Bot, ImageOptions, UserPemissionFlags } from '@types'
 import { KoreanbotsEndPoints, Oauth, perms } from './Constants'
 import { NextRouter } from 'next/router'
 
@@ -27,6 +27,9 @@ export function makeImageURL(root:string, { format='png', size=256 }:ImageOption
 	return `${root}.${format}?size=${size}`
 }
 
+export function makeBotURL(bot: Bot): string {
+	return `/bots/${(bot.partnered || bot.trusted) && bot.vanity ? bot.vanity : bot.id}`
+}
 export function supportsWebP() {
 	const elem = document.createElement('canvas')
 	if (elem.getContext && elem.getContext('2d')) {

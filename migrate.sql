@@ -14,6 +14,10 @@ UPDATE `bots` SET vanity=NULL where vanity='false';
 UPDATE `bots` SET bg=NULL where bg='false';
 UPDATE `bots` SET banner=NULL where banner='false';
 ALTER TABLE `bots` ADD COLUMN partnered BOOLEAN NOT NULL DEFAULT 0;
+ALTER TABLE `bots` CHANGE id id VARCHAR(50) NOT NULL PRIMARY KEY;
+ALTER TABLE `bots` ENGINE=mroonga;
+ALTER TABLE `bots` COMMENT='engine "innodb"';
+ALTER TABLE bots ADD FULLTEXT KEY `search` (`name`, `intro`, `desc`) COMMENT 'tokenizer "TokenBigramIgnoreBlankSplitSymbolAlphaDigit"';
 
 -- users TABLE
 UPDATE `users` SET perm=0;

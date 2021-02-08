@@ -152,3 +152,15 @@ export enum DiscordImageType {
 	USER = 'user',
 	FALLBACK = 'default'
 }
+
+export interface ResponseProps<T=Data> {
+	code?: number
+	message?: string
+	version?: number
+	data?: T
+	errors?: string[]
+}
+
+interface Data<T=unknown> {
+	[key: string]: T
+}

@@ -24,10 +24,8 @@ export const twemoji = {
 	regex: `${Emoji}{2}|${Emoji}`,
 	replace: function(__match: string, two: string, one: string) {
 		const parsed = __match || two || one
-		console.log(parsed)
 		const emoj = Twemoji.parse(parsed, { folder: 'svg', ext: '.svg' })
 		if(!emoj) return parsed
-		console.log(emoj)
 		return emoj
 	} 
 }

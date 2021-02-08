@@ -52,10 +52,14 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 		res[0].owners = JSON.parse(res[0].owners)
 		res[0].vanity = ((res[0].trusted || res[0].partnered) && res[0].vanity) ?? null
 		if (owners)
+		{
 			res[0].owners = await Promise.all(
 				res[0].owners.map(async (u: string) => await get._rawUser.load(u))
 			)
-		res[0].owners = res[0].owners.filter((el: User | null) => el).map((row: User) => ({ ...row }))
+			res[0].owners = res[0].owners.filter((el: User | null) => el).map((row: User) => ({ ...row }))
+		}
+			
+		
 	}
 
 	return res[0] ?? null
@@ -72,11 +76,12 @@ async function getUser(id: string, bots = true):Promise<User> {
 		const discordUser = await get.discord.user.load(id)
 		res[0].tag = discordUser.discriminator
 		res[0].username = discordUser.username
-		if (bots) res[0].bots = await Promise.all(owned.map(async b => await get._rawBot.load(b.id)))
-		else res[0].bots = owned.map(async b => b.id)
-		res[0].bots = res[0].bots.filter((el: Bot | null) => el).map((row: User) => ({ ...row }))
+		if (bots) {
+			res[0].bots = await Promise.all(owned.map(async b => await get._rawBot.load(b.id)))
+			res[0].bots = res[0].bots.filter((el: Bot | null) => el).map((row: User) => ({ ...row }))
+		}
+		else res[0].bots = owned.map(el => el.id)
 	}
-
 	return res[0] || null
 }
 
@@ -142,48 +147,11 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 			.select(['id'])
 	} else if (type === 'SEARCH') {
 		if (!query) throw new Error('쿼리가 누락되었습니다.')
-		try {
-			new RegExp(query)
-			count = (
-				await knex('bots')
-					.where('name', 'REGEXP', query)
-					.orWhere('intro', 'REGEXP', query)
-					.orWhere('desc', 'REGEXP', query)
-					.orderBy('votes', 'desc')
-					.orderBy('servers', 'desc')
-					.count()
-			)[0]['count(*)']
-
-			res = await knex('bots')
-				.where('name', 'REGEXP', query)
-				.orWhere('intro', 'REGEXP', query)
-				.orWhere('desc', 'REGEXP', query)
-				.orderBy('votes', 'desc')
-				.orderBy('servers', 'desc')
-				.limit(16)
-				.offset(((page ? Number(page) : 1) - 1) * 16)
-				.select(['id'])
-		} catch (e) {
-			count = (
-				await knex('bots')
-					.where('name', 'LIKE', `%${query}%`)
-					.orWhere('intro', 'LIKE', `%${query}%`)
-					.orWhere('desc', 'LIKE', `%${query}%`)
-					.orderBy('votes', 'desc')
-					.orderBy('servers', 'desc')
-					.count()
-			)[0]['count(*)']
-
-			res = await knex('bots')
-				.where('name', 'LIKE', `%${query}%`)
-				.orWhere('intro', 'LIKE', `%${query}%`)
-				.orWhere('desc', 'LIKE', `%${query}%`)
-				.orderBy('votes', 'desc')
-				.orderBy('servers', 'desc')
-				.limit(16)
-				.offset(((page ? Number(page) : 1) - 1) * 16)
-				.select(['id'])
-		}
+		count = (
+			(await knex.raw('SELECT count(*) FROM bots WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode)', [decodeURI(query)]))
+		)[0][0]['count(*)']
+		res = (await knex.raw('SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM bots WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 16 OFFSET ?', [decodeURI(query), decodeURI(query), ((page ? Number(page) : 1) - 1) * 16]))[0]
+		console.log(res)
 	} else {
 		count = 1
 		res = []
@@ -264,6 +232,13 @@ export const get = {
 				(await Promise.all(key.map(async (k: string) => {
 					const json = JSON.parse(k)
 					return await getBotList('CATEGORY', json.page, json.category)
+				}))).map(row => ({ ...row }))
+			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 3000000 }) }),
+		search: new DataLoader(
+			async (key: string[]) => 
+				(await Promise.all(key.map(async (k: string) => {
+					const json = JSON.parse(k)
+					return await getBotList('SEARCH', json.page, json.query)
 				}))).map(row => ({ ...row }))
 			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 3000000 }) }),
 		votes: new DataLoader(

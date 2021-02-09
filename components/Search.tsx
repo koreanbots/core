@@ -35,7 +35,7 @@ const Search = (): JSX.Element => {
 			</button>
 		</div>
 		<div className={`relative ${hidden ? 'hidden' : 'block'}`}>
-			<div className='absolute rounded shadow-md my-2 pin-t pin-l text-black bg-white dark:bg-very-black h-60 md:h-80 overflow-y-scroll w-full'>
+			<div className='absolute rounded shadow-md my-2 pin-t pin-l text-black bg-white dark:text-gray-100 dark:bg-very-black h-60 md:h-80 overflow-y-scroll w-full'>
 				<ul>
 					{
 						data && data.code === 200 && data.data ? data.data.data.length === 0 ? <li className='px-3 py-3.5'>검색 결과가 없습니다.</li> : 

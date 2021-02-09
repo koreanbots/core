@@ -26,8 +26,8 @@ const Search = (): JSX.Element => {
 
 	}
 	return <>
-		<div className='relative w-full mt-5 text-black bg-white dark:text-gray-100 dark:bg-very-black flex rounded-lg z-30'>
-			<input maxLength={50} onFocus={() => setHidden(false)} onBlur={() => setHidden(true)}  className='bg-transparent flex-grow outline-none border-none shadow border-0 py-3 px-7 pr-20 h-16 text-xl' placeholder='검색...' value={query} onChange={(e)=> {
+		<div onFocus={() => setHidden(false)} onBlur={() => setTimeout(() => setHidden(true), 80)} className='relative w-full mt-5 text-black bg-white dark:text-gray-100 dark:bg-very-black flex rounded-lg z-30'>
+			<input maxLength={50}  className='bg-transparent flex-grow outline-none border-none shadow border-0 py-3 px-7 pr-20 h-16 text-xl' placeholder='검색...' value={query} onChange={(e)=> {
 				SearchResults(e.target.value)
 			}} />
 			<button className='outline-none cusor-pointer absolute right-0 top-0 mt-5 mr-5'>
@@ -49,7 +49,7 @@ const Search = (): JSX.Element => {
 										</p>
 									</div>
 								</li>
-							</Link>) : loading ? <li className='px-3 py-3.5'>검색중입니다...</li> : <li className='px-3 py-3.5'>{query && data ? data?.errors && data.errors[0] || data.message : query.length < 3 ? '최소 2글자 이상 입력해주세요.' : '검색어를 입력해주세요.'}</li>
+							</Link>) : loading ? <li className='px-3 py-3.5'>검색중입니다...</li> : <li className='px-3 py-3.5'>{query && data ? data.errors && data.errors[0] || data.message?.includes('문법') ? <>검색 문법이 잘못되었습니다.<br/><a className='text-blue-500 hover:text-blue-400' href='https://docs.koreanbots.dev/bots/usage/search' target='_blank' rel='noreferrer' >더 알아보기</a></> : data.message : query.length < 3 ? '최소 2글자 이상 입력해주세요.' : '검색어를 입력해주세요.'}</li>
 					}
 					
 				</ul>

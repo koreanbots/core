@@ -54,8 +54,8 @@ interface OauthCallback {
 }
 
 export const SearchQuerySchema: Yup.SchemaOf<SearchQuery> = Yup.object({
-	q: Yup.string().min(2, '최소 2글자 이상 입력해주세요.').required('검색어를 입력해주세요.'),
-	page: Yup.number().positive().integer().notRequired().default(1)
+	q: Yup.string().min(2, '최소 2글자 이상 입력해주세요.').max(50).required('검색어를 입력해주세요.').label('검색어'),
+	page: Yup.number().positive().integer().notRequired().default(1).label('페이지')
 })
 
 interface SearchQuery {

@@ -7,5 +7,5 @@
   "extends": [
     "config:base"
   ],
-  "timezone": "KST"
+  "timezone": "Asia/Seoul"
 }

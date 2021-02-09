@@ -26,7 +26,7 @@ const Search = (): JSX.Element => {
 
 	}
 	return <>
-		<div className='relative w-full mt-5 text-black bg-white dark:text-gray-100 dark:bg-very-black flex rounded-lg'>
+		<div className='relative w-full mt-5 text-black bg-white dark:text-gray-100 dark:bg-very-black flex rounded-lg z-30'>
 			<input maxLength={50} onFocus={() => setHidden(false)} onBlur={() => setHidden(true)}  className='bg-transparent flex-grow outline-none border-none shadow border-0 py-3 px-7 pr-20 h-16 text-xl' placeholder='검색...' value={query} onChange={(e)=> {
 				SearchResults(e.target.value)
 			}} />

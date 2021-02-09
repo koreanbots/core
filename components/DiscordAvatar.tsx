@@ -16,6 +16,7 @@ const DiscordAvatar = (props: {
 	return (
 		<img
 			alt={props.alt ?? 'Image'}
+			loading='lazy'
 			className={props.className}
 			src={
 				KoreanbotsEndPoints.CDN.avatar(props.userID, { format: !webpUnavailable ? 'webp' : 'png', size: props.size ?? 256})

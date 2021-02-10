@@ -6,7 +6,7 @@ import Tag from './Tag'
 import Link from 'next/link'
 import DiscordAvatar from './DiscordAvatar'
 
-const BotCard = ({ bot }: BotProps): JSX.Element => {
+const BotCard = ({ manage=false, bot }: BotProps): JSX.Element => {
 	return (
 		<div className='container mb-20'>
 			<div className='relative'>
@@ -56,17 +56,25 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 										보기
 									</a>
 								</Link>
-								<a
-									rel='noopener noreferrer'
-									target='_blank'
-									href={
-										bot.url ??
+								{
+									manage ? <Link href={`/manage/${bot.id}`}>
+										<a
+											className='rounded-br-2xl py-3 w-full text-center text-green-500 hover:text-white text-sm font-bold hover:bg-green-500 hover:shadow-lg transition duration-100 ease-in'
+										>
+									관리하기
+										</a>
+									</Link> : <a
+										rel='noopener noreferrer'
+										target='_blank'
+										href={
+											bot.url ??
 										`https://discordapp.com/oauth2/authorize?client_id=${bot.id}&scope=bot&permissions=0`
-									}
-									className='rounded-br-2xl py-3 w-full text-center text-discord-blurple hover:text-white text-sm font-bold hover:bg-discord-blurple hover:shadow-lg transition duration-100 ease-in'
-								>
+										}
+										className='rounded-br-2xl py-3 w-full text-center text-discord-blurple hover:text-white text-sm font-bold hover:bg-discord-blurple hover:shadow-lg transition duration-100 ease-in'
+									>
 									초대하기
-								</a>
+									</a>
+								}
 							</div>
 						</div>
 					</div>
@@ -77,6 +85,7 @@ const BotCard = ({ bot }: BotProps): JSX.Element => {
 }
 
 interface BotProps {
+	manage?: boolean
 	bot: Bot
 }
 

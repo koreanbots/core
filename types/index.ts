@@ -1,5 +1,3 @@
-export type UserPemissionFlags = 'general' | 'staff' | 'bughunter' | 'booster'
-
 export interface Bot {
 	id: string
 	name: string
@@ -19,9 +17,6 @@ export interface Bot {
 	git: string | null
 	url: string | null
 	discord: string | null
-	verified: boolean
-	trusted: boolean
-	partnered: boolean
 	vanity: string | null
 	bg: string
 	banner: string
@@ -33,9 +28,42 @@ export interface User {
 	avatar: string
 	tag: string
 	username: string
-	perm: number
+	flags: number
 	github: string
 	bots: Bot[] | string[]
+}
+
+export enum UserFlags {
+	general = 0 << 0,
+	staff = 1 << 0,
+	bughunter = 1 << 1,
+	premium = 1 << 2
+}
+
+export enum BotFlags {
+	general = 0 << 0,
+	official = 1 << 0,
+	trusted = 1 << 2,
+	partnered = 1 << 3,
+	verifed = 1 << 4,
+	premium = 1 << 5,
+	hackerthon = 1 << 6
+}
+
+export enum DiscordUserFlags {
+	DISCORD_EMPLOYEE =  1 << 0,
+	DISCORD_PARTNER =  1 << 1,
+	HYPESQUAD_EVENTS =  1 << 2,
+	BUGHUNTER_LEVEL_1 =  1 << 3,
+	HOUSE_BRAVERY =  1 << 6,
+	HOUSE_BRILLIANCE =  1 << 7,
+	HOUSE_BALANCE =  1 << 8,
+	EARLY_SUPPORTER =  1 << 9,
+	TEAM_USER =  1 << 10,
+	SYSTEM =  1 << 12,
+	BUGHUNTER_LEVEL_2 =  1 << 14,
+	VERIFIED_BOT =  1 << 16,
+	VERIFIED_DEVELOPER =  1 << 17
 }
 
 export interface BotList {

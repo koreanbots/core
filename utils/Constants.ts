@@ -32,13 +32,6 @@ export const Status = {
 	},
 }
 
-export const perms = {
-	general: 0x0,
-	staff: 0x1,
-	bughunter: 0x4,
-	booster: 0x8,
-}
-
 export const library = [
 	'discord.js',
 	'Eris',

@@ -6,7 +6,7 @@ import { josa } from 'josa'
 
 import { Bot, User } from '@types'
 import * as Query from '@utils/Query'
-import { checkPerm } from '@utils/Tools'
+import { checkUserFlag } from '@utils/Tools'
 
 import NotFound from '../404'
 
@@ -50,14 +50,14 @@ const Users: NextPage<UserProps> = ({ data }) => {
 						<span className='ml-0.5 text-gray-400 text-4xl font-semibold'>#{data.tag}</span>
 						<br />
 						<div className='badges flex'>
-							{checkPerm(data.perm, 'staff') && (
+							{checkUserFlag(data.flags, 'staff') && (
 								<Tooltip text='한국 디스코드봇 리스트 스탭입니다.' direction='left'>
 									<div className='pr-5 text-koreanbots-blue text-2xl'>
 										<i className='fas fa-hammer' />
 									</div>
 								</Tooltip>
 							)}
-							{checkPerm(data.perm, 'bughunter') && (
+							{checkUserFlag(data.flags, 'bughunter') && (
 								<Tooltip text='버그를 많이 제보해주신 분입니다.' direction='left'>
 									<div className='pr-5 text-green-500 text-2xl'>
 										<i className='fas fa-bug' />

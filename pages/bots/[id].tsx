@@ -10,7 +10,7 @@ import { Bot, User } from '@types'
 import { git, Status } from '@utils/Constants'
 import { get } from '@utils/Query'
 import Day from '@utils/Day'
-import { checkPerm, formatNumber, parseCookie } from '@utils/Tools'
+import { checkBotFlag, checkUserFlag, formatNumber, parseCookie } from '@utils/Tools'
 
 import NotFound from '../404'
 
@@ -60,7 +60,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user }) => {
 					/>
 					<h1 className='mb-2 mt-3 text-4xl font-bold'>
 						{data.name}{' '}
-						{data.trusted ? (
+						{checkBotFlag(data.flags, 'trusted') ? (
 							<Tooltip text='해당봇은 한국 디스코드봇 리스트에서 엄격한 기준을 통과한 봇입니다!' direction='left' size='large' href='/verification'>
 								<span className='text-koreanbots-blue text-3xl'>
 									<i className='fas fa-award' />
@@ -92,7 +92,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user }) => {
 					</span>
 				</LongButton>
 				{
-					((data.owners as User[]).find(el => el.id === user.id) || checkPerm(user.perm, 'staff')) && <LongButton href={`/manage/${data.id}`}>
+					((data.owners as User[]).find(el => el.id === user.id) || checkUserFlag(user.flags, 'staff')) && <LongButton href={`/manage/${data.id}`}>
 						<h4>
 							<i className='fas fa-cogs' /> 관리하기
 						</h4>
@@ -120,7 +120,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user }) => {
 					</div>
 					<div>{Day(date).fromNow(false)}</div>
 					{
-						data.verified ?
+						checkBotFlag(data.flags, 'trusted') ?
 							<Tooltip direction='left' text='해당 봇은 디스코드측에서 인증된 봇입니다.'>
 								<div>
 									<i className='fas fa-check text-discord-blurple' /> 디스코드 인증됨

@@ -5,7 +5,7 @@ import DataLoader from 'dataloader'
 import { User as DiscordUser } from 'discord.js'
 import { Stream } from 'stream'
 
-import { Bot, User, ListType, BotList, TokenRegister } from '@types'
+import { Bot, User, ListType, BotList, TokenRegister, BotFlags, DiscordUserFlags } from '@types'
 import { categories } from './Constants'
 
 import knex from './Knex'
@@ -32,7 +32,6 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 			'url',
 			'category',
 			'status',
-			'verified',
 			'trusted',
 			'partnered',
 			'discord',
@@ -48,6 +47,7 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 	if (res[0]) {
 		const discordBot = await get.discord.user.load(res[0].id)
 		if(!discordBot) return null
+		res[0].flags = res[0].flags | (discordBot.flags && DiscordUserFlags.VERIFIED_BOT ? BotFlags.verifed : 0) | res[0].trusted ? BotFlags.trusted : 0
 		res[0].tag = discordBot.discriminator
 		res[0].name = discordBot.username
 		res[0].category = JSON.parse(res[0].category)
@@ -69,7 +69,7 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 
 async function getUser(id: string, bots = true):Promise<User> {
 	const res = await knex('users')
-		.select(['id', 'perm', 'github'])
+		.select(['id', 'flags', 'perm', 'github'])
 		.where({ id })
 	if (res[0]) {
 		const owned = await knex('bots')
@@ -151,7 +151,6 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 		if (!query) throw new Error('쿼리가 누락되었습니다.')
 		count = (await knex.raw('SELECT count(*) FROM bots WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode)', [decodeURI(query)]))[0][0]['count(*)']
 		res = (await knex.raw('SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM bots WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 16 OFFSET ?', [decodeURI(query), decodeURI(query), ((page ? Number(page) : 1) - 1) * 16]))[0]
-		console.log(res)
 	} else {
 		count = 1
 		res = []

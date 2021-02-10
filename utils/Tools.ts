@@ -2,8 +2,8 @@ import { Readable } from 'stream'
 import { NextPageContext } from 'next'
 import cookie from 'cookie'
 
-import { Bot, ImageOptions, UserPemissionFlags } from '@types'
-import { KoreanbotsEndPoints, Oauth, perms } from './Constants'
+import { BotFlags, ImageOptions, UserFlags } from '@types'
+import { KoreanbotsEndPoints, Oauth } from './Constants'
 import { NextRouter } from 'next/router'
 
 export function formatNumber(value: number):string  {
@@ -17,18 +17,24 @@ export function formatNumber(value: number):string  {
 	return shortValue+suffixes[suffixNum]
 }
 
-export function checkPerm(base: number, required: number | UserPemissionFlags):boolean {
-	required = typeof required === 'number' ? required : perms[required]
-	if (typeof required !== 'number' && !required) throw new Error('올바르지 않은 권한입니다.')
+function checkFlag(base: number, required: number) {
 	return (base & required) === required
+}
+
+export function checkUserFlag(base: number, required: number | keyof typeof UserFlags):boolean {
+	return checkFlag(base, typeof required === 'number' ? required : UserFlags[required])
+}
+
+export function checkBotFlag(base: number, required: number | keyof typeof BotFlags):boolean {
+	return checkFlag(base, typeof required === 'number' ? required : BotFlags[required])
 }
 
 export function makeImageURL(root:string, { format='png', size=256 }:ImageOptions):string {
 	return `${root}.${format}?size=${size}`
 }
 
-export function makeBotURL(bot: { partnered?: boolean, trusted?: boolean, vanity?: string, id: string }): string {
-	return `/bots/${(bot.partnered || bot.trusted) && bot.vanity ? bot.vanity : bot.id}`
+export function makeBotURL({id, vanity, flags=0}: { flags?: number, vanity?:string, id: string }): string {
+	return `/bots/${(checkBotFlag(flags, 'trusted') || checkBotFlag(flags, 'partnered')) && vanity ? vanity : id}`
 }
 
 export function serialize<T>(data: T): T {

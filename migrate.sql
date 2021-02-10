@@ -21,8 +21,7 @@ ALTER TABLE `bots` ADD `flags` INT NOT NULL DEFAULT 0;
 ALTER TABLE `bots` ADD FULLTEXT KEY `search` (`name`, `intro`, `desc`) COMMENT 'tokenizer "TokenBigramIgnoreBlankSplitSymbolAlphaDigit"';
 
 -- users TABLE
-UPDATE `users` SET perm=0;
-ALTER TABLE `users` CHANGE `perm` `perm` INT(5) NOT NULL DEFAULT '0';
+ALTER TABLE `users` ADD `flags` INT NOT NULL DEFAULT '0';
 ALTER TABLE `users` ADD `email` TEXT NULL AFTER `id`;
 ALTER TABLE `users` ADD `stared` TEXT NOT NULL DEFAULT '[]';
 ALTER TABLE `users` ADD `discord` TEXT NOT NULL AFTER `token`;

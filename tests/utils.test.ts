@@ -1,5 +1,5 @@
 import { DiscordEnpoints } from '../utils/Constants'
-import { checkPerm, formatNumber } from '../utils/Tools'
+import { checkUserFlag, formatNumber } from '../utils/Tools'
 
 test('format Number', () => {
 	expect(formatNumber(1000)).toBe('1천')
@@ -12,11 +12,10 @@ test('format Number', () => {
 })
 
 test('checking Permission', () => {
-	expect(checkPerm(0x0, 0x0)).toBe(true)
-	expect(checkPerm(0x1, 0x4)).toBe(false)
-	expect(checkPerm(9, 'booster')).toBe(true)
-	expect(checkPerm(0, 'staff')).toBe(false)
-	expect(checkPerm(0x2, 'staff')).toBe(false)
+	expect(checkUserFlag(0x0, 0x0)).toBe(true)
+	expect(checkUserFlag(0x1, 0x4)).toBe(false)
+	expect(checkUserFlag(0, 'staff')).toBe(false)
+	expect(checkUserFlag(0x2, 'staff')).toBe(false)
 })
 
 test('check CDN URL', () => {

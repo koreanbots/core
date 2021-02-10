@@ -7,7 +7,7 @@ const Container = ({
 	return (
 		<div
 			className={`${
-				ignoreColor ? '' : 'bg-white dark:bg-discord-dark text-black dark:text-gray-100'
+				ignoreColor ? '' : 'text-black dark:text-gray-100'
 			} ${paddingTop ? 'pt-20' : ''}`}
 		>
 			<div className={`container mx-auto px-4 ${className}`}>{children}</div>

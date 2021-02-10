@@ -15,9 +15,9 @@ const LongButton = ({ children, newTab=false, href, onClick, center=false }:Long
 			</a>
 		</Link>
 	}
-	if(onClick) return <a role='button' tabIndex={0} onKeyPress={onClick} onClick={onClick} className={`${center ? 'justify-center ': '' }text-base bg-little-white dark:bg-discord-black text-black dark:text-gray-400 rounded flex hover:bg-little-white-hover dark:hover:bg-discord-dark-hover cursor-pointer px-4 py-4 mb-1`}>
+	if(onClick) return <div onKeyPress={onClick} onClick={onClick} className={`${center ? 'justify-center ': '' }text-base bg-little-white dark:bg-discord-black text-black dark:text-gray-400 rounded flex hover:bg-little-white-hover dark:hover:bg-discord-dark-hover cursor-pointer px-4 py-4 mb-1`}>
 		{children}
-	</a>
+	</div>
 
 	return <a  className={`${center ? 'justify-center ': '' }text-base bg-little-white dark:bg-discord-black text-black dark:text-gray-400 rounded flex hover:bg-little-white-hover dark:hover:bg-discord-dark-hover cursor-pointer px-4 py-4 mb-1`}>
 		{children}

@@ -8,7 +8,7 @@ import DiscordAvatar from './DiscordAvatar'
 
 const BotCard = ({ manage=false, bot }: BotProps): JSX.Element => {
 	return (
-		<div className='container mb-20'>
+		<div className='container mb-16'>
 			<div className='relative'>
 				<div className='container mx-auto'>
 					<div className='h-full'>

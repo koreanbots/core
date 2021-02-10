@@ -17,7 +17,8 @@ ALTER TABLE `bots` ADD COLUMN partnered BOOLEAN NOT NULL DEFAULT 0;
 ALTER TABLE `bots` CHANGE id id VARCHAR(50) NOT NULL PRIMARY KEY;
 ALTER TABLE `bots` ENGINE=mroonga;
 ALTER TABLE `bots` COMMENT='engine "innodb"';
-ALTER TABLE bots ADD FULLTEXT KEY `search` (`name`, `intro`, `desc`) COMMENT 'tokenizer "TokenBigramIgnoreBlankSplitSymbolAlphaDigit"';
+ALTER TABLE `bots` ADD `flags` INT NOT NULL DEFAULT 0;
+ALTER TABLE `bots` ADD FULLTEXT KEY `search` (`name`, `intro`, `desc`) COMMENT 'tokenizer "TokenBigramIgnoreBlankSplitSymbolAlphaDigit"';
 
 -- users TABLE
 UPDATE `users` SET perm=0;
@@ -32,27 +33,15 @@ UPDATE `users` SET votes="{}";
 
 -- submitted TABLE
 ALTER TABLE `submitted` CHANGE `servers` `servers` INT(11) NULL DEFAULT NULL, CHANGE `web` `web` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL, CHANGE `git` `git` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL, CHANGE `url` `url` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL, CHANGE `category` `category` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '\'[]\'', CHANGE `status` `status` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '\'???\'', CHANGE `name` `name` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL, CHANGE `avatar` `avatar` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL, CHANGE `verified` `verified` TINYINT(1) NULL DEFAULT '0', CHANGE `trusted` `trusted` TINYINT(1) NULL DEFAULT '0', CHANGE `discord` `discord` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
-ALTER TABLE `submitted` CHANGE `status` `status` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
-
--- submits TABLE
-
-CREATE TABLE `submits` (
-  `id` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `date` int(11) NOT NULL,
-  `owners` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lib` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `prefix` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `intro` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `desc` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `web` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `git` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `url` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `category` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT '\'[]\'',
-  `tag` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `discord` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `state` int(1) NOT NULL DEFAULT 0,
-  `reason` tinytext COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+ALTER TABLE `submitted` DROP `name`;
+ALTER TABLE `submitted` DROP `tag`;
+ALTER TABLE `submitted` DROP `votes`;
+ALTER TABLE `submitted` DROP `servers`;
+ALTER TABLE `submitted` DROP `status`;
+ALTER TABLE `submitted` DROP `verified`;
+ALTER TABLE `submitted` DROP `trusted`;
+ALTER TABLE `submitted` DROP `avatar`;
+ALTER TABLE `submitted` ADD `reason` TINYTEXT NULL DEFAULT NULL;  
 
 -- reports TABLE
 

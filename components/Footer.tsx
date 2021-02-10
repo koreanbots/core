@@ -2,10 +2,10 @@ import Link from 'next/link'
 import Container from './Container'
 import Wave from './Wave'
 
-const Footer = (): JSX.Element => {
+const Footer = ({ color }:FooterProps): JSX.Element => {
 	return (
 		<div className='releative'>
-			<Wave color='currentColor' className='dark:text-discord-dark text-white bg-discord-black hidden md:block' />
+			<Wave color='currentColor' className={`${color ?? 'dark:text-discord-dark text-white bg-discord-black'} hidden md:block`} />
 			<div className='bottom-0 text-white bg-discord-black'>
 				<Container className='pb-20 pt-10 w-11/12 lg:flex lg:pt-0 lg:w-4/5' ignoreColor>
 					<div className='w-full md:w-2/5'>
@@ -78,4 +78,9 @@ const Footer = (): JSX.Element => {
 		</div>
 	)
 }
+
+interface FooterProps {
+	color?: string
+}
+
 export default Footer

@@ -38,7 +38,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user }) => {
 		<SEO title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.'/>
 		<h1 className='text-3xl font-bold'>새로운 봇 추가하기</h1>
 		<div className='mt-1'>
-			안녕하세요, <span className='font-semibold'>{user.tag}</span>님! <a role='button' tabIndex={0} onKeyDown={toLogin} onClick={toLogin} className='text-discord-blurple cursor-pointer outline-none'>본인이 아니신가요?</a>
+			안녕하세요, <span className='font-semibold'>{user.username}#{user.tag}</span>님! <a role='button' tabIndex={0} onKeyDown={toLogin} onClick={toLogin} className='text-discord-blurple cursor-pointer outline-none'>본인이 아니신가요?</a>
 		</div>
 		<Formik initialValues={{
 			agree: false,
@@ -142,7 +142,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user }) => {
 export const getServerSideProps = async (ctx: NextPageContext) => {
 	const parsed = parseCookie(ctx)
 	const user = await get.Authorization(parsed?.token)
-	return { props: { logged: !!user, user: await get.discord.user.load(user || '') } }
+	return { props: { logged: !!user, user: await get.user.load(user || '') } }
 }
 
 interface AddBotProps {

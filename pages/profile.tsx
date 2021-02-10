@@ -1,4 +1,3 @@
-import { KoreanbotsDiscord } from '@utils/Constants'
 import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 

@@ -1,5 +1,5 @@
 import { Bot } from '../types'
-import { formatNumber, makeBotURL } from '@utils/Tools'
+import { checkBotFlag, formatNumber, makeBotURL } from '@utils/Tools'
 import { Status } from '@utils/Constants'
 import Divider from './Divider'
 import Tag from './Tag'
@@ -13,7 +13,7 @@ const BotCard = ({ manage=false, bot }: BotProps): JSX.Element => {
 				<div className='relative'>
 					<div className='container mx-auto'>
 						<div className='h-full'>
-							<div className='relative mx-auto h-full text-black dark:text-white dark:bg-discord-black bg-little-white rounded-2xl shadow-xl'>
+							<div className='relative mx-auto h-full text-black dark:text-white dark:bg-discord-black bg-little-white rounded-2xl shadow-xl' style={checkBotFlag(bot.flags, 'trusted') && bot.banner ? { background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${bot.banner}") center top / cover no-repeat`, color: 'white' } : {}}>
 								<div className='flex h-44'>
 									<div className='w-2/3'>
 										<div className='flex justify-start'>

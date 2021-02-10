@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { redirectTo } from '@utils/Tools'
 import Link from 'next/link'
@@ -23,7 +24,7 @@ const Navbar = (): JSX.Element => {
 				<div className='container flex flex-wrap items-center justify-between mx-auto px-4'>
 					<div className='relative flex justify-between w-full lg:justify-start lg:w-auto'>
 						<Link href='/'>
-							<a onClick={()=> setNavbarOpen(false)} className='logofont text-large whitespace-no-wrap inline-block mr-4 py-2 hover:text-gray-300 font-semibold leading-relaxed uppercase sm:text-2xl'
+							<a className='logofont text-large whitespace-no-wrap inline-block mr-4 py-2 hover:text-gray-300 font-semibold leading-relaxed uppercase sm:text-2xl'
 							>
 							KOREANBOTS
 							</a>
@@ -38,7 +39,7 @@ const Navbar = (): JSX.Element => {
 						<ul className='hidden lg:flex flex-col list-none lg:flex-row lg:ml-auto'>
 							<li className='flex items-center'>
 								<Link href='/discord'>
-									<a onClick={()=> setNavbarOpen(false)} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'
+									<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'
 									>
 									디스코드
 									</a>
@@ -46,21 +47,21 @@ const Navbar = (): JSX.Element => {
 							</li>
 							<li className='flex items-center'>
 								<Link href='/about'>
-									<a onClick={()=> setNavbarOpen(false)} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
+									<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
 										소개
 									</a>
 								</Link>
 							</li>
 							<li className='flex items-center'>
 								<Link href='/api'>
-									<a onClick={()=> setNavbarOpen(false)} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
+									<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
 										API
 									</a>
 								</Link>
 							</li>
 							<li className='flex items-center'>
 								<Link href='/addbot'>
-									<a onClick={()=> setNavbarOpen(false)} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
+									<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
 										봇 추가하기
 									</a>
 								</Link>
@@ -69,20 +70,30 @@ const Navbar = (): JSX.Element => {
 					</div>
 					<div className='hidden flex-grow items-center bg-white lg:flex lg:bg-transparent lg:shadow-none'>
 						<ul className='flex flex-col list-none lg:flex-row lg:ml-auto'>
-							<li className='flex items-center' onFocus={() => setDropdownOpen(true)} onMouseOver={() => setDropdownOpen(true)} onMouseOut={() => setDropdownOpen(false)} onBlur={() => setDropdownOpen(false)}>
-								<a onClick={()=> {
-									if(!userCache) {
-										localStorage.redirectTo = window.location.href
-										setNavbarOpen(false)
-										redirectTo(router, 'login')
-									}
-								}} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100 cursor-pointer'>
-									{ userCache?.id ? 
-										<>
+							<li className='flex items-center'>
+								{
+									userCache?.id && userCache.version === 2 ? 
+										<a onFocus={() => setDropdownOpen(true)} onMouseOver={() => setDropdownOpen(true)} onMouseOut={() => setDropdownOpen(false)} onBlur={() => setDropdownOpen(false)} 
+											className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100 cursor-pointer'>
 											<DiscordAvatar userID={userCache.id} className='w-8 h-8 rounded-full mr-1.5' size={128}/>
 											{userCache.username} <i className='ml-2 fas fa-sort-down' /> 
-										</> : '로그인' }
-								</a>
+										</a> :
+										<a tabIndex={0} onKeyPress={()=> {
+											if(!userCache) {
+												localStorage.redirectTo = window.location.href
+												setNavbarOpen(false)
+												redirectTo(router, 'login')
+											}
+										}} onClick={()=> {
+											if(!userCache) {
+												localStorage.redirectTo = window.location.href
+												setNavbarOpen(false)
+												redirectTo(router, 'login')
+											}
+										}} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100 cursor-pointer'>
+											로그인
+										</a>
+								}
 								
 								{ userCache ? <div className={`rounded shadow-md absolute mt-14 top-0 w-48 bg-white text-black dark:bg-very-black dark:text-gray-300 text-sm ${dropdownOpen ? 'block' : 'hidden'}`}>
 									<ul className='relative'>
@@ -98,7 +109,11 @@ const Navbar = (): JSX.Element => {
 										</li>
 										{/* <li><hr className='border-t mx-2'/></li> */}
 										<li>
-											<a onClick={() => { 
+											<a onKeyPress={() => { 
+												localStorage.removeItem('userCache')
+												redirectTo(router, 'logout')
+											}
+											} onClick={() => { 
 												localStorage.removeItem('userCache')
 												redirectTo(router, 'logout')
 											}} className='px-4 py-2 block text-red-500 hover:bg-gray-100 dark:hover:bg-discord-dark-hover rounded-b cursor-pointer'><i className='fas fa-sign-out-alt' /> 로그아웃</a>
@@ -161,7 +176,7 @@ const Navbar = (): JSX.Element => {
 
 				<div className='my-10'>
 					{
-						userCache?.id ? <>
+						userCache?.id && userCache.version === 2? <>
 							<Link href={`/users/${userCache.id}`}>
 								<a className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
 									<i className='far fa-user' />

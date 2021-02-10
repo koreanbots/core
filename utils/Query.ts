@@ -161,9 +161,6 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 async function getImage(url: string):Promise<Stream> {
 	const res = await fetch(url)
 	if(!res.ok) return null
-	// const buf = await res.buffer()
-	// const readable = bufferToStream(buf)
-	// await readable.read()
 	const cache = new StreamCache()
 	return res.body.pipe(cache)
 }

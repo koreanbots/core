@@ -35,7 +35,6 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 			'trusted',
 			'partnered',
 			'discord',
-			'boosted',
 			'state',
 			'vanity',
 			'bg',
@@ -47,12 +46,13 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 	if (res[0]) {
 		const discordBot = await get.discord.user.load(res[0].id)
 		if(!discordBot) return null
-		res[0].flags = res[0].flags | (discordBot.flags && DiscordUserFlags.VERIFIED_BOT ? BotFlags.verifed : 0) | res[0].trusted ? BotFlags.trusted : 0
+		res[0].flags = res[0].flags | (discordBot.flags && DiscordUserFlags.VERIFIED_BOT ? BotFlags.verifed : 0) | (res[0].trusted ? BotFlags.trusted : 0)
 		res[0].tag = discordBot.discriminator
 		res[0].name = discordBot.username
 		res[0].category = JSON.parse(res[0].category)
 		res[0].owners = JSON.parse(res[0].owners)
-		res[0].vanity = ((res[0].trusted || res[0].partnered) && res[0].vanity) ?? null
+		delete res[0].trusted
+		delete res[0].partnered
 		if (owners)
 		{
 			res[0].owners = await Promise.all(

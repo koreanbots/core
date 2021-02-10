@@ -18,7 +18,8 @@ const DiscordCallback:NextPage<DiscordCallbackProps> = ({ data }) => {
 			id: data.id,
 			username: data.username,
 			tag: data.tag,
-			perm: data.perm
+			perm: data.perm,
+			version: 2
 		})
 		setRedirect(true)
 	}, [ data ])

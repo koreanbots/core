@@ -16,7 +16,7 @@ const New:NextPage<NewProps> = ({ data }) => {
 		<SEO title='새로운 봇' description='최근에 추가된 봇들입니다!' />
 		<Container>
 			<Advertisement />
-			<div className='grid gap-4 2xl:grid-cols-4 md:grid-cols-2 mt-20'>
+			<div className='grid gap-x-4 2xl:grid-cols-4 md:grid-cols-2 mt-20'>
 				{
 					data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
 				}

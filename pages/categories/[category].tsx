@@ -22,7 +22,7 @@ const Category: NextPage<CategoryProps> = ({ data, query }) => {
 
 		<Container>
 			<Advertisement />
-			<div className='grid gap-4 2xl:grid-cols-4 md:grid-cols-2 mt-20'>
+			<div className='grid gap-x-4 2xl:grid-cols-4 md:grid-cols-2 mt-20'>
 				{
 					data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
 				}

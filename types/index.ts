@@ -3,6 +3,7 @@ export type UserPemissionFlags = 'general' | 'staff' | 'bughunter' | 'booster'
 export interface Bot {
 	id: string
 	name: string
+	flags: number
 	state: BotState
 	tag: string
 	avatar: string
@@ -14,10 +15,10 @@ export interface Bot {
 	intro: string
 	desc: string
 	category: Category[]
-	web?: string
-	git?: string
-	url?: string
-	discord?: string
+	web: string | null
+	git: string | null
+	url: string | null
+	discord: string | null
 	verified: boolean
 	trusted: boolean
 	partnered: boolean
@@ -42,6 +43,24 @@ export interface BotList {
 	data: Bot[]
 	currentPage: number
 	totalPage: number
+}
+
+export interface SubmittedBot {
+	id: string
+	date: number
+	owners: User[]
+	lib: Library
+	prefix: string
+	intro: string
+	desc: string
+	category: Category[]
+	web: string | null
+	git: string | null
+	url: string | null
+	discord: string | null
+	state: number
+	reason: string | null
+
 }
 
 export interface DiscordTokenInfo {

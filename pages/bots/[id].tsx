@@ -2,14 +2,15 @@ import { NextPage, NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+
 import { SnowflakeUtil } from 'discord.js'
 import { ParsedUrlQuery } from 'querystring'
 import { Bot, User } from '@types'
 
 import { git, Status } from '@utils/Constants'
-import * as Query from '@utils/Query'
+import { get } from '@utils/Query'
 import Day from '@utils/Day'
-import { formatNumber } from '@utils/Tools'
+import { checkPerm, formatNumber, parseCookie } from '@utils/Tools'
 
 import NotFound from '../404'
 
@@ -25,7 +26,7 @@ const Advertisement = dynamic(() => import('@components/Advertisement'))
 const Tooltip = dynamic(() => import('@components/Tooltip'))
 const Markdown = dynamic(() => import ('@components/Markdown'))
 
-const Bots: NextPage<BotsProps> = ({ data, date }) => {
+const Bots: NextPage<BotsProps> = ({ data, date, user }) => {
 	const router = useRouter()
 	if (!data || !data.id) return <NotFound />
 	if(data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}`)
@@ -70,7 +71,7 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 				</div>
 				<p className='dark:text-gray-300 text-gray-800 text-base'>{data.intro}</p>
 			</div>
-			<div className='w-full lg:w-1/4'>
+			<div className='w-full lg:w-1/4 lg:pt-10'>
 				<LongButton
 					newTab
 					href={
@@ -90,6 +91,13 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 						{formatNumber(data.votes)}
 					</span>
 				</LongButton>
+				{
+					((data.owners as User[]).find(el => el.id === user.id) || checkPerm(user.perm, 'staff')) && <LongButton href={`/manage/${data.id}`}>
+						<h4>
+							<i className='fas fa-cogs' /> 관리하기
+						</h4>
+					</LongButton>
+				}
 			</div>
 		</div>
 		<Divider className='px-5' />
@@ -191,11 +199,14 @@ const Bots: NextPage<BotsProps> = ({ data, date }) => {
 }
 
 export const getServerSideProps = async (ctx: Context) => {
-	const data = await Query.get.bot.load(ctx.query.id) ?? { id: '' }
+	const parsed = parseCookie(ctx)
+	const user = await get.Authorization(parsed?.token)
+	const data = await get.bot.load(ctx.query.id) ?? { id: '' }
 	return {
 		props: {
 			data,
-			date: SnowflakeUtil.deconstruct(data.id ?? '0').date.toJSON()
+			date: SnowflakeUtil.deconstruct(data.id ?? '0').date.toJSON(),
+			user: await get.user.load(user || '')
 		},
 	}
 }
@@ -205,7 +216,7 @@ export default Bots
 interface BotsProps {
 	data: Bot
 	date: Date
-	votes: string
+	user: User
 }
 interface Context extends NextPageContext {
 	query: URLQuery

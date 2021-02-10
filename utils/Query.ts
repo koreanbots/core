@@ -11,6 +11,7 @@ import { categories } from './Constants'
 import knex from './Knex'
 import DiscordBot from './DiscordBot'
 import { sign, verify } from './Jwt'
+import { serialize } from './Tools'
 
 export const imageRateLimit = new TLRU<unknown, number>({ maxAgeMs: 60000 })
 
@@ -18,6 +19,7 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 	const res = await knex('bots')
 		.select([
 			'id',
+			'flags',
 			'owners',
 			'lib',
 			'prefix',
@@ -158,6 +160,16 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 	return { type, data: (await Promise.all(res.map(async el => await getBot(el.id)))).map(r=> ({...r})), currentPage: page, totalPage: Math.ceil(Number(count) / 16) }
 }
 
+async function getBotSubmits(id: string) {
+	let res = await knex('submitted').select(['id', 'date', 'category', 'lib', 'prefix', 'intro', 'desc', 'url', 'web', 'git', 'discord', 'state', 'owners', 'reason']).orderBy('date', 'desc').where('owners', 'LIKE', `%${id}%`)
+	res = await Promise.all(res.map(async el=> {
+		el.category = JSON.parse(el.category)
+		el.owners = await Promise.all(JSON.parse(el.owners).map(async (u: string)=> await get.user.load(u)))
+		return el
+	}))
+	return res
+}
+
 async function getImage(url: string):Promise<Stream> {
 	const res = await fetch(url)
 	if(!res.ok) return null
@@ -207,19 +219,23 @@ export const get = {
 	},
 	bot: new DataLoader(
 		async (ids: string[]) =>
-			(await Promise.all(ids.map(async (el: string) => await getBot(el)))).map(row => ({ ...row }))
+			(await Promise.all(ids.map(async (el: string) => await getBot(el)))).map(row => serialize(row))
 		, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 60000 }) }),
 	_rawBot: new DataLoader(
 		async (ids: string[]) =>
-			(await Promise.all(ids.map(async (el: string) => await getBot(el, false)))).map(row => ({ ...row }))
+			(await Promise.all(ids.map(async (el: string) => await getBot(el, false)))).map(row => serialize(row))
 		, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 60000 }) }),
 	user: new DataLoader(
 		async (ids: string[]) =>
-			(await Promise.all(ids.map(async (el: string) => await getUser(el)))).map(row => ({ ...row }))
+			(await Promise.all(ids.map(async (el: string) => await getUser(el)))).map(row => serialize(row))
 		, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 60000 }) }),
 	_rawUser: new DataLoader(
 		async (ids: string[]) =>
-			(await Promise.all(ids.map(async (el: string) => await getUser(el, false)))).map(row => ({ ...row }))
+			(await Promise.all(ids.map(async (el: string) => await getUser(el, false)))).map(row => serialize(row))
+		, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 60000 }) }),
+	botSubmits: new DataLoader(
+		async (ids: string[]) =>
+			(await Promise.all(ids.map(async (el: string) => await getBotSubmits(el)))).map(row => serialize(row))
 		, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 60000 }) }),
 	list: {
 		category: new DataLoader(
@@ -227,26 +243,26 @@ export const get = {
 				(await Promise.all(key.map(async (k: string) => {
 					const json = JSON.parse(k)
 					return await getBotList('CATEGORY', json.page, json.category)
-				}))).map(row => ({ ...row }))
+				}))).map(row => serialize(row))
 			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 3000000 }) }),
 		search: new DataLoader(
 			async (key: string[]) => 
 				(await Promise.all(key.map(async (k: string) => {
 					const json = JSON.parse(k)
 					return await getBotList('SEARCH', json.page, json.query)
-				}))).map(row => ({ ...row }))
+				}))).map(row => serialize(row))
 			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 3000000 }) }),
 		votes: new DataLoader(
 			async (pages: number[]) =>
-				(await Promise.all(pages.map(async (page: number) => await getBotList('VOTE', page)))).map(row => ({ ...row }))
+				(await Promise.all(pages.map(async (page: number) => await getBotList('VOTE', page)))).map(row => serialize(row))
 			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 3000000 }) }),
 		new: new DataLoader(
 			async (pages: number[]) =>
-				(await Promise.all(pages.map(async (page: number) => await getBotList('NEW', page)))).map(row => ({ ...row }))
+				(await Promise.all(pages.map(async (page: number) => await getBotList('NEW', page)))).map(row => serialize(row))
 			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 1800000 }) }),
 		trusted: new DataLoader(
 			async (pages: number[]) =>
-				(await Promise.all(pages.map(async (page: number) => await getBotList('TRUSTED', page)))).map(row => ({ ...row }))
+				(await Promise.all(pages.map(async (page: number) => await getBotList('TRUSTED', page)))).map(row => serialize(row))
 			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 3600000 }) }),
 	},
 	images: {

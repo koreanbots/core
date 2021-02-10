@@ -27,9 +27,14 @@ export function makeImageURL(root:string, { format='png', size=256 }:ImageOption
 	return `${root}.${format}?size=${size}`
 }
 
-export function makeBotURL(bot: Bot): string {
+export function makeBotURL(bot: { partnered?: boolean, trusted?: boolean, vanity?: string, id: string }): string {
 	return `/bots/${(bot.partnered || bot.trusted) && bot.vanity ? bot.vanity : bot.id}`
 }
+
+export function serialize<T>(data: T): T {
+	return JSON.parse(JSON.stringify(data))
+}
+
 export function supportsWebP() {
 	const elem = document.createElement('canvas')
 	if (elem.getContext && elem.getContext('2d')) {

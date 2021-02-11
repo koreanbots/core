@@ -15,7 +15,7 @@ const Footer = ({ color, theme, setTheme }:FooterProps): JSX.Element => {
 				<Container className='pb-20 pt-10 w-11/12 lg:flex lg:pt-0 lg:w-4/5' ignoreColor>
 					<div className='w-full md:w-2/5'>
 						<h1 className='text-koreanbots-blue text-3xl font-extrabold'>국내봇을 한 곳에서.</h1>
-						<span className='text-base'>2020 Koreanbots, All rights reserved.</span>
+						<span className='text-base'>2020-2021 Koreanbots, All rights reserved.</span>
 						<div className='text-2xl'>
 							<Link href='/discord'>
 								<a className='mr-2'>

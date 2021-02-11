@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 import { SnowflakeUtil } from 'discord.js'
 import { ParsedUrlQuery } from 'querystring'
-import { Bot, User } from '@types'
+import { Bot, Theme, User } from '@types'
 
 import { git, Status } from '@utils/Constants'
 import { get } from '@utils/Query'
@@ -27,7 +27,7 @@ const Advertisement = dynamic(() => import('@components/Advertisement'))
 const Tooltip = dynamic(() => import('@components/Tooltip'))
 const Markdown = dynamic(() => import ('@components/Markdown'))
 
-const Bots: NextPage<BotsProps> = ({ data, date, user, footerControl }) => {
+const Bots: NextPage<BotsProps> = ({ data, date, user, footerControl, theme, setTheme }) => {
 	const router = useRouter()
 	if (!data || !data.id) return <NotFound />
 	if(data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}`)
@@ -200,7 +200,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, footerControl }) => {
 			</div>
 		</Container>
 
-		<Footer color='bg-transparent dark:text-discord-black text-white hidden md:block transform rotate-180'/>
+		<Footer color='bg-transparent dark:text-discord-black text-white hidden md:block transform rotate-180' theme={theme} setTheme={setTheme} />
 	</div>
 }
 
@@ -224,6 +224,8 @@ interface BotsProps {
 	date: Date
 	user: User
 	footerControl(val: boolean): void
+	theme: Theme
+	setTheme(value: Theme): void
 }
 interface Context extends NextPageContext {
 	query: URLQuery

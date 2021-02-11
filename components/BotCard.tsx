@@ -9,7 +9,7 @@ import DiscordAvatar from './DiscordAvatar'
 const BotCard = ({ manage=false, bot }: BotProps): JSX.Element => {
 	return (
 		<Link href={makeBotURL(bot)}>
-			<div className='container mb-16 transform hover:-translate-y-1 transition duration-100 ease-in cursor-pointer'>
+			<a className='container mb-16 transform hover:-translate-y-1 transition duration-100 ease-in cursor-pointer'>
 				<div className='relative'>
 					<div className='container mx-auto'>
 						<div className='h-full'>
@@ -81,7 +81,7 @@ const BotCard = ({ manage=false, bot }: BotProps): JSX.Element => {
 						</div>
 					</div>
 				</div>
-			</div>
+			</a>
 		</Link>
 	)
 }

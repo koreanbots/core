@@ -66,13 +66,7 @@ const BotCard = ({ manage=false, bot }: BotProps): JSX.Element => {
 											>
 									관리하기
 											</a>
-										</Link> : <a
-											rel='noopener noreferrer'
-											target='_blank'
-											href={
-												bot.url ??
-										`https://discordapp.com/oauth2/authorize?client_id=${bot.id}&scope=bot&permissions=0`
-											}
+										</Link> : <a rel='noopener noreferrer' target='_blank' href={bot.url ?? `https://discordapp.com/oauth2/authorize?client_id=${bot.id}&scope=bot&permissions=0`}
 											className='rounded-br-2xl py-3 w-full text-center text-discord-blurple hover:text-white text-sm font-bold hover:bg-discord-blurple hover:shadow-lg transition duration-100 ease-in'
 										>
 									초대하기

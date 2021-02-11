@@ -46,7 +46,7 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 			console.log(`[THEME] ${systemColor.toUpperCase()} THEME DETECTED`)
 			setTheme(systemColor)
 		}
-		else setTheme(localStorage.theme || 'system')
+		else setTheme('system')
 	}, [])
 
 	return (

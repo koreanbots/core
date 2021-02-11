@@ -2,7 +2,12 @@ import Link from 'next/link'
 import Container from '@components/Container'
 import Wave from '@components/Wave'
 
-const Footer = ({ color }:FooterProps): JSX.Element => {
+import Toggle from './Toggle'
+import { useState } from 'react'
+import { Theme } from '@types'
+
+const Footer = ({ color, theme, setTheme }:FooterProps): JSX.Element => {
+	const [ checked, setCheck ] = useState(true)
 	return (
 		<div className='releative'>
 			<Wave color='currentColor' className={`${color ?? 'dark:text-discord-dark text-white bg-discord-black'} hidden md:block`} />
@@ -25,8 +30,8 @@ const Footer = ({ color }:FooterProps): JSX.Element => {
 							</a>
 						</div>
 					</div>
-					<div className='flex-grow grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-2'>
-						<div className='mb-2 col-span-2 md:col-span-1 col-start-1'>
+					<div className='flex-grow grid grid-cols-2 md:grid-cols-7 gap-2'>
+						<div className='mb-2 col-span-2'>
 							<h2 className='text-koreanbots-blue text-base font-bold'>한국 디스코드봇 리스트</h2>
 							<ul className='text-sm'>
 								<li>
@@ -41,7 +46,7 @@ const Footer = ({ color }:FooterProps): JSX.Element => {
 								</li>
 							</ul>
 						</div>
-						<div className='mb-2 row-start-2 md:row-start-1 md:col-start-2'>
+						<div className='mb-2 col-span-1'>
 							<h2 className='text-koreanbots-blue text-base font-bold'>커뮤니티</h2>
 							<ul className='text-sm'>
 								<li>
@@ -56,7 +61,7 @@ const Footer = ({ color }:FooterProps): JSX.Element => {
 								</li>
 							</ul>
 						</div>
-						<div className='mb-2 row-start-2 md:row-start-1 md:col-start-3'>
+						<div className='mb-2 col-span-1'>
 							<h2 className='text-koreanbots-blue text-base font-bold'>약관</h2>
 							<ul className='text-sm'>
 								<li>
@@ -71,6 +76,17 @@ const Footer = ({ color }:FooterProps): JSX.Element => {
 								</li>
 							</ul>
 						</div>
+						<div className='mb-2 col-span-2'>
+							<h2 className='text-koreanbots-blue text-base font-bold'>기타</h2>
+							<div className='flex'>
+								<a className='hover:text-gray-300 mr-2'>다크모드</a>
+								<Toggle checked={theme === 'dark'} onChange={() => {
+									setCheck(!checked)
+									setTheme(checked ? 'dark' : 'light')
+									localStorage.setItem('theme', checked ? 'dark' : 'light')
+								}} />
+							</div>
+						</div>
 					</div>
 					
 				</Container>
@@ -81,6 +97,8 @@ const Footer = ({ color }:FooterProps): JSX.Element => {
 
 interface FooterProps {
 	color?: string
+	theme: Theme
+	setTheme(value: Theme): void
 }
 
 export default Footer

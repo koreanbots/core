@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
-import { ThemeProvider } from 'next-themes'
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 import { init } from '@utils/Sentry'
@@ -17,17 +16,19 @@ import 'core-js/es/map'
 import '../app.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '../github-markdown.css'
+import { Theme } from '@types'
 
 init()
 
 export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX.Element {
 	const [ betaKey, setBetaKey ] = useState('')
 	const [ footer, footerControl ] = useState(true)
-	const [ theme, setDefaultTheme ] = useState<string|undefined>(undefined)
-	let systemColor:string
+	const [ theme, setTheme ] = useState<Theme>('system')
+	let systemColor:Theme
 
 	useEffect(() => {
 		setBetaKey(localStorage.betaKey)
+		setTheme(localStorage.theme || 'system')
 		console.log(
 			'%c' + 'KOREANBOTS',
 			'color: #3366FF; -webkit-text-stroke: 2px black; font-size: 72px; font-weight: bold;'
@@ -42,16 +43,14 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 		} catch (e) {
 			systemColor = 'dark'
 		}
-		if (!localStorage.detected || !['dark', 'light'].includes(localStorage.detected)) {
+		if (theme === 'system') {
 			console.log(`[THEME] ${systemColor.toUpperCase()} THEME DETECTED`)
-			localStorage.setItem('detected', systemColor)
-			localStorage.setItem('theme', systemColor)
-			setDefaultTheme(systemColor)
+			setTheme(systemColor)
 		}
 	}, [])
 
 	return (
-		<ThemeProvider forcedTheme={theme} attribute='class' storageKey='theme' enableSystem>
+		<div className={theme}>
 			<Head>
 				<meta name='viewport' content='width=device-width, initial-scale=1.0' />
 				<title>한국 디스코드봇 리스트</title>
@@ -64,19 +63,19 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 				<link rel='shortcut icon' href='/logo.png' />
 				<meta name='theme-color' content='#3366FF' />
 			</Head>
-			<Navbar />
+			<Navbar theme={theme} setTheme={setTheme} />
 			<div className='iu-is-the-best h-full text-black dark:text-gray-100 dark:bg-discord-dark bg-white'>
 				{
-					process.env.NEXT_PUBLIC_TESTER_KEY === Crypto.createHmac('sha256', betaKey ?? '').digest('hex') ? <Component {...pageProps} err={err} footerControl={footerControl} /> : <div className='text-center py-40 px-10'>
+					process.env.NEXT_PUBLIC_TESTER_KEY === Crypto.createHmac('sha256', betaKey ?? '').digest('hex') ? <Component {...pageProps} err={err} footerControl={footerControl} theme={theme} setTheme={setTheme} /> : <div className='text-center py-40 px-10'>
 						<h1 className='text-3xl font-bold'>주어진 테스터키를 입력해주세요.</h1><br/>
 						<input value={betaKey} name='field_name' className='text-black border outline-none px-4 py-2 rounded-2xl' type='text' placeholder='테스터 키' onChange={(e)=> { localStorage.setItem('betaKey', e.target.value); setBetaKey(e.target.value) }} />
 					</div>
 				}
 			</div>
 			{
-				footer && <Footer />
+				footer && <Footer theme={theme} setTheme={setTheme} />
 			}
-		</ThemeProvider>
+		</div>
 	)
 }
 

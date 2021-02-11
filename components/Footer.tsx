@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import Container from './Container'
-import Wave from './Wave'
+import Container from '@components/Container'
+import Wave from '@components/Wave'
 
 const Footer = ({ color }:FooterProps): JSX.Element => {
 	return (

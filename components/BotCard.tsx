@@ -1,10 +1,12 @@
-import { Bot } from '../types'
+import Link from 'next/link'
+
 import { checkBotFlag, formatNumber, makeBotURL } from '@utils/Tools'
 import { Status } from '@utils/Constants'
-import Divider from './Divider'
-import Tag from './Tag'
-import Link from 'next/link'
-import DiscordAvatar from './DiscordAvatar'
+import { Bot } from '@types'
+
+import Divider from '@components/Divider'
+import Tag from '@components/Tag'
+import DiscordAvatar from '@components/DiscordAvatar'
 
 const BotCard = ({ manage=false, bot }: BotProps): JSX.Element => {
 	return (

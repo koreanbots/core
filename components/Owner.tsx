@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import DiscordAvatar from './DiscordAvatar'
+import DiscordAvatar from '@components/DiscordAvatar'
 
 const Owner = ({ id, username, tag }:OwnerProps):JSX.Element => {
 	return <Link href={`/users/${id}`}>

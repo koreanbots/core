@@ -6,7 +6,7 @@ import { makeBotURL } from '@utils/Tools'
 import Fetch from '@utils/Fetch'
 import { BotList, ResponseProps } from '@types'
 
-import DiscordAvatar from './DiscordAvatar'
+import DiscordAvatar from '@components/DiscordAvatar'
 
 const Search = (): JSX.Element => {
 	const [ query, setQuery ] = useState('')

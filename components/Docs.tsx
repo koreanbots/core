@@ -1,5 +1,5 @@
-import Container from './Container'
-import Wave from './Wave'
+import Container from '@components/Container'
+import Wave from '@components/Wave'
 
 const Docs = ({ header, description, subheader, children }: DocsProps): JSX.Element => {
 	return (

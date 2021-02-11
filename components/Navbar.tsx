@@ -1,11 +1,13 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { redirectTo } from '@utils/Tools'
+import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
-import DiscordAvatar from './DiscordAvatar'
+
+import { redirectTo } from '@utils/Tools'
+
+import DiscordAvatar from '@components/DiscordAvatar'
 
 const Navbar = (): JSX.Element => {
 	let userCache

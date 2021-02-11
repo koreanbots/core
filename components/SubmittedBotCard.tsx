@@ -1,6 +1,6 @@
 import { Status } from '@utils/Constants'
 
-import Tag from './Tag'
+import Tag from '@components/Tag'
 
 import { SubmittedBot } from '@types'
 import Link from 'next/link'

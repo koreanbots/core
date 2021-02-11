@@ -41,7 +41,9 @@ module.exports = {
 		}
 	},
 	variants: {
-		extend: {},
+		extend: {
+			inset: ['checked']
+		},
 	},
 	plugins: [],
 }

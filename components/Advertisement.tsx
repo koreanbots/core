@@ -5,7 +5,7 @@ const Advertisement = (): JSX.Element => {
 		if(process.env.NODE_ENV === 'production')  window.adsbygoogle.push({}), []
 	})
 	
-	return <div className={`z-0 my-1 mx-auto py-12 w-full text-center text-white ${process.env.NODE_ENV === 'production' ? '' : 'bg-gray-700'}`}>
+	return <div className={`z-0 mx-auto py-12 w-full text-center text-white ${process.env.NODE_ENV === 'production' ? '' : 'bg-gray-700'}`}>
 		{
 			process.env.NODE_ENV === 'production' ?  <ins
 				className='adsbygoogle mb-5 w-full'

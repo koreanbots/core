@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { Theme } from '@types'
 
 const Footer = ({ color, theme, setTheme }:FooterProps): JSX.Element => {
-	const [ checked, setCheck ] = useState(true)
+	const [ checked, setCheck ] = useState(theme === 'dark')
 	return (
 		<div className='releative'>
 			<Wave color='currentColor' className={`${color ?? 'dark:text-discord-dark text-white bg-discord-black'} hidden md:block`} />

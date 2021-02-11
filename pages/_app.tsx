@@ -28,7 +28,6 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 
 	useEffect(() => {
 		setBetaKey(localStorage.betaKey)
-		setTheme(localStorage.theme || 'system')
 		console.log(
 			'%c' + 'KOREANBOTS',
 			'color: #3366FF; -webkit-text-stroke: 2px black; font-size: 72px; font-weight: bold;'
@@ -43,10 +42,11 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 		} catch (e) {
 			systemColor = 'dark'
 		}
-		if (theme === 'system') {
+		if (!localStorage.theme) {
 			console.log(`[THEME] ${systemColor.toUpperCase()} THEME DETECTED`)
 			setTheme(systemColor)
 		}
+		else setTheme(localStorage.theme || 'system')
 	}, [])
 
 	return (

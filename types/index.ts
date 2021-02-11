@@ -124,6 +124,15 @@ export interface DiscordUserInfo {
 	premium_type: 0 | 1 | 2
 }
 
+export interface UserCache {
+	id: string
+	version: number
+	username: string
+	tag: string
+}
+
+export type Theme = 'dark' | 'light' | 'system'
+
 export type Status = 'online' | 'offline' | 'dnd' | 'idle' | 'streaming' | null
 
 export type BotState = 'ok' | 'reported' | 'archived' | 'private'

@@ -27,7 +27,7 @@ const Search = (): JSX.Element => {
 	}
 	return <>
 		<div onFocus={() => setHidden(false)} onBlur={() => setTimeout(() => setHidden(true), 80)} className='relative w-full mt-5 text-black bg-white dark:text-gray-100 dark:bg-very-black flex rounded-lg z-10'>
-			<input maxLength={50}  className='bg-transparent flex-grow outline-none border-none shadow border-0 py-3 px-7 pr-20 h-16 text-xl' placeholder='검색...' value={query} onChange={(e)=> {
+			<input maxLength={50} className='bg-transparent flex-grow outline-none border-none shadow border-0 py-3 px-7 pr-20 h-16 text-xl' placeholder='검색...' value={query} onChange={(e)=> {
 				SearchResults(e.target.value)
 			}} />
 			<button className='outline-none cusor-pointer absolute right-0 top-0 mt-5 mr-5'>
@@ -43,7 +43,7 @@ const Search = (): JSX.Element => {
 								<li className='px-3 py-2 flex h-15 cursor-pointer'>
 									<DiscordAvatar className='w-12 h-12 mt-1' size={128} userID={el.id} /> 
 									<div className='ml-2'>
-										<h1 className='text-lg'>{el.name}</h1>
+										<h1 className='text-lg text-black dark:text-gray-100'>{el.name}</h1>
 										<p className='text-sm text-gray-400'>
 											{el.intro}
 										</p>

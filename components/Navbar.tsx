@@ -6,11 +6,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { redirectTo } from '@utils/Tools'
+import { Theme, UserCache } from '@types'
 
 import DiscordAvatar from '@components/DiscordAvatar'
 
-const Navbar = (): JSX.Element => {
-	let userCache
+const Navbar = ({ theme, setTheme }:NavbarProps): JSX.Element => {
+	let userCache:UserCache
 	try {
 		userCache = JSON.parse(localStorage.userCache)
 	} catch {
@@ -72,10 +73,10 @@ const Navbar = (): JSX.Element => {
 					</div>
 					<div className='hidden flex-grow items-center bg-white lg:flex lg:bg-transparent lg:shadow-none'>
 						<ul className='flex flex-col list-none lg:flex-row lg:ml-auto'>
-							<li className='flex items-center'>
+							<li className='flex items-center outline-none' onFocus={() => setDropdownOpen(true)} onMouseOver={() => setDropdownOpen(true)} onMouseOut={() => setDropdownOpen(false)} onBlur={() => setDropdownOpen(false)}>
 								{
 									userCache?.id && userCache.version === 2 ? 
-										<a onFocus={() => setDropdownOpen(true)} onMouseOver={() => setDropdownOpen(true)} onMouseOut={() => setDropdownOpen(false)} onBlur={() => setDropdownOpen(false)} 
+										<a 
 											className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100 cursor-pointer'>
 											<DiscordAvatar userID={userCache.id} className='w-8 h-8 rounded-full mr-1.5' size={128}/>
 											{userCache.username} <i className='ml-2 fas fa-sort-down' /> 
@@ -128,7 +129,7 @@ const Navbar = (): JSX.Element => {
 				</div>
 			</nav>
 			<div
-				className={`z-30 w-full h-full fixed bg-discord-blurple dark:bg-discord-black mt-8 sm:mt-0 lg:hidden overflow-y-scroll scroll-none ${
+				className={`z-30 w-full h-full fixed bg-discord-blurple dark:bg-discord-black mt-8 sm:mt-0 lg:hidden overflow-y-scroll lg:scroll-none ${
 					navbarOpen ? 'block' : 'hidden'
 				}`}
 			>
@@ -212,6 +213,11 @@ const Navbar = (): JSX.Element => {
 			</div>
 		</>
 	)
+}
+
+interface NavbarProps {
+	theme: Theme
+	setTheme(value: Theme): void
 }
 
 export default Navbar

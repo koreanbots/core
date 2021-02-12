@@ -22,7 +22,7 @@ class MyDocument extends Document {
 					<script
 						dangerouslySetInnerHTML={{
 							__html: `
-						setTimeout(() => (adsbygoogle = window.adsbygoogle || []).push({}), 1000)
+						setTimeout(() => document.querySelectorAll('ins.adsbygoogle').forEach(() => (adsbygoogle = window.adsbygoogle || []).push({})), 1000)
 						window.dataLayer = window.dataLayer || [];
 						function gtag(){dataLayer.push(arguments);}
 						gtag('js', new Date());

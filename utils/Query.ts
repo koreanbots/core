@@ -248,7 +248,8 @@ export const get = {
 			async (key: string[]) => 
 				(await Promise.all(key.map(async (k: string) => {
 					const json = JSON.parse(k)
-					return await getBotList('SEARCH', json.page, json.query)
+					const res = await getBotList('SEARCH', json.page, json.query)
+					return { ...res, totalPage: Number(res.totalPage), currentPage: Number(res.currentPage) }
 				}))).map(row => serialize(row))
 			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 3000000 }) }),
 		votes: new DataLoader(

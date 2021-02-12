@@ -77,7 +77,7 @@ const Footer = ({ color, theme, setTheme }:FooterProps): JSX.Element => {
 						<div className='mb-2 col-span-2'>
 							<h2 className='text-koreanbots-blue text-base font-bold'>기타</h2>
 							<div className='flex'>
-								<a className='hover:text-gray-300 mr-2'>다크모드</a>{theme}
+								<a className='hover:text-gray-300 mr-2'>다크모드</a>
 								<Toggle checked={theme === 'dark'} onChange={() => {
 									const t = theme === 'dark' ? 'light' : 'dark'
 									setTheme(t)

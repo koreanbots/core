@@ -16,6 +16,7 @@ const Avatar = nc<ApiRequest, NextApiResponse>()
 		const ratelimited = RateLimitHandler(res, { used: rate, limit: 600, reset: (<any>imageRateLimit).scheduler.get(req.socket.remoteAddress).expiry, onLimitExceed: async(res) => {
 			const img = await get.images.user.load(DiscordEnpoints.CDN.default(Math.floor(Math.random() * 6), { format: 'png' }))
 			res.setHeader('Content-Type', 'image/png')
+			res.setHeader('Cache-Control', 'no-cache')
 			img.pipe(res)
 		} })
 		if(ratelimited) return

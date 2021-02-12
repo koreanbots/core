@@ -64,7 +64,7 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 				<link rel='shortcut icon' href='/logo.png' />
 				<meta name='theme-color' content='#3366FF' />
 			</Head>
-			<Navbar theme={theme} setTheme={setTheme} />
+			<Navbar />
 			<div className='iu-is-the-best h-full text-black dark:text-gray-100 dark:bg-discord-dark bg-white'>
 				{
 					process.env.NEXT_PUBLIC_TESTER_KEY === Crypto.createHmac('sha256', betaKey ?? '').digest('hex') ? <Component {...pageProps} err={err} theme={theme} setTheme={setTheme} /> : <div className='text-center py-40 px-10'>

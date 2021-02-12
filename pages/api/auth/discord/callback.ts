@@ -50,6 +50,7 @@ const Callback = nc<ApiRequest, NextApiResponse>()
 		res.setHeader('set-cookie', serialize('token', userToken, {
 			expires: new Date(info.exp * 1000),
 			secure: process.env.NODE_ENV === 'production',
+			httpOnly: true,
 			path: '/'
 		}))
 		res.redirect(301, '/callback/discord')

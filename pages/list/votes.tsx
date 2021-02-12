@@ -30,7 +30,9 @@ const Votes:NextPage<VotesProps> = ({ data }) => {
 				}
 			</div>
 			<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname='/list/votes' />
-		</Container></>
+			<Advertisement />
+		</Container>
+	</>
 }
 export const getServerSideProps = async (ctx:Context) => {
 	let data: BotList

@@ -21,6 +21,7 @@ const New:NextPage<NewProps> = ({ data }) => {
 					data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
 				}
 			</div>
+			<Advertisement />
 		</Container>
 	</>
 }

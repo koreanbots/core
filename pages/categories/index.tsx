@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import { categories, categoryIcon } from '@utils/Constants'
 
 const Container = dynamic(() => import('@components/Container'))
+const Advertisement = dynamic(() => import('@components/Advertisement'))
 const Tag = dynamic(() => import('@components/Tag'))
 const SEO = dynamic(() => import('@components/SEO'))
 const Segment = dynamic(() => import('@components/Segment'))
@@ -21,6 +22,7 @@ const Categories:NextPage = () => {
 				}
 			</div>
 		</Segment>
+		<Advertisement />
 	</Container>
 }
 

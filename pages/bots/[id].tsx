@@ -91,7 +91,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, footerControl, theme, set
 						<h4>
 							<i className='fas fa-heart text-red-600' /> 하트 추가
 						</h4>
-						<span className='ml-1 px-2 py-1 text-center text-black dark:text-gray-400 text-sm bg-little-white-hover dark:bg-very-black rounded-lg'>
+						<span className='ml-1 px-2 text-center text-black dark:text-gray-400 text-sm bg-little-white-hover dark:bg-very-black rounded-lg'>
 							{formatNumber(data.votes)}
 						</span>
 					</LongButton>

@@ -10,7 +10,7 @@ import { Theme, UserCache } from '@types'
 
 import DiscordAvatar from '@components/DiscordAvatar'
 
-const Navbar = ({ theme, setTheme }:NavbarProps): JSX.Element => {
+const Navbar = (): JSX.Element => {
 	let userCache:UserCache
 	try {
 		userCache = JSON.parse(localStorage.userCache)
@@ -21,6 +21,7 @@ const Navbar = ({ theme, setTheme }:NavbarProps): JSX.Element => {
 	const [navbarOpen, setNavbarOpen] = useState<boolean>(false)
 	const [dropdownOpen, setDropdownOpen] = useState<boolean>(false)
 	const router = useRouter()
+	const logged = userCache?.id && userCache.version === 2
 	return (
 		<>
 			<nav className='fixed z-40 top-0 flex flex-wrap items-center justify-between px-2 py-3 w-full text-gray-100 dark:bg-discord-black bg-discord-blurple bg-transparent lg:absolute'>
@@ -75,7 +76,7 @@ const Navbar = ({ theme, setTheme }:NavbarProps): JSX.Element => {
 						<ul className='flex flex-col list-none lg:flex-row lg:ml-auto'>
 							<li className='flex items-center outline-none' onFocus={() => setDropdownOpen(true)} onMouseOver={() => setDropdownOpen(true)} onMouseOut={() => setDropdownOpen(false)} onBlur={() => setDropdownOpen(false)}>
 								{
-									userCache?.id && userCache.version === 2 ? 
+									logged ? 
 										<>
 											<a 
 												className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100 cursor-pointer'>
@@ -109,13 +110,13 @@ const Navbar = ({ theme, setTheme }:NavbarProps): JSX.Element => {
 											</div>
 										</> :
 										<a tabIndex={0} onKeyPress={()=> {
-											if(!userCache) {
+											if(!(logged)) {
 												localStorage.redirectTo = window.location.href
 												setNavbarOpen(false)
 												redirectTo(router, 'login')
 											}
 										}} onClick={()=> {
-											if(!userCache) {
+											if(!(logged)) {
 												localStorage.redirectTo = window.location.href
 												setNavbarOpen(false)
 												redirectTo(router, 'login')
@@ -180,7 +181,7 @@ const Navbar = ({ theme, setTheme }:NavbarProps): JSX.Element => {
 
 				<div className='my-10'>
 					{
-						userCache?.id && userCache.version === 2 ? <>
+						logged ? <>
 							<Link href={`/users/${userCache.id}`}>
 								<a className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
 									<i className='far fa-user' />
@@ -214,11 +215,6 @@ const Navbar = ({ theme, setTheme }:NavbarProps): JSX.Element => {
 			</div>
 		</>
 	)
-}
-
-interface NavbarProps {
-	theme: Theme
-	setTheme(value: Theme): void
 }
 
 export default Navbar

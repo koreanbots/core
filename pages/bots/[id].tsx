@@ -28,11 +28,12 @@ const Tooltip = dynamic(() => import('@components/Tooltip'))
 const Markdown = dynamic(() => import ('@components/Markdown'))
 
 const Bots: NextPage<BotsProps> = ({ data, date, user, footerControl, theme, setTheme }) => {
+	const bg = checkBotFlag(data.flags, 'trusted') && data.banner
 	const router = useRouter()
 	if (!data || !data.id) return <NotFound />
 	if(data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}`)
 	else footerControl(false)
-	return <div style={checkBotFlag(data.flags, 'trusted') && data.banner ? { background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${data.bg}") center top / cover no-repeat fixed` } : {}}>
+	return <div style={bg ? { background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${data.bg}") center top / cover no-repeat fixed`, color: 'white' } : {}}>
 		<Container paddingTop className='py-10'>
 			<SEO
 				title={data.name}
@@ -61,7 +62,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, footerControl, theme, set
 								</>
 							}
 						/>
-						<h1 className='mb-2 mt-3 text-4xl font-bold'>
+						<h1 className='mb-2 mt-3 text-4xl font-bold' style={bg ? { color: 'white' } : {}}>
 							{data.name}{' '}
 							{checkBotFlag(data.flags, 'trusted') ? (
 								<Tooltip text='해당봇은 한국 디스코드봇 리스트에서 엄격한 기준을 통과한 봇입니다!' direction='left' size='large' href='/verification'>
@@ -72,7 +73,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, footerControl, theme, set
 							) : ''}
 						</h1>
 					</div>
-					<p className='dark:text-gray-300 text-gray-800 text-base'>{data.intro}</p>
+					<p className={`${bg ? 'text-gray-300' : 'dark:text-gray-300 text-gray-800'} text-base`}>{data.intro}</p>
 				</div>
 				<div className='w-full lg:w-1/4 lg:pt-10'>
 					<LongButton
@@ -95,7 +96,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, footerControl, theme, set
 						</span>
 					</LongButton>
 					{
-						((data.owners as User[]).find(el => el.id === user.id) || checkUserFlag(user.flags, 'staff')) && <LongButton href={`/manage/${data.id}`}>
+						((data.owners as User[]).find(el => el.id === user?.id) || checkUserFlag(user?.flags, 'staff')) && <LongButton href={`/manage/${data.id}`}>
 							<h4>
 								<i className='fas fa-cogs' /> 관리하기
 							</h4>
@@ -206,8 +207,10 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, footerControl, theme, set
 
 export const getServerSideProps = async (ctx: Context) => {
 	const parsed = parseCookie(ctx)
-	const user = await get.Authorization(parsed?.token)
 	const data = await get.bot.load(ctx.query.id) ?? { id: '' }
+	const user = await get.Authorization(parsed?.token)
+	console.log(data)
+	console.log(user)
 	return {
 		props: {
 			data,

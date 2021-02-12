@@ -3,11 +3,9 @@ import Container from '@components/Container'
 import Wave from '@components/Wave'
 
 import Toggle from './Toggle'
-import { useState } from 'react'
 import { Theme } from '@types'
 
 const Footer = ({ color, theme, setTheme }:FooterProps): JSX.Element => {
-	const [ checked, setCheck ] = useState(theme === 'dark')
 	return (
 		<div className='releative'>
 			<Wave color='currentColor' className={`${color ?? 'dark:text-discord-dark text-white bg-discord-black'} hidden md:block`} />
@@ -79,11 +77,11 @@ const Footer = ({ color, theme, setTheme }:FooterProps): JSX.Element => {
 						<div className='mb-2 col-span-2'>
 							<h2 className='text-koreanbots-blue text-base font-bold'>기타</h2>
 							<div className='flex'>
-								<a className='hover:text-gray-300 mr-2'>다크모드</a>
+								<a className='hover:text-gray-300 mr-2'>다크모드</a>{theme}
 								<Toggle checked={theme === 'dark'} onChange={() => {
-									setCheck(!checked)
-									setTheme(checked ? 'dark' : 'light')
-									localStorage.setItem('theme', checked ? 'dark' : 'light')
+									const t = theme === 'dark' ? 'light' : 'dark'
+									setTheme(t)
+									localStorage.setItem('theme', t)
 								}} />
 							</div>
 						</div>

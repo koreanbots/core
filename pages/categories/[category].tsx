@@ -28,6 +28,7 @@ const Category: NextPage<CategoryProps> = ({ data, query }) => {
 				}
 			</div>
 			<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname={`/categories/${query.category}`} />
+			<Advertisement />
 		</Container>
 	</>
 }
@@ -57,7 +58,7 @@ interface Context extends NextPageContext {
 
 interface URLQuery extends ParsedUrlQuery {
   category: string
-  page: string
+  page?: string
 }
 
 export default Category

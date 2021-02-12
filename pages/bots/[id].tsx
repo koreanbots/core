@@ -33,7 +33,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, footerControl, theme, set
 	if (!data || !data.id) return <NotFound />
 	if(data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}`)
 	else footerControl(false)
-	return <div style={bg ? { background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${data.bg}") center top / cover no-repeat fixed`, color: 'white' } : {}}>
+	return <div style={bg ? { background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${data.bg}") center top / cover no-repeat fixed` } : {}}>
 		<Container paddingTop className='py-10'>
 			<SEO
 				title={data.name}
@@ -105,7 +105,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, footerControl, theme, set
 				</div>
 			</div>
 			<Divider className='px-5' />
-			<div className='lg:flex lg:flex-row-reverse'>
+			<div className='lg:flex lg:flex-row-reverse' style={bg ? { color: 'white' } : {}}>
 				<div className='mb-1 w-full lg:w-1/4'>
 					<h2 className='3xl mb-2 font-bold'>정보</h2>
 					<div className='grid gap-4 grid-cols-2 px-4 py-4 text-black dark:text-gray-400 dark:bg-discord-black bg-little-white rounded-sm'>
@@ -193,7 +193,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, footerControl, theme, set
 				</div>
 				<div className='markdown-body pt-10 w-full lg:pr-5 lg:w-3/4'>
 					<Advertisement />
-					<Segment>
+					<Segment className='my-4'>
 						<Markdown text={data.desc}/>
 					</Segment>
 					<Advertisement />
@@ -201,7 +201,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, footerControl, theme, set
 			</div>
 		</Container>
 
-		<Footer color='bg-transparent dark:text-discord-black text-white hidden md:block transform rotate-180' theme={theme} setTheme={setTheme} />
+		<Footer color='bg-transparent text-discord-black text-white hidden md:block transform rotate-180' theme={theme} setTheme={setTheme} />
 	</div>
 }
 

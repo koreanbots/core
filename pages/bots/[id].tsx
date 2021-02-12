@@ -27,12 +27,11 @@ const Advertisement = dynamic(() => import('@components/Advertisement'))
 const Tooltip = dynamic(() => import('@components/Tooltip'))
 const Markdown = dynamic(() => import ('@components/Markdown'))
 
-const Bots: NextPage<BotsProps> = ({ data, date, user, footerControl, theme, setTheme }) => {
+const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 	const bg = checkBotFlag(data.flags, 'trusted') && data.banner
 	const router = useRouter()
 	if (!data || !data.id) return <NotFound />
 	if(data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}`)
-	else footerControl(false)
 	return <div style={bg ? { background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${data.bg}") center top / cover no-repeat fixed` } : {}}>
 		<Container paddingTop className='py-10'>
 			<SEO
@@ -226,7 +225,6 @@ interface BotsProps {
 	data: Bot
 	date: Date
 	user: User
-	footerControl(val: boolean): void
 	theme: Theme
 	setTheme(value: Theme): void
 }

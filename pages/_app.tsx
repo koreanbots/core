@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { init } from '@utils/Sentry'
 
@@ -22,8 +23,8 @@ init()
 
 export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX.Element {
 	const [ betaKey, setBetaKey ] = useState('')
-	const [ footer, footerControl ] = useState(true)
 	const [ theme, setTheme ] = useState<Theme>('system')
+	const router = useRouter()
 	let systemColor:Theme
 
 	useEffect(() => {
@@ -46,7 +47,7 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 			console.log(`[THEME] ${systemColor.toUpperCase()} THEME DETECTED`)
 			setTheme(systemColor)
 		}
-		else setTheme('system')
+		else setTheme(localStorage.theme)
 	}, [])
 
 	return (
@@ -66,14 +67,14 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 			<Navbar theme={theme} setTheme={setTheme} />
 			<div className='iu-is-the-best h-full text-black dark:text-gray-100 dark:bg-discord-dark bg-white'>
 				{
-					process.env.NEXT_PUBLIC_TESTER_KEY === Crypto.createHmac('sha256', betaKey ?? '').digest('hex') ? <Component {...pageProps} err={err} footerControl={footerControl} theme={theme} setTheme={setTheme} /> : <div className='text-center py-40 px-10'>
+					process.env.NEXT_PUBLIC_TESTER_KEY === Crypto.createHmac('sha256', betaKey ?? '').digest('hex') ? <Component {...pageProps} err={err} theme={theme} setTheme={setTheme} /> : <div className='text-center py-40 px-10'>
 						<h1 className='text-3xl font-bold'>주어진 테스터키를 입력해주세요.</h1><br/>
 						<input value={betaKey} name='field_name' className='text-black border outline-none px-4 py-2 rounded-2xl' type='text' placeholder='테스터 키' onChange={(e)=> { localStorage.setItem('betaKey', e.target.value); setBetaKey(e.target.value) }} />
 					</div>
 				}
 			</div>
 			{
-				footer && <Footer theme={theme} setTheme={setTheme} />
+				!['/bots/[id]'].includes(router.pathname) && <Footer theme={theme} setTheme={setTheme} />
 			}
 		</div>
 	)

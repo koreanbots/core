@@ -53,7 +53,7 @@ const BotCard = ({ manage=false, bot }: BotProps): JSX.Element => {
 								<Divider />
 								<div className='flex justify-evenly'>
 									<Link
-										href={makeBotURL(bot)}
+										href={makeBotURL(bot)}	
 									>
 										<a className='rounded-bl-2xl py-3 w-full text-center text-koreanbots-blue hover:text-white text-sm font-bold hover:bg-koreanbots-blue hover:shadow-lg transition duration-100 ease-in'>
 										보기
@@ -66,11 +66,13 @@ const BotCard = ({ manage=false, bot }: BotProps): JSX.Element => {
 											>
 									관리하기
 											</a>
-										</Link> : <a rel='noopener noreferrer' target='_blank' href={bot.url ?? `https://discordapp.com/oauth2/authorize?client_id=${bot.id}&scope=bot&permissions=0`}
-											className='rounded-br-2xl py-3 w-full text-center text-discord-blurple hover:text-white text-sm font-bold hover:bg-discord-blurple hover:shadow-lg transition duration-100 ease-in'
-										>
+										</Link> : <Link href={bot.url ?? `https://discordapp.com/oauth2/authorize?client_id=${bot.id}&scope=bot&permissions=0`}>
+											<a rel='noopener noreferrer' target='_blank'
+												className='rounded-br-2xl py-3 w-full text-center text-discord-blurple hover:text-white text-sm font-bold hover:bg-discord-blurple hover:shadow-lg transition duration-100 ease-in'
+											>
 									초대하기
-										</a>
+											</a>
+										</Link>
 									}
 								</div>
 							</div>

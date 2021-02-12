@@ -28,7 +28,7 @@ const Tooltip = dynamic(() => import('@components/Tooltip'))
 const Markdown = dynamic(() => import ('@components/Markdown'))
 
 const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
-	const bg = checkBotFlag(data.flags, 'trusted') && data.banner
+	const bg = checkBotFlag(data?.flags, 'trusted') && data?.banner
 	const router = useRouter()
 	if (!data || !data.id) return <NotFound />
 	if(data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}`)

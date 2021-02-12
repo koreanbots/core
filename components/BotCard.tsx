@@ -46,9 +46,11 @@ const BotCard = ({ manage=false, bot }: BotProps): JSX.Element => {
 								</div>
 								<p className='px-4 text-left text-gray-400 text-sm font-medium mb-10 h-6'>{bot.intro}</p>
 								<div className='category px-2 flex flex-wrap'>
-									{bot.category.slice(0, 5).map(el => (
+									{bot.category.slice(0, 3).map(el => (
 										<Tag key={el} text={el} href={`/categories/${el}`} dark/>
-									))}
+									))} {
+										bot.category.length > 3 && <Tag text={`+${bot.category.length - 3}`} dark />
+									}
 								</div>
 								<Divider />
 								<div className='flex justify-evenly'>

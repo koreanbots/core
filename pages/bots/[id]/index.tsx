@@ -12,7 +12,7 @@ import { get } from '@utils/Query'
 import Day from '@utils/Day'
 import { checkBotFlag, checkUserFlag, formatNumber, parseCookie } from '@utils/Tools'
 
-import NotFound from '../404'
+import NotFound from '../../404'
 import Footer from '@components/Footer'
 
 const Container = dynamic(() => import('@components/Container'))
@@ -86,14 +86,16 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 							<i className='fas fa-user-plus text-discord-blurple' /> 초대하기
 						</h4>
 					</LongButton>
-					<LongButton href={`/bots/${router.query.id}/vote`}>
-						<h4>
-							<i className='fas fa-heart text-red-600' /> 하트 추가
-						</h4>
-						<span className='ml-1 px-2 text-center text-black dark:text-gray-400 text-sm bg-little-white-hover dark:bg-very-black rounded-lg'>
-							{formatNumber(data.votes)}
-						</span>
-					</LongButton>
+					<Link href={{ pathname: `/bots/${router.query.id}/vote` }} as='/'>
+						<LongButton>
+							<h4>
+								<i className='fas fa-heart text-red-600' /> 하트 추가
+							</h4>
+							<span className='ml-1 px-2 text-center text-black dark:text-gray-400 text-sm bg-little-white-hover dark:bg-very-black rounded-lg'>
+								{formatNumber(data.votes)}
+							</span>
+						</LongButton>
+					</Link>
 					{
 						((data.owners as User[]).find(el => el.id === user?.id) || checkUserFlag(user?.flags, 'staff')) && <LongButton href={`/manage/${data.id}`}>
 							<h4>
@@ -208,8 +210,6 @@ export const getServerSideProps = async (ctx: Context) => {
 	const parsed = parseCookie(ctx)
 	const data = await get.bot.load(ctx.query.id) ?? { id: '' }
 	const user = await get.Authorization(parsed?.token)
-	console.log(data)
-	console.log(user)
 	return {
 		props: {
 			data,

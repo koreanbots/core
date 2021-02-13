@@ -159,6 +159,14 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 	return { type, data: (await Promise.all(res.map(async el => await getBot(el.id)))).map(r=> ({...r})), currentPage: page, totalPage: Math.ceil(Number(count) / 16) }
 }
 
+async function getBotSubmit(id: string, date: string) {
+	const res = await knex('submitted').select(['id', 'date', 'category', 'lib', 'prefix', 'intro', 'desc', 'url', 'web', 'git', 'discord', 'state', 'owners', 'reason']).where({ id, date })
+	if(res.length === 0) return null
+	res[0].category = JSON.parse(res[0].category)
+	res[0].owners = await Promise.all(JSON.parse(res[0].owners).map(async (u: string)=> await get.user.load(u)))
+	return res[0]
+}
+
 async function getBotSubmits(id: string) {
 	let res = await knex('submitted').select(['id', 'date', 'category', 'lib', 'prefix', 'intro', 'desc', 'url', 'web', 'git', 'discord', 'state', 'owners', 'reason']).orderBy('date', 'desc').where('owners', 'LIKE', `%${id}%`)
 	res = await Promise.all(res.map(async el=> {
@@ -235,6 +243,13 @@ export const get = {
 	botSubmits: new DataLoader(
 		async (ids: string[]) =>
 			(await Promise.all(ids.map(async (el: string) => await getBotSubmits(el)))).map(row => serialize(row))
+		, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 60000 }) }),
+	botSubmit: new DataLoader(
+		async (key: string[]) =>
+			(await Promise.all(key.map(async (el: string) => {
+				const json = JSON.parse(el)
+				return await getBotSubmit(json.id, json.date)
+			})))
 		, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 60000 }) }),
 	list: {
 		category: new DataLoader(

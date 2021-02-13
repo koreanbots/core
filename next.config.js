@@ -54,6 +54,6 @@ module.exports = {
 		return config
 	},
 	experimental: { scrollRestoration: true },
-
-	basePath
+	basePath,
+	externalResolver: true,
 }

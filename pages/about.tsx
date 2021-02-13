@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic'
 const Container = dynamic(() => import('@components/Container'))
 
 const About:NextPage = () => {
-	return <div className='mb-10'>
+	return <div className='pb-10'>
 		<Docs header={<h1 className='font-black text-4xl dark:text-koreanbots-blue'>“국내 디스코드봇을 한 곳에서.”</h1>} subheader='한국 디스코드봇 리스트에서 자신에 서버에 딱 맞는 봇을 찾아보세요.'>
 			<Container>
 				<div className='py-1'>

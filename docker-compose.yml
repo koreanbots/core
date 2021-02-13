@@ -21,3 +21,7 @@ services:
     env_file:
       - .env.production.local
     image: wonderlandpark/koreanbots:latest
+    deploy:
+      resources:
+        limits:
+          memory: 500M

@@ -119,7 +119,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 						<div>
 							<i className='fas fa-users' /> 서버수
 						</div>
-						<div>{data.servers}</div>
+						<div>{data.servers || 'N/A'}</div>
 						<div>
 							<i className='fas fa-calendar-day' /> 봇 생성일
 						</div>

@@ -41,7 +41,7 @@ const BotCard = ({ manage=false, bot }: BotProps): JSX.Element => {
 											}
 											dark
 										/>
-										<Tag blurple text={<>{formatNumber(bot.servers)} 서버</>} dark />
+										<Tag blurple text={bot.servers ? <>{formatNumber(bot.servers)} 서버</> : 'N/A'} dark />
 									</div>
 								</div>
 								<p className='px-4 text-left text-gray-400 text-sm font-medium mb-10 h-6'>{bot.intro}</p>

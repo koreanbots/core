@@ -57,23 +57,25 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user }) => {
 		onSubmit={(values) => { alert(JSON.stringify(values)) }}>
 			{({ errors, touched, values, setFieldTouched, setFieldValue }) => (
 				<Form>
-					<Message type='warning'>
-						<h2 className='text-lg font-black'>신청하시기 전에 다음 사항을 확인해 주세요!</h2>
-						<ul className='list-disc list-inside'>
-							<li><Link href='/discord'><a className='text-blue-500 hover:text-blue-600'>디스코드 서버</a></Link>에 참가하셨나요?</li>
-							<li>봇이 <Link href='/guidelines'><a className='text-blue-500 hover:text-blue-600'>가이드라인</a></Link>을 지키고 있나요?</li>
-							<li>봇 소유자가 두 명 이상인가요? 봇 소유자는 봇이 승인된 뒤, 더 추가하실 수 있습니다.</li>
-							<li>본인이 봇의 소유자라는 것을 증명할 수 있나요? 본인이 봇 소유자임을 증명하려면, 태그가 포함되어야 합니다.</li>
+					<div className='py-5'>
+						<Message type='warning'>
+							<h2 className='text-lg font-black'>신청하시기 전에 다음 사항을 확인해 주세요!</h2>
+							<ul className='list-disc list-inside'>
+								<li><Link href='/discord'><a className='text-blue-500 hover:text-blue-600'>디스코드 서버</a></Link>에 참가하셨나요?</li>
+								<li>봇이 <Link href='/guidelines'><a className='text-blue-500 hover:text-blue-600'>가이드라인</a></Link>을 지키고 있나요?</li>
+								<li>봇 소유자가 두 명 이상인가요? 봇 소유자는 봇이 승인된 뒤, 더 추가하실 수 있습니다.</li>
+								<li>본인이 봇의 소유자라는 것을 증명할 수 있나요? 본인이 봇 소유자임을 증명하려면, 태그가 포함되어야 합니다.</li>
 				다음 명령어(접두사로 시작하는) 중 하나 이상에 소유자를 표시하셔야 합니다.
 
-							<ul>
-								<li>- 도움 명령어: 도움, 도움말, 명령어, help, commands</li>
-								<li>- 도움 명령어에 소유자임을 나타내고 싶지 않으시다면, 아래 명령어를 만들어주세요<br/>
+								<ul>
+									<li>- 도움 명령어: 도움, 도움말, 명령어, help, commands</li>
+									<li>- 도움 명령어에 소유자임을 나타내고 싶지 않으시다면, 아래 명령어를 만들어주세요<br/>
 						명령어: [접두사]hellothisisverification 응답: 유저#태그(아이디)</li>
+								</ul>
+								<li>또한, 봇을 등록하게 되면 작성하신 모든 정보는 웹과 API에 공개됩니다.</li>
 							</ul>
-							<li>또한, 봇을 등록하게 되면 작성하신 모든 정보는 웹과 API에 공개됩니다.</li>
-						</ul>
-					</Message>
+						</Message>
+					</div>
 					<Label For='agree' error={errors.agree && touched.agree ? errors.agree : null} grid={false}>
 						<div className='flex items-center'>
 							<CheckBox name='agree' />

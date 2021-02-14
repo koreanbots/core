@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { redirectTo } from '@utils/Tools'
-import { Theme, UserCache } from '@types'
+import { UserCache } from '@types'
 
 import DiscordAvatar from '@components/DiscordAvatar'
 

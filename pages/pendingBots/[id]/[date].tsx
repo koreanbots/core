@@ -139,7 +139,7 @@ const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
 						</a>
 					)}
 				</div>
-				<Advertisement />
+				<Advertisement size='tall' />
 			</div>
 			<div className='markdown-body pt-10 w-full lg:pr-5 lg:w-3/4'>
 				<Advertisement />

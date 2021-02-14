@@ -84,7 +84,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 							<i className='fas fa-user-plus text-discord-blurple' /> 초대하기
 						</h4>
 					</LongButton>
-					<Link href={{ pathname: `/bots/${router.query.id}/vote` }} as='/'>
+					<Link href={{ pathname: `/bots/${router.query.id}/vote` }}>
 						<LongButton>
 							<h4>
 								<i className='fas fa-heart text-red-600' /> 하트 추가

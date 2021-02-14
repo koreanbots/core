@@ -7,7 +7,7 @@ ALTER TABLE `bots` CHANGE `servers` `servers` INT(11) NULL DEFAULT NULL, CHANGE 
 -- USING NULL
 UPDATE `bots` SET web=NULL where web='false';
 UPDATE `bots` SET git=NULL where git='false';
-UPDATE `bots` SET url=NULL where url='false';
+UPDATE `bots` SET `url`=NULL where url='false';
 UPDATE `bots` SET avatar=NULL where avatar='false';
 UPDATE `bots` SET discord=NULL where discord='false';
 UPDATE `bots` SET vanity=NULL where vanity='false';
@@ -41,6 +41,10 @@ ALTER TABLE `submitted` DROP `verified`;
 ALTER TABLE `submitted` DROP `trusted`;
 ALTER TABLE `submitted` DROP `avatar`;
 ALTER TABLE `submitted` ADD `reason` TINYTEXT NULL DEFAULT NULL;  
+UPDATE `submitted` SET web=NULL where web='false';
+UPDATE `submitted` SET git=NULL where git='false';
+UPDATE `submitted` SET `url`=NULL where url='false';
+UPDATE `submitted` SET discord=NULL where discord='false';
 
 -- reports TABLE
 

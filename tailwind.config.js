@@ -8,7 +8,7 @@ module.exports = {
 			'./**/*.{ts,tsx}',
 		],
 		options: {
-			safelist: ['text-green-400', 'text-yellow-300', 'text-red-500', 'text-gray-500', 'text-purple-500', 'bg-koreanbots-blue'],
+			safelist: ['text-green-400', 'text-yellow-300', 'text-red-500', 'text-gray-500', 'text-purple-500', 'bg-koreanbots-blue', 'bg-very-black'],
 		}
 	},
 	darkMode: 'class', // or 'media' or 'class'

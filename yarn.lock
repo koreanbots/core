@@ -2195,7 +2195,7 @@ crypto-browserify@3.12.0, crypto-browserify@^3.11.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
-csrf@^3.1.0:
+csrf@3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/csrf/-/csrf-3.1.0.tgz#ec75e9656d004d674b8ef5ba47b41fbfd6cb9c30"
   integrity sha512-uTqEnCvWRk042asU6JtapDTcJeeailFy4ydOQS28bj1hcLnYRiqi8SsD2jS412AY1I/4qdOwWZun774iqywf9w==
@@ -5222,7 +5222,7 @@ next-connect@0.9.1:
   dependencies:
     trouter "^3.1.0"
 
-next-session@^3.4.0:
+next-session@3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/next-session/-/next-session-3.4.0.tgz#799757624a336b752298e9771ffc1d7282d76e91"
   integrity sha512-JBROZVndV3vBMdELMOmnm1mWNKzjSTl4niwnuVMjAhcW5Cn9UAS3YkQyOJ1I5LSiLNOxVheQ7BTuxE4nx6SDwQ==

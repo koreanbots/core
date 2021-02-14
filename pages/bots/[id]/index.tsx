@@ -31,7 +31,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 	const bg = checkBotFlag(data?.flags, 'trusted') && data?.banner
 	const router = useRouter()
 	if (!data || !data.id) return <NotFound />
-	if(data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}`)
+	if((checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}`)
 	return <div style={bg ? { background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${data.bg}") center top / cover no-repeat fixed` } : {}}>
 		<Container paddingTop className='py-10'>
 			<SEO
@@ -51,27 +51,25 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 					/>
 				</div>
 				<div className='flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left'>
-					<div>
-						<Tag
-							circular
-							text={
-								<>
-									<i className={`fas fa-circle text-${Status[data.status]?.color}`} />{' '}
-									{Status[data.status]?.text}
-								</>
-							}
-						/>
-						<h1 className='mb-2 mt-3 text-4xl font-bold' style={bg ? { color: 'white' } : {}}>
-							{data.name}{' '}
-							{checkBotFlag(data.flags, 'trusted') ? (
-								<Tooltip text='해당봇은 한국 디스코드봇 리스트에서 엄격한 기준을 통과한 봇입니다!' direction='left' size='large' href='/verification'>
-									<span className='text-koreanbots-blue text-3xl'>
-										<i className='fas fa-award' />
-									</span>
-								</Tooltip>
-							) : ''}
-						</h1>
-					</div>
+					<Tag
+						circular
+						text={
+							<>
+								<i className={`fas fa-circle text-${Status[data.status]?.color}`} />{' '}
+								{Status[data.status]?.text}
+							</>
+						}
+					/>
+					<h1 className='mb-2 mt-3 text-4xl font-bold' style={bg ? { color: 'white' } : {}}>
+						{data.name}{' '}
+						{checkBotFlag(data.flags, 'trusted') ? (
+							<Tooltip text='해당봇은 한국 디스코드봇 리스트에서 엄격한 기준을 통과한 봇입니다!' direction='left' size='large' href='/verification'>
+								<span className='text-koreanbots-blue text-3xl'>
+									<i className='fas fa-award' />
+								</span>
+							</Tooltip>
+						) : ''}
+					</h1>
 					<p className={`${bg ? 'text-gray-300' : 'dark:text-gray-300 text-gray-800'} text-base`}>{data.intro}</p>
 				</div>
 				<div className='w-full lg:w-1/4 lg:pt-10'>

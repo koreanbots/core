@@ -249,7 +249,7 @@ export const get = {
 			(await Promise.all(key.map(async (el: string) => {
 				const json = JSON.parse(el)
 				return await getBotSubmit(json.id, json.date)
-			})))
+			}))).map(row => serialize(row))
 		, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 60000 }) }),
 	list: {
 		category: new DataLoader(

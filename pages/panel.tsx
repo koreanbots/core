@@ -38,7 +38,7 @@ const Panel:NextPage<PanelProps> = ({ logged, user, submits }) => {
 			<p className='text-left text-gray-400 text-sm font-medium'>자세히 보려면 카드를 클릭하세요.</p>
 			<div className='grid gap-4 2xl:grid-cols-4 md:grid-cols-2 mt-12'>
 				{
-					submits.map(el=> <SubmittedBotCard key={el.date} href={el.state ? makeBotURL(el) : `/pendingBots/${el.id}/${el.date}`} submit={el} />)
+					submits.map(el=> <SubmittedBotCard key={el.date} href={`/pendingBots/${el.id}/${el.date}`} submit={el} />)
 				}
 			</div>
 		</div>

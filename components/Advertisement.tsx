@@ -5,8 +5,8 @@ const Advertisement = ({ size='short' }:AdvertisementProps): JSX.Element => {
 		if(process.env.NODE_ENV === 'production') {
 			window.adsbygoogle = window.adsbygoogle || []
 			window.adsbygoogle.push({})
-		}
-	})
+		} else console.log('Ads Pushed')
+	}, [])
 	
 	return <div className={`z-0 mx-auto w-full text-center text-white ${process.env.NODE_ENV === 'production' ? '' : 'py-12 bg-gray-700'}`} style={size === 'short' ? { height: '90px' } : { height: '330px'}}>
 		{

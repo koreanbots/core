@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 
 import { get } from '@utils/Query'
-import { makeBotURL, parseCookie, redirectTo } from '@utils/Tools'
+import { parseCookie, redirectTo } from '@utils/Tools'
 import { Bot, SubmittedBot, User } from '@types'
 import BotCard from '@components/BotCard'
 import SubmittedBotCard from '@components/SubmittedBotCard'

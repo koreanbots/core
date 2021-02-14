@@ -2,8 +2,10 @@ import { useEffect } from 'react'
 
 const Advertisement = ({ size='short' }:AdvertisementProps): JSX.Element => {
 	useEffect(() => {
-		if(process.env.NODE_ENV === 'production')
-			window?.adsbygoogle?.push({})
+		if(process.env.NODE_ENV === 'production') {
+			window.adsbygoogle = window.adsbygoogle || []
+			window.adsbygoogle.push({})
+		}
 	})
 	
 	return <div className={`z-0 mx-auto w-full text-center text-white ${process.env.NODE_ENV === 'production' ? '' : 'py-12 bg-gray-700'}`} style={size === 'short' ? { height: '90px' } : { height: '330px'}}>
@@ -21,7 +23,7 @@ const Advertisement = ({ size='short' }:AdvertisementProps): JSX.Element => {
 
 declare global {
 	interface Window { adsbygoogle: {
-		loaded: boolean
+		loaded?: boolean
 		push(obj: unknown): void
 	} }
 }

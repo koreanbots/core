@@ -51,6 +51,7 @@ const Callback = nc<ApiRequest, NextApiResponse>()
 			expires: new Date(info.exp * 1000),
 			secure: process.env.NODE_ENV === 'production',
 			httpOnly: true,
+			sameSite: 'lax',
 			path: '/'
 		}))
 		res.redirect(301, '/callback/discord')

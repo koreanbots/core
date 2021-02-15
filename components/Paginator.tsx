@@ -5,7 +5,7 @@ const Paginator = ({ currentPage, totalPage, pathname }:PaginatorProps):JSX.Elem
 	else if(currentPage > totalPage - 3) pages = [ totalPage - 4 < 1 ? null : totalPage - 4, totalPage - 3 < 1 ? null : totalPage - 3, totalPage - 2 < 1 ? null : totalPage - 2, totalPage - 1 < 1 ? null : totalPage - 1, totalPage ]
 	else pages = [ currentPage - 2 < 1 ? null : currentPage - 2, currentPage - 1 < 1 ? null : currentPage - 1, currentPage, currentPage + 1 > totalPage ? null : currentPage + 1, currentPage + 2 > totalPage ? null : currentPage + 2 ]
 	pages = pages.filter(el => el)
-	return <div className='flex flex-col items-center py-12 text-center justify-center'>
+	return <div className='flex flex-col items-center py-4 text-center justify-center'>
 		<div className='flex'>
 			<Link href={{ pathname, query: { page: currentPage - 1} }}>
 				<a className={`${currentPage === 1 ? 'invisible' : ''} h-12 w-12 mr-1 flex justify-center items-center rounded-full transition duration-150 ease-in bg-gray-200 dark:bg-discord-black hover:bg-gray-300 dark:hover:bg-discord-dark-hover cursor-pointer text-center`}>
@@ -14,7 +14,7 @@ const Paginator = ({ currentPage, totalPage, pathname }:PaginatorProps):JSX.Elem
 			</Link>
 			{
 				pages.map((el, i) => <Link key={i} href={{ pathname, query: { page: el } }}>
-					<a className={`w-12 md:flex justify-center items-center cursor-pointer leading-5 transition duration-150 ease-in ${i===0 && i===pages.length-1 ? 'rounded-full' : i===0 ? 'rounded-l-full' : i===pages.length-1 ? 'rounded-r-full' : ''} ${currentPage === el ? 'bg-gray-300 dark:bg-discord-dark-hover' : 'bg-gray-200 dark:bg-discord-black hover:bg-gray-300 dark:hover:bg-discord-dark-hover'}`}>{el}</a>
+					<a className={`w-12 flex justify-center items-center cursor-pointer leading-5 transition duration-150 ease-in ${i===0 && i===pages.length-1 ? 'rounded-full' : i===0 ? 'rounded-l-full' : i===pages.length-1 ? 'rounded-r-full' : ''} ${currentPage === el ? 'bg-gray-300 dark:bg-discord-dark-hover' : 'bg-gray-200 dark:bg-discord-black hover:bg-gray-300 dark:hover:bg-discord-dark-hover'}`}>{el}</a>
 				</Link>)
 			}
 			<Link href={{ pathname, query: { page: currentPage + 1} }}>

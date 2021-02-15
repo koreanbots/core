@@ -23,7 +23,7 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 				<p className='text-base'>하트를 많이 받은 봇들의 순위입니다!</p>
 				<div className='grid gap-x-4 2xl:grid-cols-4 md:grid-cols-2 mt-10'>
 					{
-						votes.data.slice(0, 8).map(bot=> <BotCard key={bot.id} bot={bot} />)
+						votes.data.map(bot=> <BotCard key={bot.id} bot={bot} />)
 					}
 				</div>
 				<Paginator totalPage={votes.totalPage} currentPage={votes.currentPage} pathname='/list/votes' />

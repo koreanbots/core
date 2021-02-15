@@ -18,7 +18,7 @@ const Avatar = nc<ApiRequest, NextApiResponse>()
 			const img = await get.images.user.load(DiscordEnpoints.CDN.default(Math.floor(Math.random() * 6), { format: 'png' }))
 			res.setHeader('Content-Type', 'image/png')
 			res.setHeader('Cache-Control', 'no-cache')
-			img.pipe(res)
+			img.pipe(res as unknown as NodeJS.WritableStream)
 		} })
 		if(ratelimited) return
 		const splitted = param.split('.')
@@ -42,7 +42,7 @@ const Avatar = nc<ApiRequest, NextApiResponse>()
 
 		res.setHeader('Content-Type', `image/${ext}`)
 		res.setHeader('Cache-Control', 'public, max-age=86400')
-		img.pipe(res)
+		img.pipe(res as unknown as NodeJS.WritableStream)
 	})
 
 	

@@ -1,8 +1,11 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
+import { NextApiRequest, NextApiResponse } from 'next'
+import nc from 'next-connect'
 
-const HelloWorld: NextApiHandler = (_req: NextApiRequest, res: NextApiResponse) => {
-	res.statusCode = 200
-	res.json({ happy: 'hacking' })
-}
+import ResponseWrapper from '@utils/ResponseWrapper'
+
+const HelloWorld = nc<NextApiRequest, NextApiResponse>()
+	.get(async(_req, res) => {
+		return ResponseWrapper(res, { code: 200, message: '>_<' })
+	})
 
 export default HelloWorld

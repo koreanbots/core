@@ -1,12 +1,7 @@
-import Tokens from 'csrf'
+import csrf from 'csurf'
+import { CsrfRequestMessage } from '@types'
 
-const Token = new Tokens()
-const secret = Token.secretSync()
 
-export function sign(): string {
-	return Token.create(secret)
-}
+const csrfProtection = (csrf({ cookie: true }) as unknown as CsrfRequestMessage)
 
-export function verify(token: string):boolean {
-	return Token.verify(secret, token)
-}
+export default csrfProtection

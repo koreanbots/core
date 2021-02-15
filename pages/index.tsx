@@ -21,7 +21,7 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 					<i className='far fa-heart mr-3 text-pink-600' /> 하트 랭킹
 				</h1>
 				<p className='text-base'>하트를 많이 받은 봇들의 순위입니다!</p>
-				<div className='grid gap-x-4 2xl:grid-cols-4 md:grid-cols-2 mt-10'>
+				<div className='grid gap-x-4 2xl:grid-cols-4 md:grid-cols-2 mt-10 -mb-10'>
 					{
 						votes.data.map(bot=> <BotCard key={bot.id} bot={bot} />)
 					}

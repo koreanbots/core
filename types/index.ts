@@ -1,3 +1,7 @@
+import { IncomingMessage } from 'http'
+import { NextPageContext } from 'next'
+import { ParsedUrlQuery } from 'querystring'
+
 export interface Bot {
 	id: string
 	name: string
@@ -207,6 +211,14 @@ export enum DiscordImageType {
 	GUILD = 'guild',
 	USER = 'user',
 	FALLBACK = 'default'
+}
+
+export interface CsrfContext extends NextPageContext {
+	req?: CsrfRequestMessage
+}
+
+export interface CsrfRequestMessage extends IncomingMessage {
+	csrfToken(): string
 }
 
 export interface ResponseProps<T=Data> {

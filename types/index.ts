@@ -1,6 +1,5 @@
 import { IncomingMessage } from 'http'
 import { NextPageContext } from 'next'
-import { ParsedUrlQuery } from 'querystring'
 
 export interface Bot {
 	id: string

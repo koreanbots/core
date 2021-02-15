@@ -48,7 +48,7 @@
     "tailwindcss": "2.0.3",
     "tlru": "1.0.2",
     "twemoji": "13.0.1",
-    "url-regex-safe": "1.0.2",
+    "url-regex-safe": "2.0.2",
     "yup": "0.32.8",
     "yup-locales-ko": "1.0.2"
   },

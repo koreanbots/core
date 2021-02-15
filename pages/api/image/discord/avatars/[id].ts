@@ -9,6 +9,7 @@ import { ImageOptionsSchema } from '@utils/Yup'
 
 const Avatar = nc<ApiRequest, NextApiResponse>()
 	.get(async(req, res) => {
+		res.setHeader('Access-Control-Allow-Origin', process.env.KOREANBOTS_URL)
 		const { imageRateLimit } = await import('@utils/Query')
 		const { id: param, size=256 } = req.query
 		const rate = ratelimit.image(req.socket.remoteAddress)

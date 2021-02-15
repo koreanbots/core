@@ -30,7 +30,7 @@ const Markdown = dynamic(() => import ('@components/Markdown'))
 const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 	const bg = checkBotFlag(data?.flags, 'trusted') && data?.banner
 	const router = useRouter()
-	if (!data || !data.id) return <NotFound />
+	if (!data?.id) return <NotFound />
 	if((checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}`)
 	return <div style={bg ? { background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${data.bg}") center top / cover no-repeat fixed` } : {}}>
 		<Container paddingTop className='py-10'>
@@ -76,7 +76,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 					<LongButton
 						newTab
 						href={
-							data.url ??
+							data.url ||
 							`https://discordapp.com/oauth2/authorize?client_id=${data.id}&scope=bot&permissions=0`
 						}
 					>

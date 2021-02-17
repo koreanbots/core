@@ -18,6 +18,7 @@ import '../app.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '../github-markdown.css'
 import { Theme } from '@types'
+import { Logger } from '@utils/Logger'
 
 init()
 
@@ -44,7 +45,7 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 			systemColor = 'dark'
 		}
 		if (!localStorage.theme) {
-			console.log(`[THEME] ${systemColor.toUpperCase()} THEME DETECTED`)
+			Logger.debug(`[THEME] ${systemColor.toUpperCase()} THEME DETECTED`)
 			setTheme(systemColor)
 		}
 		else setTheme(localStorage.theme)

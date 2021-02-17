@@ -1,6 +1,7 @@
 import { SyntheticEvent, useEffect, useState } from 'react'
 import { KoreanbotsEndPoints } from '@utils/Constants'
 import { supportsWebP } from '@utils/Tools'
+import { Logger } from '@utils/Logger'
 
 const DiscordAvatar = (props: {
 	alt?: string
@@ -25,7 +26,7 @@ const DiscordAvatar = (props: {
 				if(webpUnavailable) {
 					(e.target as ImageTarget).onerror = (event) => {
 						// All Fails
-						(event.target as ImageTarget).onerror = ()=> { console.log('FALLBACK IMAGE LOAD FAIL') }
+						(event.target as ImageTarget).onerror = ()=> { Logger.warn('FALLBACK IMAGE LOAD FAIL') }
 						(event.target as ImageTarget).src = fallback
 					
 					}
@@ -33,7 +34,7 @@ const DiscordAvatar = (props: {
 				else {
 					(e.target as ImageTarget).onerror = (event) => {
 						// All Fails
-						(event.target as ImageTarget).onerror = ()=> { console.log('FALLBACK IMAGE LOAD FAIL') }
+						(event.target as ImageTarget).onerror = ()=> { Logger.warn('FALLBACK IMAGE LOAD FAIL') }
 						(event.target as ImageTarget).src = fallback
 					}
 					// Webp Load Fail

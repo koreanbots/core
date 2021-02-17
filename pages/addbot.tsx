@@ -9,8 +9,11 @@ import { parseCookie, redirectTo } from '@utils/Tools'
 import { AddBotSubmitSchema } from '@utils/Yup'
 import { categories, library } from '@utils/Constants'
 import { User } from '@types'
+import { getToken } from '@utils/Csrf'
+import Fetch from '@utils/Fetch'
 
 const CheckBox = dynamic(() => import('@components/Form/CheckBox'))
+const CsrfToken = dynamic(() => import('@components/Form/CsrfToken'))
 const Label = dynamic(() => import('@components/Form/Label'))
 const Input = dynamic(() => import('@components/Form/Input'))
 const Divider = dynamic(() => import('@components/Divider'))
@@ -24,11 +27,18 @@ const Container = dynamic(() => import('@components/Container'))
 const Message = dynamic(() => import('@components/Message'))
 const SEO = dynamic(() => import('@components/SEO'))
 
-const AddBot:NextPage<AddBotProps> = ({ logged, user }) => {
+const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken }) => {
 	const router = useRouter()
 	function toLogin() {
 		localStorage.redirectTo = window.location.href
 		redirectTo(router, 'login')
+	}
+
+	async function submitBot(value) {
+		const res = await Fetch(`/bots/${value.id}`, { method: 'POST', body: JSON.stringify(value), headers: { 'content-type': 'application/json' } })
+		console.log(res)
+
+		return res
 	}
 	if(!logged) {
 		toLogin()
@@ -51,10 +61,13 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user }) => {
 			discord: '',
 			category: [],
 			intro: '',
-			desc: ''
+			desc: '',
+			_csrf: csrfToken
 		}}
 		validationSchema={AddBotSubmitSchema}
-		onSubmit={(values) => { alert(JSON.stringify(values)) }}>
+		onSubmit={async(values) => { 
+			submitBot(values)
+		}}>
 			{({ errors, touched, values, setFieldTouched, setFieldValue }) => (
 				<Form>
 					<div className='py-5'>
@@ -142,14 +155,15 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user }) => {
 }
 
 export const getServerSideProps = async (ctx: NextPageContext) => {
-	const parsed = parseCookie(ctx)
+	const parsed = parseCookie(ctx.req)
 	const user = await get.Authorization(parsed?.token)
-	return { props: { logged: !!user, user: await get.user.load(user || '') } }
+	return { props: { logged: !!user, user: await get.user.load(user || ''), csrfToken: getToken(ctx.req, ctx.res) } }
 }
 
 interface AddBotProps {
-	logged: boolean,
+	logged: boolean
 	user: User
+	csrfToken: string
 }
 
 export default AddBot

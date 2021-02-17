@@ -206,7 +206,7 @@ async function assignToken(info: TokenRegister):Promise<string> {
 }
 
 async function Authorization(token: string):Promise<string|false> {
-	const tokenInfo = verify(token)
+	const tokenInfo = verify(token ?? '')
 	const user = await knex('users').select(['id']).where({ id: tokenInfo?.id ?? '', token: token ?? '' })
 	if(user.length === 0) return false
 	else return user[0].id
@@ -291,6 +291,10 @@ export const get = {
 
 export const update = {
 	assignToken
+}
+
+export const put = {
+
 }
 
 export const ratelimit = {

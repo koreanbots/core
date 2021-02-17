@@ -43,7 +43,7 @@ const DiscordCallback:NextPage<DiscordCallbackProps> = ({ data }) => {
 }
 
 export const getServerSideProps = async(ctx: NextPageContext) => {
-	const parsed = parseCookie(ctx)
+	const parsed = parseCookie(ctx.req)
 	const token = verify(parsed?.token ?? '')
 	if(!token) return { props: { data: null } }
   

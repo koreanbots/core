@@ -5,6 +5,7 @@ import cookie from 'cookie'
 import { BotFlags, ImageOptions, UserFlags } from '@types'
 import { KoreanbotsEndPoints, Oauth } from './Constants'
 import { NextRouter } from 'next/router'
+import { IncomingMessage } from 'http'
 
 export function formatNumber(value: number):string  {
 	const suffixes = ['', '만', '억', '조','해']
@@ -95,8 +96,8 @@ export function bufferToStream(binary: Buffer) {
 	return readableInstanceStream
 }
 
-export function parseCookie(ctx: NextPageContext): { [key: string]: string } {
-	return cookie.parse(ctx.req.headers.cookie || '')
+export function parseCookie(req: { headers: { cookie?: string }}): { [key: string]: string } {
+	return cookie.parse(req.headers.cookie || '')
 }
 
 export function redirectTo(router: NextRouter, to: string) {

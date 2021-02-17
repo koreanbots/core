@@ -1,15 +1,16 @@
-import { NextPage, NextPageContext } from 'next'
+import { NextPage } from 'next'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 
-import { Bot, User } from '@types'
+import { Bot, CsrfContext, User } from '@types'
 import { get } from '@utils/Query'
 import { makeBotURL, parseCookie, checkBotFlag } from '@utils/Tools'
 
 import { ParsedUrlQuery } from 'querystring'
 
 import NotFound from 'pages/404'
+import { getToken } from '@utils/Csrf'
 
 
 const Container = dynamic(() => import('@components/Container'))
@@ -24,7 +25,8 @@ const Advertisement = dynamic(() => import('@components/Advertisement'))
 const Tooltip = dynamic(() => import('@components/Tooltip'))
 const Markdown = dynamic(() => import ('@components/Markdown'))
 
-const VoteBot: NextPage<VoteBotProps> = ({ data }) => {
+const VoteBot: NextPage<VoteBotProps> = ({ data, user, csrfToken }) => {
+	console.log(csrfToken)
 	const router = useRouter()
 	if(!data?.id) return <NotFound />
 	if((checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}`)
@@ -54,11 +56,13 @@ const VoteBot: NextPage<VoteBotProps> = ({ data }) => {
 }
 
 export const getServerSideProps = async (ctx: Context) => {
-	const parsed = parseCookie(ctx)
+	const parsed = parseCookie(ctx.req)
 	const data = await get.bot.load(ctx.query.id)
 	const user = await get.Authorization(parsed?.token)
+	
 	return {
 		props: {
+			csrfToken: getToken(ctx.req, ctx.res),
 			data,
 			user: await get.user.load(user || '')
 		},
@@ -66,12 +70,13 @@ export const getServerSideProps = async (ctx: Context) => {
 }
 
 interface VoteBotProps {
+	csrfToken: string
   vote: boolean
   data: Bot
   user: User
 }
 
-interface Context extends NextPageContext {
+interface Context extends CsrfContext {
   query: URLQuery
 }
 

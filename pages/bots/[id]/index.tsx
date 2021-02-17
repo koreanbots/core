@@ -205,7 +205,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 }
 
 export const getServerSideProps = async (ctx: Context) => {
-	const parsed = parseCookie(ctx)
+	const parsed = parseCookie(ctx.req)
 	const data = await get.bot.load(ctx.query.id) ?? { id: '' }
 	const user = await get.Authorization(parsed?.token)
 	return {

@@ -11,7 +11,7 @@ const Fetch = async <T>(endpoint: string, options?: RequestInit):Promise<Respons
 	try {
 		json = await res.json()
 	} catch {
-		json = { code: 500, message: (await res.text()) }
+		json = { code: 500, message: 'Internal Server Error' }
 	}
   
 	return json

@@ -12,6 +12,7 @@ import knex from './Knex'
 import DiscordBot from './DiscordBot'
 import { sign, verify } from './Jwt'
 import { serialize } from './Tools'
+import { AddBotSubmit } from './Yup'
 
 export const imageRateLimit = new TLRU<unknown, number>({ maxAgeMs: 60000 })
 
@@ -159,7 +160,7 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 	return { type, data: (await Promise.all(res.map(async el => await getBot(el.id)))).map(r=> ({...r})), currentPage: page, totalPage: Math.ceil(Number(count) / 16) }
 }
 
-async function getBotSubmit(id: string, date: string) {
+async function getBotSubmit(id: string, date: number) {
 	const res = await knex('submitted').select(['id', 'date', 'category', 'lib', 'prefix', 'intro', 'desc', 'url', 'web', 'git', 'discord', 'state', 'owners', 'reason']).where({ id, date })
 	if(res.length === 0) return null
 	res[0].category = JSON.parse(res[0].category)
@@ -175,6 +176,28 @@ async function getBotSubmits(id: string) {
 		return el
 	}))
 	return res
+}
+
+async function submitBot(id: string, data: AddBotSubmit) {
+	const botId = data.id
+	const date =  Math.round(+new Date()/1000)
+	await knex('submitted').insert({
+		id: botId,
+		date: date,
+		owners: JSON.stringify([ id ]),
+		lib: data.library,
+		prefix: data.prefix,
+		intro: data.intro,
+		desc: data.desc,
+		web: data.website,
+		git: data.git,
+		url: data.url,
+		category: data.category,
+		discord: data.discord,
+		state: 0
+	})
+	
+	return await getBotSubmit(botId, date)
 }
 
 async function getImage(url: string):Promise<Stream> {
@@ -294,7 +317,7 @@ export const update = {
 }
 
 export const put = {
-
+	submitBot
 }
 
 export const ratelimit = {

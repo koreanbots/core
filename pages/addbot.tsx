@@ -6,14 +6,13 @@ import { Form, Formik } from 'formik'
 
 import { get } from '@utils/Query'
 import { parseCookie, redirectTo } from '@utils/Tools'
-import { AddBotSubmitSchema } from '@utils/Yup'
+import { AddBotSubmit, AddBotSubmitSchema } from '@utils/Yup'
 import { categories, library } from '@utils/Constants'
-import { User } from '@types'
+import { SubmittedBot, User } from '@types'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
 
 const CheckBox = dynamic(() => import('@components/Form/CheckBox'))
-const CsrfToken = dynamic(() => import('@components/Form/CsrfToken'))
 const Label = dynamic(() => import('@components/Form/Label'))
 const Input = dynamic(() => import('@components/Form/Input'))
 const Divider = dynamic(() => import('@components/Divider'))
@@ -34,11 +33,9 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken }) => {
 		redirectTo(router, 'login')
 	}
 
-	async function submitBot(value) {
-		const res = await Fetch(`/bots/${value.id}`, { method: 'POST', body: JSON.stringify(value), headers: { 'content-type': 'application/json' } })
-		console.log(res)
-
-		return res
+	async function submitBot(value: AddBotSubmit) {
+		const res = await Fetch<SubmittedBot>(`/bots/${value.id}`, { method: 'POST', body: JSON.stringify(value), headers: { 'content-type': 'application/json' } })
+		redirectTo(router, `/pendingBots/${res.data.id}/${res.data.date}`)
 	}
 	if(!logged) {
 		toLogin()
@@ -55,19 +52,25 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken }) => {
 			id: '',
 			prefix: '',
 			library: '',
-			website: '',
-			git: '',
-			url: '',
-			discord: '',
 			category: [],
 			intro: '',
-			desc: '',
+			desc: `<!-- 이 설명을 지우시고 원하시는 설명을 적으셔도 좋습니다! -->
+# 봇이름
+자신의 봇을 자유롭게 표현해보세요!
+
+## ✏️ 소개
+
+무엇이 목적인 봇인가요?
+
+## 🛠️ 기능
+
+- 어떤
+- 기능
+- 있나요?`,
 			_csrf: csrfToken
 		}}
 		validationSchema={AddBotSubmitSchema}
-		onSubmit={async(values) => { 
-			submitBot(values)
-		}}>
+		onSubmit={submitBot}>
 			{({ errors, touched, values, setFieldTouched, setFieldValue }) => (
 				<Form>
 					<div className='py-5'>
@@ -108,9 +111,9 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken }) => {
 					</Label>
 					<Label For='category' label='카테고리' labelDesc='봇에 해당되는 카테고리를 선택해주세요' required error={errors.category && touched.category ? errors.category as string : null}>
 						<Selects options={categories.map(el=> ({ label: el, value: el }))} handleChange={(value) => {
-							console.log(value)
 							setFieldValue('category', value.map(v=> v.value))
-						}} handleTouch={() => setFieldTouched('category', true)} />
+						}} handleTouch={() => setFieldTouched('category', true)} values={values.category as string[]} setValues={(value) => setFieldValue('category', value)} />
+						<span className='text-gray-400 mt-1 text-sm'>봇 카드에는 앞 3개의 카테고리만 표시됩니다. 드래그하여 카테고리를 정렬하세요.</span>
 					</Label>
 					<Divider />
 					<Label For='website' label='웹사이트' labelDesc='봇의 웹사이트를 작성해주세요.' error={errors.website && touched.website ? errors.website : null}>
@@ -131,14 +134,12 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken }) => {
 					<Label For='intro' label='봇 소개' labelDesc='봇을 소개할 수 있는 간단한 설명을 적어주세요. (최대 60자)' error={errors.intro && touched.intro ? errors.intro : null} required>
 						<Input name='intro' placeholder='국내 봇을 한 곳에서.' />
 					</Label>
-					<Label For='intro' label='봇 설명' labelDesc='봇을 자세하게 설명해주세요! (최대 1500자)' error={errors.desc && touched.desc ? errors.desc : null} required>
-						<TextArea name='desc' placeholder='마크다운을 지원합니다' />
+					<Label For='intro' label='봇 설명' labelDesc={<>봇을 자세하게 설명해주세요! (최대 1500자)<br/>마크다운을 지원합니다!</>} error={errors.desc && touched.desc ? errors.desc : null} required>
+						<TextArea name='desc' placeholder='봇에 대해 최대한 자세히 설명해주세요!' />
 					</Label>
 					<Label For='preview' label='설명 미리보기' labelDesc='다음 결과는 실제와 다를 수 있습니다'>
 						<Segment>
-							<div className='px-5 py-5'>
-								<Markdown text={values.desc} />
-							</div>
+							<Markdown text={values.desc} />
 						</Segment>
 					</Label>
 					<Divider />

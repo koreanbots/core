@@ -30,7 +30,7 @@
     "knex": "0.21.17",
     "mysql": "2.18.1",
     "next": "10.0.6",
-    "next-connect": "0.9.1",
+    "next-connect": "0.10.0",
     "next-session": "3.4.0",
     "next-themes": "0.0.10",
     "node-emoji": "1.10.0",

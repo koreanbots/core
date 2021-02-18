@@ -33,12 +33,7 @@ const SortableSelect = SortableContainer(ReactSelect)
 const Select = ({ placeholder, options, values, setValues, handleChange, handleTouch }:SelectProps):JSX.Element => {
 	const onSortEnd = ({ oldIndex, newIndex }) => {
 		const newValue = arrayMove(values, oldIndex, newIndex)
-		console.log(newValue)
 		setValues(newValue)
-		console.log(
-			'Values sorted:',
-			newValue.map(i => i.value)
-		)
 	}
 	return <SortableSelect useDragHandle axis='xy' distance={4} getHelperDimensions={({ node }) => node.getBoundingClientRect()} onSortEnd={onSortEnd}
 	// select props

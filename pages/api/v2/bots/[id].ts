@@ -27,6 +27,8 @@ const BotInfo = nc<ApiRequest, NextApiResponse>()
 		if(!validated) return
 		if(validated.id !== req.query.id) return ResponseWrapper(res, { code: 400, errors: ['요청 주소와 Body의 정보가 다릅니다.'] })
 		const result = await put.submitBot(user, validated)
+		if(result === 1) return ResponseWrapper(res, { code: 403, message: '이미 대기중인 봇이 있습니다.', errors: ['한 번에 최대 2개의 봇까지만 신청하실 수 있습니다.\n다른 봇들의 심사가 완료된 뒤에 신청해주세요.'] })
+		else if(result === 2) return ResponseWrapper(res, { code: 406, message: '해당 봇은 이미 심사중입니다.', errors: ['해당 아이디의 봇은 이미 심사중입니다. 본인 소유의 봇이고 신청하신 적이 없으시다면 문의해주세요.'] })
 		return ResponseWrapper(res, { code: 200, data: result })
 	})
 	.patch(async (req, res) => {

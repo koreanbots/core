@@ -5,7 +5,7 @@ import DataLoader from 'dataloader'
 import { User as DiscordUser } from 'discord.js'
 import { Stream } from 'stream'
 
-import { Bot, User, ListType, BotList, TokenRegister, BotFlags, DiscordUserFlags } from '@types'
+import { Bot, User, ListType, BotList, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot } from '@types'
 import { categories } from './Constants'
 
 import knex from './Knex'
@@ -178,9 +178,18 @@ async function getBotSubmits(id: string) {
 	return res
 }
 
-async function submitBot(id: string, data: AddBotSubmit) {
+/**
+ * @returns 1 - Has pending Bots
+ * @returns 2 - Already submitted ID
+ * @returns obj - Success
+ */
+async function submitBot(id: string, data: AddBotSubmit):Promise<number|SubmittedBot> {
+	const submits = await knex('submitted').select(['id']).where({ state: 0 }).andWhere('owners', 'LIKE', `%${id}%`)
+	if(submits.length > 1) return 1
 	const botId = data.id
 	const date =  Math.round(+new Date()/1000)
+	const sameID = await knex('submitted').select(['id']).where({ id: botId, state: 0 })
+	if(sameID.length !== 0) return 2
 	await knex('submitted').insert({
 		id: botId,
 		date: date,

@@ -1,4 +1,3 @@
-import { useTheme } from 'next-themes'
 import dynamic from 'next/dynamic'
 import { useFormik } from 'formik'
 
@@ -30,7 +29,6 @@ https://github.com/koreanbots
 		},
 		onSubmit: ()=>{ alert('Pong') }
 	})
-	const { theme, systemTheme } = useTheme()
 	return <Container paddingTop className='mb-10'>
 		<h1 className='text-4xl font-bold mb-3 mt-3'>개발자모드</h1>
 		<h2 className='text-3xl font-semibold mb-4'>정보들</h2>
@@ -52,7 +50,7 @@ https://github.com/koreanbots
 				<code>{checkBrowser()}</code>
 				<h2>User-Agent</h2>
 				<pre>{navigator.userAgent}</pre>
-				<h2>Darkmode</h2>
+				{/* <h2>Darkmode</h2>
 				<table>
 					<thead>
 						<tr>
@@ -68,7 +66,7 @@ https://github.com/koreanbots
 							<td>{systemTheme}</td>
 						</tr>
 					</tbody>
-				</table>
+				</table> */}
 			</div>
 		</Segment>
 		<Divider />

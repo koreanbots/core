@@ -1,17 +1,17 @@
 import * as Sentry from '@sentry/node'
 import { RewriteFrames } from '@sentry/integrations'
+import { Integrations } from '@sentry/tracing'
 
 export const init = () => {
 	if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
 		const integrations = []
 		if (
-			process.env.NEXT_IS_SERVER === 'true' &&
-      process.env.NEXT_PUBLIC_SENTRY_SERVER_ROOT_DIR
+			process.env.NEXT_IS_SERVER === 'true'
 		) {
 			// For Node.js, rewrite Error.stack to use relative paths, so that source
 			// maps starting with ~/_next map to files in Error.stack with path
 			// app:///_next
-			integrations.push(
+			if(process.env.NEXT_PUBLIC_SENTRY_SERVER_ROOT_DIR) integrations.push(
 				new RewriteFrames({
 					iteratee: (frame) => {
 						frame.filename = frame.filename.replace(
@@ -24,6 +24,7 @@ export const init = () => {
 				})
 			)
 		}
+		else integrations.push(new Integrations.BrowserTracing())
 
 		Sentry.init({
 			enabled: process.env.NODE_ENV === 'production',

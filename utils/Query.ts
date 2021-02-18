@@ -192,7 +192,7 @@ async function submitBot(id: string, data: AddBotSubmit) {
 		web: data.website,
 		git: data.git,
 		url: data.url,
-		category: data.category,
+		category: JSON.stringify(data.category),
 		discord: data.discord,
 		state: 0
 	})

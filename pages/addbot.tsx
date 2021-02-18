@@ -1,4 +1,5 @@
 import { NextPage, NextPageContext } from 'next'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
@@ -8,7 +9,7 @@ import { get } from '@utils/Query'
 import { parseCookie, redirectTo } from '@utils/Tools'
 import { AddBotSubmit, AddBotSubmitSchema } from '@utils/Yup'
 import { categories, library } from '@utils/Constants'
-import { SubmittedBot, User } from '@types'
+import { ResponseProps, SubmittedBot, User } from '@types'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
 
@@ -27,6 +28,7 @@ const Message = dynamic(() => import('@components/Message'))
 const SEO = dynamic(() => import('@components/SEO'))
 
 const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken }) => {
+	const [ data, setData ] = useState<ResponseProps<SubmittedBot>>(null)
 	const router = useRouter()
 	function toLogin() {
 		localStorage.redirectTo = window.location.href
@@ -35,7 +37,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken }) => {
 
 	async function submitBot(value: AddBotSubmit) {
 		const res = await Fetch<SubmittedBot>(`/bots/${value.id}`, { method: 'POST', body: JSON.stringify(value), headers: { 'content-type': 'application/json' } })
-		redirectTo(router, `/pendingBots/${res.data.id}/${res.data.date}`)
+		setData(res)
 	}
 	if(!logged) {
 		toLogin()
@@ -44,9 +46,21 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken }) => {
 	return <Container paddingTop>
 		<SEO title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.'/>
 		<h1 className='text-3xl font-bold'>새로운 봇 추가하기</h1>
-		<div className='mt-1'>
+		<div className='mt-1 mb-5'>
 			안녕하세요, <span className='font-semibold'>{user.username}#{user.tag}</span>님! <a role='button' tabIndex={0} onKeyDown={toLogin} onClick={toLogin} className='text-discord-blurple cursor-pointer outline-none'>본인이 아니신가요?</a>
 		</div>
+		{
+			data ? data.code == 200 && data.data ? <Message type='success'>
+				<h2 className='text-lg font-black'>봇 신청 성공!</h2>
+				<p>봇을 성공적으로 신청했습니다! 심사 페이지로 리다이랙트됩니다. {redirectTo(router, `/pendingBots/${data.data.id}/${data.data.date}`)}</p>
+			</Message> : <Message type='error'>
+				<h2 className='text-lg font-black'>{data.message || '오류가 발생했습니다.'}</h2>
+				<ul className='list-disc list-inside'>
+					{data.errors?.map((el, n) => <li key={n}>{el}</li>)}
+				</ul>
+				
+			</Message> : <></>
+		}
 		<Formik initialValues={{
 			agree: false,
 			id: '',
@@ -73,7 +87,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken }) => {
 		onSubmit={submitBot}>
 			{({ errors, touched, values, setFieldTouched, setFieldValue }) => (
 				<Form>
-					<div className='py-5'>
+					<div className='py-3'>
 						<Message type='warning'>
 							<h2 className='text-lg font-black'>신청하시기 전에 다음 사항을 확인해 주세요!</h2>
 							<ul className='list-disc list-inside'>
@@ -151,7 +165,6 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken }) => {
 				</Form>
 			)}
 		</Formik>
-		
 	</Container>
 }
 

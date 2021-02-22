@@ -9,7 +9,7 @@ import { Bot, User, ListType, BotList, TokenRegister, BotFlags, DiscordUserFlags
 import { categories } from './Constants'
 
 import knex from './Knex'
-import DiscordBot from './DiscordBot'
+import { DiscordBot, getMainGuild } from './DiscordBot'
 import { sign, verify } from './Jwt'
 import { serialize } from './Tools'
 import { AddBotSubmit } from './Yup'
@@ -181,6 +181,8 @@ async function getBotSubmits(id: string) {
 /**
  * @returns 1 - Has pending Bots
  * @returns 2 - Already submitted ID
+ * @returns 3 - Bot User does not exists
+ * @returns 4 - Discord not Joined
  * @returns obj - Success
  */
 async function submitBot(id: string, data: AddBotSubmit):Promise<number|SubmittedBot> {
@@ -189,7 +191,12 @@ async function submitBot(id: string, data: AddBotSubmit):Promise<number|Submitte
 	const botId = data.id
 	const date =  Math.round(+new Date()/1000)
 	const sameID = await knex('submitted').select(['id']).where({ id: botId, state: 0 })
-	if(sameID.length !== 0) return 2
+	const bot = await get.bot.load(data.id)
+	if(sameID.length !== 0 || bot) return 2
+	const user = await get.discord.user.load(data.id)
+	if(!user) return 3
+	const member = await getMainGuild().members.fetch(id).then(() => true).catch(() => false)
+	if(!member) return 4
 	await knex('submitted').insert({
 		id: botId,
 		date: date,

@@ -7,5 +7,5 @@ DiscordBot.on('ready', () => console.log('I\'m Ready'))
 
 DiscordBot.login(process.env.DISCORD_TOKEN)
 
-const getMainGuild = DiscordBot.guilds.cache.get(guildID)
+const getMainGuild = () => DiscordBot.guilds.cache.get(guildID)
 export { DiscordBot, getMainGuild }

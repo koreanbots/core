@@ -6,7 +6,7 @@ import ResponseWrapper from '@utils/ResponseWrapper'
 import { checkToken } from '@utils/Csrf'
 import { AddBotSubmit, AddBotSubmitSchema } from '@utils/Yup'
 
-const BotInfo = nc<ApiRequest, NextApiResponse>()
+const Bots = nc<ApiRequest, NextApiResponse>()
 	.get(async(req, res) => {
 		const bot = await get.bot.load(req.query.id)
 		if(!bot) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })
@@ -38,10 +38,10 @@ const BotInfo = nc<ApiRequest, NextApiResponse>()
 	})
 
 interface ApiRequest extends NextApiRequest {
-	body: AddBotSubmit
+	body: AddBotSubmit | null
 	query: {
 		id: string
 	}
 }
 
-export default BotInfo
+export default Bots

@@ -70,7 +70,7 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 
 async function getUser(id: string, bots = true):Promise<User> {
 	const res = await knex('users')
-		.select(['id', 'flags', 'perm', 'github'])
+		.select(['id', 'flags', 'github'])
 		.where({ id })
 	if (res[0]) {
 		const owned = await knex('bots')

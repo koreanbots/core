@@ -52,7 +52,7 @@ export function supportsWebP() {
 	return false
 }
 
-export function checkBrowser() {
+export function checkBrowser(): string {
 	const ua = navigator.userAgent
 	let tem
 	let M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+(\.\d+)?(\.\d+)?)/i) || []

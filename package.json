@@ -27,7 +27,7 @@
     "formik": "2.2.6",
     "josa": "3.0.1",
     "jsonwebtoken": "8.5.1",
-    "knex": "0.21.17",
+    "knex": "0.21.18",
     "mysql": "2.18.1",
     "next": "10.0.6",
     "next-connect": "0.10.0",

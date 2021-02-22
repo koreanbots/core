@@ -20,7 +20,7 @@ const Advertisement = dynamic(() => import('@components/Advertisement'))
 const Tooltip = dynamic(() => import('@components/Tooltip'))
 
 const Users: NextPage<UserProps> = ({ data }) => {
-	if (!data.id) return <NotFound />
+	if (!data?.id) return <NotFound />
 	return (
 		<Container paddingTop className='py-10'>
 			<SEO
@@ -95,7 +95,7 @@ const Users: NextPage<UserProps> = ({ data }) => {
 
 export const getServerSideProps = async (ctx: Context) => {
 	const data = await Query.get.user.load(ctx.query.id)
-	return { props: { data, date: SnowflakeUtil.deconstruct(data.id ?? '0')?.date?.toJSON() } }
+	return { props: { data, date: SnowflakeUtil.deconstruct(data?.id ?? '0')?.date?.toJSON() } }
 }
 
 interface UserProps {

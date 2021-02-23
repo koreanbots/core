@@ -1,8 +1,7 @@
 <div align="center">
   <img src="./.github/assets/koreanbots-ko.png">
   <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-    <!-- <a aria-label="All Contributors" href="#contributors-"><img src="https://img.shields.io/badge/all_contributors-1-orange.svg?style=for-the-badge&labelColor=000000"></a> -->
-  <!-- ALL-CONTRIBUTORS-BADGE:END -->
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 </div>
 
 ![Tests](https://github.com/koreanbots/koreanbots/workflows/Tests/badge.svg)
@@ -37,6 +36,7 @@
 <table>
   <tr>
     <td align="center"><a href="https://wonder.im"><img src="https://avatars.githubusercontent.com/u/31924512?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Junseo Park</b></sub></a><br /><a href="#maintenance-wonderlandpark" title="Maintenance">🚧</a> <a href="#business-wonderlandpark" title="Business development">💼</a></td>
+    <td align="center"><a href="https://github.com/zero734kr"><img src="https://avatars.githubusercontent.com/u/51540538?v=4?s=100" width="100px;" alt=""/><br /><sub><b>zero734kr</b></sub></a><br /><a href="https://github.com/koreanbots/koreanbots/pulls?q=is%3Apr+reviewed-by%3Azero734kr" title="Reviewed Pull Requests">👀</a></td>
   </tr>
 </table>
 

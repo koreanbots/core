@@ -1069,3 +1069,8 @@
   height: 1.5rem;
   vertical-align: center;
 }
+
+.markdown-body .emoji.special {
+  width: 2rem;
+  height: 2rem;
+}

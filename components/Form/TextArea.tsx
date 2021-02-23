@@ -1,12 +1,67 @@
+/* eslint-disable jsx-a11y/no-autofocus */
+import { useRef, useState } from 'react'
 import { Field } from 'formik'
+import { Picker } from 'emoji-mart'
 
-const TextArea = ({ name, placeholder }:TextAreaProps):JSX.Element => {
-	return <Field as='textarea' name={name} className='border border-grey-light dark:border-transparent text-black dark:bg-very-black dark:text-white w-full rounded px-4 py-3 relative min-h-3 resize-none outline-none' placeholder={placeholder} />
+import useOutsideClick from '@utils/useOutsideClick'
+
+import 'emoji-mart/css/emoji-mart.css'
+
+
+
+const TextArea = ({ name, placeholder, theme='auto', setValue, value }:TextAreaProps):JSX.Element => {
+	const ref = useRef()
+	const [ emojiPickerHidden, setEmojiPickerHidden ] = useState(true)
+	useOutsideClick(ref, () => {
+		setEmojiPickerHidden(true)
+	})
+	
+	return <div className='border-none h-96 text-black dark:bg-very-black dark:text-white rounded px-4 py-3 inline-block relative w-full'>
+		<Field as='textarea' name={name} className='dark:border-transparent text-black dark:bg-very-black dark:text-white w-full relative h-full resize-none outline-none' placeholder={placeholder} />
+		<div ref={ref}>
+			<div className='absolute bottom-12 right-10 z-30'>
+				{
+					!emojiPickerHidden && <Picker set='twitter' autoFocus enableFrequentEmojiSort	theme={theme} showSkinTones={false} onSelect={(e) => {
+						setEmojiPickerHidden(true)
+						setValue(value + ((e as { native: string }).native || e.colons))
+					}} i18n={{
+						search: '검색',
+						notfound: '검색 결과가 없습니다.',
+						categories: {
+							search: '검색 결과',
+							recent: '최근 사용',
+							people: '사람',
+							nature: '자연',
+							foods: '음식',
+							activity: '활동',
+							places: '장소',
+							objects: '사물',
+							symbols: '기호',
+							flags: '국기',
+							custom: '커스텀'
+						}
+					}} custom={[{
+						name: '한국 디스코드봇 리스트',
+						short_names: ['koreanbots', 'kbots', 'dbkr'],
+						emoticons: [],
+						keywords: ['koreanbots', '한국 디스코드봇 리스트', '한디리', 'kbots'],
+						imageUrl: '/logo.png'
+					}]}/>
+				}
+			</div>
+			<div className='absolute bottom-3 right-8'>
+				<button className='emoji-selector-button' onClick={() => setEmojiPickerHidden(false)} />
+			</div>
+		</div>
+	</div>
 }
 
 interface TextAreaProps {
   name: string
   placeholder?: string
+  theme?: 'auto' | 'dark' | 'light'
+  value: string
+  setValue(value: string): void
 }
 
 export default TextArea

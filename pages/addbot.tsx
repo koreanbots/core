@@ -1,5 +1,5 @@
 import { NextPage, NextPageContext } from 'next'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
@@ -9,9 +9,10 @@ import { get } from '@utils/Query'
 import { cleanObject, parseCookie, redirectTo } from '@utils/Tools'
 import { AddBotSubmit, AddBotSubmitSchema } from '@utils/Yup'
 import { categories, library } from '@utils/Constants'
-import { ResponseProps, SubmittedBot, User } from '@types'
+import { ResponseProps, SubmittedBot, Theme, User } from '@types'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
+import useOutsideClick from '@utils/useOutsideClick'
 
 const CheckBox = dynamic(() => import('@components/Form/CheckBox'))
 const Label = dynamic(() => import('@components/Form/Label'))
@@ -27,7 +28,7 @@ const Container = dynamic(() => import('@components/Container'))
 const Message = dynamic(() => import('@components/Message'))
 const SEO = dynamic(() => import('@components/SEO'))
 
-const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken }) => {
+const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 	const [ data, setData ] = useState<ResponseProps<SubmittedBot>>(null)
 	const router = useRouter()
 	function toLogin() {
@@ -149,7 +150,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken }) => {
 						<Input name='intro' placeholder='국내 봇을 한 곳에서.' />
 					</Label>
 					<Label For='intro' label='봇 설명' labelDesc={<>봇을 자세하게 설명해주세요! (최대 1500자)<br/>마크다운을 지원합니다!</>} error={errors.desc && touched.desc ? errors.desc : null} required>
-						<TextArea name='desc' placeholder='봇에 대해 최대한 자세히 설명해주세요!' />
+						<TextArea name='desc' placeholder='봇에 대해 최대한 자세히 설명해주세요!' theme={theme === 'dark' ? 'dark' : 'light'} value={values.desc} setValue={(value) => setFieldValue('desc', value)} />
 					</Label>
 					<Label For='preview' label='설명 미리보기' labelDesc='다음 결과는 실제와 다를 수 있습니다'>
 						<Segment>
@@ -178,6 +179,7 @@ interface AddBotProps {
 	logged: boolean
 	user: User
 	csrfToken: string
+	theme: Theme
 }
 
 export default AddBot

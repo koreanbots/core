@@ -89,3 +89,25 @@ html .dark * ::-webkit-scrollbar-track {
 button {
   outline: none !important;
 }
+
+.emoji-selector-button {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  background-image: url("https://unpkg.com/emoji-datasource-twitter@5.0.1/img/twitter/sheets-256/64.png");
+  background-size: 5700% 5700%;
+  background-position: 53.5714% 62.5%;
+  filter: grayscale(100%);
+}
+
+.emoji-selector-button:hover {
+  filter: grayscale(0%);
+  transform: scale(1.1, 1.1);
+  opacity: 90%;
+  transition: ease-in 100ms;
+  cursor: pointer;
+}
+
+.emoji-mart-category-list > *, .emoji-mart-emoji > span {
+  cursor: pointer;
+}

@@ -12,7 +12,6 @@ import { categories, library } from '@utils/Constants'
 import { ResponseProps, SubmittedBot, Theme, User } from '@types'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
-import useOutsideClick from '@utils/useOutsideClick'
 
 const CheckBox = dynamic(() => import('@components/Form/CheckBox'))
 const Label = dynamic(() => import('@components/Form/Label'))

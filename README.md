@@ -1,7 +1,7 @@
 <div align="center">
   <img src="./.github/assets/koreanbots-ko.png">
   <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-    <a aria-label="All Contributors" href="#contributors-"><img src="https://img.shields.io/badge/all_contributors-1-orange.svg?style=for-the-badge&labelColor=000000"></a>
+    <!-- <a aria-label="All Contributors" href="#contributors-"><img src="https://img.shields.io/badge/all_contributors-1-orange.svg?style=for-the-badge&labelColor=000000"></a> -->
   <!-- ALL-CONTRIBUTORS-BADGE:END -->
 </div>
 

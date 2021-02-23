@@ -60,7 +60,7 @@ const Footer = ({ color, theme, setTheme }:FooterProps): JSX.Element => {
 							</ul>
 						</div>
 						<div className='mb-2 col-span-1'>
-							<h2 className='text-koreanbots-blue text-base font-bold'>약관</h2>
+							<h2 className='text-koreanbots-blue text-base font-bold'>정책</h2>
 							<ul className='text-sm'>
 								<li>
 									<Link href='/privacy'>
@@ -70,6 +70,11 @@ const Footer = ({ color, theme, setTheme }:FooterProps): JSX.Element => {
 								<li>
 									<Link href='/guidelines'>
 										<a className='hover:text-gray-300'>가이드라인</a>
+									</Link>
+								</li>
+								<li>
+									<Link href='/opensource'>
+										<a className='hover:text-gray-300'>오픈소스 라이선스</a>
 									</Link>
 								</li>
 							</ul>

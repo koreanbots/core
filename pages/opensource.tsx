@@ -701,7 +701,7 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 		<p>
       다음 소프트웨어들이 사용되었습니다:<br/>
 			{
-				Object.keys(packageJson.dependencies).concat(Object.keys(packageJson.devDependencies)).map(el=> <><a className='text-blue-500 hover:text-blue-400' key={el} href={`https://npmjs.org/package/${el}`}>{el}</a> </>)
+				Object.keys(packageJson.dependencies).concat(Object.keys(packageJson.devDependencies)).map(el=> <span key={el}><a className='text-blue-500 hover:text-blue-400' href={`https://npmjs.org/package/${el}`}>{el}</a> </span>)
 			}
 		</p>
 	</Docs>

@@ -43,7 +43,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken }) => {
 		toLogin()
 		return <SEO title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.'/>
 	}
-	return <Container paddingTop>
+	return <Container paddingTop className='pt-5'>
 		<SEO title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.'/>
 		<h1 className='text-3xl font-bold'>새로운 봇 추가하기</h1>
 		<div className='mt-1 mb-5'>

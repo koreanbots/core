@@ -69,24 +69,30 @@ const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
 		<div className='lg:flex lg:flex-row-reverse'>
 			<div className='mb-1 w-full lg:w-1/4'>
 				<h2 className='3xl mb-2 font-bold'>정보</h2>
-				<div className='grid gap-4 grid-cols-2 px-4 py-4 text-black dark:text-gray-400 dark:bg-discord-black bg-little-white rounded-sm'>
-					<div>
-						<i className='fas fa-fingerprint' /> ID
+				<div className='grid gap-4 grid-cols-1 px-4 py-4 text-black dark:text-gray-400 dark:bg-discord-black bg-little-white rounded-sm'>
+					<div className='flex'>
+						<div className='w-2/5'>
+							<i className='fas fa-fingerprint' /> ID
+						</div>
+						<div className='text-black dark:text-gray-400 truncate'>
+							{data.id}
+						</div>
 					</div>
-					<div className='text-black dark:text-gray-400'>
-						{data.id}
+					<div className='flex'>
+						<div className='w-2/5'>
+							<i className='fas fa-calendar-day' /> 등록일
+						</div>
+						<div className='text-black dark:text-gray-400'>
+							{Day(data.date * 1000).format('LLL')}
+						</div>
 					</div>
-					<div>
-						<i className='fas fa-calendar-day' /> 등록일
-					</div>
-					<div className='text-black dark:text-gray-400'>
-						{Day(data.date * 1000).format('LLL')}
-					</div>
-					<div>
-						<i className='far fa-flag' /> 접두사
-					</div>
-					<div className='markdown-body text-black dark:text-gray-400'>
-						<code>{data.prefix}</code>
+					<div className='flex'>
+						<div className='w-2/5'>
+							<i className='far fa-flag' /> 접두사
+						</div>
+						<div className='markdown-body text-black dark:text-gray-400'>
+							<code>{data.prefix}</code>
+						</div>
 					</div>
 				</div>
 				<h2 className='3xl mb-2 mt-2 font-bold'>카테고리</h2>

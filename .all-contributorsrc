@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "wonderlandpark",
+      "name": "Junseo Park",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31924512?v=4",
+      "profile": "https://wonder.im",
+      "contributions": [
+        "maintenance",
+        "business"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "koreanbots",
+  "projectOwner": "koreanbots",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

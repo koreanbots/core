@@ -1,5 +1,8 @@
 <div align="center">
   <img src="./.github/assets/koreanbots-ko.png">
+  <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+    <!-- <a aria-label="All Contributors" href="#contributors-"><img src="https://img.shields.io/badge/all_contributors-1-orange.svg?style=for-the-badge&labelColor=000000"></a> -->
+  <!-- ALL-CONTRIBUTORS-BADGE:END -->
 </div>
 
 ![Tests](https://github.com/koreanbots/koreanbots/workflows/Tests/badge.svg)
@@ -25,3 +28,19 @@
 이슈와 PR은 언제든지 환영입니다.
 
 [기여 규칙](./.github/CONTRIBUTING)
+
+## 기여자
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://wonder.im"><img src="https://avatars.githubusercontent.com/u/31924512?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Junseo Park</b></sub></a><br /><a href="#maintenance-wonderlandpark" title="Maintenance">🚧</a> <a href="#business-wonderlandpark" title="Business development">💼</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->

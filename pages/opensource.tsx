@@ -17,7 +17,10 @@ const Opensource: NextPage<OpensourceProps> = ({ packageJson }) => {
 		<h2 className='text-2xl font-semibold my-2'>라이선스</h2>
 		<Segment>
 			<>
-				<Markdown text={`GNU AFFERO GENERAL PUBLIC LICENSE
+				<Markdown text={`
+[원문](https://github.com/koreanbots/koreanbots/blob/master/LICENSE)
+
+GNU AFFERO GENERAL PUBLIC LICENSE
 
 Version 3, 19 November 2007
 

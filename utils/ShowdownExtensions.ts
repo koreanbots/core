@@ -1,6 +1,7 @@
 import { Emoji, EmojiSyntax, Heading, ImageTag } from './Regex'
 import Twemoji from 'twemoji'
 import { KoreanbotsEmoji } from './Constants'
+import { emoji } from 'node-emoji'
 
 export const anchorHeader = {
 	type:    'output',
@@ -34,7 +35,7 @@ export const customEmoji = {
 	type: 'output',
 	regex: EmojiSyntax,
 	replace: function(__match: string, name: string) {
-		if(!name) return `:${name}:`
-		return `<img class="emoji" draggable="false" alt="${name}" src="${KoreanbotsEmoji[name]}"/>`
+		if(!name || !KoreanbotsEmoji[name]) return `:${name}:`
+		return `<img class="emoji special" draggable="false" alt="${name}" src="${KoreanbotsEmoji[name]}"/>`
 	}
 }

@@ -1,8 +1,8 @@
 <div align="center">
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
   <img src="./.github/assets/koreanbots-ko.png">
+  <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+    <a aria-label="All Contributors" href="#contributors-"><img src="https://img.shields.io/badge/all_contributors-1-orange.svg?style=for-the-badge&labelColor=000000"></a>
+  <!-- ALL-CONTRIBUTORS-BADGE:END -->
 </div>
 
 ![Tests](https://github.com/koreanbots/koreanbots/workflows/Tests/badge.svg)

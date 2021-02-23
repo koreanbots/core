@@ -28,7 +28,7 @@ const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
 	return <Container paddingTop className='py-10'>
 		<SEO title='심사이력' />
 		<div className='lg:flex w-full'>
-			<div className='w-full lg:w-3/4 pr-5 py-8 text-center lg:text-left'>
+			<div className='w-full lg:w-3/4 lg:pr-5 py-8 text-center lg:text-left'>
 				{
 					data.state === 0 ? <Message type='info'>
 						<h2 className='text-lg font-black'>승인 대기중</h2>
@@ -47,7 +47,7 @@ const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
 							}
 						</Message>
 				}
-				<p className='dark:text-gray-300 text-gray-800 text-base mt-10'>{data.intro}</p>
+				<p className='dark:text-gray-300 text-gray-800 text-base mt-3'>{data.intro}</p>
 			</div>
 			<div className='w-full lg:w-1/4 lg:pt-8'>
 				<LongButton

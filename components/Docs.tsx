@@ -1,9 +1,11 @@
 import Container from '@components/Container'
 import Wave from '@components/Wave'
+import SEO from './SEO'
 
-const Docs = ({ header, description, subheader, children }: DocsProps): JSX.Element => {
+const Docs = ({ title, header, description, subheader, children }: DocsProps): JSX.Element => {
 	return (
 		<>
+			<SEO title={typeof header === 'string' ? header : title || '디스코드봇을 한 곳에서.'} description={description || subheader} />
 			<div className='dark:bg-discord-black bg-discord-blurple'>
 				<Container className='pb-10 pt-20' ignoreColor>
 					<h1 className='mt-10 text-center text-gray-100 text-4xl font-bold sm:text-left'>
@@ -32,6 +34,7 @@ export default Docs
 
 interface DocsProps {
 	header: string | JSX.Element
+	title?: string
 	description?: string
 	subheader?: string
 	children: JSX.Element | JSX.Element[]

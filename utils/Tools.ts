@@ -1,11 +1,9 @@
 import { Readable } from 'stream'
-import { NextPageContext } from 'next'
 import cookie from 'cookie'
 
 import { BotFlags, ImageOptions, UserFlags } from '@types'
 import { KoreanbotsEndPoints, Oauth } from './Constants'
 import { NextRouter } from 'next/router'
-import { IncomingMessage } from 'http'
 
 export function formatNumber(value: number):string  {
 	const suffixes = ['', '만', '억', '조','해']
@@ -103,6 +101,16 @@ export function parseCookie(req: { headers: { cookie?: string }}): { [key: strin
 export function redirectTo(router: NextRouter, to: string) {
 	router.push(KoreanbotsEndPoints[to] || to)
 	return
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function cleanObject<T extends Record<any, any>>(obj: T): T {
+	for (const propName in obj) {
+		if (obj[propName] !== 0 && !obj[propName]) {
+			delete obj[propName]
+		}
+	}
+	return obj
 }
 
 export { anchorHeader, twemoji, customEmoji } from './ShowdownExtensions'

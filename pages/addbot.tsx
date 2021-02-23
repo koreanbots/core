@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Form, Formik } from 'formik'
 
 import { get } from '@utils/Query'
-import { parseCookie, redirectTo } from '@utils/Tools'
+import { cleanObject, parseCookie, redirectTo } from '@utils/Tools'
 import { AddBotSubmit, AddBotSubmitSchema } from '@utils/Yup'
 import { categories, library } from '@utils/Constants'
 import { ResponseProps, SubmittedBot, User } from '@types'
@@ -36,7 +36,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken }) => {
 	}
 
 	async function submitBot(value: AddBotSubmit) {
-		const res = await Fetch<SubmittedBot>(`/bots/${value.id}`, { method: 'POST', body: JSON.stringify(value), headers: { 'content-type': 'application/json' } })
+		const res = await Fetch<SubmittedBot>(`/bots/${value.id}`, { method: 'POST', body: JSON.stringify(cleanObject<AddBotSubmit>(value)), headers: { 'content-type': 'application/json' } })
 		setData(res)
 	}
 	if(!logged) {

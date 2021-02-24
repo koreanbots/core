@@ -1,5 +1,5 @@
-import { ImageOptions, KoreanbotsImageOptions } from '@types'
-import { makeImageURL } from './Tools'
+import { Bot, ImageOptions, KoreanbotsImageOptions } from '@types'
+import { formatNumber, makeImageURL } from './Tools'
 
 export const Status = {
 	online: {
@@ -129,6 +129,20 @@ export const BASE_URLs = {
 	api: 'https://discord.com/api',
 	cdn: 'https://cdn.discordapp.com'
 }
+
+export const BotBadgeType = (data: Bot) => {
+	return {
+		servers: {
+			label: '서버수',
+			status: formatNumber(data.servers)
+		},
+		votes: {
+			label: '하트',
+			status: `${formatNumber(data.votes)}`
+		}
+	}
+}
+
 export const DiscordEnpoints = {
 	Token: BASE_URLs.api + '/oauth2/token',
 	Me: BASE_URLs.api + '/v8/users/@me',

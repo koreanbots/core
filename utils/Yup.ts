@@ -38,6 +38,25 @@ interface ImageOptions {
 type ext = 'webp' | 'png' | 'gif'
 type ImageSize = '128' | '256' | '512'
 
+export const WidgetOptionsSchema: Yup.SchemaOf<WidgetOptions> = Yup.object({
+	id: Yup.string().required(),
+	ext: Yup.mixed<widgetExt>().oneOf(['svg']).required(),
+	type: Yup.mixed<widgetType>().oneOf(['votes', 'servers']).required(),
+	scale: Yup.number().positive().min(0.5).max(3).required(),
+	style: Yup.mixed<'flat'|'classic'>().oneOf(['flat', 'classic']).default('flat')
+})
+
+interface WidgetOptions {
+	id: string
+	ext: widgetExt
+	type: widgetType
+	scale: number
+	style: 'flat' | 'classic'
+}
+
+type widgetType = 'votes' | 'servers'
+type widgetExt = 'svg'
+
 export const PageCount = Yup.number().integer().positive().required()
 
 export const OauthCallbackSchema: Yup.SchemaOf<OauthCallback> = Yup.object({
@@ -111,4 +130,5 @@ export const ManageBotSchema = Yup.object({
 	owners: Yup.array(Yup.string()).min(1, '최소 한 명의 소유자는 입력해주세요.').max(10, '소유자는 최대 10명까지만 가능합니다.').unique('소유자 아이디는 중복될 수 없습니다.').required('소유자는 필수 항목입니다.'),
 	_csrf: Yup.string().required()
 })
+
 export default Yup

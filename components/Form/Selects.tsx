@@ -1,4 +1,4 @@
-import ReactSelect, { components, MultiValueProps } from 'react-select'
+import ReactSelect, { components } from 'react-select'
 import {
 	SortableContainer,
 	SortableElement,
@@ -49,6 +49,7 @@ const Select = ({ placeholder, options, values, setValues, handleChange, handleT
 		}} isMulti className='border border-grey-light dark:border-transparent rounded' classNamePrefix='outline-none text-black dark:bg-very-black dark:text-white cursor-pointer ' placeholder={placeholder || '선택해주세요.'} options={options} onChange={handleChange} onBlur={handleTouch} noOptionsMessage={() => '검색 결과가 없습니다.'}
 		value={values.map(el => ({ label: el, value: el}))}
 		components={{
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			MultiValue: SortableMultiValue as any,
 			MultiValueLabel: SortableMultiValueLabel,
 		}}

@@ -165,6 +165,13 @@ export const KoreanbotsEmoji = [{
 	imageUrl: '/logo.png'
 },
 {
+	name: 'Discord',
+	short_names: ['discord'],
+	emoticons: [],
+	keywords: ['discord', '디스코드', '디코'],
+	imageUrl: '/emojis/discord.svg'
+},
+{
 	name: 'Javascript',
 	short_names: ['javascript', 'js'],
 	emoticons: [],

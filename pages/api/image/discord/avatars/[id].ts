@@ -11,14 +11,14 @@ const Avatar = nc<ApiRequest, NextApiResponse>()
 	.get(async(req, res) => {
 		res.setHeader('Access-Control-Allow-Origin', process.env.KOREANBOTS_URL)
 		const { imageRateLimit } = await import('@utils/Query')
-		const { id: param, size=256 } = req.query
+		const { id: param, size='256' } = req.query
 		const rate = ratelimit.image(req.socket.remoteAddress)
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const ratelimited = RateLimitHandler(res, { used: rate, limit: 600, reset: (<any>imageRateLimit).scheduler.get(req.socket.remoteAddress).expiry, onLimitExceed: async(res) => {
 			const img = await get.images.user.load(DiscordEnpoints.CDN.default(Math.floor(Math.random() * 6), { format: 'png' }))
 			res.setHeader('Content-Type', 'image/png')
 			res.setHeader('Cache-Control', 'no-cache')
-			img.pipe(res as unknown as NodeJS.WritableStream)
+			res.send(img)
 		} })
 		if(ratelimited) return
 		const splitted = param.split('.')
@@ -42,7 +42,7 @@ const Avatar = nc<ApiRequest, NextApiResponse>()
 
 		res.setHeader('Content-Type', `image/${ext}`)
 		res.setHeader('Cache-Control', 'public, max-age=86400')
-		img.pipe(res as unknown as NodeJS.WritableStream)
+		res.send(img)
 	})
 
 	

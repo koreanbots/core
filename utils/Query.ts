@@ -49,6 +49,7 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 		if(!discordBot) return null
 		res[0].flags = res[0].flags | (discordBot.flags && DiscordUserFlags.VERIFIED_BOT ? BotFlags.verifed : 0) | (res[0].trusted ? BotFlags.trusted : 0)
 		res[0].tag = discordBot.discriminator
+		res[0].avatar = discordBot.avatar
 		res[0].name = discordBot.username
 		res[0].category = JSON.parse(res[0].category)
 		res[0].owners = JSON.parse(res[0].owners)
@@ -216,11 +217,10 @@ async function submitBot(id: string, data: AddBotSubmit):Promise<number|Submitte
 	return await getBotSubmit(botId, date)
 }
 
-async function getImage(url: string):Promise<Stream> {
+async function getImage(url: string) {
 	const res = await fetch(url)
 	if(!res.ok) return null
-	const cache = new StreamCache()
-	return res.body.pipe(cache)
+	return await res.buffer()
 }
 
 async function getDiscordUser(id: string):Promise<DiscordUser> {

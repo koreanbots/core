@@ -3,10 +3,10 @@ import { useRef, useState } from 'react'
 import { Field } from 'formik'
 import { Picker } from 'emoji-mart'
 
+import { KoreanbotsEmoji } from '@utils/Constants'
 import useOutsideClick from '@utils/useOutsideClick'
 
 import 'emoji-mart/css/emoji-mart.css'
-import { KoreanbotsEmoji } from '@utils/Constants'
 
 
 

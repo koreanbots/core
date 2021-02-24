@@ -28,9 +28,7 @@ const Widget: NextApiHandler = async(req: ApiRequest, res: NextApiResponse) => {
 	const data = await get.bot.load(validated.id)
 	
 	if(!data) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })
-	console.log(data)
 	const userImage = !data.avatar ? null : await get.images.user.load(DiscordEnpoints.CDN.user(data.id, data.avatar, { format: 'png', size: 128 }))
-	console.log(userImage)
 	const img = userImage || await get.images.user.load(DiscordEnpoints.CDN.default(data.tag, { format: 'png', size: 128 }))
 	res.setHeader('content-type', 'image/svg+xml; charset=utf-8')
 	const badgeData = {

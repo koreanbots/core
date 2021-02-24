@@ -6,6 +6,7 @@ import { Picker } from 'emoji-mart'
 import useOutsideClick from '@utils/useOutsideClick'
 
 import 'emoji-mart/css/emoji-mart.css'
+import { KoreanbotsEmoji } from '@utils/Constants'
 
 
 
@@ -40,13 +41,7 @@ const TextArea = ({ name, placeholder, theme='auto', setValue, value }:TextAreaP
 							flags: '국기',
 							custom: '커스텀'
 						}
-					}} custom={[{
-						name: '한국 디스코드봇 리스트',
-						short_names: ['koreanbots', 'kbots', 'dbkr'],
-						emoticons: [],
-						keywords: ['koreanbots', '한국 디스코드봇 리스트', '한디리', 'kbots'],
-						imageUrl: '/logo.png'
-					}]}/>
+					}} custom={KoreanbotsEmoji}/>
 				}
 			</div>
 			<div className='absolute bottom-3 right-8'>

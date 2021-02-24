@@ -35,7 +35,8 @@ export const customEmoji = {
 	type: 'output',
 	regex: EmojiSyntax,
 	replace: function(__match: string, name: string) {
-		if(!name || !KoreanbotsEmoji[name]) return `:${name}:`
-		return `<img class="emoji special" draggable="false" alt="${name}" src="${KoreanbotsEmoji[name]}"/>`
+		const result = KoreanbotsEmoji.find(el => el.short_names.includes(name))
+		if(!name || !result) return `:${name}:`
+		return `<img class="emoji special" draggable="false" alt="${name}" src="${result.imageUrl}"/>`
 	}
 }

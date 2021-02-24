@@ -19,7 +19,7 @@ const TextArea = ({ name, placeholder, theme='auto', setValue, value }:TextAreaP
 	return <div className='border border-grey-light dark:border-transparent h-96 text-black dark:bg-very-black dark:text-white rounded px-4 py-3 inline-block relative w-full'>
 		<Field as='textarea' name={name} className='dark:border-transparent text-black dark:bg-very-black dark:text-white w-full relative h-full resize-none outline-none' placeholder={placeholder} />
 		<div ref={ref}>
-			<div className='absolute bottom-12 right-10 z-30'>
+			<div className='absolute bottom-12 -right-3 sm:right-8 z-30'>
 				{
 					!emojiPickerHidden && <Picker title='선택해주세요' emoji='sunglasses' set='twitter' enableFrequentEmojiSort	theme={theme} showSkinTones={false} onSelect={(e) => {
 						setEmojiPickerHidden(true)

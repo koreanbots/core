@@ -25,7 +25,7 @@
     "dataloader": "2.0.0",
     "dayjs": "1.10.4",
     "discord.js": "12.5.1",
-    "emoji-mart": "3.0.0",
+    "emoji-mart": "3.0.1",
     "formik": "2.2.6",
     "josa": "3.0.1",
     "jsonwebtoken": "8.5.1",

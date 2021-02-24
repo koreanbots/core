@@ -21,9 +21,9 @@ const TextArea = ({ name, placeholder, theme='auto', setValue, value }:TextAreaP
 		<div ref={ref}>
 			<div className='absolute bottom-12 right-10 z-30'>
 				{
-					!emojiPickerHidden && <Picker set='twitter' autoFocus enableFrequentEmojiSort	theme={theme} showSkinTones={false} onSelect={(e) => {
+					!emojiPickerHidden && <Picker title='선택해주세요' emoji='sunglasses' set='twitter' enableFrequentEmojiSort	theme={theme} showSkinTones={false} onSelect={(e) => {
 						setEmojiPickerHidden(true)
-						setValue(value + ((e as { native: string }).native || e.colons))
+						setValue(value + ' ' + ((e as { native: string }).native || e.colons))
 					}} i18n={{
 						search: '검색',
 						notfound: '검색 결과가 없습니다.',
@@ -50,7 +50,7 @@ const TextArea = ({ name, placeholder, theme='auto', setValue, value }:TextAreaP
 				}
 			</div>
 			<div className='absolute bottom-3 right-8'>
-				<button className='emoji-selector-button' onClick={() => setEmojiPickerHidden(false)} />
+				<div className='emoji-selector-button outline-none' onClick={() => setEmojiPickerHidden(false)} onKeyPress={() => setEmojiPickerHidden(false)} role='button' tabIndex={0} />
 			</div>
 		</div>
 	</div>

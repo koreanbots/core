@@ -1,9 +1,7 @@
 import fetch from 'node-fetch'
 import { TLRU } from 'tlru'
-import StreamCache from 'stream-cache'
 import DataLoader from 'dataloader'
 import { User as DiscordUser } from 'discord.js'
-import { Stream } from 'stream'
 
 import { Bot, User, ListType, BotList, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot } from '@types'
 import { categories } from './Constants'
@@ -45,7 +43,9 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 		.orWhere({ vanity: id, trusted: true })
 		.orWhere({ vanity: id, partnered: true })
 	if (res[0]) {
+
 		const discordBot = await get.discord.user.load(res[0].id)
+		await getMainGuild()?.members?.fetch(res[0].id).catch(e=> e)
 		if(!discordBot) return null
 		res[0].flags = res[0].flags | (discordBot.flags && DiscordUserFlags.VERIFIED_BOT ? BotFlags.verifed : 0) | (res[0].trusted ? BotFlags.trusted : 0)
 		res[0].tag = discordBot.discriminator
@@ -53,6 +53,8 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 		res[0].name = discordBot.username
 		res[0].category = JSON.parse(res[0].category)
 		res[0].owners = JSON.parse(res[0].owners)
+		res[0].status = discordBot.presence?.activities?.find(r => r.type === 'STREAMING') ? 'streaming' : discordBot.presence?.status || null
+		console.log(res[0].name, discordBot.presence?.status)
 		delete res[0].trusted
 		delete res[0].partnered
 		if (owners)

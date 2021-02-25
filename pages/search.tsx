@@ -18,7 +18,10 @@ const Paginator = dynamic(() => import('@components/Paginator'))
 
 const Search:NextPage<SearchProps> = ({ data, query }) => {
 	const router = useRouter()
-	if(!query?.q) redirectTo(router, '/')
+	if(!query?.q) {
+		redirectTo(router, '/')
+		return
+	}
 	return <>
 		<Hero header={`"${query.q}" 검색 결과`} description={`'${query.q}' 에 대한 검색 결과입니다.`} />
 		<SEO title={`"${query.q}" 검색 결과`} description={`'${query.q}' 에 대한 검색 결과입니다.`} />

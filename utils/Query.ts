@@ -240,7 +240,6 @@ async function assignToken(info: TokenRegister):Promise<string> {
 		await knex('users').update({ token: t }).where({ id: info.id })
 	} else t = token[0].token
 
-	
 	return t
 }
 

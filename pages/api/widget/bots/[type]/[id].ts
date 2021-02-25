@@ -5,7 +5,6 @@ import { WidgetOptionsSchema } from '@utils/Yup'
 
 import { badgen } from 'badgen'
 import { get } from '@utils/Query'
-import { formatNumber } from '@utils/Tools'
 import { BotBadgeType, DiscordEnpoints } from '@utils/Constants'
 
 const Widget: NextApiHandler = async(req: ApiRequest, res: NextApiResponse) => {

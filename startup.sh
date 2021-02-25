@@ -1,0 +1,1 @@
+yarn start & (sleep 1; wget http://localhost:3000/api -O /dev/null)

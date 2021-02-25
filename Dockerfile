@@ -40,4 +40,4 @@ RUN yarn build
 RUN yarn build
 
 # Running the app
-CMD "yarn" "start"
+CMD './startup.sh'

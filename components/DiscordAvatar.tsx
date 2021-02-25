@@ -1,7 +1,7 @@
 import { SyntheticEvent, useEffect, useState } from 'react'
 import { KoreanbotsEndPoints } from '@utils/Constants'
 import { supportsWebP } from '@utils/Tools'
-import { Logger } from '@utils/Logger'
+import Logger from '@utils/Logger'
 
 const DiscordAvatar = (props: {
 	alt?: string

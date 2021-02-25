@@ -3,7 +3,9 @@ import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+
 import { init } from '@utils/Sentry'
+import Logger from '@utils/Logger'
 
 const Footer = dynamic(() => import('@components/Footer'))
 const Navbar = dynamic(() => import('@components/Navbar'))
@@ -18,7 +20,6 @@ import '../app.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '../github-markdown.css'
 import { Theme } from '@types'
-import { Logger } from '@utils/Logger'
 
 init()
 

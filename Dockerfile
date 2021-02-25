@@ -40,4 +40,5 @@ RUN yarn build
 RUN yarn build
 
 # Running the app
-CMD './startup.sh'
+RUN chmod +x /usr/src/app/startup.sh
+CMD yarn start

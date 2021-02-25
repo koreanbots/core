@@ -29,7 +29,7 @@ const Search = (): JSX.Element => {
 
 	const onSubmit = async () => {
 		setHidden(true)
-		redirectTo(router, `/search/?query=${encodeURIComponent(query)}`)
+		redirectTo(router, `/search/?q=${encodeURIComponent(query)}`)
 	}
 
 	return <div>

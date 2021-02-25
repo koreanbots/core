@@ -7,11 +7,11 @@ import { git } from '@utils/Constants'
 
 import { SubmittedBot, User } from '@types'
 
+import useCopyClipboard from 'react-use-clipboard'
 import { ParsedUrlQuery } from 'querystring'
 
 import NotFound from 'pages/404'
 import Day from '@utils/Day'
-
 const Container = dynamic(() => import('@components/Container'))
 const SEO = dynamic(() => import('@components/SEO'))
 const Divider = dynamic(() => import('@components/Divider'))
@@ -24,6 +24,9 @@ const Owner = dynamic(() => import('@components/Owner'))
 const Message = dynamic(() => import('@components/Message'))
 
 const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
+	const [ isCopied, setCopied ] = useCopyClipboard(data.desc, {
+		successDuration: 1000
+	})
 	if(!data) return <NotFound />
 	return <Container paddingTop className='py-10'>
 		<SEO title='심사이력' />
@@ -59,6 +62,11 @@ const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
 				>
 					<h4 className='whitespace-nowrap'>
 						<i className='fas fa-user-plus text-discord-blurple' /> 초대하기
+					</h4>
+				</LongButton>
+				<LongButton onClick={setCopied}>
+					<h4>
+						{ isCopied ? <><i className='fas fa-check text-green-400' /> 복사됨</> : <><i className='far fa-copy'/> 설명 마크다운 복사하기</>}
 					</h4>
 				</LongButton>
 			</div>

@@ -134,11 +134,13 @@ export const BotBadgeType = (data: Bot) => {
 	return {
 		servers: {
 			label: '서버수',
-			status: formatNumber(data.servers)
+			status: formatNumber(data.servers),
+			color: '7289DA'
 		},
 		votes: {
 			label: '하트',
-			status: `${formatNumber(data.votes)}`
+			status: `${formatNumber(data.votes)}`,
+			color: 'ef4444'
 		},
 		status: {
 			label: '상태',

@@ -8,7 +8,7 @@ import { get } from '@utils/Query'
 import { BotBadgeType, DiscordEnpoints } from '@utils/Constants'
 
 const Widget: NextApiHandler = async(req: ApiRequest, res: NextApiResponse) => {
-	const { id: param, type, style='flat', scale=1 } = req.query
+	const { id: param, type, style='flat', scale=1, icon=true } = req.query
 	const splitted = param.split('.')
 
 	const validated = await WidgetOptionsSchema.validate({
@@ -16,7 +16,8 @@ const Widget: NextApiHandler = async(req: ApiRequest, res: NextApiResponse) => {
 		ext: splitted[splitted.length - 1],
 		style,
 		type,
-		scale
+		scale,
+		icon
 	}).then(el=> el).catch(e=> {
 		ResponseWrapper(res, { code: 400, errors: e.errors })
 		return null
@@ -34,7 +35,7 @@ const Widget: NextApiHandler = async(req: ApiRequest, res: NextApiResponse) => {
 		...BotBadgeType(data)[type],
 		style: validated.style,
 		scale: validated.scale,
-		icon: `data:image/png;base64,${img.toString('base64')}`
+		icon: validated.icon ? `data:image/png;base64,${img.toString('base64')}` : null
 	}
 
 	res.send(badgen(badgeData))
@@ -47,6 +48,7 @@ interface ApiRequest extends NextApiRequest {
 		id: string
 		style?: string
 		scale?: string
+		icon?: string
 	}
 }
 

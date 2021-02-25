@@ -43,7 +43,8 @@ export const WidgetOptionsSchema: Yup.SchemaOf<WidgetOptions> = Yup.object({
 	ext: Yup.mixed<widgetExt>().oneOf(['svg']).required(),
 	type: Yup.mixed<widgetType>().oneOf(['votes', 'servers', 'status']).required(),
 	scale: Yup.number().positive().min(0.5).max(3).required(),
-	style: Yup.mixed<'flat'|'classic'>().oneOf(['flat', 'classic']).default('flat')
+	style: Yup.mixed<'flat'|'classic'>().oneOf(['flat', 'classic']).default('flat'),
+	icon: Yup.boolean().default(true)
 })
 
 interface WidgetOptions {
@@ -52,6 +53,7 @@ interface WidgetOptions {
 	type: widgetType
 	scale: number
 	style: 'flat' | 'classic'
+	icon: boolean
 }
 
 type widgetType = 'votes' | 'servers' | 'status'

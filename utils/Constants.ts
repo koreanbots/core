@@ -139,6 +139,16 @@ export const BotBadgeType = (data: Bot) => {
 		votes: {
 			label: '하트',
 			status: `${formatNumber(data.votes)}`
+		},
+		status: {
+			label: '상태',
+			status: Status[data.status]?.text || '알 수 없음',
+			color: {
+				online: '34d399',
+				idle: 'fcd34d',
+				dnd: 'ef4444',
+				streaming: '8b5cf6'
+			}[data.status] || '6b7280'
 		}
 	}
 }

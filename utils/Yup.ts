@@ -41,7 +41,7 @@ type ImageSize = '128' | '256' | '512'
 export const WidgetOptionsSchema: Yup.SchemaOf<WidgetOptions> = Yup.object({
 	id: Yup.string().required(),
 	ext: Yup.mixed<widgetExt>().oneOf(['svg']).required(),
-	type: Yup.mixed<widgetType>().oneOf(['votes', 'servers']).required(),
+	type: Yup.mixed<widgetType>().oneOf(['votes', 'servers', 'status']).required(),
 	scale: Yup.number().positive().min(0.5).max(3).required(),
 	style: Yup.mixed<'flat'|'classic'>().oneOf(['flat', 'classic']).default('flat')
 })
@@ -54,7 +54,7 @@ interface WidgetOptions {
 	style: 'flat' | 'classic'
 }
 
-type widgetType = 'votes' | 'servers'
+type widgetType = 'votes' | 'servers' | 'status'
 type widgetExt = 'svg'
 
 export const PageCount = Yup.number().integer().positive().required()

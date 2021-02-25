@@ -134,7 +134,7 @@ export const BotBadgeType = (data: Bot) => {
 	return {
 		servers: {
 			label: '서버수',
-			status: formatNumber(data.servers),
+			status: data.servers === 0 ? 'N/A' : formatNumber(data.servers),
 			color: '7289DA'
 		},
 		votes: {

@@ -73,7 +73,7 @@ const Footer = ({ color, theme, setTheme }:FooterProps): JSX.Element => {
 									</Link>
 								</li>
 								<li>
-									<Link href='/opensource'>
+									<Link href='/license'>
 										<a className='hover:text-gray-300'>오픈소스 라이선스</a>
 									</Link>
 								</li>

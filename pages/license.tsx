@@ -1,12 +1,16 @@
 import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 
+import * as generateLicenseFile from 'generate-license-file'
+import { ILicense } from 'generate-license-file/dist/models/license.interface'
 
 const Docs = dynamic(()=> import('@components/Docs'))
 const Segment = dynamic(() => import('@components/Segment'))
 const Markdown = dynamic(() => import('@components/Markdown'))
 
-const Opensource: NextPage<OpensourceProps> = ({ packageJson }) => {
+
+const Opensource: NextPage<OpensourceProps> = ({ packageJson, license }) => {
+	console.log(license)
 	return <Docs title='오픈소스' header={<h1 className='font-black text-4xl'>
 		<span className='text-koreanbots-blue'>한디리</span>
 		<span><i className='text-red-500 fas fa-heart mx-2' /> </span>
@@ -706,22 +710,36 @@ For more information on this, and how to apply and follow the GNU AGPL, see
 			{
 				Object.keys(packageJson.dependencies).concat(Object.keys(packageJson.devDependencies)).map(el=> <span key={el}><a className='text-blue-500 hover:text-blue-400' href={`https://npmjs.org/package/${el}`}>{el}</a> </span>)
 			}
+			{
+				license.map(el=> 
+					<>
+						<h2 className='text-xl font-semibold my-3'>{el.dependencies.join(', ')}</h2>
+						<Segment>
+							<Markdown text={el.content} />
+						</Segment>
+					</>)
+			}
 		</p>
 	</Docs>
 }
 
 interface OpensourceProps {
-  packageJson: {
-    dependencies: Record<string, string>
-    devDependencies: Record<string, string>
-  }
+   packageJson: {
+      dependencies: Record<string, string>
+      devDependencies: Record<string, string>
+   }
+   license: ILicense[]
 }
 
 export async function getStaticProps () {
+	const license = await generateLicenseFile.getProjectLicenses('./').then(license => license)
+
 	return {
 		props: {
-			packageJson: require('package.json')
+			packageJson: require('package.json'),
+			license
 		}
 	}
+
 }
 export default Opensource

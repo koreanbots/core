@@ -7,6 +7,7 @@
 ![Tests](https://github.com/koreanbots/koreanbots/workflows/Tests/badge.svg)
 ![Deploy](https://github.com/koreanbots/koreanbots/workflows/Deploy/badge.svg)
 [![DeepScan grade](https://deepscan.io/api/teams/12468/projects/15503/branches/310734/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=12468&pid=15503&bid=310734)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkoreanbots%2Fkoreanbots.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkoreanbots%2Fkoreanbots?ref=badge_shield)
 
 [Introduced in English](./README.en.md)
 
@@ -44,3 +45,7 @@
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fkoreanbots%2Fkoreanbots.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fkoreanbots%2Fkoreanbots?ref=badge_large)

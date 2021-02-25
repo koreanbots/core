@@ -6331,10 +6331,10 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier-plugin-tailwind@2.2.8:
-  version "2.2.8"
-  resolved "https://registry.yarnpkg.com/prettier-plugin-tailwind/-/prettier-plugin-tailwind-2.2.8.tgz#6e25544a9ca94f671a1befc0133992a6f7f8f7ad"
-  integrity sha512-0ViHn1LnRrPj09FXa1bbZF49ybctmDfnZjPI3Iy9jIL3+ZpD/TnbSgAy18xmy8SYw1EsAq5kyOXmOghc8+WipQ==
+prettier-plugin-tailwind@2.2.9:
+  version "2.2.9"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-tailwind/-/prettier-plugin-tailwind-2.2.9.tgz#c1c00e6cd6b69a9d50a5037cb2b284ba22526e90"
+  integrity sha512-qcAX2RMkx9EgwN1UBaj7E3LTHM38wba6ZqQ014+2aP2DbcXHuRKkwBY/wziv4gT5t7crpxjTfamCw3NToKFoNg==
   dependencies:
     prettier "^2.1.2"
     tailwind-classes-sorter "^0.2.5"

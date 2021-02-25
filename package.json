@@ -18,7 +18,7 @@
     "@sentry/node": "6.2.0",
     "@sentry/webpack-plugin": "1.14.1",
     "autoprefixer": "10.2.4",
-    "badgen": "^3.2.2",
+    "badgen": "3.2.2",
     "cookie": "0.4.1",
     "core-js": "3.9.0",
     "csrf": "3.1.0",

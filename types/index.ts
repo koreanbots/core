@@ -36,6 +36,12 @@ export interface User {
 	bots: Bot[] | string[]
 }
 
+export interface BotSpec {
+	id: string
+	webhook: string | null
+	token: string
+}
+
 export enum UserFlags {
 	general = 0 << 0,
 	staff = 1 << 0,

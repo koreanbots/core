@@ -47,7 +47,7 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 		const discordBot = await get.discord.user.load(res[0].id)
 		await getMainGuild()?.members?.fetch(res[0].id).catch(e=> e)
 		if(!discordBot) return null
-		res[0].flags = res[0].flags | (discordBot.flags && DiscordUserFlags.VERIFIED_BOT ? BotFlags.verifed : 0) | (res[0].trusted ? BotFlags.trusted : 0)
+		res[0].flags = res[0].flags | (discordBot.flags && DiscordUserFlags.VERIFIED_BOT ? BotFlags.verifed : 0) | (res[0].trusted ? BotFlags.trusted : 0) | (res[0].partnered ? BotFlags.partnered : 0)
 		res[0].tag = discordBot.discriminator
 		res[0].avatar = discordBot.avatar
 		res[0].name = discordBot.username
@@ -219,6 +219,12 @@ async function submitBot(id: string, data: AddBotSubmit):Promise<number|Submitte
 	return await getBotSubmit(botId, date)
 }
 
+async function getBotSpec(id: string, userID: string) {
+	const res = await knex('bots').select(['id', 'token', 'webhook']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
+	if(!res[0]) return null
+	return serialize(res[0])
+}
+
 async function getImage(url: string) {
 	const res = await fetch(url)
 	if(!res.ok) return null
@@ -291,6 +297,7 @@ export const get = {
 				return await getBotSubmit(json.id, json.date)
 			}))).map(row => serialize(row))
 		, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 60000 }) }),
+	botSpec: getBotSpec,
 	list: {
 		category: new DataLoader(
 			async (key: string[]) => 

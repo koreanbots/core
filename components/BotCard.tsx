@@ -10,7 +10,6 @@ import DiscordAvatar from '@components/DiscordAvatar'
 
 const BotCard = ({ manage=false, bot }: BotProps): JSX.Element => {
 	return (
-		
 		<div className='container mb-16 transform hover:-translate-y-1 transition duration-100 ease-in'>
 			<div className='relative'>
 				<div className='container mx-auto'>

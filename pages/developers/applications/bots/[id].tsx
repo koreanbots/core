@@ -1,28 +1,35 @@
 import { NextPage, NextPageContext } from 'next'
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { Form, Formik } from 'formik'
 import useCopyClipboard from 'react-use-clipboard'
 
 import { get } from '@utils/Query'
-import { parseCookie } from '@utils/Tools'
+import { DeveloperBotSchema } from '@utils/Yup'
+import { parseCookie, redirectTo } from '@utils/Tools'
 
 import { ParsedUrlQuery } from 'querystring'
-import { Bot, BotSpec, User } from '@types'
+import { Bot, BotSpec } from '@types'
+
 import NotFound from 'pages/404'
-import { Form, Formik } from 'formik'
-import { DeveloperBotSchema } from '@utils/Yup'
 
 const Button = dynamic(() => import('@components/Button'))
 const Input = dynamic(() => import('@components/Form/Input'))
 const DeveloperLayout = dynamic(() => import('@components/DeveloperLayout'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 
-const BotApplication: NextPage<BotApplicationProps> = ({ spec, bot }) => {
+const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot }) => {
+	const router = useRouter()
 	const [ showToken, setShowToken ] = useState(false)
 	const [ tokenCopied, setTokenCopied ] = useCopyClipboard(spec?.token, {
 		successDuration: 1000
 	})
-
+	if(!user) {
+		localStorage.redirectTo = window.location.href
+		redirectTo(router, 'login')
+		return
+	}
 	if(!bot || !spec) return <NotFound />
 	return <DeveloperLayout enabled='applications'>
 		<h1 className='text-3xl font-bold'>봇 설정</h1>
@@ -65,7 +72,7 @@ const BotApplication: NextPage<BotApplicationProps> = ({ spec, bot }) => {
 }
 
 interface BotApplicationProps {
-  user: User
+  user: string
   spec: BotSpec
 	bot: Bot
 }
@@ -75,7 +82,7 @@ export const getServerSideProps = async (ctx: Context) => {
 	const user = await get.Authorization(parsed?.token) || ''
   
 	return {
-		props: { spec: await get.botSpec(ctx.query.id, user), bot: await get.bot.load(ctx.query.id) }
+		props: { user, spec: await get.botSpec(ctx.query.id, user), bot: await get.bot.load(ctx.query.id) }
 	}
 }
 

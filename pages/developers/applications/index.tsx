@@ -1,8 +1,9 @@
 import { NextPage, NextPageContext } from 'next'
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 
 import { get } from '@utils/Query'
-import { parseCookie } from '@utils/Tools'
+import { parseCookie, redirectTo } from '@utils/Tools'
 
 import { Bot, User } from '@types'
 
@@ -10,6 +11,12 @@ const Application = dynamic(() => import('@components/Application'))
 const DeveloperLayout = dynamic(() => import('@components/DeveloperLayout'))
 
 const Applications: NextPage<ApplicationsProps> = ({ user }) => {
+	const router = useRouter()
+	if(!user) {
+		localStorage.redirectTo = window.location.href
+		redirectTo(router, 'login')
+		return
+	}
 	return <DeveloperLayout enabled='applications'>
 		<h1 className='text-3xl font-bold'>나의 봇</h1>
 		<p className='text-gray-400'>한국 디스코드봇 리스트 API를 활용하여 봇에 다양한 기능을 추가해보세요.</p>

@@ -133,4 +133,12 @@ export const ManageBotSchema = Yup.object({
 	_csrf: Yup.string().required()
 })
 
+export const DeveloperBotSchema: Yup.SchemaOf<DeveloperBot> = Yup.object({
+	webhook: Yup.string().matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.').matches(Url, '올바른 웹훅 URL을 입력해주세요.').max(64, 'URL은 최대 64자까지만 가능합니다.')
+})
+
+interface DeveloperBot {
+	webhook: string |  null
+}
+
 export default Yup

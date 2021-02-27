@@ -14,6 +14,7 @@ UPDATE `bots` SET vanity=NULL where vanity='false' or vanity='';
 UPDATE `bots` SET bg=NULL where bg='false' or bg='';
 UPDATE `bots` SET banner=NULL where banner='false' or banner='';
 ALTER TABLE `bots` ADD COLUMN partnered BOOLEAN NOT NULL DEFAULT 0;
+ALTER TABLE `bots` ADD COLUMN webhook TEXT DEFAULT NULL;
 ALTER TABLE `bots` CHANGE id id VARCHAR(50) NOT NULL PRIMARY KEY;
 ALTER TABLE `bots` ENGINE=mroonga;
 ALTER TABLE `bots` COMMENT='engine "innodb"';

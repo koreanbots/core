@@ -214,7 +214,6 @@ export const KoreanbotsEmoji = [{
 
 export const ErrorText = {
 	DEFAULT: '예상치 못한 에러가 발생하였습니다.',
-	200: '문제가 없는데 여기를 어떻게 오셨죠?',
 	400: '올바르지 않은 요청입니다.',
 	401: '로그인이 필요합니다.',
 	402: '결제가 필요합니다.',

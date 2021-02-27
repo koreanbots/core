@@ -226,8 +226,16 @@ async function getBotSpec(id: string, userID: string) {
 }
 
 async function updateBotApplication(id: string, value: { webhook: string }) {
-	const res = await knex('bots').update({ webhook: value.webhook }).where({ id })
-	return
+	const bot = await knex('bots').update({ webhook: value.webhook }).where({ id })
+	if(bot !== 1) return false
+	return true
+}
+
+async function resetBotToken(id: string, beforeToken: string) {
+	const token = sign({ id })
+	const bot = await knex('bots').update({ token }).where({ id, token: beforeToken })
+	if(bot !== 1) return null
+	return token
 }
 
 async function getImage(url: string) {
@@ -343,7 +351,8 @@ export const get = {
 
 export const update = {
 	assignToken,
-	updateBotApplication
+	updateBotApplication,
+	resetBotToken
 }
 
 export const put = {

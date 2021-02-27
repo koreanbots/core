@@ -23,8 +23,9 @@ const ResetApplication = RequestHandler
 		const bot = await get.bot.load(req.query.id)
 		if(!bot) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })
 		if(!(bot.owners as User[]).find(el => el.id === user)) return ResponseWrapper(res, { code: 403 })
-		await update.resetBotToken(req.query.id, validated.token)
-		return ResponseWrapper(res, { code: 200 })
+		const d = await update.resetBotToken(req.query.id, validated.token)
+		if(!d) return ResponseWrapper(res, { code: 500, message: '무언가 잘못되었습니다.' })
+		return ResponseWrapper(res, { code: 200, data: { token: d }})
 	})
 
   interface ApiRequest extends NextApiRequest {

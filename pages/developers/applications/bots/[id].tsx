@@ -17,7 +17,6 @@ import { Bot, BotSpec, ResponseProps, Theme } from '@types'
 import NotFound from 'pages/404'
 
 const Button = dynamic(() => import('@components/Button'))
-const Divider = dynamic(() => import('@components/Divider'))
 const Input = dynamic(() => import('@components/Form/Input'))
 const DeveloperLayout = dynamic(() => import('@components/DeveloperLayout'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
@@ -38,6 +37,16 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 			body: JSON.stringify(cleanObject(d))
 		})
 		setData(res)
+	}
+
+	async function resetToken() {
+		const res = await Fetch<{ token: string }>(`/applications/bots/${bot.id}/reset`, {
+			method: 'POST',
+			body: JSON.stringify({ token: spec.token, _csrf: csrfToken })
+		})
+		setData(res)
+
+		return res
 	}
 
 	if(!user) {
@@ -76,13 +85,7 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 						<Button onClick={() => setShowToken(!showToken)}>{showToken ? '숨기기' : '보기'}</Button>
 						<Button onClick={setTokenCopied} className={tokenCopied ? 'bg-green-400 text-white' : null}>{tokenCopied ? '복사됨' : '복사'}</Button>
 						<Button onClick={()=> setModalOpen(true)}>재발급</Button>
-						<Modal isOpen={modalOpened} onClose={() => setModalOpen(false)} dark={theme === 'dark'} header='정말로 토큰을 재발급하시겠습니까?'>
-							<p>기존에 사용중이시던 토큰은 더 이상 사용하실 수 없습니다</p>
-							<div className='text-right pt-6'>
-								<Button className='bg-gray-500 hover:opacity-90' onClick={()=> setModalOpen(false)}>취소</Button>
-								<Button>재발급</Button>
-							</div>
-						</Modal>
+						
 					</div>
 					<Formik validationSchema={DeveloperBotSchema} initialValues={{
 						webhook: spec.webhook || '',
@@ -98,6 +101,17 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 									{touched.webhook && errors.webhook ? <div className='text-red-500 text-xs font-light mt-1'>{errors.webhook}</div> : null}
 								</div>
 								<Button type='submit'><i className='far fa-save'/> 저장</Button>
+								<Modal isOpen={modalOpened} onClose={() => setModalOpen(false)} dark={theme === 'dark'} header='정말로 토큰을 재발급하시겠습니까?'>
+									<p>기존에 사용중이시던 토큰은 더 이상 사용하실 수 없습니다</p>
+									<div className='text-right pt-6'>
+										<Button className='bg-gray-500 hover:opacity-90' onClick={()=> setModalOpen(false)}>취소</Button>
+										<Button onClick={async ()=> {
+											const res = await resetToken()
+											spec.token = res.data.token
+											setModalOpen(false)
+										}}>재발급</Button>
+									</div>
+								</Modal>
 							</Form>
 						)}
 					</Formik>

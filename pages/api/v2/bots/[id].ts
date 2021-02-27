@@ -14,7 +14,6 @@ const Bots = nc<ApiRequest, NextApiResponse>()
 	})
 	.post(async (req, res) => {
 		const user = await get.Authorization(req.cookies.token)
-		console.log(user)
 		if(!user) return ResponseWrapper(res, { code: 401 })
 		const csrfValidated = checkToken(req, res, req.body._csrf)
 		if(!csrfValidated) return

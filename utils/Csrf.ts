@@ -30,7 +30,6 @@ export const getToken = (req: IncomingMessage, res: ServerResponse) => {
 
 export const checkToken = (req: NextApiRequest, res: NextApiResponse, token: string): boolean => {
 	const parsed = parse(req.headers.cookie || '')
-	console.log(parsed[csrfKey], token)
 	if(parsed[csrfKey] !== token || !tokenVerify(token)) {
 		ResponseWrapper(res, { code: 400, message: 'CSRF 검증 에러 (페이지를 새로고침해주세요)' })
 		return false

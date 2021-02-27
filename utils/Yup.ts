@@ -1,3 +1,4 @@
+import { TokenExpiredError } from 'jsonwebtoken'
 import * as Yup from 'yup'
 import YupKorean from 'yup-locales-ko'
 import { ListType } from '../types'
@@ -140,6 +141,16 @@ export const DeveloperBotSchema: Yup.SchemaOf<DeveloperBot> = Yup.object({
 
 export interface DeveloperBot {
 	webhook: string |  null
+	_csrf: string
+}
+
+export const ResetBotTokenSchema = Yup.object({
+	token: Yup.string().required(),
+	_csrf: Yup.string().required()
+})
+
+export interface ResetBotToken {
+	token: string
 	_csrf: string
 }
 

@@ -4,8 +4,9 @@ import { DeveloperBot, DeveloperBotSchema } from '@utils/Yup'
 import { get, update } from '@utils/Query'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { checkToken } from '@utils/Csrf'
-import { User } from '@types'
 import RequestHandler from '@utils/RequestHandler'
+
+import { User } from '@types'
 
 const BotApplications = RequestHandler
 	.patch(async (req: ApiRequest, res) => {

@@ -57,9 +57,9 @@ const Navbar = (): JSX.Element => {
 								</Link>
 							</li>
 							<li className='flex items-center'>
-								<Link href='/developers/docs'>
+								<Link href='/developers'>
 									<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
-										API
+										개발자
 									</a>
 								</Link>
 							</li>
@@ -163,11 +163,11 @@ const Navbar = (): JSX.Element => {
 							<span className='px-2 font-medium'>소개</span>
 						</a>
 					</Link>
-					<Link href='/developers/docs'>
+					<Link href='/developers'>
 						<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
 							<i className='fas fa-tools' />
 
-							<span className='px-2 font-medium'>API</span>
+							<span className='px-2 font-medium'>개발자</span>
 						</a>
 					</Link>
 					<Link href='/addbot'>

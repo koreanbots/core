@@ -36,7 +36,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 	}
 
 	async function submitBot(value: AddBotSubmit) {
-		const res = await Fetch<SubmittedBot>(`/bots/${value.id}`, { method: 'POST', body: JSON.stringify(cleanObject<AddBotSubmit>(value)), headers: { 'content-type': 'application/json' } })
+		const res = await Fetch<SubmittedBot>(`/bots/${value.id}`, { method: 'POST', body: JSON.stringify(cleanObject<AddBotSubmit>(value)) })
 		setData(res)
 	}
 	if(!logged) {

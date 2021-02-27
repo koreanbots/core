@@ -36,13 +36,13 @@ ${mainLicense}`} />
 				Object.keys(packageJson.dependencies).concat(Object.keys(packageJson.devDependencies)).map(el=> <span key={el}><a className='text-blue-500 hover:text-blue-400' href={`https://npmjs.org/package/${el}`}>{el}</a> </span>)
 			}
 			{
-				license.map(el=> 
-					<>
+				license.map((el, i)=> 
+					<div key={i}>
 						<h2 className='text-xl font-semibold my-3'>{el.dependencies.join(', ')}</h2>
 						<Segment>
 							<Markdown text={el.content} />
 						</Segment>
-					</>)
+					</div>)
 			}
 		</p>
 	</Docs>

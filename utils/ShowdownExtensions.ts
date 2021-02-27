@@ -1,7 +1,6 @@
 import { Emoji, EmojiSyntax, Heading, ImageTag } from './Regex'
 import Twemoji from 'twemoji'
 import { KoreanbotsEmoji } from './Constants'
-import { emoji } from 'node-emoji'
 
 export const anchorHeader = {
 	type:    'output',

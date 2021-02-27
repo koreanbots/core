@@ -17,13 +17,9 @@ const Container = dynamic(() => import('@components/Container'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 const Button = dynamic(() => import('@components/Button'))
 const Tag = dynamic(() => import('@components/Tag'))
-const Owner = dynamic(() => import('@components/Owner'))
 const Segment = dynamic(() => import('@components/Segment'))
 const SEO = dynamic(() => import('@components/SEO'))
-const LongButton = dynamic(() => import('@components/LongButton'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
-const Tooltip = dynamic(() => import('@components/Tooltip'))
-const Markdown = dynamic(() => import ('@components/Markdown'))
 
 const VoteBot: NextPage<VoteBotProps> = ({ data, user, csrfToken }) => {
 	console.log(csrfToken)

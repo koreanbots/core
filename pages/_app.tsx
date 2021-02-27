@@ -69,10 +69,12 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 			<Navbar />
 			<div className='iu-is-the-best h-full text-black dark:text-gray-100 dark:bg-discord-dark bg-white'>
 				{
-					process.env.NEXT_PUBLIC_TESTER_KEY === Crypto.createHmac('sha256', betaKey ?? '').digest('hex') ? <Component {...pageProps} err={err} theme={theme} setTheme={setTheme} /> : <div className='text-center py-40 px-10'>
-						<h1 className='text-3xl font-bold'>주어진 테스터키를 입력해주세요.</h1><br/>
-						<input value={betaKey} name='field_name' className='text-black border outline-none px-4 py-2 rounded-2xl' type='text' placeholder='테스터 키' onChange={(e)=> { localStorage.setItem('betaKey', e.target.value); setBetaKey(e.target.value) }} />
-					</div>
+					process.env.NEXT_PUBLIC_TESTER_KEY === Crypto.createHmac('sha256', betaKey ?? '').digest('hex') ? 
+						<Component {...pageProps} err={err} theme={theme} setTheme={setTheme} /> : 
+						<div className='text-center py-40 px-10'>
+							<h1 className='text-3xl font-bold'>주어진 테스터키를 입력해주세요.</h1><br/>
+							<input value={betaKey} name='field_name' className='text-black border outline-none px-4 py-2 rounded-2xl' type='text' placeholder='테스터 키' onChange={(e)=> { localStorage.setItem('betaKey', e.target.value); setBetaKey(e.target.value) }} />
+						</div>
 				}
 			</div>
 			{

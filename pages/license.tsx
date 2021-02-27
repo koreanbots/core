@@ -30,7 +30,7 @@ ${mainLicense}`} />
 		</Segment>
 
 		<h1 className='text-3xl font-bold mt-6'>타 소프트웨어 라이선스</h1>
-		<p>
+		<div>
       다음 소프트웨어들이 사용되었습니다:<br/>
 			{
 				Object.keys(packageJson.dependencies).concat(Object.keys(packageJson.devDependencies)).map(el=> <span key={el}><a className='text-blue-500 hover:text-blue-400' href={`https://npmjs.org/package/${el}`}>{el}</a> </span>)
@@ -44,7 +44,7 @@ ${mainLicense}`} />
 						</Segment>
 					</div>)
 			}
-		</p>
+		</div>
 	</Docs>
 }
 

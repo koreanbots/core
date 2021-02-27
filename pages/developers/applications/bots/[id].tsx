@@ -13,14 +13,11 @@ import { Form, Formik } from 'formik'
 import { DeveloperBotSchema } from '@utils/Yup'
 
 const Button = dynamic(() => import('@components/Button'))
-const Divider = dynamic(() => import('@components/Divider'))
 const Input = dynamic(() => import('@components/Form/Input'))
-const Container = dynamic(() => import('@components/Container'))
 const DeveloperLayout = dynamic(() => import('@components/DeveloperLayout'))
-const SEO = dynamic(() => import('@components/SEO'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 
-const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot }) => {
+const BotApplication: NextPage<BotApplicationProps> = ({ spec, bot }) => {
 	const [ showToken, setShowToken ] = useState(false)
 	const [ tokenCopied, setTokenCopied ] = useCopyClipboard(spec?.token, {
 		successDuration: 1000

@@ -7,7 +7,7 @@ import { Theme } from '@types'
 
 const Footer = ({ color, theme, setTheme }:FooterProps): JSX.Element => {
 	return (
-		<div className='releative'>
+		<div className='releative z-30'>
 			<Wave color='currentColor' className={`${color ?? 'dark:text-discord-dark text-white bg-discord-black'} hidden md:block`} />
 			<div className='bottom-0 text-white bg-discord-black'>
 				<Container className='pb-20 pt-10 w-11/12 lg:flex lg:pt-0 lg:w-4/5' ignoreColor>

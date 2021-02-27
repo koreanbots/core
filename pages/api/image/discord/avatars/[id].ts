@@ -1,14 +1,14 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-import nc from 'next-connect'
+import { NextApiRequest } from 'next'
 
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { DiscordEnpoints } from '@utils/Constants'
 import { get, ratelimit } from '@utils/Query'
 import RateLimitHandler from '@utils/RateLimitHandler'
 import { ImageOptionsSchema } from '@utils/Yup'
+import RequestHandler from '@utils/RequestHandler'
 
-const Avatar = nc<ApiRequest, NextApiResponse>()
-	.get(async(req, res) => {
+const Avatar = RequestHandler
+	.get(async(req: ApiRequest, res) => {
 		res.setHeader('Access-Control-Allow-Origin', process.env.KOREANBOTS_URL)
 		const { imageRateLimit } = await import('@utils/Query')
 		const { id: param, size='256' } = req.query

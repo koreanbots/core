@@ -1,11 +1,11 @@
+import { NextApiRequest } from 'next'
+
 import { get } from '@utils/Query'
-import { NextApiRequest, NextApiResponse } from 'next'
-import nc from 'next-connect'
-
 import ResponseWrapper from '@utils/ResponseWrapper'
+import RequestHandler from '@utils/RequestHandler'
 
-const Users = nc<ApiRequest, NextApiResponse>()
-	.get(async(req, res) => {
+const Users = RequestHandler
+	.get(async(req: ApiRequest, res) => {
 		console.log(req.query)
 		const user = await get.user.load(req.query?.id)
 		if(!user) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 유저 입니다.' })

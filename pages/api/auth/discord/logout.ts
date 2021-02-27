@@ -1,9 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-import nc from 'next-connect'
 import { serialize } from 'cookie'
+import RequestHandler from '@utils/RequestHandler'
 
 
-const Logout = nc<NextApiRequest, NextApiResponse>()
+const Logout = RequestHandler
 	.get(async(req, res) => {
 		res.setHeader('Cache-control', 'no-cache')
 		res.setHeader('set-cookie', serialize('token', '', {

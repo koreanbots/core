@@ -1,18 +1,18 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-import nc from 'next-connect'
+import { NextApiRequest } from 'next'
 
 import { get, put } from '@utils/Query'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { checkToken } from '@utils/Csrf'
 import { AddBotSubmit, AddBotSubmitSchema } from '@utils/Yup'
+import RequestHandler from '@utils/RequestHandler'
 
-const Bots = nc<ApiRequest, NextApiResponse>()
-	.get(async(req, res) => {
+const Bots = RequestHandler
+	.get(async(req: GetApiRequest, res) => {
 		const bot = await get.bot.load(req.query.id)
 		if(!bot) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })
 		else return ResponseWrapper(res, { code: 200, data: bot })
 	})
-	.post(async (req, res) => {
+	.post(async (req: PostApiRequest, res) => {
 		const user = await get.Authorization(req.cookies.token)
 		if(!user) return ResponseWrapper(res, { code: 401 })
 		const csrfValidated = checkToken(req, res, req.body._csrf)
@@ -36,7 +36,13 @@ const Bots = nc<ApiRequest, NextApiResponse>()
 		return res.send('Reserved')
 	})
 
-interface ApiRequest extends NextApiRequest {
+interface GetApiRequest extends NextApiRequest {
+	query: {
+		id: string
+	}
+}
+
+interface PostApiRequest extends GetApiRequest {
 	body: AddBotSubmit | null
 	query: {
 		id: string

@@ -1,5 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-import nc from 'next-connect'
+import { NextApiRequest } from 'next'
 import fetch from 'node-fetch'
 import { serialize } from 'cookie'
 
@@ -10,9 +9,10 @@ import ResponseWrapper from '@utils/ResponseWrapper'
 import { DiscordTokenInfo, DiscordUserInfo } from '@types'
 import { update } from '@utils/Query'
 import { verify } from '@utils/Jwt'
+import RequestHandler from '@utils/RequestHandler'
 
-const Callback = nc<ApiRequest, NextApiResponse>()
-	.get(async(req, res) => {
+const Callback = RequestHandler
+	.get(async(req: ApiRequest, res) => {
 		const validate = await OauthCallbackSchema.validate(req.query).then(r=> r).catch((e) => {
 			ResponseWrapper(res, { code: 400, errors: e.errors })
 			return null

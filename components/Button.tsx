@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ReactNode } from 'react'
 
 const Button = ({ type='button', className, children, href, onClick }: ButtonProps):JSX.Element => {
 	return href ? <Link href={href}>
@@ -15,7 +16,7 @@ const Button = ({ type='button', className, children, href, onClick }: ButtonPro
 interface ButtonProps {
   type?: 'button' | 'submit' | 'reset'
   className?: string
-  children: JSX.Element | string
+  children: ReactNode
   href?: string
   onClick?: () => void
 }

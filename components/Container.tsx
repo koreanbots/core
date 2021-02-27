@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+
 const Container = ({
 	ignoreColor,
 	className,
@@ -19,7 +21,7 @@ interface ContainerProps {
 	ignoreColor?: boolean
 	className?: string
 	paddingTop?: boolean
-	children: JSX.Element | JSX.Element[]
+	children: ReactNode
 }
 
 export default Container

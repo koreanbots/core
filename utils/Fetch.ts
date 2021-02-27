@@ -4,7 +4,7 @@ import { KoreanbotsEndPoints } from './Constants'
 const Fetch = async <T>(endpoint: string, options?: RequestInit):Promise<ResponseProps<T>> => {
 	const url = KoreanbotsEndPoints.baseAPI + ( endpoint.startsWith('/') ? endpoint : '/' + endpoint)
   
-	const res = await fetch(url, options ?? { method: 'GET' })
+	const res = await fetch(url, { method: 'GET', headers: { 'content-type': 'application/json', ...options.headers }, ...options })
   
 	let json = {}
 

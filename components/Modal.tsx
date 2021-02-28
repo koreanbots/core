@@ -11,8 +11,7 @@ const Modal = ({ children, isOpen, onClose, dark, header }:ModalProps):JSX.Eleme
 		modal: {
 			borderRadius: '10px',
 			background: dark ? '#2C2F33' : '#fbfbfb',
-			color: dark ? 'white' : 'black',
-			minWidth: '500px'
+			color: dark ? 'white' : 'black'
 		}
 	}}
 	>

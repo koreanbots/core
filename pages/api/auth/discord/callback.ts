@@ -11,7 +11,7 @@ import { update } from '@utils/Query'
 import { verify } from '@utils/Jwt'
 import RequestHandler from '@utils/RequestHandler'
 
-const Callback = RequestHandler
+const Callback = RequestHandler()
 	.get(async(req: ApiRequest, res) => {
 		const validate = await OauthCallbackSchema.validate(req.query).then(r=> r).catch((e) => {
 			ResponseWrapper(res, { code: 400, errors: e.errors })

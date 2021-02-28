@@ -7,7 +7,7 @@ import RateLimitHandler from '@utils/RateLimitHandler'
 import { ImageOptionsSchema } from '@utils/Yup'
 import RequestHandler from '@utils/RequestHandler'
 
-const Avatar = RequestHandler
+const Avatar = RequestHandler()
 	.get(async(req: ApiRequest, res) => {
 		res.setHeader('Access-Control-Allow-Origin', process.env.KOREANBOTS_URL)
 		const { imageRateLimit } = await import('@utils/Query')

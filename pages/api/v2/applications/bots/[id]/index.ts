@@ -8,7 +8,7 @@ import RequestHandler from '@utils/RequestHandler'
 
 import { User } from '@types'
 
-const BotApplications = RequestHandler
+const BotApplications = RequestHandler()
 	.patch(async (req: ApiRequest, res) => {
 		const user = await get.Authorization(req.cookies.token)
 		if(!user) return ResponseWrapper(res, { code: 401 })

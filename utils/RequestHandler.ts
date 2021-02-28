@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import nc from 'next-connect'
 import ResponseWrapper from '@utils/ResponseWrapper'
 
-const RequestHandler = nc<NextApiRequest, NextApiResponse>({ 
+const RequestHandler = () => nc<NextApiRequest, NextApiResponse>({ 
 	onNoMatch(_req, res) {
 		return ResponseWrapper(res, { code: 405 })
 	},

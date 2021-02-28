@@ -1,7 +1,7 @@
 import ResponseWrapper from '@utils/ResponseWrapper'
 import RequestHandler from '@utils/RequestHandler'
 
-const Deprecated = RequestHandler
+const Deprecated = RequestHandler()
 	.get(async (_req, res) =>  {
 		return ResponseWrapper(res, {
 			code: 406,

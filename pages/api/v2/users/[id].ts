@@ -4,7 +4,7 @@ import { get } from '@utils/Query'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import RequestHandler from '@utils/RequestHandler'
 
-const Users = RequestHandler
+const Users = RequestHandler()
 	.get(async(req: ApiRequest, res) => {
 		console.log(req.query)
 		const user = await get.user.load(req.query?.id)

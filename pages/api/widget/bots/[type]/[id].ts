@@ -8,7 +8,7 @@ import { get } from '@utils/Query'
 import { BotBadgeType, DiscordEnpoints } from '@utils/Constants'
 import RequestHandler from '@utils/RequestHandler'
 
-const Widget= RequestHandler
+const Widget= RequestHandler()
 	.get(async(req: ApiRequest, res: NextApiResponse) => {
 		const { id: param, type, style='flat', scale=1, icon=true } = req.query
 		const splitted = param.split('.')

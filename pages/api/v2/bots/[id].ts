@@ -6,7 +6,7 @@ import { checkToken } from '@utils/Csrf'
 import { AddBotSubmit, AddBotSubmitSchema } from '@utils/Yup'
 import RequestHandler from '@utils/RequestHandler'
 
-const Bots = RequestHandler
+const Bots = RequestHandler()
 	.get(async(req: GetApiRequest, res) => {
 		const bot = await get.bot.load(req.query.id)
 		if(!bot) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })

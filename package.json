@@ -10,8 +10,7 @@
 		"prettier": "prettier --write **/*",
 		"lint:fix": "eslint --ext ts,tsx . --fix",
 		"test": "jest",
-		"docker": "docker-compose up -d --build",
-		"postinstall": "husky install"
+		"docker": "docker-compose up -d --build"
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "5.15.2",

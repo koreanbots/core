@@ -1,13 +1,14 @@
-
 module.exports = {
-	apps : [{
-		name: 'koreanbots',
-		script: 'npm start',
-		env: {
-			NODE_ENV: 'development',
+	apps: [
+		{
+			name: 'koreanbots',
+			script: 'npm start',
+			env: {
+				NODE_ENV: 'development',
+			},
+			env_production: {
+				NODE_ENV: 'production',
+			},
 		},
-		env_production: {
-			NODE_ENV: 'production',
-		}
-	}]
+	],
 }

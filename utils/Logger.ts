@@ -7,10 +7,10 @@ const Logger = {
 	},
 	error: function(message: string) {
 		print('ERROR', message, genStyle('red', 'white'))
-	}
+	},
 }
 
-function genStyle(bg: string, text='black') {
+function genStyle(bg: string, text = 'black') {
 	return `color:${text};background:${bg};padding:1px 3px;border-radius:2px;margin-right:5px;`
 }
 

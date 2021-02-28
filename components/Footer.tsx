@@ -5,10 +5,14 @@ import Wave from '@components/Wave'
 import Toggle from './Toggle'
 import { Theme } from '@types'
 
-const Footer = ({ color, theme, setTheme }:FooterProps): JSX.Element => {
+const Footer = ({ color, theme, setTheme }: FooterProps): JSX.Element => {
 	return (
 		<div className='releative z-30'>
-			<Wave color='currentColor' className={`${color ?? 'dark:text-discord-dark text-white bg-discord-black'} hidden md:block`} />
+			<Wave
+				color='currentColor'
+				className={`${color ??
+					'dark:text-discord-dark text-white bg-discord-black'} hidden md:block`}
+			/>
 			<div className='bottom-0 text-white bg-discord-black'>
 				<Container className='pb-20 pt-10 w-11/12 lg:flex lg:pt-0 lg:w-4/5' ignoreColor>
 					<div className='w-full md:w-2/5'>
@@ -28,8 +32,8 @@ const Footer = ({ color, theme, setTheme }:FooterProps): JSX.Element => {
 							</a>
 						</div>
 					</div>
-					<div className='flex-grow grid grid-cols-2 md:grid-cols-7 gap-2'>
-						<div className='mb-2 col-span-2'>
+					<div className='grid flex-grow gap-2 grid-cols-2 md:grid-cols-7'>
+						<div className='col-span-2 mb-2'>
 							<h2 className='text-koreanbots-blue text-base font-bold'>한국 디스코드봇 리스트</h2>
 							<ul className='text-sm'>
 								<li>
@@ -44,7 +48,7 @@ const Footer = ({ color, theme, setTheme }:FooterProps): JSX.Element => {
 								</li>
 							</ul>
 						</div>
-						<div className='mb-2 col-span-1'>
+						<div className='col-span-1 mb-2'>
 							<h2 className='text-koreanbots-blue text-base font-bold'>커뮤니티</h2>
 							<ul className='text-sm'>
 								<li>
@@ -59,7 +63,7 @@ const Footer = ({ color, theme, setTheme }:FooterProps): JSX.Element => {
 								</li>
 							</ul>
 						</div>
-						<div className='mb-2 col-span-1'>
+						<div className='col-span-1 mb-2'>
 							<h2 className='text-koreanbots-blue text-base font-bold'>정책</h2>
 							<ul className='text-sm'>
 								<li>
@@ -79,19 +83,21 @@ const Footer = ({ color, theme, setTheme }:FooterProps): JSX.Element => {
 								</li>
 							</ul>
 						</div>
-						<div className='mb-2 col-span-2'>
+						<div className='col-span-2 mb-2'>
 							<h2 className='text-koreanbots-blue text-base font-bold'>기타</h2>
 							<div className='flex'>
-								<a className='hover:text-gray-300 mr-2'>다크모드</a>
-								<Toggle checked={theme === 'dark'} onChange={() => {
-									const t = theme === 'dark' ? 'light' : 'dark'
-									setTheme(t)
-									localStorage.setItem('theme', t)
-								}} />
+								<a className='mr-2 hover:text-gray-300'>다크모드</a>
+								<Toggle
+									checked={theme === 'dark'}
+									onChange={() => {
+										const t = theme === 'dark' ? 'light' : 'dark'
+										setTheme(t)
+										localStorage.setItem('theme', t)
+									}}
+								/>
 							</div>
 						</div>
 					</div>
-					
 				</Container>
 			</div>
 		</div>

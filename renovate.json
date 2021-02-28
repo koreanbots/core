@@ -1,11 +1,7 @@
 {
-  "labels": ["meta: dependencies"],
-  "reviewers": ["team:koreanbots-devs"],
-  "schedule": [
-    "before 8am"
-  ],
-  "extends": [
-    "config:base"
-  ],
-  "timezone": "Asia/Seoul"
+	"labels": ["meta: dependencies"],
+	"reviewers": ["team:koreanbots-devs"],
+	"schedule": ["before 8am"],
+	"extends": ["config:base"],
+	"timezone": "Asia/Seoul"
 }

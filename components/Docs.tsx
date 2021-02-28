@@ -5,7 +5,10 @@ import SEO from './SEO'
 const Docs = ({ title, header, description, subheader, children }: DocsProps): JSX.Element => {
 	return (
 		<>
-			<SEO title={typeof header === 'string' ? header : title} description={description || subheader} />
+			<SEO
+				title={typeof header === 'string' ? header : title}
+				description={description || subheader}
+			/>
 			<div className='dark:bg-discord-black bg-discord-blurple'>
 				<Container className='pb-10 pt-20' ignoreColor>
 					<h1 className='mt-10 text-center text-gray-100 text-4xl font-bold sm:text-left'>
@@ -21,7 +24,7 @@ const Docs = ({ title, header, description, subheader, children }: DocsProps): J
 			</div>
 			<Wave
 				color='currentColor'
-				className='dark:text-discord-black text-discord-blurple dark:bg-discord-dark bg-white hidden md:block'
+				className='hidden dark:text-discord-black text-discord-blurple dark:bg-discord-dark bg-white md:block'
 			/>
 			<Container>
 				<div>{children}</div>

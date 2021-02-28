@@ -21,7 +21,7 @@ const Segment = dynamic(() => import('@components/Segment'))
 const SEO = dynamic(() => import('@components/SEO'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
 
-const VoteBot: NextPage<VoteBotProps> = ({ data, user, csrfToken }) => {
+const VoteBot: NextPage<VoteBotProps> = ({ data, csrfToken }) => {
 	console.log(csrfToken)
 	const router = useRouter()
 	if(!data?.id) return <NotFound />

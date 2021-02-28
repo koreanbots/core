@@ -8,9 +8,9 @@ const Container = ({
 }: ContainerProps): JSX.Element => {
 	return (
 		<div
-			className={`${
-				ignoreColor ? '' : 'text-black dark:text-gray-100'
-			} ${paddingTop ? 'pt-20' : ''}`}
+			className={`${ignoreColor ? '' : 'text-black dark:text-gray-100'} ${
+				paddingTop ? 'pt-20' : ''
+			}`}
 		>
 			<div className={`container mx-auto px-4 ${className}`}>{children}</div>
 		</div>

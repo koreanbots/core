@@ -10,8 +10,10 @@ class MyDocument extends Document {
 		return (
 			<Html>
 				<Head>
-					<link rel='stylesheet'
-						href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/default.min.css'/>
+					<link
+						rel='stylesheet'
+						href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/default.min.css'
+					/>
 					<script src='//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js'></script>
 					<script
 						data-ad-client='ca-pub-4856582423981759'
@@ -38,7 +40,7 @@ class MyDocument extends Document {
 						}}
 					/>
 				</Head>
-				<body className='h-full overflow-x-hidden text-black dark:text-gray-100 dark:bg-discord-dark bg-white'>
+				<body className='h-full text-black dark:text-gray-100 dark:bg-discord-dark bg-white overflow-x-hidden'>
 					<Main />
 					<NextScript />
 				</body>

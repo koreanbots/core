@@ -19,7 +19,9 @@ test('checking Permission', () => {
 })
 
 test('check CDN URL', () => {
-	expect(DiscordEnpoints.CDN.user('000000000000000000', 'abcdefghijklm', { format: 'jpg', size: 1024 })).toBe('https://cdn.discordapp.com/avatars/000000000000000000/abcdefghijklm.jpg?size=1024')
+	expect(
+		DiscordEnpoints.CDN.user('000000000000000000', 'abcdefghijklm', { format: 'jpg', size: 1024 })
+	).toBe('https://cdn.discordapp.com/avatars/000000000000000000/abcdefghijklm.jpg?size=1024')
 })
 
-export { }
+export {}

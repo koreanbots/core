@@ -46,7 +46,7 @@ export enum UserFlags {
 	general = 0 << 0,
 	staff = 1 << 0,
 	bughunter = 1 << 1,
-	premium = 1 << 2
+	premium = 1 << 2,
 }
 
 export enum BotFlags {
@@ -56,23 +56,23 @@ export enum BotFlags {
 	partnered = 1 << 3,
 	verifed = 1 << 4,
 	premium = 1 << 5,
-	hackerthon = 1 << 6
+	hackerthon = 1 << 6,
 }
 
 export enum DiscordUserFlags {
-	DISCORD_EMPLOYEE =  1 << 0,
-	DISCORD_PARTNER =  1 << 1,
-	HYPESQUAD_EVENTS =  1 << 2,
-	BUGHUNTER_LEVEL_1 =  1 << 3,
-	HOUSE_BRAVERY =  1 << 6,
-	HOUSE_BRILLIANCE =  1 << 7,
-	HOUSE_BALANCE =  1 << 8,
-	EARLY_SUPPORTER =  1 << 9,
-	TEAM_USER =  1 << 10,
-	SYSTEM =  1 << 12,
-	BUGHUNTER_LEVEL_2 =  1 << 14,
-	VERIFIED_BOT =  1 << 16,
-	VERIFIED_DEVELOPER =  1 << 17
+	DISCORD_EMPLOYEE = 1 << 0,
+	DISCORD_PARTNER = 1 << 1,
+	HYPESQUAD_EVENTS = 1 << 2,
+	BUGHUNTER_LEVEL_1 = 1 << 3,
+	HOUSE_BRAVERY = 1 << 6,
+	HOUSE_BRILLIANCE = 1 << 7,
+	HOUSE_BALANCE = 1 << 8,
+	EARLY_SUPPORTER = 1 << 9,
+	TEAM_USER = 1 << 10,
+	SYSTEM = 1 << 12,
+	BUGHUNTER_LEVEL_2 = 1 << 14,
+	VERIFIED_BOT = 1 << 16,
+	VERIFIED_DEVELOPER = 1 << 17,
 }
 
 export interface BotList {
@@ -97,7 +97,6 @@ export interface SubmittedBot {
 	discord: string | null
 	state: number
 	reason: string | null
-
 }
 
 export interface DiscordTokenInfo {
@@ -215,7 +214,7 @@ export enum DiscordImageType {
 	EMOJI = 'emoji',
 	GUILD = 'guild',
 	USER = 'user',
-	FALLBACK = 'default'
+	FALLBACK = 'default',
 }
 
 export interface CsrfContext extends NextPageContext {
@@ -226,7 +225,7 @@ export interface CsrfRequestMessage extends IncomingMessage {
 	csrfToken(): string
 }
 
-export interface ResponseProps<T=Data> {
+export interface ResponseProps<T = Data> {
 	code?: number
 	message?: string
 	version?: number
@@ -234,6 +233,6 @@ export interface ResponseProps<T=Data> {
 	errors?: string[]
 }
 
-interface Data<T=unknown> {
+interface Data<T = unknown> {
 	[key: string]: T
 }

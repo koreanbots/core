@@ -26,6 +26,7 @@ const LongButton = dynamic(() => import('@components/LongButton'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
 const Tooltip = dynamic(() => import('@components/Tooltip'))
 const Markdown = dynamic(() => import ('@components/Markdown'))
+const Message = dynamic(() => import('@components/Message'))
 
 const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 	const bg = checkBotFlag(data?.flags, 'trusted') && data?.banner
@@ -43,6 +44,20 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 						: `https://cdn.discordapp.com/embed/avatars/${Number(data.tag) % 5}.png?size=1024`
 				}
 			/>
+			<div className='w-full pb-2'>
+				{
+					data.state === 'private' ? <Message type='info'>
+						<h2 className='text-lg font-black'>해당 봇은 특수목적 봇이므로 초대하실 수 없습니다.</h2>
+						<p>해당 봇은 공개 사용이 목적이 아닌 특수목적봇입니다. 따라서 따로 초대하실 수 없습니다.</p>
+					</Message> :
+						data.state === 'reported' ?
+							<Message type='error'>
+								<h2 className='text-lg font-black'>해당 봇은 신고가 접수되어, 관리자에 의해 잠금 상태입니다.</h2>
+								<p>해당 봇 사용에 주의해주세요.</p>
+								<p>봇 소유자분은 <Link href='/guidelines'><a className='text-blue-500 hover:text-blue-400'>가이드라인</a></Link>에 대한 위반사항을 확인해주시고 <Link href='/discord'><a className='text-blue-500 hover:text-blue-400'>디스코드 서버</a></Link>로 문의해주세요.</p>
+							</Message> : ''
+				}
+			</div>
 			<div className='lg:flex w-full'>
 				<div className='w-full text-center lg:w-1/4'>
 					<DiscordAvatar
@@ -73,17 +88,19 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 					<p className={`${bg ? 'text-gray-300' : 'dark:text-gray-300 text-gray-800'} text-base`}>{data.intro}</p>
 				</div>
 				<div className='w-full lg:w-1/4 lg:pt-10'>
-					<LongButton
-						newTab
-						href={
-							data.url ||
+					{
+						data.state === 'ok' && <LongButton
+							newTab
+							href={
+								data.url ||
 							`https://discordapp.com/oauth2/authorize?client_id=${data.id}&scope=bot&permissions=0`
-						}
-					>
-						<h4 className='whitespace-nowrap'>
-							<i className='fas fa-user-plus text-discord-blurple' /> 초대하기
-						</h4>
-					</LongButton>
+							}
+						>
+							<h4 className='whitespace-nowrap'>
+								<i className='fas fa-user-plus text-discord-blurple' /> 초대하기
+							</h4>
+						</LongButton>
+					}
 					<Link href={{ pathname: `/bots/${router.query.id}/vote` }}>
 						<LongButton>
 							<h4>

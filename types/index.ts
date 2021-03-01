@@ -143,7 +143,7 @@ export type Theme = 'dark' | 'light' | 'system'
 
 export type Status = 'online' | 'offline' | 'dnd' | 'idle' | 'streaming' | null
 
-export type BotState = 'ok' | 'reported' | 'archived' | 'private'
+export type BotState = 'ok' | 'reported' | 'blocked' | 'archived' | 'private'
 
 export type Library =
 	| 'discord.js'

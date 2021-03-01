@@ -44,177 +44,186 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 						: `https://cdn.discordapp.com/embed/avatars/${Number(data.tag) % 5}.png?size=1024`
 				}
 			/>
-			<div className='w-full pb-2'>
-				{
-					data.state === 'private' ? <Message type='info'>
-						<h2 className='text-lg font-black'>해당 봇은 특수목적 봇이므로 초대하실 수 없습니다.</h2>
-						<p>해당 봇은 공개 사용이 목적이 아닌 특수목적봇입니다. 따라서 따로 초대하실 수 없습니다.</p>
-					</Message> :
-						data.state === 'reported' ?
-							<Message type='error'>
-								<h2 className='text-lg font-black'>해당 봇은 신고가 접수되어, 관리자에 의해 잠금 상태입니다.</h2>
-								<p>해당 봇 사용에 주의해주세요.</p>
-								<p>봇 소유자분은 <Link href='/guidelines'><a className='text-blue-500 hover:text-blue-400'>가이드라인</a></Link>에 대한 위반사항을 확인해주시고 <Link href='/discord'><a className='text-blue-500 hover:text-blue-400'>디스코드 서버</a></Link>로 문의해주세요.</p>
-							</Message> : ''
-				}
-			</div>
-			<div className='lg:flex w-full'>
-				<div className='w-full text-center lg:w-1/4'>
-					<DiscordAvatar
-						userID={data.id}
-						className='w-full'
-					/>
+			{
+				data.state === 'blocked' ? <div className='pb-40'>
+					<Message type='error'>
+						<h2 className='text-lg font-black'>해당 봇은 관리자에 의해 삭제되었습니다.</h2>
+					</Message>
 				</div>
-				<div className='flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left'>
-					<Tag
-						circular
-						text={
-							<>
-								<i className={`fas fa-circle text-${Status[data.status]?.color}`} />{' '}
-								{Status[data.status]?.text}
-							</>
-						}
-					/>
-					<h1 className='mb-2 mt-3 text-4xl font-bold' style={bg ? { color: 'white' } : {}}>
-						{data.name}{' '}
-						{checkBotFlag(data.flags, 'trusted') ? (
-							<Tooltip text='해당봇은 한국 디스코드봇 리스트에서 엄격한 기준을 통과한 봇입니다!' direction='left' size='large' href='/verification'>
-								<span className='text-koreanbots-blue text-3xl'>
-									<i className='fas fa-award' />
-								</span>
-							</Tooltip>
-						) : ''}
-					</h1>
-					<p className={`${bg ? 'text-gray-300' : 'dark:text-gray-300 text-gray-800'} text-base`}>{data.intro}</p>
-				</div>
-				<div className='w-full lg:w-1/4 lg:pt-10'>
-					{
-						data.state === 'ok' && <LongButton
-							newTab
-							href={
-								data.url ||
-							`https://discordapp.com/oauth2/authorize?client_id=${data.id}&scope=bot&permissions=0`
+					: <>
+						<div className='w-full pb-2'>
+							{
+								data.state === 'private' ? <Message type='info'>
+									<h2 className='text-lg font-black'>해당 봇은 특수목적 봇이므로 초대하실 수 없습니다.</h2>
+									<p>해당 봇은 공개 사용이 목적이 아닌 특수목적봇입니다. 따라서 따로 초대하실 수 없습니다.</p>
+								</Message> :
+									data.state === 'reported' ?
+										<Message type='error'>
+											<h2 className='text-lg font-black'>해당 봇은 신고가 접수되어, 관리자에 의해 잠금 상태입니다.</h2>
+											<p>해당 봇 사용에 주의해주세요.</p>
+											<p>봇 소유자분은 <Link href='/guidelines'><a className='text-blue-500 hover:text-blue-400'>가이드라인</a></Link>에 대한 위반사항을 확인해주시고 <Link href='/discord'><a className='text-blue-500 hover:text-blue-400'>디스코드 서버</a></Link>로 문의해주세요.</p>
+										</Message> : ''
 							}
-						>
-							<h4 className='whitespace-nowrap'>
-								<i className='fas fa-user-plus text-discord-blurple' /> 초대하기
-							</h4>
-						</LongButton>
-					}
-					<Link href={{ pathname: `/bots/${router.query.id}/vote` }}>
-						<LongButton>
-							<h4>
-								<i className='fas fa-heart text-red-600' /> 하트 추가
-							</h4>
-							<span className='ml-1 px-2 text-center text-black dark:text-gray-400 text-sm bg-little-white-hover dark:bg-very-black rounded-lg'>
-								{formatNumber(data.votes)}
-							</span>
-						</LongButton>
-					</Link>
-					{
-						((data.owners as User[]).find(el => el.id === user?.id) || checkUserFlag(user?.flags, 'staff')) && <LongButton href={`/manage/${data.id}`}>
-							<h4>
-								<i className='fas fa-cogs' /> 관리하기
-							</h4>
-						</LongButton>
-					}
-				</div>
-			</div>
-			<Divider className='px-5' />
-			<div className='lg:flex lg:flex-row-reverse' style={bg ? { color: 'white' } : {}}>
-				<div className='mb-1 w-full lg:w-1/4'>
-					<h2 className='3xl mb-2 font-bold'>정보</h2>
-					<div className='grid gap-4 grid-cols-2 px-4 py-4 text-black dark:text-gray-400 dark:bg-discord-black bg-little-white rounded-sm'>
-						<div>
-							<i className='far fa-flag' /> 접두사
 						</div>
-						<div className='markdown-body text-black dark:text-gray-400'>
-							<code>{data.prefix}</code>
+						<div className='lg:flex w-full'>
+							<div className='w-full text-center lg:w-1/4'>
+								<DiscordAvatar
+									userID={data.id}
+									className='w-full'
+								/>
+							</div>
+							<div className='flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left'>
+								<Tag
+									circular
+									text={
+										<>
+											<i className={`fas fa-circle text-${Status[data.status]?.color}`} />{' '}
+											{Status[data.status]?.text}
+										</>
+									}
+								/>
+								<h1 className='mb-2 mt-3 text-4xl font-bold' style={bg ? { color: 'white' } : {}}>
+									{data.name}{' '}
+									{checkBotFlag(data.flags, 'trusted') ? (
+										<Tooltip text='해당봇은 한국 디스코드봇 리스트에서 엄격한 기준을 통과한 봇입니다!' direction='left' size='large' href='/verification'>
+											<span className='text-koreanbots-blue text-3xl'>
+												<i className='fas fa-award' />
+											</span>
+										</Tooltip>
+									) : ''}
+								</h1>
+								<p className={`${bg ? 'text-gray-300' : 'dark:text-gray-300 text-gray-800'} text-base`}>{data.intro}</p>
+							</div>
+							<div className='w-full lg:w-1/4 lg:pt-10'>
+								{
+									data.state === 'ok' && <LongButton
+										newTab
+										href={
+											data.url ||
+							`https://discordapp.com/oauth2/authorize?client_id=${data.id}&scope=bot&permissions=0`
+										}
+									>
+										<h4 className='whitespace-nowrap'>
+											<i className='fas fa-user-plus text-discord-blurple' /> 초대하기
+										</h4>
+									</LongButton>
+								}
+								<Link href={{ pathname: `/bots/${router.query.id}/vote` }}>
+									<LongButton>
+										<h4>
+											<i className='fas fa-heart text-red-600' /> 하트 추가
+										</h4>
+										<span className='ml-1 px-2 text-center text-black dark:text-gray-400 text-sm bg-little-white-hover dark:bg-very-black rounded-lg'>
+											{formatNumber(data.votes)}
+										</span>
+									</LongButton>
+								</Link>
+								{
+									((data.owners as User[]).find(el => el.id === user?.id) || checkUserFlag(user?.flags, 'staff')) && <LongButton href={`/manage/${data.id}`}>
+										<h4>
+											<i className='fas fa-cogs' /> 관리하기
+										</h4>
+									</LongButton>
+								}
+							</div>
 						</div>
-						<div>
-							<i className='fas fa-users' /> 서버수
-						</div>
-						<div>{data.servers || 'N/A'}</div>
-						<div>
-							<i className='fas fa-calendar-day' /> 봇 생성일
-						</div>
-						<div>{Day(date).fromNow(false)}</div>
-						{
-							checkBotFlag(data.flags, 'trusted') ?
-								<Tooltip direction='left' text='해당 봇은 디스코드측에서 인증된 봇입니다.'>
+						<Divider className='px-5' />
+						<div className='lg:flex lg:flex-row-reverse' style={bg ? { color: 'white' } : {}}>
+							<div className='mb-1 w-full lg:w-1/4'>
+								<h2 className='3xl mb-2 font-bold'>정보</h2>
+								<div className='grid gap-4 grid-cols-2 px-4 py-4 text-black dark:text-gray-400 dark:bg-discord-black bg-little-white rounded-sm'>
 									<div>
-										<i className='fas fa-check text-discord-blurple' /> 디스코드 인증됨
+										<i className='far fa-flag' /> 접두사
 									</div>
-								</Tooltip>
-								: ''
-						}
-					</div>
-					<h2 className='3xl mb-2 mt-2 font-bold'>카테고리</h2>
-					<div className='flex flex-wrap'>
-						{data.category.map(el => (
-							<Tag key={el} text={el} href={`/categories/${el}`} />
-						))}
-					</div>
-					<h2 className='3xl mb-2 mt-2 font-bold'>제작자</h2>
-					{(data.owners as User[]).map(el => (
-						<Owner
-							key={el.id}
-							id={el.id}
-							tag={el.tag}
-							username={el.username}
-						/>
-					))}
-					<div className='list grid'>
-						<Link href={`/bots/${data.id}/report`}>
-							<a className='text-red-600 hover:underline'>
-								<i className='far fa-flag' />
+									<div className='markdown-body text-black dark:text-gray-400'>
+										<code>{data.prefix}</code>
+									</div>
+									<div>
+										<i className='fas fa-users' /> 서버수
+									</div>
+									<div>{data.servers || 'N/A'}</div>
+									<div>
+										<i className='fas fa-calendar-day' /> 봇 생성일
+									</div>
+									<div>{Day(date).fromNow(false)}</div>
+									{
+										checkBotFlag(data.flags, 'trusted') ?
+											<Tooltip direction='left' text='해당 봇은 디스코드측에서 인증된 봇입니다.'>
+												<div>
+													<i className='fas fa-check text-discord-blurple' /> 디스코드 인증됨
+												</div>
+											</Tooltip>
+											: ''
+									}
+								</div>
+								<h2 className='3xl mb-2 mt-2 font-bold'>카테고리</h2>
+								<div className='flex flex-wrap'>
+									{data.category.map(el => (
+										<Tag key={el} text={el} href={`/categories/${el}`} />
+									))}
+								</div>
+								<h2 className='3xl mb-2 mt-2 font-bold'>제작자</h2>
+								{(data.owners as User[]).map(el => (
+									<Owner
+										key={el.id}
+										id={el.id}
+										tag={el.tag}
+										username={el.username}
+									/>
+								))}
+								<div className='list grid'>
+									<Link href={`/bots/${data.id}/report`}>
+										<a className='text-red-600 hover:underline'>
+											<i className='far fa-flag' />
 								신고하기
-							</a>
-						</Link>
-						{data.discord && (
-							<a
-								rel='noopener noreferrer'
-								target='_blank'
-								className='text-discord-blurple hover:underline'
-								href={`https://discord.gg/${data.discord}`}
-							>
-								<i className='fab fa-discord' />
+										</a>
+									</Link>
+									{data.discord && (
+										<a
+											rel='noopener noreferrer'
+											target='_blank'
+											className='text-discord-blurple hover:underline'
+											href={`https://discord.gg/${data.discord}`}
+										>
+											<i className='fab fa-discord' />
 								디스코드 서버
-							</a>
-						)}
-						{data.web && (
-							<a
-								rel='noopener noreferrer'
-								target='_blank'
-								className='text-blue-500 hover:underline'
-								href={data.web}
-							>
-								<i className='fas fa-globe' />
+										</a>
+									)}
+									{data.web && (
+										<a
+											rel='noopener noreferrer'
+											target='_blank'
+											className='text-blue-500 hover:underline'
+											href={data.web}
+										>
+											<i className='fas fa-globe' />
 								웹사이트
-							</a>
-						)}
-						{data.git && (
-							<a
-								rel='noopener noreferrer'
-								target='_blank'
-								className='hover:underline'
-								href={data.git}
-							>
-								<i className={`fab fa-${git?.[new URL(data.git).hostname].icon ?? 'git-alt'}`} />
-								{git?.[new URL(data.git).hostname].text ?? 'Git'}
-							</a>
-						)}
-					</div>
-					<Advertisement size='tall' />
-				</div>
-				<div className='markdown-body pt-10 w-full lg:pr-5 lg:w-3/4'>
-					<Advertisement />
-					<Segment className='my-4'>
-						<Markdown text={data.desc}/>
-					</Segment>
-					<Advertisement />
-				</div>
-			</div>
+										</a>
+									)}
+									{data.git && (
+										<a
+											rel='noopener noreferrer'
+											target='_blank'
+											className='hover:underline'
+											href={data.git}
+										>
+											<i className={`fab fa-${git?.[new URL(data.git).hostname].icon ?? 'git-alt'}`} />
+											{git?.[new URL(data.git).hostname].text ?? 'Git'}
+										</a>
+									)}
+								</div>
+								<Advertisement size='tall' />
+							</div>
+							<div className='markdown-body pt-10 w-full lg:pr-5 lg:w-3/4'>
+								<Advertisement />
+								<Segment className='my-4'>
+									<Markdown text={data.desc}/>
+								</Segment>
+								<Advertisement />
+							</div>
+						</div>
+					</>
+			}
 		</Container>
 
 		<Footer color='bg-transparent text-discord-black text-white hidden md:block transform rotate-180' theme={theme} setTheme={setTheme} />

@@ -42,6 +42,13 @@ const Navbar = (): JSX.Element => {
 						</button>
 						<ul className='hidden lg:flex flex-col list-none lg:flex-row lg:ml-auto'>
 							<li className='flex items-center'>
+								<Link href='/developers'>
+									<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
+										개발자
+									</a>
+								</Link>
+							</li>
+							<li className='flex items-center'>
 								<Link href='/discord'>
 									<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'
 									>
@@ -53,13 +60,6 @@ const Navbar = (): JSX.Element => {
 								<Link href='/about'>
 									<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
 										소개
-									</a>
-								</Link>
-							</li>
-							<li className='flex items-center'>
-								<Link href='/developers'>
-									<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
-										개발자
 									</a>
 								</Link>
 							</li>
@@ -136,11 +136,16 @@ const Navbar = (): JSX.Element => {
 				}`}
 			>
 				<nav className='mt-20'>
+					<Link href='/developers'>
+						<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+							<i className='fas fa-tools' />
+							<span className='px-2 font-medium'>개발자</span>
+						</a>
+					</Link>
 					<Link href='/discord'>
 						<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
 							<i className='fab fa-discord' />
 							<span className='px-2 font-medium'>디스코드 서버</span>
-						
 						</a>
 					</Link>
 					<Link href='/about'>
@@ -159,15 +164,7 @@ const Navbar = (): JSX.Element => {
 									strokeLinejoin='round'
 								/>
 							</svg>
-
 							<span className='px-2 font-medium'>소개</span>
-						</a>
-					</Link>
-					<Link href='/developers'>
-						<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
-							<i className='fas fa-tools' />
-
-							<span className='px-2 font-medium'>개발자</span>
 						</a>
 					</Link>
 					<Link href='/addbot'>
@@ -176,7 +173,6 @@ const Navbar = (): JSX.Element => {
 							<span className='px-2 font-medium'>봇 추가하기</span>
 						</a>
 					</Link>
-					
 				</nav>
 
 				<div className='my-10'>

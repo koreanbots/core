@@ -94,7 +94,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 								</h1>
 								<p className={`${bg ? 'text-gray-300' : 'dark:text-gray-300 text-gray-800'} text-base`}>{data.intro}</p>
 							</div>
-							<div className='w-full lg:w-1/4 lg:pt-10'>
+							<div className='w-full lg:w-1/4'>
 								{
 									data.state === 'ok' && <LongButton
 										newTab

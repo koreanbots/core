@@ -4,21 +4,19 @@ import { ErrorText } from '@utils/Constants'
 const NotFound: NextPage = () => {
 	return (
 		<div
-			className='flex items-center justify-center h-screen md:flex-col'
-			style={{
-				background:
-					'url("https://cdn.discordapp.com/attachments/745844596176715806/799149423505440768/1590927393326.jpg")',
-			}}
+			className='flex items-center justify-center h-screen select-none text-center'
 		>
-			<div className='text-center'>
-				<h1 className='w-inline-block align-top m-0 py-10 text-4xl font-bold border-none md:mr-10 md:pr-10 md:border-r md:border-solid md:border-current'>
-					404
-				</h1>
-
-				<h2 className='inline-block align-top m-0 py-10 text-2xl font-semibold md:text-4xl'>
+			<div>
+				<div className='flex flex-row justify-center text-9xl'>
+					4
+					<img alt='robot' src='https://twemoji.maxcdn.com/v/13.0.1/svg/1f916.svg' className='w-24 mx-6 md:mx-12 rounded-full' />
+					4
+				</div>
+				<h2 className='text-2xl font-semibold'>
 					{ErrorText[404]}
 				</h2>
 			</div>
+			
 		</div>
 	)
 }

@@ -86,22 +86,24 @@ const BotCard = ({ manage = false, bot }: BotProps): JSX.Element => {
 											관리하기
 										</a>
 									</Link>
-								) : (
-									<Link
-										href={
-											bot.url ||
-											`https://discordapp.com/oauth2/authorize?client_id=${bot.id}&scope=bot&permissions=0`
-										}
+								) : bot.state !== 'ok' ? <a
+									className='py-3 w-full text-center text-discord-blurple text-sm font-bold rounded-br-2xl hover:shadow-lg transition duration-100 ease-in opacity-50 cursor-default select-none'
+								>
+								초대하기
+								</a> : <Link
+									href={
+										bot.url ||
+									`https://discordapp.com/oauth2/authorize?client_id=${bot.id}&scope=bot&permissions=0`
+									}
+								>
+									<a
+										rel='noopener noreferrer'
+										target='_blank'
+										className='py-3 w-full text-center text-discord-blurple hover:text-white text-sm font-bold hover:bg-discord-blurple rounded-br-2xl hover:shadow-lg transition duration-100 ease-in'
 									>
-										<a
-											rel='noopener noreferrer'
-											target='_blank'
-											className='py-3 w-full text-center text-discord-blurple hover:text-white text-sm font-bold hover:bg-discord-blurple rounded-br-2xl hover:shadow-lg transition duration-100 ease-in'
-										>
-											초대하기
-										</a>
-									</Link>
-								)}
+									초대하기
+									</a>
+								</Link>}
 							</div>
 						</div>
 					</div>

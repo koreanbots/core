@@ -21,7 +21,7 @@
 		"autoprefixer": "10.2.4",
 		"badgen": "3.2.2",
 		"cookie": "0.4.1",
-		"core-js": "3.9.0",
+		"core-js": "3.9.1",
 		"csrf": "3.1.0",
 		"dataloader": "2.0.0",
 		"dayjs": "1.10.4",

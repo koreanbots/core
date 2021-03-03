@@ -13,6 +13,7 @@ const Hero = dynamic(() => import('@components/Hero'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
 const SEO = dynamic(() => import('@components/SEO'))
 const BotCard = dynamic(() => import('@components/BotCard'))
+const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 const Container = dynamic(() => import('@components/Container'))
 const Paginator = dynamic(() => import('@components/Paginator'))
 
@@ -24,11 +25,11 @@ const Votes:NextPage<VotesProps> = ({ data }) => {
 		<SEO title='하트 랭킹' description='하트를 많이 받은 봇들의 순위입니다!'/>
 		<Container>
 			<Advertisement />
-			<div className='grid gap-x-4 2xl:grid-cols-4 md:grid-cols-2 mt-20'>
+			<ResponsiveGrid>
 				{
 					data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
 				}
-			</div>
+			</ResponsiveGrid>
 			<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname='/list/votes' />
 			<Advertisement />
 		</Container>

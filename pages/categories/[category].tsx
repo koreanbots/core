@@ -10,6 +10,7 @@ import NotFound from 'pages/404'
 const Hero = dynamic(() => import('@components/Hero'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
 const SEO = dynamic(() => import('@components/SEO'))
+const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 const BotCard = dynamic(() => import('@components/BotCard'))
 const Container = dynamic(() => import('@components/Container'))
 const Paginator = dynamic(() => import('@components/Paginator'))
@@ -22,11 +23,11 @@ const Category: NextPage<CategoryProps> = ({ data, query }) => {
 
 		<Container>
 			<Advertisement />
-			<div className='grid gap-x-4 2xl:grid-cols-4 md:grid-cols-2 mt-20'>
+			<ResponsiveGrid>
 				{
 					data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
 				}
-			</div>
+			</ResponsiveGrid>
 			<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname={`/categories/${query.category}`} />
 			<Advertisement />
 		</Container>

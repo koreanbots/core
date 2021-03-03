@@ -9,6 +9,7 @@ const Advertisement = dynamic(() => import('@components/Advertisement'))
 const SEO = dynamic(() => import('@components/SEO'))
 const BotCard = dynamic(() => import('@components/BotCard'))
 const Container = dynamic(() => import('@components/Container'))
+const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 
 const New:NextPage<NewProps> = ({ data }) => {
 	return <>
@@ -16,11 +17,11 @@ const New:NextPage<NewProps> = ({ data }) => {
 		<SEO title='새로운 봇' description='최근에 추가된 봇들입니다!' />
 		<Container>
 			<Advertisement />
-			<div className='grid gap-x-4 2xl:grid-cols-4 md:grid-cols-2 mt-20'>
+			<ResponsiveGrid>
 				{
 					data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
 				}
-			</div>
+			</ResponsiveGrid>
 			<Advertisement />
 		</Container>
 	</>

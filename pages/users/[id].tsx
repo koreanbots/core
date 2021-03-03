@@ -15,6 +15,7 @@ const SEO = dynamic(() => import('@components/SEO'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 const Divider = dynamic(() => import('@components/Divider'))
 const BotCard = dynamic(() => import('@components/BotCard'))
+const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 const Tag = dynamic(() => import('@components/Tag'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
 const Tooltip = dynamic(() => import('@components/Tooltip'))
@@ -83,11 +84,11 @@ const Users: NextPage<UserProps> = ({ data }) => {
 			</div>
 			<Divider />
 			<h2 className='mt-8 text-3xl font-bold'>제작한 봇</h2>
-			<div className='grid gap-x-4 mt-20 2xl:grid-cols-4 md:grid-cols-2'>
+			<ResponsiveGrid>
 				{(data.bots as Bot[]).map((bot: Bot) => (
 					<BotCard key={bot.id} bot={bot} />
 				))}
-			</div>
+			</ResponsiveGrid>
 			<Advertisement />
 		</Container>
 	)

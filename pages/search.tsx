@@ -14,6 +14,7 @@ const Advertisement = dynamic(() => import('@components/Advertisement'))
 const SEO = dynamic(() => import('@components/SEO'))
 const BotCard = dynamic(() => import('@components/BotCard'))
 const Container = dynamic(() => import('@components/Container'))
+const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 const Paginator = dynamic(() => import('@components/Paginator'))
 
 const Search:NextPage<SearchProps> = ({ data, query }) => {
@@ -29,11 +30,11 @@ const Search:NextPage<SearchProps> = ({ data, query }) => {
 			<Advertisement />
 			{ !data || data.data.length === 0 ? <h1 className='text-3xl font-bold text-center py-20'>검색 결과가 없습니다.</h1> :
 				<>
-					<div className='grid gap-x-4 2xl:grid-cols-4 md:grid-cols-2 mt-20'>
+					<ResponsiveGrid>
 						{
 							data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
 						}
-					</div>
+					</ResponsiveGrid>
 					<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname={`/search?q=${query.q}`} />
 				</>
 			}

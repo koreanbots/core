@@ -28,7 +28,7 @@ const BotCard = ({ manage = false, bot }: BotProps): JSX.Element => {
 							<Link href={makeBotURL(bot)}>
 								<a className='cursor-pointer'>
 									<div className='flex h-44'>
-										<div className='w-2/3'>
+										<div className='w-3/5'>
 											<div className='flex justify-start'>
 												<DiscordAvatar
 													size={128}
@@ -46,7 +46,7 @@ const BotCard = ({ manage = false, bot }: BotProps): JSX.Element => {
 												<h1 className='mb-3 text-left text-2xl font-bold truncate'>{bot.name}</h1>
 											</div>
 										</div>
-										<div className='grid grid-cols-1 pr-5 py-5 w-1/3 h-0'>
+										<div className='grid grid-cols-1 pr-5 py-5 w-2/5 h-0'>
 											<Tag
 												text={
 													<>

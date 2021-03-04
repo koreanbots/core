@@ -13,6 +13,7 @@ import { Theme } from '@types'
 
 const Footer = dynamic(() => import('@components/Footer'))
 const Navbar = dynamic(() => import('@components/Navbar'))
+const Modal = dynamic(() => import('@components/Modal'))
 
 import Crypto from 'crypto'
 
@@ -28,6 +29,7 @@ init()
 
 export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX.Element {
 	const [ betaKey, setBetaKey ] = useState('')
+	const [ shortcutModal, setShortcutModal ] = useState(false)
 	const [ theme, setTheme ] = useState<Theme>('system')
 	const router = useRouter()
 
@@ -75,7 +77,25 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 		{
 			!['/bots/[id]'].includes(router.pathname) && <Footer theme={theme} setTheme={setTheme} />
 		}
+		<Modal full isOpen={shortcutModal} onClose={() => setShortcutModal(false)} dark={theme === 'dark'} header='단축키 안내'>
+			<div className='px-3 h-80'>
+				<h3 className='text-md font-semibold'>일반</h3>
+				<ul>
+					<li className='pt-2'>
+						<h4 className='text-gray-500 dark:text-gray-400 text-xs'>단축키 도움말 표시</h4>
+						<kbd>CMD</kbd> <kbd>/</kbd>
+					</li>
+					<li className='pt-2'>
+						<h4 className='text-gray-500 dark:text-gray-400 text-xs'>다크모드 전환</h4>
+						<kbd>CMD</kbd> <kbd>K</kbd>
+					</li>
+				</ul>
+			</div>
+		</Modal>
 		<GlobalHotKeys keyMap={shortcutKeyMap} handlers={{
+			SHORTCUT_HELP: () => {
+				setShortcutModal(value => !value)
+			},
 			CHANGE_THEME: () => {
 				const overwrite = (localStorage.theme || systemTheme()) === 'dark' ? 'light' : 'dark'
 				setTheme(overwrite)

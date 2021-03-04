@@ -48,22 +48,7 @@ const Footer = ({ color, theme, setTheme }: FooterProps): JSX.Element => {
 								</li>
 							</ul>
 						</div>
-						<div className='col-span-1 mb-2'>
-							<h2 className='text-koreanbots-blue text-base font-bold'>커뮤니티</h2>
-							<ul className='text-sm'>
-								<li>
-									<Link href='/partners'>
-										<a className='hover:text-gray-300'>파트너</a>
-									</Link>
-								</li>
-								<li>
-									<Link href='/verification'>
-										<a className='hover:text-gray-300'>인증</a>
-									</Link>
-								</li>
-							</ul>
-						</div>
-						<div className='col-span-1 mb-2'>
+						<div className='col-span-2 mb-2'>
 							<h2 className='text-koreanbots-blue text-base font-bold'>정책</h2>
 							<ul className='text-sm'>
 								<li>
@@ -79,6 +64,21 @@ const Footer = ({ color, theme, setTheme }: FooterProps): JSX.Element => {
 								<li>
 									<Link href='/license'>
 										<a className='hover:text-gray-300'>오픈소스 라이선스</a>
+									</Link>
+								</li>
+							</ul>
+						</div>
+						<div className='col-span-1 mb-2'>
+							<h2 className='text-koreanbots-blue text-base font-bold'>커뮤니티</h2>
+							<ul className='text-sm'>
+								<li>
+									<Link href='/partners'>
+										<a className='hover:text-gray-300'>파트너</a>
+									</Link>
+								</li>
+								<li>
+									<Link href='/verification'>
+										<a className='hover:text-gray-300'>인증</a>
 									</Link>
 								</li>
 							</ul>

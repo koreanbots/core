@@ -1,4 +1,5 @@
 import { Bot, ImageOptions, KoreanbotsImageOptions } from '@types'
+import { KeyMap } from 'react-hotkeys'
 import { formatNumber, makeImageURL } from './Tools'
 
 export const Status = {
@@ -213,6 +214,10 @@ export const KoreanbotsEmoji = [{
 	keywords: ['python', 'py', '파이썬'],
 	imageUrl: '/emojis/python.png'
 }]
+
+export const shortcutKeyMap: KeyMap = {
+	CHANGE_THEME: 'command+k'
+}
 
 export const ErrorText = {
 	DEFAULT: '예상치 못한 에러가 발생하였습니다.',

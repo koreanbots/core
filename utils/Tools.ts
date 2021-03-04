@@ -50,6 +50,14 @@ export function supportsWebP() {
 	return false
 }
 
+export function systemTheme() {
+	try {
+		return window.matchMedia('(prefers-color-scheme: dark)')?.matches ? 'dark' : 'light'
+	} catch {
+		return 'dark'
+	}
+}
+
 export function checkBrowser(): string {
 	const ua = navigator.userAgent
 	let tem

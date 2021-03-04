@@ -115,7 +115,7 @@
 }
 
 .markdown-body code,
-.markdown-body kbd,
+kbd,
 .markdown-body pre {
 	font-family: monospace, monospace;
 	font-size: 1em;
@@ -206,7 +206,7 @@
 	cursor: pointer;
 }
 
-.markdown-body kbd {
+kbd {
 	display: inline-block;
 	padding: 3px 5px;
 	font: 11px SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
@@ -219,7 +219,7 @@
 	box-shadow: inset 0 -1px 0 #d1d5da;
 }
 
-.dark .markdown-body kbd {
+.dark kbd {
 	display: inline-block;
 	padding: 3px 5px;
 	font: 11px SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;

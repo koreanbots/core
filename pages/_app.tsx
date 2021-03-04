@@ -107,11 +107,12 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 				setShortcutModal(value => !value)
 				return
 			},
-			CHANGE_THEME: () => {
+			CHANGE_THEME: (event) => {
+				event.preventDefault()
 				const overwrite = (localStorage.theme || systemTheme()) === 'dark' ? 'light' : 'dark'
 				setTheme(overwrite)
 				localStorage.setItem('theme', overwrite)
-				return
+				return false
 			}
 		}} />
 	</div>

@@ -216,7 +216,8 @@ export const KoreanbotsEmoji = [{
 }]
 
 export const shortcutKeyMap: KeyMap = {
-	CHANGE_THEME: 'command+k'
+	SHORTCUT_HELP: ['command+/', 'ctrl+/'],
+	CHANGE_THEME: ['command+shift+d', 'ctrl+shift+d']
 }
 
 export const ErrorText = {

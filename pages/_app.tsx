@@ -24,6 +24,7 @@ import 'core-js/es/map'
 import '../app.css'
 import '../github-markdown.css'
 import '@fortawesome/fontawesome-free/css/all.css'
+import PlatformDisplay from '@components/PlatformDisplay'
 
 init()
 
@@ -83,11 +84,20 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 				<ul>
 					<li className='pt-2'>
 						<h4 className='text-gray-500 dark:text-gray-400 text-xs'>단축키 도움말 표시</h4>
-						<kbd>CMD</kbd> <kbd>/</kbd>
+						<kbd>
+							<PlatformDisplay osx='CMD'>
+								Ctrl
+							</PlatformDisplay> 
+						</kbd> <kbd>/</kbd>
 					</li>
 					<li className='pt-2'>
 						<h4 className='text-gray-500 dark:text-gray-400 text-xs'>다크모드 전환</h4>
-						<kbd>CMD</kbd> <kbd>K</kbd>
+						<kbd>
+							<PlatformDisplay osx='CMD'>
+								Ctrl
+							</PlatformDisplay> 
+						</kbd>
+						<kbd>Shift</kbd> <kbd>D</kbd>
 					</li>
 				</ul>
 			</div>
@@ -95,11 +105,13 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 		<GlobalHotKeys keyMap={shortcutKeyMap} handlers={{
 			SHORTCUT_HELP: () => {
 				setShortcutModal(value => !value)
+				return
 			},
 			CHANGE_THEME: () => {
 				const overwrite = (localStorage.theme || systemTheme()) === 'dark' ? 'light' : 'dark'
 				setTheme(overwrite)
 				localStorage.setItem('theme', overwrite)
+				return
 			}
 		}} />
 	</div>

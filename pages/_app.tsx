@@ -103,7 +103,8 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 			</div>
 		</Modal>
 		<GlobalHotKeys keyMap={shortcutKeyMap} handlers={{
-			SHORTCUT_HELP: () => {
+			SHORTCUT_HELP: (event) => {
+				event.preventDefault()
 				setShortcutModal(value => !value)
 				return
 			},

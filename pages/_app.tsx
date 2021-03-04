@@ -2,8 +2,8 @@ import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState } from 'react'
-import { GlobalHotKeys, HotKeys } from 'react-hotkeys'
+import { useEffect, useState } from 'react'
+import { GlobalHotKeys } from 'react-hotkeys'
 
 import { init } from '@utils/Sentry'
 import Logger from '@utils/Logger'
@@ -47,13 +47,6 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 		}
 		else setTheme(localStorage.theme)
 	}, [])
-
-	const changeTheme = (theme) => {
-		const t = theme === 'dark' ? 'light' : 'dark'
-		console.log(theme, t)
-		localStorage.setItem('theme', t)
-		setTheme(t)
-	}
 
 	return <div className={theme}>
 		<Head>

@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { Modal as ReactModal } from 'react-responsive-modal'
 import 'react-responsive-modal/styles.css'
 
-const Modal = ({ children, isOpen, onClose, dark, header }: ModalProps): JSX.Element => {
+const Modal = ({ children, isOpen, onClose, dark, header, full=false }: ModalProps): JSX.Element => {
 	return (
 		<ReactModal
 			open={isOpen}
@@ -18,12 +18,13 @@ const Modal = ({ children, isOpen, onClose, dark, header }: ModalProps): JSX.Ele
 					borderRadius: '10px',
 					background: dark ? '#2C2F33' : '#fbfbfb',
 					color: dark ? 'white' : 'black',
+					width: full ? '100%' : 'inherit'
 				},
 			}}
 		>
 			<h2 className='text-lg font-black uppercase'>{header}</h2>
 			<div className='relative pt-4'>
-				<div>{children}</div>
+				<div className={dark ? 'dark' : 'light'}>{children}</div>
 			</div>
 		</ReactModal>
 	)
@@ -33,6 +34,7 @@ interface ModalProps {
 	dark: boolean
 	isOpen: boolean
 	header?: string
+	full?: boolean
 	children: ReactNode
 	onClose(): void
 }

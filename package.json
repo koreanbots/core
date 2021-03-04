@@ -38,7 +38,7 @@
 		"next-connect": "0.10.0",
 		"next-session": "3.4.0",
 		"node-emoji": "1.10.0",
-		"postcss": "8.2.6",
+		"postcss": "8.2.7",
 		"postcss-preset-env": "6.7.0",
 		"react": "17.0.1",
 		"react-dom": "17.0.1",

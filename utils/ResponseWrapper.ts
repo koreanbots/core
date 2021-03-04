@@ -1,9 +1,8 @@
 import http from 'http'
-import { NextApiResponse } from 'next'
 import { ResponseProps } from '@types'
 import { ErrorText } from './Constants'
 export default function ResponseWrapper<T = unknown>(
-	res: NextApiResponse,
+	res: ApiResponse,
 	{ code = 200, message, version = 2, data, errors }: ResponseProps<T>
 ) {
 	if (!code) throw new Error('`code` is required.')
@@ -17,4 +16,10 @@ export default function ResponseWrapper<T = unknown>(
 		version,
 		...(message || !data ? { message: message || ErrorText[code] || http.STATUS_CODES[code] } : {}),
 	})
+}
+
+interface ApiResponse {
+	statusCode: number
+	setHeader(key: string, value: string): void
+	json(json: unknown): void
 }

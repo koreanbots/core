@@ -179,6 +179,10 @@ export const KoreanbotsEndPoints = {
 	logout: '/api/auth/discord/logout'
 }
 
+export const GlobalRatelimitIgnore = [
+	'/api/image/discord/avatars/'
+]
+
 export const Oauth = {
 	discord: (clientID: string, scope: string) => `https://discord.com/oauth2/authorize?client_id=${clientID}&scope=${scope}&permissions=0&response_type=code&redirect_uri=${process.env.KOREANBOTS_URL}/api/auth/discord/callback&prompt=none`
 }

@@ -1,0 +1,3 @@
+[submodule "api-docs"]
+	path = api-docs
+	url = https://github.com/koreanbots/api-docs

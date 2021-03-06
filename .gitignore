@@ -42,3 +42,7 @@ yarn-error.log*
 package-lock.json
 
 secret.json
+
+# sub module
+
+api-docs/

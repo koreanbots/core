@@ -184,6 +184,17 @@ export interface AddBotSubmit {
 	_csrf: string
 }
 
+export const BotStatUpdateSchema: Yup.SchemaOf<BotStatUpdate> = Yup.object({
+	servers: Yup.number()
+		.positive('서버 수는 양수여야합니다.')
+		.integer('서버 수는 정수여야합니다.')
+		.required()
+})
+
+export interface BotStatUpdate {
+	servers: number
+}
+
 export const ManageBotSchema = Yup.object({
 	prefix: Yup.string()
 		.matches(Prefix, '접두사는 띄어쓰기로 시작할 수 없습니다.')

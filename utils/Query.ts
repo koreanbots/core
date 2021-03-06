@@ -225,6 +225,18 @@ async function getBotSpec(id: string, userID: string) {
 	return serialize(res[0])
 }
 
+/**
+ * @returns 1 - Limit of 100k servers
+ * @returns 2 - Limit of 10M servers
+ */
+async function updateServer(id: string, servers: number) {
+	const bot = await get.bot.load(id)
+	if(bot.servers < 10000 && servers >= 10000) return 1
+	if(bot.servers < 1000000 && servers >= 1000000) return 2
+	await knex('bots').update({ servers }).where({ id })
+	return
+}
+
 async function updateBotApplication(id: string, value: { webhook: string }) {
 	const bot = await knex('bots').update({ webhook: value.webhook }).where({ id })
 	if(bot !== 1) return false
@@ -269,6 +281,13 @@ async function Authorization(token: string):Promise<string|false> {
 	const user = await knex('users').select(['id']).where({ id: tokenInfo?.id ?? '', token: token ?? '' })
 	if(user.length === 0) return false
 	else return user[0].id
+}
+
+async function BotAuthorization(token: string):Promise<string|false> {
+	const tokenInfo = verify(token ?? '')
+	const bot = await knex('bots').select(['id']).where({ id: tokenInfo?.id ?? '', token: token ?? '' })
+	if(bot.length === 0) return false
+	else return bot[0].id
 }
 
 async function addRequest(ip: string, map: TLRU<unknown, number>) {
@@ -346,13 +365,15 @@ export const get = {
 				(await Promise.all(urls.map(async (url: string) => await getImage(url))))
 			, { cacheMap: new TLRU({ maxStoreSize: 500, maxAgeMs: 3600000 }) }),
 	},
-	Authorization
+	Authorization,
+	BotAuthorization
 }
 
 export const update = {
 	assignToken,
 	updateBotApplication,
-	resetBotToken
+	resetBotToken,
+	updateServer
 }
 
 export const put = {

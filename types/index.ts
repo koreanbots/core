@@ -46,7 +46,8 @@ export enum UserFlags {
 	general = 0 << 0,
 	staff = 1 << 0,
 	bughunter = 1 << 1,
-	premium = 1 << 2,
+	botreviewer = 1 << 2,
+	premium = 1 << 3
 }
 
 export enum BotFlags {

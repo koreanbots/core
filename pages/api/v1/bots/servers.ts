@@ -12,14 +12,14 @@ const limiter = rateLimit({
 	statusCode: 429,
 	handler: (_req, res) => ResponseWrapper(res, { code: 429 }),
 	keyGenerator: (req) => req.headers.authorization,
-  skip: (req) => {
-    if(!req.headers.authorization) return true
-    else return false
-  }
+	skip: (req) => {
+		if(!req.headers.authorization) return true
+		else return false
+	}
 })
 
 const BotStats = RequestHandler()
-  .post(limiter)
+	.post(limiter)
 	.post(async (req: PostApiRequest, res) => {
 		const bot = await get.BotAuthorization(req.headers.token)
 		if(!bot) return ResponseWrapper(res, { code: 401 })

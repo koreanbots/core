@@ -848,7 +848,7 @@ kbd {
 	padding: 0.2em 0.4em;
 	margin: 0;
 	font-size: 85%;
-	background-color: #2c3035;
+	background-color: #181c20;
 	border-radius: 3px;
 }
 
@@ -858,13 +858,13 @@ kbd {
 
 .markdown-body pre > code,
 .dark .markdown-body pre > code {
-	padding: 0;
+	padding: 0 !important;
 	margin: 0;
 	font-size: 100%;
 	word-break: normal;
-	white-space: pre;
-	background: transparent;
-	border: 0;
+	white-space: pre !important;
+	background: transparent !important;
+	border: 0 !important;
 }
 
 .markdown-body .highlight {

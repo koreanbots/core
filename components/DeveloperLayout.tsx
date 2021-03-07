@@ -72,7 +72,7 @@ const DeveloperLayout = ({ children, enabled, docs, currentDoc }:DeveloperLayout
 				}
 			</div>
 		</div>
-		<div className='w-full py-24 lg:pl-60'>
+		<div className='w-full py-28 lg:pl-60'>
 			<Container>
 				{children}
 			</Container>

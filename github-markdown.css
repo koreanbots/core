@@ -848,7 +848,7 @@ kbd {
 	padding: 0.2em 0.4em;
 	margin: 0;
 	font-size: 85%;
-	background-color: #181c20;
+	background-color: rgba(240,246,252,0.15);
 	border-radius: 3px;
 }
 

@@ -71,7 +71,6 @@ function highlightBlocks() {
 	const nodes = window.document.querySelectorAll('pre code')
 	nodes.forEach(el => {
 		window.hljs.highlightBlock(el)
-		console.log(el)
 	})
 }
 interface DocsProps {

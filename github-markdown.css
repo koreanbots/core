@@ -806,12 +806,7 @@ kbd {
 }
 
 .dark .markdown-body table tr {
-	background-color: #0d1117;
-	border-top: 1px solid #c6cbd1;
-}
-
-.dark .markdown-body table tr {
-	background-color: #0d1117;
+	background-color: #16181b;
 	border-top: 1px solid #272c32;
 }
 
@@ -820,7 +815,7 @@ kbd {
 }
 
 .dark .markdown-body table tr:nth-child(2n) {
-	background-color: #0d1117;
+	background-color: #161b22;
 }
 
 .markdown-body img {

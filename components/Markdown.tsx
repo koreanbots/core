@@ -1,9 +1,11 @@
-import { anchorHeader, customEmoji, twemoji } from '@utils/Tools'
 import MarkdownView from 'react-showdown'
 import sanitizeHtml from 'sanitize-html'
 import Emoji from 'node-emoji'
+import { FunctionComponent } from 'react'
 
-const Markdown = ({ text, options={} }: MarkdownProps): JSX.Element => {
+import { anchorHeader, customEmoji, twemoji } from '@utils/Tools'
+
+const Markdown = ({ text, options={}, allowedTag=[], components={} }: MarkdownProps): JSX.Element => {
 	return (
 		<div className='markdown-body w-full'>
 			<MarkdownView
@@ -23,6 +25,7 @@ const Markdown = ({ text, options={} }: MarkdownProps): JSX.Element => {
 					encodeEmails: true,
 					...options
 				}}
+				components={components}
 				sanitizeHtml={html =>
 					sanitizeHtml(html, {
 						allowedTags: [
@@ -94,6 +97,7 @@ const Markdown = ({ text, options={} }: MarkdownProps): JSX.Element => {
 							'svg',
 							'path',
 							'input',
+							...allowedTag
 						],
 						allowedAttributes: false,
 					})
@@ -108,6 +112,8 @@ interface MarkdownProps {
 	options?: {
 		[key: string]: boolean
 	}
+	allowedTag?: string[]
+	components?: Record<string, FunctionComponent>
 }
 
 export default Markdown

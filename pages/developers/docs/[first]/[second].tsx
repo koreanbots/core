@@ -8,6 +8,7 @@ import { join } from 'path'
 import { DocsData } from '@types'
 
 import NotFound from 'pages/404'
+import Message from '@components/Message'
 
 const DeveloperLayout = dynamic(() => import('@components/DeveloperLayout'))
 const Markdown = dynamic(() => import ('@components/Markdown'))
@@ -30,7 +31,7 @@ const Docs: NextPage<DocsProps> = ({ docs }) => {
 		<div className='px-2'>
 			{
 				!document ? ''
-					: <Markdown text={document.text} options={{ openLinksInNewWindow: false }}/>
+					: <Markdown text={document.text} options={{ openLinksInNewWindow: false }} components={{ message: Message }} allowedTag={['message']} />
 			}
 		</div>
 	</DeveloperLayout>

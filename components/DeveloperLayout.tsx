@@ -45,21 +45,19 @@ const DeveloperLayout = ({ children, enabled, docs, currentDoc }:DeveloperLayout
 						<ul className='text-sm text-gray-600 dark:text-gray-300 px-0.5 mt-6'>
 							{
 								docs?.map(el => {
-									if(el.list) return <>
-
-										<ul key={el.name} className='text-sm py-3'>
-											<span className='text-gray-600 dark:text-gray-100 font-bold my-1'>{el.name}</span>
-											{
-												el.list.map(e => 
-													<Link key={e.name} href={`/developers/docs/${el.name}/${e.name}`}>
-														<li className={`cursor-pointer px-4 py-2 rounded-md ${currentDoc === e.name ? 'bg-discord-blurple text-white' : 'hover:text-gray-500 dark:hover:text-white'}`}>
-															{e.name}
-														</li>
-													</Link>
-												)
-											}
-										</ul>
-									</>
+									if(el.list) return <ul key={el.name} className='text-sm py-3'>
+										<span className='text-gray-600 dark:text-gray-100 font-bold my-1'>{el.name}</span>
+										{
+											el.list.map(e => 
+												<Link key={e.name} href={`/developers/docs/${el.name}/${e.name}`}>
+													<li className={`cursor-pointer px-4 py-2 rounded-md ${currentDoc === e.name ? 'bg-discord-blurple text-white' : 'hover:text-gray-500 dark:hover:text-white'}`}>
+														{e.name}
+													</li>
+												</Link>
+											)
+										}
+									</ul>
+								
 									return <Link key={el.name} href={`/developers/docs/${el.name}`}>
 										<li className={`cursor-pointer py-2 px-4 rounded-md ${currentDoc === el.name ? 'bg-discord-blurple text-white' : 'hover:text-gray-500 dark:hover:text-white'}`}>
 											{el.name}

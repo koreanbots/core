@@ -3,7 +3,7 @@ import MarkdownView from 'react-showdown'
 import sanitizeHtml from 'sanitize-html'
 import Emoji from 'node-emoji'
 
-const Markdown = ({ text }: MarkdownProps): JSX.Element => {
+const Markdown = ({ text, options={} }: MarkdownProps): JSX.Element => {
 	return (
 		<div className='markdown-body w-full'>
 			<MarkdownView
@@ -21,6 +21,7 @@ const Markdown = ({ text }: MarkdownProps): JSX.Element => {
 					tasklists: true,
 					ghCompatibleHeaderId: true,
 					encodeEmails: true,
+					...options
 				}}
 				sanitizeHtml={html =>
 					sanitizeHtml(html, {
@@ -104,6 +105,9 @@ const Markdown = ({ text }: MarkdownProps): JSX.Element => {
 
 interface MarkdownProps {
 	text: string
+	options?: {
+		[key: string]: boolean
+	}
 }
 
 export default Markdown

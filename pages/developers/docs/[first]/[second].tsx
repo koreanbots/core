@@ -27,7 +27,7 @@ const Docs: NextPage<DocsProps> = ({ docs }) => {
 	if((!document) || router.query.docs?.length > 2) return <NotFound />
 	return <DeveloperLayout enabled='docs' docs={docs} currentDoc={(router.query.second || router.query.first) as string}>
 		<div className='px-2 no-seg'>
-			<Markdown text={document?.text} />
+			<Markdown text={document?.text} options={{ openLinksInNewWindow: false }}/>
 		</div>
 	</DeveloperLayout>
 }

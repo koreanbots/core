@@ -15,19 +15,23 @@ const Markdown = dynamic(() => import ('@components/Markdown'))
 const docsDir = './api-docs/docs'
 const Docs: NextPage<DocsProps> = ({ docs }) => {
 	const router = useRouter()
-	const [ document, setDoc ] = useState<DocsData>({ name: 'Init' })
+	const [ document, setDoc ] = useState<DocsData>(null)
 	useEffect(() => {
+		if(!router.query.first) return
 		let res = docs?.find(el => el.name === router.query.first)
 		if(router.query.second) res = res?.list?.find(el => el.name === router.query.second)
-		setDoc(res)
+		setDoc(res || { name: 'Not Found' })
 		setTimeout(highlightBlocks, 100)
 	}, [docs, router.query])
 
 	useEffect(() => highlightBlocks, [document])
-	if((!document) || router.query.docs?.length > 2) return <NotFound />
+	if(document?.name === 'Not Found') return <NotFound />
 	return <DeveloperLayout enabled='docs' docs={docs} currentDoc={(router.query.second || router.query.first) as string}>
-		<div className='px-2 no-seg'>
-			<Markdown text={document?.text} options={{ openLinksInNewWindow: false }}/>
+		<div className='px-2'>
+			{
+				!document ? ''
+					: <Markdown text={document.text} options={{ openLinksInNewWindow: false }}/>
+			}
 		</div>
 	</DeveloperLayout>
 }

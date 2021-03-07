@@ -31,7 +31,7 @@ const Docs: NextPage<DocsProps> = ({ docs }) => {
 		<div className='px-2'>
 			{
 				!document ? ''
-					: <Markdown text={document.text} options={{ openLinksInNewWindow: false }} components={{ message: Message }} allowedTag={['message']} />
+					: <Markdown text={document.text} options={{ openLinksInNewWindow: false }} components={{ message: Message, code }} allowedTag={['message']} />
 			}
 		</div>
 	</DeveloperLayout>
@@ -72,6 +72,18 @@ export async function getStaticProps () {
 	}
 }
 
+function code({ children }:{ children: string }):JSX.Element {
+	const methods = {
+		get: 'text-green-400',
+		post: 'text-yellow-400',
+		put: 'text-blue-500',
+		patch: 'text-yellow-400',
+		delete: 'text-red-500'
+	}
+	return <code className={`${methods[String(children).toLowerCase()]}`}>
+		{children}
+	</code>
+}
 function highlightBlocks() {
 	const nodes = window.document.querySelectorAll('pre code')
 	nodes.forEach(el => {

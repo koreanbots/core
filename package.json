@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
-		"pre-build": "git submodule init && git submodule update",
+		"pre-build": "git init && git submodule init && git submodule update",
 		"build": "npm run pre-build && next build",
 		"start": "next start | (sleep 1; wget http://localhost:3000/api/v2 -O /dev/null)",
 		"lint": "eslint --ext ts,tsx .",

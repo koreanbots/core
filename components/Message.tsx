@@ -1,11 +1,12 @@
 import { MessageColor } from '@utils/Constants'
+import Markdown from './Markdown'
 
 const Message = ({ type, children }: MessageProps): JSX.Element => {
 	return (
 		<div
 			className={`${MessageColor[type]} px-6 py-4 rounded-md text-base mx-auto w-full text-left`}
 		>
-			{children}
+			{ typeof children === 'string' ? <Markdown text={children} /> : children }
 		</div>
 	)
 }

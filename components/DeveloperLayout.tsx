@@ -11,8 +11,8 @@ const SEO = dynamic(() => import('@components/SEO'))
 const DeveloperLayout = ({ children, enabled, docs, currentDoc }:DeveloperLayout):JSX.Element => {
 	return <div className='flex min-h-screen'>
 		<SEO title='한디리 개발자' description='한국 디스코드봇 리스트 API를 활용하여 봇에 다양한 기능을 추가해보세요.' />
-		<div className='w-1/8 block lg:hidden h-screen relative'>
-			<div className='pt-20 px-2 h-full text-center bg-little-white dark:bg-discord-black fixed'>
+		<div className='block lg:hidden h-screen relative'>
+			<div className='w-16 pt-20 px-2 h-full text-center bg-little-white dark:bg-discord-black fixed'>
 				<h2 className='font-black text-koreanbots-blue pb-4'><i className='fas fa-tools'/></h2>
 				<ul className='text-gray-600 dark:text-gray-300'>
 					<li className={`cursor-pointer py-2 px-4 mb-2 rounded-md ${enabled === 'applications' ? 'bg-discord-blurple text-white' : 'hover:text-gray-500 dark:hover:text-white'}`}>
@@ -72,7 +72,7 @@ const DeveloperLayout = ({ children, enabled, docs, currentDoc }:DeveloperLayout
 				}
 			</div>
 		</div>
-		<div className='w-full py-28 lg:pl-60'>
+		<div className='w-full py-28 lg:pl-60 pl-16'>
 			<Container>
 				{children}
 			</Container>

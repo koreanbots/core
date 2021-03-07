@@ -42,6 +42,12 @@ export interface BotSpec {
 	token: string
 }
 
+export interface DocsData {
+  name: string
+  list?: DocsData[]
+  text?: string
+}
+
 export enum UserFlags {
 	general = 0 << 0,
 	staff = 1 << 0,

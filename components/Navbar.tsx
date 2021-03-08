@@ -22,15 +22,16 @@ const Navbar = (): JSX.Element => {
 	const [dropdownOpen, setDropdownOpen] = useState<boolean>(false)
 	const router = useRouter()
 	const logged = userCache?.id && userCache.version === 2
+	const dev = router.pathname.startsWith('/developers')
 	return (
 		<>
 			<nav className='fixed z-40 top-0 flex flex-wrap items-center justify-between px-2 py-3 w-full text-gray-100 dark:bg-discord-black bg-discord-blurple bg-transparent lg:absolute'>
 				<div className='container flex flex-wrap items-center justify-between mx-auto px-4'>
 					<div className='relative flex justify-between w-full lg:justify-start lg:w-auto'>
-						<Link href='/'>
-							<a className='logofont text-large whitespace-no-wrap inline-block mr-4 py-2 hover:text-gray-300 font-semibold leading-relaxed uppercase sm:text-2xl'
+						<Link href={dev ? '/developers' : '/'}>
+							<a className={`${dev ? 'text-koreanbots-blue ' : ''}logofont text-large whitespace-no-wrap inline-block mr-4 py-2 hover:text-gray-300 font-semibold leading-relaxed uppercase sm:text-2xl`}
 							>
-							KOREANBOTS
+								{ dev ? <><i className='fas fa-tools mr-1'/> DEVELOPERS</> : 'KOREANBOTS'}
 							</a>
 						</Link>
 						<button
@@ -42,9 +43,9 @@ const Navbar = (): JSX.Element => {
 						</button>
 						<ul className='hidden lg:flex flex-col list-none lg:flex-row lg:ml-auto'>
 							<li className='flex items-center'>
-								<Link href='/developers'>
+								<Link href={dev ? '/' : '/developers'}>
 									<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
-										개발자
+										{dev ? '홈' : '개발자'}
 									</a>
 								</Link>
 							</li>

@@ -22,7 +22,7 @@ const Modal = ({ children, isOpen, onClose, dark, header, full=false }: ModalPro
 				},
 			}}
 		>
-			<h2 className='text-lg font-black uppercase'>{header}</h2>
+			<h2 className='text-lg font-extrabold uppercase'>{header}</h2>
 			<div className='relative pt-4'>
 				<div className={dark ? 'dark' : 'light'}>{children}</div>
 			</div>

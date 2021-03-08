@@ -2,18 +2,21 @@ import { NextPage, NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { useState } from 'react'
 
 import { SnowflakeUtil } from 'discord.js'
 import { ParsedUrlQuery } from 'querystring'
 import { Bot, Theme, User } from '@types'
 
-import { git, Status } from '@utils/Constants'
+import { git, reportCats, Status } from '@utils/Constants'
 import { get } from '@utils/Query'
 import Day from '@utils/Day'
 import { checkBotFlag, checkUserFlag, formatNumber, parseCookie } from '@utils/Tools'
 
 import NotFound from '../../404'
 import Footer from '@components/Footer'
+import { Field, Form, Formik } from 'formik'
+import { ReportBotSchema } from '@utils/Yup'
 
 const Container = dynamic(() => import('@components/Container'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
@@ -27,10 +30,14 @@ const Advertisement = dynamic(() => import('@components/Advertisement'))
 const Tooltip = dynamic(() => import('@components/Tooltip'))
 const Markdown = dynamic(() => import ('@components/Markdown'))
 const Message = dynamic(() => import('@components/Message'))
+const Button = dynamic(() => import('@components/Button'))
+const TextArea = dynamic(() => import('@components/Form/TextArea'))
+const Modal = dynamic(() => import('@components/Modal'))
 
 const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 	const bg = checkBotFlag(data?.flags, 'trusted') && data?.banner
 	const router = useRouter()
+	const [ reportModal, setReportModal ] = useState(false)
 	if (!data?.id) return <NotFound />
 	if((checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}`)
 	return <div style={bg ? { background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${data.bg}") center top / cover no-repeat fixed` } : {}}>
@@ -172,12 +179,47 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 									/>
 								))}
 								<div className='list grid'>
-									<Link href={`/bots/${data.id}/report`}>
-										<a className='text-red-600 hover:underline'>
-											<i className='far fa-flag' />
+									<a className='text-red-600 hover:underline cursor-pointer' onKeyPress={() => {
+										return
+									}} onClick={() => setReportModal(true)}>
+										<i className='far fa-flag' />
 								신고하기
-										</a>
-									</Link>
+									</a>
+									<Modal header={`${data.name}#${data.tag} 신고하기`} isOpen={reportModal} onClose={() => setReportModal(false)} full dark={theme === 'dark'}>
+										<Formik onSubmit={console.log} validationSchema={ReportBotSchema} initialValues={{
+											id: data.id,
+											category: null,
+											description: ''
+										}}>
+											{
+												({ errors, touched, values, setFieldValue }) => (
+													<Form>
+														<div className='mb-5'>
+															<h3 className='font-bold'>신고 구분</h3>
+															<p className='text-gray-400 text-sm mb-1'>해당되는 항복을 선택해주세요.</p>
+															{
+																reportCats.map(el => 
+																	<div key={el}>
+																		<label>
+																			<Field type='radio' name='category' value={el} />
+																			{el}
+																		</label>
+																	</div>
+																)
+															}
+															<div className='mt-1 text-red-500 text-xs font-light'>{errors.category && touched.category ? errors.category : null}</div>
+															<h3 className='font-bold mt-2'>설명</h3>
+															<p className='text-gray-400 text-sm mb-1'>신고하시는 내용을 자세하게 설명해주세요.</p>
+															<TextArea name='description' placeholder='최대한 자세하게 설명해주세요!' theme={theme === 'dark' ? 'dark' : 'light'} value={values.description} setValue={(value) => setFieldValue('description', value)} />
+															<div className='mt-1 text-red-500 text-xs font-light'>{errors.description && touched.description ? errors.description : null}</div>
+														</div>
+														<Button className='bg-gray-500 hover:opacity-90 text-white' onClick={()=> setReportModal(false)}>취소</Button>
+														<Button type='submit' className='bg-red-500 hover:opacity-90 text-white'>제출</Button>
+													</Form>
+												)
+											}
+										</Formik>
+									</Modal>
 									{data.discord && (
 										<a
 											rel='noopener noreferrer'
@@ -238,7 +280,7 @@ export const getServerSideProps = async (ctx: Context) => {
 		props: {
 			data,
 			date: SnowflakeUtil.deconstruct(data.id ?? '0').date.toJSON(),
-			user: await get.user.load(user || '')
+			user: await get.user.load(user || ''),
 		},
 	}
 }

@@ -30,6 +30,7 @@ module.exports = {
 		'react/react-in-jsx-scope': 'off',
 		'jsx-a11y/anchor-is-valid': 'off',
 		'jsx-a11y/no-noninteractive-element-interactions': 'off',
+		'jsx-a11y/no-static-element-interactions': 'off',
 		'@typescript-eslint/explicit-function-return-type': 'off',
 		'@typescript-eslint/explicit-module-boundary-types': 'off',
 		'@typescript-eslint/no-unused-vars': ['warn'],

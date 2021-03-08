@@ -76,7 +76,7 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 			}
 		</div>
 		{
-			!['/bots/[id]'].includes(router.pathname) || router.pathname.startsWith('/developers') && <Footer theme={theme} setTheme={setTheme} />
+			!(['/bots/[id]'].includes(router.pathname) || router.pathname.startsWith('/developers')) && <Footer theme={theme} setTheme={setTheme} />
 		}
 		<Modal full isOpen={shortcutModal} onClose={() => setShortcutModal(false)} dark={theme === 'dark'} header='단축키 안내'>
 			<div className='px-3 h-80'>

@@ -11,7 +11,8 @@ const limiter = rateLimit({
 	statusCode: 429,
 	handler: (_req, res) => ResponseWrapper(res, { code: 429 }),
 	keyGenerator: (req) => req.headers['x-forwarded-for'] as string,
-	skip: (req) => {
+	skip: (req, res) => {
+		res.setHeader('X-RateLimit-Global', 'true')
 		if(GlobalRatelimitIgnore.map(el => req.url.startsWith(el)).find(el => el)) return true
 		return false
 	}

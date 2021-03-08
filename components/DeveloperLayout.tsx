@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 
 import { DocsData } from '@types'
 
@@ -9,10 +9,11 @@ const Divider = dynamic(() => import('@components/Divider'))
 const SEO = dynamic(() => import('@components/SEO'))
 
 const DeveloperLayout = ({ children, enabled, docs, currentDoc }:DeveloperLayout):JSX.Element => {
+	const [ navbarEnabled, setNavbarOpen ] = useState(false)
 	return <div className='flex min-h-screen'>
 		<SEO title='한디리 개발자' description='한국 디스코드봇 리스트 API를 활용하여 봇에 다양한 기능을 추가해보세요.' />
 		<div className='block lg:hidden h-screen relative'>
-			<div className='w-16 pt-20 px-2 h-full text-center bg-little-white dark:bg-discord-black fixed'>
+			<div className='w-18 pt-20 px-2 h-full text-center bg-little-white dark:bg-discord-black fixed'>
 				<ul className='text-gray-600 dark:text-gray-300'>
 					<li className={`cursor-pointer py-2 px-4 mb-2 rounded-md ${enabled === 'applications' ? 'bg-discord-blurple text-white' : 'hover:text-gray-500 dark:hover:text-white'}`}>
 						<Link href='/developers/applications'><i className='fas fa-robot'/></Link>
@@ -20,12 +21,21 @@ const DeveloperLayout = ({ children, enabled, docs, currentDoc }:DeveloperLayout
 					<li className={`cursor-pointer py-2 px-4 my-2 rounded-md ${enabled === 'docs' ? 'bg-discord-blurple text-white' : 'hover:text-gray-500 dark:hover:text-white'}`}>
 						<Link href='/developers/docs'><i className='fas fa-book'/></Link>
 					</li>
+					{
+						enabled === 'docs' && <>
+							<Divider />
+							<li className='cursor-pointer py-2 px-4 my-2 rounded-md hover:text-gray-500 dark:hover:text-white' onKeyDown={() => setNavbarOpen(true)} onClick={() => setNavbarOpen(true)}>
+								<i className='fas fa-bars'/>
+							</li></>
+					}
 				</ul>
 			</div>
 		</div>
-		<div className='hidden lg:block h-screen relative'>
-			<div className='bg-little-white dark:bg-discord-black pt-20 px-6 fixed h-full w-60'>
-				<ul className='text-base text-gray-600 dark:text-gray-300 mb-6'>
+		<div className={`${navbarEnabled ? 'block' : 'hidden'} lg:block relative`}>
+			<div className='bg-little-white dark:bg-discord-black pt-20 px-6 fixed h-screen w-screen lg:w-60 overflow-y-scroll'>
+				<ul className='text-base text-gray-600 dark:text-gray-300 mb-6 hidden lg:block'>
+					<li className='cursor-pointer py-2 px-4 rounded-md hover:text-gray-500 dark:hover:text-white lg:hidden' onKeyDown={() => setNavbarOpen(false)} onClick={() => setNavbarOpen(false)}>닫기</li>
+					<Divider className='lg:hidden' />
 					<Link href='/developers/applications'>
 						<li className={`cursor-pointer py-2 px-4 rounded-md ${enabled === 'applications' ? 'bg-discord-blurple text-white' : 'hover:text-gray-500 dark:hover:text-white'}`}>
 						나의 봇
@@ -45,7 +55,7 @@ const DeveloperLayout = ({ children, enabled, docs, currentDoc }:DeveloperLayout
 								docs?.map(el => {
 									if(el.list) return <div key={el.name} className='mt-2'>
 										<span className='text-gray-600 dark:text-gray-100 font-bold mb-1'>{el.name}</span>
-										<ul  className='text-sm py-3'>
+										<ul className='text-sm py-3'>
 											{
 												el.list.map(e => 
 													<Link key={e.name} href={`/developers/docs/${el.name}/${e.name}`}>

@@ -18,7 +18,7 @@ const Modal = ({ children, isOpen, onClose, dark, header, full=false }: ModalPro
 					borderRadius: '10px',
 					background: dark ? '#2C2F33' : '#fbfbfb',
 					color: dark ? 'white' : 'black',
-					width: full ? '100%' : 'inherit'
+					width: full ? '90%' : 'inherit'
 				},
 			}}
 		>

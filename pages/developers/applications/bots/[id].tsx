@@ -104,7 +104,7 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 								<Modal isOpen={modalOpened} onClose={() => setModalOpen(false)} dark={theme === 'dark'} header='정말로 토큰을 재발급하시겠습니까?'>
 									<p>기존에 사용중이시던 토큰은 더 이상 사용하실 수 없습니다</p>
 									<div className='text-right pt-6'>
-										<Button className='bg-gray-500 hover:opacity-90' onClick={()=> setModalOpen(false)}>취소</Button>
+										<Button className='bg-gray-500 text-white hover:opacity-90' onClick={()=> setModalOpen(false)}>취소</Button>
 										<Button onClick={async ()=> {
 											const res = await resetToken()
 											spec.token = res.data.token

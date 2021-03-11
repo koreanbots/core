@@ -18,7 +18,7 @@ const Categories:NextPage = () => {
 				{
 					categories.map(t => <Tag key={t} text={<>
 						{
-							{ '슬래시 명령어': <span className='fa-stack' style={{ fontSize: '1em', height: '1.2em', lineHeight: '1em', width: '20px', verticalAlign: 'midd;e' }}>
+							{ '빗금 명령어': <span className='fa-stack' style={{ fontSize: '1em', height: '1.2em', lineHeight: '1em', width: '20px', verticalAlign: 'midd;e' }}>
 								<i className='fas fa-square fa-stack-1x fa-md' />
 								<i className='fas fa-slash fa-rotate-90 fa-xs fa-stack-1x fa-inverse' style={{ fontSize: '0.3rem' }} />
 							</span> }[t] ?? <i className={categoryIcon[t]} />

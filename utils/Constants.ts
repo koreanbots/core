@@ -58,6 +58,7 @@ export const library = [
 	'기타',
 	'비공개',
 ]
+
 export const categories = [
 	// 상위 카테고리
 	'관리',
@@ -66,7 +67,7 @@ export const categories = [
 	'게임',
 	'도박',
 	'로깅',
-	'슬래시 명령어',
+	'빗금 명령어',
 	'웹 대시보드',
 	'밈',
 	'레벨링',
@@ -92,7 +93,7 @@ export const categoryIcon = {
 	'전적': 'fas fa-puzzle-piece',
 	'웹 대시보드': 'fas fa-sliders-h',
 	'로깅': 'fas fa-pencil-alt',
-	'슬래시 명령어': null,
+	'빗금 명령어': null,
 	'도박': 'fas fa-money-bill-alt',
 	'게임': 'fas fa-gamepad',
 	'밈': 'fas fa-image',

@@ -95,8 +95,8 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 								<li>봇이 <Link href='/guidelines'><a className='text-blue-500 hover:text-blue-600'>가이드라인</a></Link>을 지키고 있나요?</li>
 								<li>봇 소유자가 두 명 이상인가요? 봇 소유자는 봇이 승인된 뒤, 더 추가하실 수 있습니다.</li>
 								<li>본인이 봇의 소유자라는 것을 증명할 수 있나요? 본인이 봇 소유자임을 증명하려면, 태그가 포함되어야 합니다.</li>
-				다음 명령어(접두사로 시작하는) 중 하나 이상에 소유자를 표시하셔야 합니다.
-
+								다음 명령어(접두사로 시작하는) 중 하나 이상에 소유자를 표시하셔야 합니다. <br/>
+								<strong>빗금 명렁어(Slash Command) 봇인 경우에도 적용됩니다. 아래 글로벌 명령어 혹은 "653083797763522580" 아이디의 서버 명령어를 추가해주세요.</strong>
 								<ul>
 									<li>- 도움 명령어: 도움, 도움말, 명령어, help, commands</li>
 									<li>- 도움 명령어에 소유자임을 나타내고 싶지 않으시다면, 아래 명령어를 만들어주세요<br/>
@@ -127,7 +127,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 						<Selects options={categories.map(el=> ({ label: el, value: el }))} handleChange={(value) => {
 							setFieldValue('category', value.map(v=> v.value))
 						}} handleTouch={() => setFieldTouched('category', true)} values={values.category as string[]} setValues={(value) => setFieldValue('category', value)} />
-						<span className='text-gray-400 mt-1 text-sm'>봇 카드에는 앞 3개의 카테고리만 표시됩니다. 드래그하여 카테고리를 정렬하세요.</span>
+						<span className='text-gray-400 mt-1 text-sm'>봇 카드에는 앞 3개의 카테고리만 표시됩니다. 드래그하여 카테고리를 정렬하세요. <strong>반드시 해당되는 카테고리만 선택해주세요.</strong></span>
 					</Label>
 					<Divider />
 					<Label For='website' label='웹사이트' labelDesc='봇의 웹사이트를 작성해주세요.' error={errors.website && touched.website ? errors.website : null}>
@@ -139,6 +139,13 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 					<Label For='inviteLink' label='초대링크' labelDesc='봇의 초대링크입니다. 비워두시면 자동으로 생성합니다.' error={errors.url && touched.url ? errors.url : null}>
 						<Input name='url' placeholder='https://discord.com/oauth2/authorize?client_id=653534001742741552&scope=bot&permissions=0' />
 					</Label>
+					{
+						values.category.includes('빗금 명령어') && <Message type='warning'>
+							<h2 className='text-lg font-semibold'>해당 봇은 빗금 명령어(Slash Command) 카테고리가 선택되었습니다.</h2>
+							<p>초대링크는 빗금 명령어 권한을 부여하지 않은 일반 봇 초대링크로 자동 생성됩니다.
+								따라서 빗금 명령어 권한을 포함한 초대링크를 직접 설정해주세요.</p>
+						</Message>
+					}
 					<Label For='discord' label='지원 디스코드 서버' labelDesc='봇의 지원 디스코드 서버를 입력해주세요. (봇에 대해 도움을 받을 수 있는 공간입니다.)' error={errors.discord && touched.discord ? errors.discord : null} short>
 						<div className='flex items-center'>
 						discord.gg/<Input name='discord' placeholder='JEh53MQ' />

@@ -1,8 +1,8 @@
 import * as Yup from 'yup'
 import YupKorean from 'yup-locales-ko'
-import { ListType } from '../types'
-import { categories, library, reportCats } from './Constants'
-import { HTTPProtocol, ID, Prefix, Url, Vanity } from './Regex'
+import { ListType } from '@types'
+import { categories, library, reportCats } from '@utils/Constants'
+import { HTTPProtocol, ID, Prefix, Url, Vanity } from '@utils/Regex'
 
 Yup.setLocale(YupKorean)
 Yup.addMethod(Yup.array, 'unique', function(message, mapper = a => a) {

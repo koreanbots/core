@@ -195,16 +195,14 @@ export interface BotStatUpdate {
 	servers: number
 }
 
-export const ReportBotSchema: Yup.SchemaOf<ReportBot> = Yup.object({
+export const ReportSchema: Yup.SchemaOf<Report> = Yup.object({
 	category: Yup.mixed().oneOf(reportCats, '신고 구분은 필수 항목입니다.').required('신고 구분은 필수 항목입니다.'),
-	description: Yup.string().min(100, '최소 100자여야합니다.').max(2000, '2000자 이하로 입력해주세요.').required('설명은 필수 항목입니다.'),
-	id: Yup.string().required()
+	description: Yup.string().min(100, '최소 100자여야합니다.').max(1500, '1500자 이하로 입력해주세요.').required('설명은 필수 항목입니다.')
 })
 
-interface ReportBot {
+export interface Report {
 	category: string
 	description: string
-	id: string
 }
 
 export const ManageBotSchema = Yup.object({

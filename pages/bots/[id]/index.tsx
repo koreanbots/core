@@ -16,7 +16,7 @@ import { checkBotFlag, checkUserFlag, formatNumber, parseCookie } from '@utils/T
 import NotFound from '../../404'
 import Footer from '@components/Footer'
 import { Field, Form, Formik } from 'formik'
-import { ReportBotSchema } from '@utils/Yup'
+import { ReportSchema } from '@utils/Yup'
 
 const Container = dynamic(() => import('@components/Container'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
@@ -186,8 +186,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 								신고하기
 									</a>
 									<Modal header={`${data.name}#${data.tag} 신고하기`} isOpen={reportModal} onClose={() => setReportModal(false)} full dark={theme === 'dark'}>
-										<Formik onSubmit={console.log} validationSchema={ReportBotSchema} initialValues={{
-											id: data.id,
+										<Formik onSubmit={console.log} validationSchema={ReportSchema} initialValues={{
 											category: null,
 											description: ''
 										}}>

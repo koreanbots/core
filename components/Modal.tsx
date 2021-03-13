@@ -14,6 +14,9 @@ const Modal = ({ children, isOpen, onClose, closeIcon=false, dark, header, full=
 			}}
 			showCloseIcon={closeIcon}
 			styles={{
+				closeButton: {
+					color: dark ? 'white' : 'black'
+				},
 				modal: {
 					borderRadius: '10px',
 					background: dark ? '#2C2F33' : '#fbfbfb',
@@ -22,7 +25,7 @@ const Modal = ({ children, isOpen, onClose, closeIcon=false, dark, header, full=
 				},
 			}}
 		>
-			<h2 className='text-lg font-extrabold uppercase'>{header}</h2>
+			<h2 className='text-lg font-bold uppercase'>{header}</h2>
 			<div className='relative pt-4'>
 				<div className={dark ? 'dark' : 'light'}>{children}</div>
 			</div>

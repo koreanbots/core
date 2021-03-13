@@ -156,8 +156,10 @@ const Users: NextPage<UserProps> = ({ user, data, csrfToken, theme }) => {
 														<TextArea name='description' placeholder='최대한 자세하게 설명해주세요!' theme={theme === 'dark' ? 'dark' : 'light'} value={values.description} setValue={(value) => setFieldValue('description', value)} />
 														<div className='mt-1 text-red-500 text-xs font-light'>{errors.description && touched.description ? errors.description : null}</div>
 													</div>
-													<Button className='bg-gray-500 hover:opacity-90 text-white' onClick={()=> setReportModal(false)}>취소</Button>
-													<Button type='submit' className='bg-red-500 hover:opacity-90 text-white'>제출</Button>
+													<div className='text-right'>
+														<Button className='bg-gray-500 hover:opacity-90 text-white' onClick={()=> setReportModal(false)}>취소</Button>
+														<Button type='submit' className='bg-red-500 hover:opacity-90 text-white'>제출</Button>
+													</div>
 												</Form>
 											)
 										}

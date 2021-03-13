@@ -80,8 +80,8 @@ async function getUser(id: string, bots = true):Promise<User> {
 			.select(['id'])
 			.where('owners', 'like', `%${id}%`)
 		const discordUser = await get.discord.user.load(id)
-		res[0].tag = discordUser.discriminator
-		res[0].username = discordUser.username
+		res[0].tag = discordUser?.discriminator || '0000'
+		res[0].username = discordUser?.username || 'Unknown User'
 		if (bots) {
 			res[0].bots = await Promise.all(owned.map(async b => await get._rawBot.load(b.id)))
 			res[0].bots = res[0].bots.filter((el: Bot | null) => el).map((row: User) => ({ ...row }))

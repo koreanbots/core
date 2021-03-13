@@ -31,10 +31,10 @@ const Avatar = RequestHandler()
 		if(!validated) return
 
 		const user = await get.discord.user.load(id)
-		if(!user) return ResponseWrapper(res, { code: 400, message: '올바르지 않은 유저입니다.' })
-
-		let img = await get.images.user.load(DiscordEnpoints.CDN.user(id, user.avatar, { format: validated.ext === 'gif' && !user.avatar.startsWith('a_') ? 'png' : validated.ext }))
-		if(!user.avatar || !img) {
+		let img: Buffer
+		if(!user || !user.avatar) img = await get.images.user.load(DiscordEnpoints.CDN.default(Math.floor(Math.random() * 6), { format: 'png', size: validated.size }))
+		else img = await get.images.user.load(DiscordEnpoints.CDN.user(id, user.avatar, { format: validated.ext === 'gif' && !user.avatar.startsWith('a_') ? 'png' : validated.ext }))
+		if(!img) {
 			img = await get.images.user.load(DiscordEnpoints.CDN.default(user.discriminator, { format: 'png', size: validated.size }))
 			ext = 'png'
 		}

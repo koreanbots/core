@@ -20,7 +20,6 @@ const Button = ({
 	) : onClick ? (
 		<button
 			type={type}
-			onKeyDown={onClick}
 			onClick={onClick}
 			className={`cursor-pointer rounded-md px-4 py-2 m-0.5 transition duration-300 ease select-none outline-none foucs:outline-none ${className ??
 				'bg-discord-blurple hover:opacity-80 dark:bg-very-black dark:hover:bg-discord-dark-hover text-white'}`}

@@ -14,7 +14,7 @@ import { get } from '@utils/Query'
 import Day from '@utils/Day'
 import { ReportSchema } from '@utils/Yup'
 import Fetch from '@utils/Fetch'
-import { checkBotFlag, checkUserFlag, formatNumber, parseCookie } from '@utils/Tools'
+import { checkBotFlag, checkUserFlag, formatNumber, parseCookie, redirectTo } from '@utils/Tools'
 import { getToken } from '@utils/Csrf'
 
 import NotFound from '../../404'
@@ -41,6 +41,10 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken, setThem
 	const router = useRouter()
 	const [ reportModal, setReportModal ] = useState(false)
 	const [ reportRes, setReportRes ] = useState<ResponseProps<null>>(null)
+	function toLogin() {
+		localStorage.redirectTo = window.location.href
+		redirectTo(router, 'login')
+	}
 	if (!data?.id) return <NotFound />
 	if((checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}`)
 	return <div style={bg ? { background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${data.bg}") center top / cover no-repeat fixed` } : {}}>
@@ -182,7 +186,10 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken, setThem
 									/>
 								))}
 								<div className='list grid'>
-									<a className='text-red-600 hover:underline cursor-pointer' onClick={() => setReportModal(true)} aria-hidden='true'>
+									<a className='text-red-600 hover:underline cursor-pointer' onClick={() => {
+										if(!user) toLogin()
+										else setReportModal(true)
+									}} aria-hidden='true'>
 										<i className='far fa-flag' />
 								신고하기
 									</a>

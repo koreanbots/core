@@ -182,9 +182,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken, setThem
 									/>
 								))}
 								<div className='list grid'>
-									<a className='text-red-600 hover:underline cursor-pointer' onKeyPress={() => {
-										return
-									}} onClick={() => setReportModal(true)}>
+									<a className='text-red-600 hover:underline cursor-pointer' onClick={() => setReportModal(true)} aria-hidden='true'>
 										<i className='far fa-flag' />
 								신고하기
 									</a>

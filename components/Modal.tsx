@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { Modal as ReactModal } from 'react-responsive-modal'
 import 'react-responsive-modal/styles.css'
 
-const Modal = ({ children, isOpen, onClose, dark, header, full=false }: ModalProps): JSX.Element => {
+const Modal = ({ children, isOpen, onClose, closeIcon=false, dark, header, full=false }: ModalProps): JSX.Element => {
 	return (
 		<ReactModal
 			open={isOpen}
@@ -12,7 +12,7 @@ const Modal = ({ children, isOpen, onClose, dark, header, full=false }: ModalPro
 			classNames={{
 				modal: 'bg-discord-dark',
 			}}
-			showCloseIcon={false}
+			showCloseIcon={closeIcon}
 			styles={{
 				modal: {
 					borderRadius: '10px',
@@ -36,6 +36,7 @@ interface ModalProps {
 	header?: string
 	full?: boolean
 	children: ReactNode
+	closeIcon?: boolean
 	onClose(): void
 }
 

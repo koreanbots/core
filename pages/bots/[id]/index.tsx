@@ -205,6 +205,16 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken, setThem
 													({ errors, touched, values, setFieldValue }) => (
 														<Form>
 															<div className='mb-5'>
+																{
+																	reportRes && <div className='my-5'>
+																		<Message type='error'>
+																			<h2 className='text-lg font-semibold'>{reportRes.message}</h2>
+																			<ul className='list-disc'>
+																				{reportRes.errors?.map((el, n) => <li key={n}>{el}</li>)}
+																			</ul>
+																		</Message>
+																	</div>
+																}
 																<h3 className='font-bold'>신고 구분</h3>
 																<p className='text-gray-400 text-sm mb-1'>해당되는 항복을 선택해주세요.</p>
 																{

@@ -1,14 +1,20 @@
 import { NextPage, NextPageContext } from 'next'
+import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import { SnowflakeUtil } from 'discord.js'
 import { ParsedUrlQuery } from 'querystring'
 import { josa } from 'josa'
+import { Field, Form, Formik } from 'formik'
 
-import { Bot, User } from '@types'
+import { Bot, User, ResponseProps, Theme } from '@types'
 import * as Query from '@utils/Query'
 import { checkUserFlag } from '@utils/Tools'
+import { getToken } from '@utils/Csrf'
+import Fetch from '@utils/Fetch'
+import { ReportSchema } from '@utils/Yup'
 
 import NotFound from '../404'
+import { reportCats } from '@utils/Constants'
 
 const Container = dynamic(() => import('@components/Container'))
 const SEO = dynamic(() => import('@components/SEO'))
@@ -19,8 +25,14 @@ const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 const Tag = dynamic(() => import('@components/Tag'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
 const Tooltip = dynamic(() => import('@components/Tooltip'))
+const Message = dynamic(() => import('@components/Message'))
+const Modal = dynamic(() => import('@components/Modal'))
+const Button = dynamic(() => import('@components/Button'))
+const TextArea = dynamic(() => import('@components/Form/TextArea'))
 
-const Users: NextPage<UserProps> = ({ data }) => {
+const Users: NextPage<UserProps> = ({ data, csrfToken, theme }) => {
+	const [ reportModal, setReportModal ] = useState(false)
+	const [ reportRes, setReportRes ] = useState<ResponseProps<null>>(null)
 	if (!data?.id) return <NotFound />
 	return (
 		<Container paddingTop className='py-10'>
@@ -47,10 +59,8 @@ const Users: NextPage<UserProps> = ({ data }) => {
 				</div>
 				<div className='flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left'>
 					<div>
-						<h1 className='mb-2 mt-3 text-4xl font-bold'>{data.username}</h1>
-						<span className='ml-0.5 text-gray-400 text-4xl font-semibold'>#{data.tag}</span>
-						<br />
-						<div className='badges flex'>
+						<h1 className='mt-3 mb-1 text-4xl font-bold'>{data.username}<span className='ml-0.5 text-gray-400 text-4xl font-semibold'>#{data.tag}</span></h1>
+						<div className='badges flex mb-2'>
 							{checkUserFlag(data.flags, 'staff') && (
 								<Tooltip text='한국 디스코드봇 리스트 스탭입니다.' direction='left'>
 									<div className='pr-5 text-koreanbots-blue text-2xl'>
@@ -66,7 +76,6 @@ const Users: NextPage<UserProps> = ({ data }) => {
 								</Tooltip>
 							)}
 						</div>
-						<br />
 						{data.github && (
 							<Tag
 								newTab
@@ -79,6 +88,68 @@ const Users: NextPage<UserProps> = ({ data }) => {
 								href={`https://github.com/${data.github}`}
 							/>
 						)}
+						<div className='list-none mt-2'>
+							<a className='text-red-600 hover:underline cursor-pointer' onClick={() => setReportModal(true)} aria-hidden='true'>
+								<i className='far fa-flag' />
+								신고하기
+							</a>
+						</div>
+						<Modal header={`${data.username}#${data.tag} 신고하기`} closeIcon isOpen={reportModal} onClose={() => {
+							setReportModal(false)
+							setReportRes(null)
+						}} full dark={theme === 'dark'}>
+							{
+								reportRes?.code === 200 ? <Message type='success'>
+									<h2 className='text-lg font-semibold'>성공적으로 신고하였습니다!</h2>
+									<p>더 자세한 설명이 필요할 수 있습니다! <a className='text-blue-600 hover:text-blue-500' href='/discord'>공식 디스코드</a>에 참여해주세요</p>
+								</Message> : <Formik onSubmit={async (body) => {
+									const res = await Fetch<null>(`/users/${data.id}/report`, { method: 'POST', body: JSON.stringify(body) })
+									setReportRes(res)
+								}} validationSchema={ReportSchema} initialValues={{
+									category: null,
+									description: '',
+									_csrf: csrfToken
+								}}>
+									{
+										({ errors, touched, values, setFieldValue }) => (
+											<Form>
+												<div className='mb-5'>
+													{
+														reportRes && <div className='my-5'>
+															<Message type='error'>
+																<h2 className='text-lg font-semibold'>{reportRes.message}</h2>
+																<ul className='list-disc'>
+																	{reportRes.errors?.map((el, n) => <li key={n}>{el}</li>)}
+																</ul>
+															</Message>
+														</div>
+													}
+													<h3 className='font-bold'>신고 구분</h3>
+													<p className='text-gray-400 text-sm mb-1'>해당되는 항복을 선택해주세요.</p>
+													{
+														reportCats.map(el => 
+															<div key={el}>
+																<label>
+																	<Field type='radio' name='category' value={el} className='mr-1.5 py-2' />
+																	{el}
+																</label>
+															</div>
+														)
+													}
+													<div className='mt-1 text-red-500 text-xs font-light'>{errors.category && touched.category ? errors.category : null}</div>
+													<h3 className='font-bold mt-2'>설명</h3>
+													<p className='text-gray-400 text-sm mb-1'>신고하시는 내용을 자세하게 설명해주세요.</p>
+													<TextArea name='description' placeholder='최대한 자세하게 설명해주세요!' theme={theme === 'dark' ? 'dark' : 'light'} value={values.description} setValue={(value) => setFieldValue('description', value)} />
+													<div className='mt-1 text-red-500 text-xs font-light'>{errors.description && touched.description ? errors.description : null}</div>
+												</div>
+												<Button className='bg-gray-500 hover:opacity-90 text-white' onClick={()=> setReportModal(false)}>취소</Button>
+												<Button type='submit' className='bg-red-500 hover:opacity-90 text-white'>제출</Button>
+											</Form>
+										)
+									}
+								</Formik>
+							}
+						</Modal>
 					</div>
 				</div>
 			</div>
@@ -96,11 +167,13 @@ const Users: NextPage<UserProps> = ({ data }) => {
 
 export const getServerSideProps = async (ctx: Context) => {
 	const data = await Query.get.user.load(ctx.query.id)
-	return { props: { data, date: SnowflakeUtil.deconstruct(data?.id ?? '0')?.date?.toJSON() } }
+	return { props: { data, date: SnowflakeUtil.deconstruct(data?.id ?? '0')?.date?.toJSON(), csrfToken: getToken(ctx.req, ctx.res) } }
 }
 
 interface UserProps {
 	data: User
+	csrfToken: string
+	theme: Theme
 }
 
 interface Context extends NextPageContext {

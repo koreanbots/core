@@ -193,6 +193,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken, setThem
 										{
 											reportRes?.code === 200 ? <Message type='success'>
 												<h2 className='text-lg font-semibold'>성공적으로 신고하였습니다!</h2>
+												<p>더 자세한 설명이 필요할 수 있습니다! <a className='text-blue-600 hover:text-blue-500' href='/discord'>공식 디스코드</a>에 참여해주세요</p>
 											</Message> : <Formik onSubmit={async (body) => {
 												const res = await Fetch<null>(`/bots/${data.id}/report`, { method: 'POST', body: JSON.stringify(body) })
 												setReportRes(res)

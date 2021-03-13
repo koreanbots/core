@@ -3,20 +3,22 @@ import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useState } from 'react'
+import { Field, Form, Formik } from 'formik'
 
 import { SnowflakeUtil } from 'discord.js'
 import { ParsedUrlQuery } from 'querystring'
-import { Bot, Theme, User } from '@types'
+import { Bot, ResponseProps, Theme, User } from '@types'
 
 import { git, reportCats, Status } from '@utils/Constants'
 import { get } from '@utils/Query'
 import Day from '@utils/Day'
+import { ReportSchema } from '@utils/Yup'
+import Fetch from '@utils/Fetch'
 import { checkBotFlag, checkUserFlag, formatNumber, parseCookie } from '@utils/Tools'
+import { getToken } from '@utils/Csrf'
 
 import NotFound from '../../404'
 import Footer from '@components/Footer'
-import { Field, Form, Formik } from 'formik'
-import { ReportSchema } from '@utils/Yup'
 
 const Container = dynamic(() => import('@components/Container'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
@@ -34,10 +36,11 @@ const Button = dynamic(() => import('@components/Button'))
 const TextArea = dynamic(() => import('@components/Form/TextArea'))
 const Modal = dynamic(() => import('@components/Modal'))
 
-const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
+const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken, setTheme }) => {
 	const bg = checkBotFlag(data?.flags, 'trusted') && data?.banner
 	const router = useRouter()
 	const [ reportModal, setReportModal ] = useState(false)
+	const [ reportRes, setReportRes ] = useState<ResponseProps<null>>(null)
 	if (!data?.id) return <NotFound />
 	if((checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}`)
 	return <div style={bg ? { background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${data.bg}") center top / cover no-repeat fixed` } : {}}>
@@ -185,39 +188,50 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, setTheme }) => {
 										<i className='far fa-flag' />
 								신고하기
 									</a>
-									<Modal header={`${data.name}#${data.tag} 신고하기`} isOpen={reportModal} onClose={() => setReportModal(false)} full dark={theme === 'dark'}>
-										<Formik onSubmit={console.log} validationSchema={ReportSchema} initialValues={{
-											category: null,
-											description: ''
-										}}>
-											{
-												({ errors, touched, values, setFieldValue }) => (
-													<Form>
-														<div className='mb-5'>
-															<h3 className='font-bold'>신고 구분</h3>
-															<p className='text-gray-400 text-sm mb-1'>해당되는 항복을 선택해주세요.</p>
-															{
-																reportCats.map(el => 
-																	<div key={el}>
-																		<label>
-																			<Field type='radio' name='category' value={el} />
-																			{el}
-																		</label>
-																	</div>
-																)
-															}
-															<div className='mt-1 text-red-500 text-xs font-light'>{errors.category && touched.category ? errors.category : null}</div>
-															<h3 className='font-bold mt-2'>설명</h3>
-															<p className='text-gray-400 text-sm mb-1'>신고하시는 내용을 자세하게 설명해주세요.</p>
-															<TextArea name='description' placeholder='최대한 자세하게 설명해주세요!' theme={theme === 'dark' ? 'dark' : 'light'} value={values.description} setValue={(value) => setFieldValue('description', value)} />
-															<div className='mt-1 text-red-500 text-xs font-light'>{errors.description && touched.description ? errors.description : null}</div>
-														</div>
-														<Button className='bg-gray-500 hover:opacity-90 text-white' onClick={()=> setReportModal(false)}>취소</Button>
-														<Button type='submit' className='bg-red-500 hover:opacity-90 text-white'>제출</Button>
-													</Form>
-												)
-											}
-										</Formik>
+									<Modal header={`${data.name}#${data.tag} 신고하기`} closeIcon isOpen={reportModal} onClose={() => {
+										setReportModal(false)
+										setReportRes(null)
+									}} full dark={theme === 'dark'}>
+										{
+											reportRes?.code === 200 ? <Message type='success'>
+												<h2 className='text-lg font-semibold'>성공적으로 신고하였습니다!</h2>
+											</Message> : <Formik onSubmit={async (body) => {
+												const res = await Fetch<null>(`/bots/${data.id}/report`, { method: 'POST', body: JSON.stringify(body) })
+												setReportRes(res)
+											}} validationSchema={ReportSchema} initialValues={{
+												category: null,
+												description: '',
+												_csrf: csrfToken
+											}}>
+												{
+													({ errors, touched, values, setFieldValue }) => (
+														<Form>
+															<div className='mb-5'>
+																<h3 className='font-bold'>신고 구분</h3>
+																<p className='text-gray-400 text-sm mb-1'>해당되는 항복을 선택해주세요.</p>
+																{
+																	reportCats.map(el => 
+																		<div key={el}>
+																			<label>
+																				<Field type='radio' name='category' value={el} className='mr-1.5 py-2' />
+																				{el}
+																			</label>
+																		</div>
+																	)
+																}
+																<div className='mt-1 text-red-500 text-xs font-light'>{errors.category && touched.category ? errors.category : null}</div>
+																<h3 className='font-bold mt-2'>설명</h3>
+																<p className='text-gray-400 text-sm mb-1'>신고하시는 내용을 자세하게 설명해주세요.</p>
+																<TextArea name='description' placeholder='최대한 자세하게 설명해주세요!' theme={theme === 'dark' ? 'dark' : 'light'} value={values.description} setValue={(value) => setFieldValue('description', value)} />
+																<div className='mt-1 text-red-500 text-xs font-light'>{errors.description && touched.description ? errors.description : null}</div>
+															</div>
+															<Button className='bg-gray-500 hover:opacity-90 text-white' onClick={()=> setReportModal(false)}>취소</Button>
+															<Button type='submit' className='bg-red-500 hover:opacity-90 text-white'>제출</Button>
+														</Form>
+													)
+												}
+											</Formik>
+										}
 									</Modal>
 									{data.discord && (
 										<a
@@ -280,6 +294,7 @@ export const getServerSideProps = async (ctx: Context) => {
 			data,
 			date: SnowflakeUtil.deconstruct(data.id ?? '0').date.toJSON(),
 			user: await get.user.load(user || ''),
+			csrfToken: getToken(ctx.req, ctx.res)
 		},
 	}
 }
@@ -291,6 +306,7 @@ interface BotsProps {
 	date: Date
 	user: User
 	theme: Theme
+	csrfToken: string
 	setTheme(value: Theme): void
 }
 interface Context extends NextPageContext {

@@ -6,6 +6,7 @@ import RequestHandler from '@utils/RequestHandler'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { ReportSchema, Report} from '@utils/Yup'
 import { getReportChannel } from '@utils/DiscordBot'
+import { checkToken } from '@utils/Csrf'
 
 const limiter = rateLimit({
 	windowMs: 5 * 60 * 1000,
@@ -25,6 +26,8 @@ const BotReport = RequestHandler().post(limiter)
 		if(!user) return ResponseWrapper(res, { code: 401 })
 		const bot = await get.bot.load(req.query.id)
 		if(!bot) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })
+		const csrfValidated = checkToken(req, res, req.body._csrf)
+		if (!csrfValidated) return
 		if(!req.body) return ResponseWrapper(res, { code: 400 })
 		const validated: Report = await ReportSchema.validate(req.body, { abortEarly: false })
 			.then(el => el)

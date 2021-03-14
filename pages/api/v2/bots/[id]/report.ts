@@ -13,7 +13,7 @@ const limiter = rateLimit({
 	max: 3,
 	statusCode: 429,
 	handler: (_req, res) => ResponseWrapper(res, { code: 429 }),
-	keyGenerator: (req) => req.headers.authorization,
+	keyGenerator: (req) => req.headers['x-forwarded-for'] as string,
 	skip: (_req, res) => {
 		res.removeHeader('X-RateLimit-Global')
 		return false

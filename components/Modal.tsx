@@ -9,9 +9,6 @@ const Modal = ({ children, isOpen, onClose, closeIcon=false, dark, header, full=
 			onClose={onClose}
 			center
 			animationDuration={100}
-			classNames={{
-				modal: 'bg-discord-dark',
-			}}
 			showCloseIcon={closeIcon}
 			styles={{
 				closeButton: {

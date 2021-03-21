@@ -6,6 +6,7 @@ import { get } from '@utils/Query'
 import { BotList } from '@types'
 import { botCategoryListArgumentSchema } from '@utils/Yup'
 import NotFound from 'pages/404'
+import { useState } from 'react'
 
 const Hero = dynamic(() => import('@components/Hero'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
@@ -14,23 +15,29 @@ const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 const BotCard = dynamic(() => import('@components/BotCard'))
 const Container = dynamic(() => import('@components/Container'))
 const Paginator = dynamic(() => import('@components/Paginator'))
+const NSFW = dynamic(() => import('@components/NSFW'))
 
 const Category: NextPage<CategoryProps> = ({ data, query }) => {
+	const [ nsfw, setNSFW ] = useState(localStorage.nsfw)
 	if(!data || data.data.length === 0 || data.totalPage < Number(query.page)) return <NotFound />
 	return <>
 		<Hero header={`${query.category} 카테고리 봇들`} description={`다양한 "${query.category}" 카테고리의 봇들을 만나보세요.`} />
 		<SEO title={`${query.category} 카테고리 봇들`} description={`다양한 ${query.category} 카테고리의 봇들을 만나보세요.`} />
-
-		<Container>
-			<Advertisement />
-			<ResponsiveGrid>
-				{
-					data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
-				}
-			</ResponsiveGrid>
-			<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname={`/categories/${query.category}`} />
-			<Advertisement />
-		</Container>
+		{
+			query.category === 'NSFW' && !nsfw ? <NSFW onClick={() => {
+				localStorage.nsfw = true
+				setNSFW(true)
+			}} /> : <Container>
+				<Advertisement />
+				<ResponsiveGrid>
+					{
+						data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
+					}
+				</ResponsiveGrid>
+				<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname={`/categories/${query.category}`} />
+				<Advertisement />
+			</Container>
+		}
 	</>
 }
 

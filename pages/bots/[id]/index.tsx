@@ -34,10 +34,12 @@ const Message = dynamic(() => import('@components/Message'))
 const Button = dynamic(() => import('@components/Button'))
 const TextArea = dynamic(() => import('@components/Form/TextArea'))
 const Modal = dynamic(() => import('@components/Modal'))
+const NSFW = dynamic(() => import('@components/NSFW'))
 
 const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken }) => {
 	const bg = checkBotFlag(data?.flags, 'trusted') && data?.banner
 	const router = useRouter()
+	const [ nsfw, setNSFW ] = useState(localStorage.nsfw)
 	const [ reportModal, setReportModal ] = useState(false)
 	const [ reportRes, setReportRes ] = useState<ResponseProps<null>>(null)
 	function toLogin() {
@@ -63,7 +65,10 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken }) => {
 						<h2 className='text-lg font-black'>해당 봇은 관리자에 의해 삭제되었습니다.</h2>
 					</Message>
 				</div>
-					: <>
+					: data.category.includes('NSFW') && !nsfw ? <NSFW onClick={() => {
+						localStorage.nsfw = true
+						setNSFW(true)
+					}} /> : <>
 						<div className='w-full pb-2'>
 							{
 								data.state === 'private' ? <Message type='info'>
@@ -113,7 +118,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken }) => {
 										newTab
 										href={
 											data.url ||
-							`https://discordapp.com/oauth2/authorize?client_id=${data.id}&scope=bot&permissions=0`
+					`https://discordapp.com/oauth2/authorize?client_id=${data.id}&scope=bot&permissions=0`
 										}
 									>
 										<h4 className='whitespace-nowrap'>
@@ -190,7 +195,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken }) => {
 										else setReportModal(true)
 									}} aria-hidden='true'>
 										<i className='far fa-flag' />
-								신고하기
+						신고하기
 									</a>
 									<Modal header={`${data.name}#${data.tag} 신고하기`} closeIcon isOpen={reportModal} onClose={() => {
 										setReportModal(false)
@@ -258,7 +263,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken }) => {
 											href={`https://discord.gg/${data.discord}`}
 										>
 											<i className='fab fa-discord' />
-								디스코드 서버
+						디스코드 서버
 										</a>
 									)}
 									{data.web && (
@@ -269,7 +274,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken }) => {
 											href={data.web}
 										>
 											<i className='fas fa-globe' />
-								웹사이트
+						웹사이트
 										</a>
 									)}
 									{data.git && (

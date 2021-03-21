@@ -16,7 +16,7 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 	return (
 		<>
 			<Hero />
-			<Container>
+			<Container className='mb-10'>
 				<Advertisement />
 				<h1 className='text-3xl font-bold mt-10 mb-2'>
 					<i className='far fa-heart mr-3 text-pink-600' /> 하트 랭킹

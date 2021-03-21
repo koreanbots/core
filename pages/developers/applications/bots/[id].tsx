@@ -15,6 +15,7 @@ import { ParsedUrlQuery } from 'querystring'
 import { Bot, BotSpec, ResponseProps, Theme } from '@types'
 
 import NotFound from 'pages/404'
+import Link from 'next/link'
 
 const Button = dynamic(() => import('@components/Button'))
 const Input = dynamic(() => import('@components/Form/Input'))
@@ -56,13 +57,18 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 	}
 	if(!bot || !spec) return <NotFound />
 	return <DeveloperLayout enabled='applications'>
+		<Link href='/developers/applications'>
+			<a className='text-blue-500 hover:text-blue-400'>
+				<i className='fas fa-arrow-left' /> 돌아가기
+			</a>
+		</Link>
 		<h1 className='text-3xl font-bold'>봇 설정</h1>
 		<p className='text-gray-400'>한국 디스코드봇 리스트 API에 사용할 정보를 이곳에서 설정하실 수 있습니다.</p>
 		<div className='lg:flex pt-6'>
-			<div className='w-1/5'>
+			<div className='lg:w-1/5'>
 				<DiscordAvatar userID={bot.id} />
 			</div>
-			<div className='w-4/5 relative'>
+			<div className='lg:w-4/5 relative'>
 				{
 					!data ? '' : data.code === 200 ? 
 						<Message type='success'>
@@ -77,8 +83,8 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 							</ul>
 						</Message>
 				}
-				<h2 className='text-3xl font-bold mb-2 mt-3'>{bot.name}#{bot.tag}</h2>
-				<div className='grid text-left'>
+				<div className='grid text-left px-6'>
+					<h2 className='text-3xl font-bold mb-2 mt-3'>{bot.name}#{bot.tag}</h2>
 					<h3 className='text-lg font-semibold'>봇 토큰</h3>
 					<pre className='text-sm overflow-x-scroll w-full'>{showToken ? spec.token : '******************'}</pre>
 					<div className='pt-3 pb-6'>

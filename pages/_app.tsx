@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { GlobalHotKeys } from 'react-hotkeys'
 
@@ -32,7 +31,6 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 	const [ betaKey, setBetaKey ] = useState('')
 	const [ shortcutModal, setShortcutModal ] = useState(false)
 	const [ theme, setTheme ] = useState<Theme>('system')
-	const router = useRouter()
 
 	useEffect(() => {
 		setBetaKey(localStorage.betaKey)

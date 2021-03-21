@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import Container from '@components/Container'
-import Wave from '@components/Wave'
 
 import Toggle from './Toggle'
 import { Theme } from '@types'
@@ -100,7 +99,6 @@ const Footer = ({ theme, setTheme }: FooterProps): JSX.Element => {
 }
 
 interface FooterProps {
-	color?: string
 	theme: Theme
 	setTheme(value: Theme): void
 }

@@ -19,7 +19,7 @@ const Advertisement = ({ size = 'short' }: AdvertisementProps): JSX.Element => {
 		>
 			{process.env.NODE_ENV === 'production' ? (
 				<ins
-					className='adsbygoogle mb-5 w-full'
+					className='adsbygoogle w-full'
 					style={{ display: 'inline-block', height: '90px' }}
 					data-ad-client='ca-pub-4856582423981759'
 					data-ad-slot='3250141451'

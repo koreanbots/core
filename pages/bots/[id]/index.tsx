@@ -35,7 +35,7 @@ const Button = dynamic(() => import('@components/Button'))
 const TextArea = dynamic(() => import('@components/Form/TextArea'))
 const Modal = dynamic(() => import('@components/Modal'))
 
-const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken, setTheme }) => {
+const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken }) => {
 	const bg = checkBotFlag(data?.flags, 'trusted') && data?.banner
 	const router = useRouter()
 	const [ reportModal, setReportModal ] = useState(false)
@@ -322,7 +322,6 @@ interface BotsProps {
 	user: User
 	theme: Theme
 	csrfToken: string
-	setTheme(value: Theme): void
 }
 interface Context extends NextPageContext {
 	query: URLQuery

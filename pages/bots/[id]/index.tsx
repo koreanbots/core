@@ -298,8 +298,6 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken, setThem
 					</>
 			}
 		</Container>
-
-		<Footer color='bg-transparent text-discord-black text-white hidden md:block transform rotate-180' theme={theme} setTheme={setTheme} />
 	</div>
 }
 

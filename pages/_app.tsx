@@ -74,10 +74,8 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 						<input value={betaKey} name='field_name' className='text-black border outline-none px-4 py-2 rounded-2xl' type='text' placeholder='테스터 키' onChange={(e)=> { localStorage.setItem('betaKey', e.target.value); setBetaKey(e.target.value) }} />
 					</div>
 			}
+			<Footer theme={theme} setTheme={setTheme} />
 		</div>
-		{
-			!(['/bots/[id]'].includes(router.pathname) || router.pathname.startsWith('/developers')) && <Footer theme={theme} setTheme={setTheme} />
-		}
 		<Modal full isOpen={shortcutModal} onClose={() => setShortcutModal(false)} dark={theme === 'dark'} header='단축키 안내'>
 			<div className='px-3 h-80'>
 				<h3 className='text-md font-semibold'>일반</h3>

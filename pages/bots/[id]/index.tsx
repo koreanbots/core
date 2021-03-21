@@ -18,7 +18,6 @@ import { checkBotFlag, checkUserFlag, formatNumber, parseCookie, redirectTo } fr
 import { getToken } from '@utils/Csrf'
 
 import NotFound from '../../404'
-import Footer from '@components/Footer'
 
 const Container = dynamic(() => import('@components/Container'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))

@@ -12,6 +12,7 @@ import Button from '@components/Button'
 
 const Container = dynamic(() => import('@components/Container'))
 const SEO = dynamic(() => import('@components/SEO'))
+const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 
 const Panel:NextPage<PanelProps> = ({ logged, user, submits }) => {
 	const router = useRouter()
@@ -29,16 +30,16 @@ const Panel:NextPage<PanelProps> = ({ logged, user, submits }) => {
 		<h1 className='text-3xl font-bold'>관리 패널</h1>
 		<div className='mt-6'>
 			<h2 className='text-2xl font-bold'>나의 봇</h2>
-			<div className='grid gap-x-4 2xl:grid-cols-4 md:grid-cols-2 mt-12'>
+			<ResponsiveGrid>
 				{
 					(user.bots as Bot[]).map(bot=> <BotCard key={bot.id} bot={bot} manage />)
 				}
-			</div>
+			</ResponsiveGrid>
 		</div>
 		<div className='mt-6'>
 			<h2 className='text-2xl font-bold'>봇 심사이력</h2>
 			<p className='text-left text-gray-400 text-sm font-medium'>자세히 보려면 카드를 클릭하세요.</p>
-			<div className='grid gap-4 2xl:grid-cols-4 md:grid-cols-2 mt-12'>
+			<div className='grid gap-4 2xl:grid-cols-4 lg:grid-cols-2 mt-12'>
 				{
 					submits.slice(0, submitLimit).map(el=> <SubmittedBotCard key={el.date} href={`/pendingBots/${el.id}/${el.date}`} submit={el} />)
 				}

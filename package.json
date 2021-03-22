@@ -15,6 +15,7 @@
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "5.15.3",
+		"@hcaptcha/react-hcaptcha": "^0.3.6",
 		"@sentry/browser": "6.2.2",
 		"@sentry/integrations": "6.2.2",
 		"@sentry/node": "6.2.2",

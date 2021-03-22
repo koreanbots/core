@@ -24,19 +24,17 @@ const Category: NextPage<CategoryProps> = ({ data, query }) => {
 		<Hero header={`${query.category} 카테고리 봇들`} description={`다양한 "${query.category}" 카테고리의 봇들을 만나보세요.`} />
 		<SEO title={`${query.category} 카테고리 봇들`} description={`다양한 ${query.category} 카테고리의 봇들을 만나보세요.`} />
 		{
-			query.category === 'NSFW' && !nsfw ? <NSFW onClick={() => {
-				localStorage.nsfw = true
-				setNSFW(true)
-			}} /> : <Container>
-				<Advertisement />
-				<ResponsiveGrid>
-					{
-						data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
-					}
-				</ResponsiveGrid>
-				<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname={`/categories/${query.category}`} />
-				<Advertisement />
-			</Container>
+			query.category === 'NSFW' && !nsfw ? <NSFW onClick={() => setNSFW(true)} onDisableClick={() => localStorage.nsfw = true} />
+				: <Container>
+					<Advertisement />
+					<ResponsiveGrid>
+						{
+							data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
+						}
+					</ResponsiveGrid>
+					<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname={`/categories/${query.category}`} />
+					<Advertisement />
+				</Container>
 		}
 	</>
 }

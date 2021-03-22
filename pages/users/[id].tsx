@@ -44,7 +44,7 @@ const Users: NextPage<UserProps> = ({ user, data, csrfToken, theme }) => {
 		<Container paddingTop className='py-10'>
 			<SEO
 				title={data.username}
-				description={josa(
+				description={data.bots.length === 0 ? `${data.username}님의 프로필입니다.` : josa(
 					`${(data.bots as Bot[])
 						.slice(0, 5)
 						.map(el => el.name)
@@ -171,11 +171,17 @@ const Users: NextPage<UserProps> = ({ user, data, csrfToken, theme }) => {
 			</div>
 			<Divider />
 			<h2 className='mt-8 text-3xl font-bold'>제작한 봇</h2>
-			<ResponsiveGrid>
-				{(data.bots as Bot[]).map((bot: Bot) => (
-					<BotCard key={bot.id} bot={bot} />
-				))}
-			</ResponsiveGrid>
+			
+			{data.bots.length === 0 ? <h2 className='text-xl'>소유한 봇이 없습니다.</h2> : 
+				<ResponsiveGrid>
+					{
+						(data.bots as Bot[]).map((bot: Bot) => (
+							<BotCard key={bot.id} bot={bot} />
+						))
+					}
+				</ResponsiveGrid>
+			}
+			
 			<Advertisement />
 		</Container>
 	)

@@ -26,7 +26,7 @@ const Docs = ({ title, header, description, subheader, children }: DocsProps): J
 				color='currentColor'
 				className='hidden dark:text-discord-black text-discord-blurple dark:bg-discord-dark bg-white md:block'
 			/>
-			<Container>
+			<Container className='pb-20'>
 				<div>{children}</div>
 			</Container>
 		</>

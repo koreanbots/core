@@ -3,7 +3,7 @@ import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 
-import { Bot, CsrfContext, User } from '@types'
+import { Bot, CsrfContext, Theme, User } from '@types'
 import { get } from '@utils/Query'
 import { makeBotURL, parseCookie, checkBotFlag } from '@utils/Tools'
 
@@ -11,6 +11,8 @@ import { ParsedUrlQuery } from 'querystring'
 
 import NotFound from 'pages/404'
 import { getToken } from '@utils/Csrf'
+import Captcha from '@components/Captcha'
+import { useState } from 'react'
 
 
 const Container = dynamic(() => import('@components/Container'))
@@ -21,11 +23,15 @@ const Segment = dynamic(() => import('@components/Segment'))
 const SEO = dynamic(() => import('@components/SEO'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
 
-const VoteBot: NextPage<VoteBotProps> = ({ data, csrfToken }) => {
-	console.log(csrfToken)
+const VoteBot: NextPage<VoteBotProps> = ({ data, csrfToken , theme}) => {
+	const [ votingStatus, setVotingStatus ] = useState(0)
 	const router = useRouter()
 	if(!data?.id) return <NotFound />
-	if((checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}`)
+	if(csrfToken !== router.query.csrfToken) {
+		router.push(`/bots/${data.id}`)
+		return <></>
+	}
+	if((checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}/vote?csrfToken=${csrfToken}`)
 	return <Container paddingTop className='py-10'>
 		<SEO title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요`} image={
 			data.avatar
@@ -42,9 +48,16 @@ const VoteBot: NextPage<VoteBotProps> = ({ data, csrfToken }) => {
 				<Tag text={<span><i className='fas fa-heart text-red-600' /> {data.votes}</span>} dark />
 				<h1 className='text-3xl font-bold mt-3'>{data.name}</h1>
 				<h4 className='text-md mt-1'>12시간 뒤에 다시 투표하실 수 있습니다.</h4>
-				<Button>
-					<><i className='far fa-heart text-red-600'/> 하트 추가</>
-				</Button>
+				<div className='inline-block'>
+					{
+						votingStatus === 0 ? <Button onClick={()=> setVotingStatus(1)}>
+							<><i className='far fa-heart text-red-600'/> 하트 추가</>
+						</Button> 
+							: votingStatus === 1 ? <Captcha dark={theme === 'dark'} onVerify={() => setVotingStatus(2)}/>
+								: <h2 className='text-2xl font-bold'>해당 봇에 투표했습니다!</h2>
+					}
+				</div>
+				
 			</div>
 		</Segment>
 		<Advertisement />
@@ -70,6 +83,7 @@ interface VoteBotProps {
   vote: boolean
   data: Bot
   user: User
+	theme: Theme
 }
 
 interface Context extends CsrfContext {

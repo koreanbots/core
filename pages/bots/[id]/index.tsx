@@ -124,7 +124,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken }) => {
 											</h4>
 										</LongButton>
 									}
-									<Link href={{ pathname: `/bots/${router.query.id}/vote` }}>
+									<Link href={{ pathname: `/bots/${router.query.id}/vote`, query: { csrfToken } }}>
 										<LongButton>
 											<h4>
 												<i className='fas fa-heart text-red-600' /> 하트 추가

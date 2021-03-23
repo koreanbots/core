@@ -115,6 +115,13 @@ export interface DiscordTokenInfo {
 	error?: string
 }
 
+export interface GithubTokenInfo {
+	access_token?: string
+	scope?: string
+	token_type?: string
+	error?: string
+}
+
 export interface TokenRegister {
 	id: string
 	access_token: string

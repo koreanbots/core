@@ -6,15 +6,17 @@ import { useRouter } from 'next/router'
 import { get } from '@utils/Query'
 import { parseCookie, redirectTo } from '@utils/Tools'
 import { Bot, SubmittedBot, User } from '@types'
-import BotCard from '@components/BotCard'
-import SubmittedBotCard from '@components/SubmittedBotCard'
-import Button from '@components/Button'
+import Fetch from '@utils/Fetch'
+import { getToken } from '@utils/Csrf'
 
 const Container = dynamic(() => import('@components/Container'))
 const SEO = dynamic(() => import('@components/SEO'))
 const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
+const Button = dynamic(() => import('@components/Button'))
+const BotCard = dynamic(() => import('@components/BotCard'))
+const SubmittedBotCard = dynamic(() => import('@components/SubmittedBotCard'))
 
-const Panel:NextPage<PanelProps> = ({ logged, user, submits }) => {
+const Panel:NextPage<PanelProps> = ({ logged, user, submits, csrfToken }) => {
 	const router = useRouter()
 	const [ submitLimit, setSubmitLimit ] = useState(8)
 	function toLogin() {
@@ -28,6 +30,18 @@ const Panel:NextPage<PanelProps> = ({ logged, user, submits }) => {
 	return <Container paddingTop className='pt-5 pb-10'>
 		<SEO title='관리 패널' />
 		<h1 className='text-4xl font-bold'>관리 패널</h1>
+		<h2 className='text-3xl font-bold my-4'>깃허브 계정 연동</h2>
+		<Button className='bg-github-black hover:opacity-80' onClick={user.github ? async () => {
+			await Fetch('/api/auth/github', {
+				method: 'DELETE',
+				body: JSON.stringify({
+					_csrf: csrfToken
+				})
+			}, true)
+			router.reload()
+		} : null} href={user.github ? null : '/api/auth/github'}>
+			<i className='fab fa-github' /> 깃허브 계정 연동 {user.github ? '취소' : ''}
+		</Button>
 		<div className='mt-6'>
 			<h2 className='text-3xl font-bold'>나의 봇</h2>
 			{
@@ -68,13 +82,14 @@ export const getServerSideProps = async (ctx: NextPageContext) => {
 	const user = await get.Authorization(parsed?.token) || ''
 	const submits = await get.botSubmits.load(user)
 
-	return { props: { logged: !!user, user:  await get.user.load(user), submits } }
+	return { props: { logged: !!user, user:  await get.user.load(user), submits, csrfToken: getToken(ctx.req, ctx.res) } }
 }
 
 interface PanelProps {
   logged: boolean
   user: User
   submits: SubmittedBot[]
+	csrfToken: string
 }
 
 export default Panel

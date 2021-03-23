@@ -180,12 +180,20 @@ export const KoreanbotsEndPoints = {
 	logout: '/api/auth/discord/logout'
 }
 
+export const SpecialEndPoints = {
+	Github: {
+		Token: (clientID: string, clientSecret: string, code: string) => `https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${code}`,
+		Me: 'https://api.github.com/user'
+	}
+}
+
 export const GlobalRatelimitIgnore = [
 	'/api/image/discord/avatars/'
 ]
 
 export const Oauth = {
-	discord: (clientID: string, scope: string) => `https://discord.com/oauth2/authorize?client_id=${clientID}&scope=${scope}&permissions=0&response_type=code&redirect_uri=${process.env.KOREANBOTS_URL}/api/auth/discord/callback&prompt=none`
+	discord: (clientID: string, scope: string) => `https://discord.com/oauth2/authorize?client_id=${clientID}&scope=${scope}&permissions=0&response_type=code&redirect_uri=${process.env.KOREANBOTS_URL}/api/auth/discord/callback&prompt=none`,
+	github: (clientID: string) => `https://github.com/login/oauth/authorize?client_id=${clientID}&redirect_uri=${process.env.KOREANBOTS_URL}/api/auth/github/callback`
 }
 export const git = { 'github.com': { icon: 'github', text: 'Github' },  'gitlab.com':  { icon: 'gitlab', text: 'Gitlab' }}
 

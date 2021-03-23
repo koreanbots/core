@@ -26,7 +26,8 @@ module.exports = {
 				'discord-dark-hover': '#383f48',
 				'discord-black': '#23272A',
 				'discord-pink': '#FF73FA',
-				'very-black': '#1b1e23'
+				'very-black': '#1b1e23',
+				'github-black': '#24292e'
 			}
 		},
 		minHeight: {

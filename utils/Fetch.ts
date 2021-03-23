@@ -1,8 +1,8 @@
 import { ResponseProps } from '@types'
 import { KoreanbotsEndPoints } from './Constants'
 
-const Fetch = async <T>(endpoint: string, options?: RequestInit): Promise<ResponseProps<T>> => {
-	const url = KoreanbotsEndPoints.baseAPI + (endpoint.startsWith('/') ? endpoint : '/' + endpoint)
+const Fetch = async <T>(endpoint: string, options?: RequestInit, rawEndpoint=false): Promise<ResponseProps<T>> => {
+	const url = (rawEndpoint ? '' : KoreanbotsEndPoints.baseAPI) + (endpoint.startsWith('/') ? endpoint : '/' + endpoint)
 
 	const res = await fetch(url, {
 		method: 'GET',

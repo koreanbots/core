@@ -75,7 +75,7 @@ export function checkBrowser(): string {
 	return M.join(' ')
 }
 
-export function generateOauthURL(provider: 'discord', clientID: string, scope: string) {
+export function generateOauthURL(provider: 'discord'|'github', clientID: string, scope?: string) {
 	return Oauth[provider](clientID, scope)
 }
 

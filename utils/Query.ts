@@ -250,6 +250,13 @@ async function resetBotToken(id: string, beforeToken: string) {
 	return token
 }
 
+async function Github(id: string, github: string) {
+	const user = await knex('users').where({ github }).whereNot({ id })
+	if(github && user.length !== 0) return 0
+	await knex('users').update({ github }).where({ id })
+	return 1
+}
+
 async function getImage(url: string) {
 	const res = await fetch(url)
 	if(!res.ok) return null
@@ -373,7 +380,8 @@ export const update = {
 	assignToken,
 	updateBotApplication,
 	resetBotToken,
-	updateServer
+	updateServer,
+	Github
 }
 
 export const put = {

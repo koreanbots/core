@@ -48,7 +48,7 @@ const VoteBot: NextPage<VoteBotProps> = ({ data, csrfToken , theme}) => {
 				<Tag text={<span><i className='fas fa-heart text-red-600' /> {data.votes}</span>} dark />
 				<h1 className='text-3xl font-bold mt-3'>{data.name}</h1>
 				<h4 className='text-md mt-1'>12시간 뒤에 다시 투표하실 수 있습니다.</h4>
-				<div className='inline-block'>
+				<div className='inline-block mt-2'>
 					{
 						votingStatus === 0 ? <Button onClick={()=> setVotingStatus(1)}>
 							<><i className='far fa-heart text-red-600'/> 하트 추가</>

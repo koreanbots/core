@@ -9,7 +9,7 @@ const Footer = ({ theme, setTheme }: FooterProps): JSX.Element => {
 		<div className='releative z-30'>
 			<div className='bottom-0 text-white bg-discord-black py-24'>
 				<Container className='w-11/12 lg:flex lg:pt-0 lg:w-4/5' ignoreColor>
-					<div className='w-full md:w-2/5'>
+					<div className='w-full lg:w-2/5'>
 						<h1 className='text-koreanbots-blue text-3xl font-bold'>국내봇을 한 곳에서.</h1>
 						<span className='text-base'>2020-2021 Koreanbots, All rights reserved.</span>
 						<div className='text-2xl'>

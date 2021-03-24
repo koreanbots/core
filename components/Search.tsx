@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
@@ -8,9 +8,11 @@ import { BotList, ResponseProps } from '@types'
 
 import DiscordAvatar from '@components/DiscordAvatar'
 import Day from '@utils/Day'
+import useOutsideClick from '@utils/useOutsideClick'
 
 const Search = (): JSX.Element => {
 	const router = useRouter()
+	const ref = useRef()
 	const [query, setQuery] = useState('')
 	const [recentSearch, setRecentSearch] = useState([])
 	const [data, setData] = useState<ResponseProps<BotList>>(null)
@@ -27,6 +29,7 @@ const Search = (): JSX.Element => {
 			setRecentSearch([])
 		}
 	}, [router])
+	useOutsideClick(ref, () => setHidden(true))
 	const SearchResults = async (value: string) => {
 		setQuery(value)
 		try {
@@ -69,8 +72,7 @@ const Search = (): JSX.Element => {
 	}
 
 	return (
-		<div onFocus={() => setHidden(false)}
-			onBlur={() => setTimeout(() => setHidden(true), 80)}>
+		<div onFocus={() => setHidden(false)} ref={ref}>
 			<div
 				className='relative z-10 flex mt-5 w-full text-black dark:text-gray-100 dark:bg-very-black bg-white rounded-lg'
 			>

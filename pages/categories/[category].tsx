@@ -7,6 +7,7 @@ import { BotList } from '@types'
 import { botCategoryListArgumentSchema } from '@utils/Yup'
 import NotFound from 'pages/404'
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 const Hero = dynamic(() => import('@components/Hero'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
@@ -15,10 +16,13 @@ const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 const BotCard = dynamic(() => import('@components/BotCard'))
 const Container = dynamic(() => import('@components/Container'))
 const Paginator = dynamic(() => import('@components/Paginator'))
+const Segment = dynamic(() => import('@components/Segment'))
+const Markdown = dynamic(() => import('@components/Markdown'))
 const NSFW = dynamic(() => import('@components/NSFW'))
 
 const Category: NextPage<CategoryProps> = ({ data, query }) => {
 	const [ nsfw, setNSFW ] = useState(localStorage.nsfw)
+	const router = useRouter()
 	if(!data || data.data.length === 0 || data.totalPage < Number(query.page)) return <NotFound />
 	return <>
 		<Hero header={`${query.category} 카테고리 봇들`} description={`다양한 "${query.category}" 카테고리의 봇들을 만나보세요.`} />
@@ -26,6 +30,12 @@ const Category: NextPage<CategoryProps> = ({ data, query }) => {
 		{
 			query.category === 'NSFW' && !nsfw ? <NSFW onClick={() => setNSFW(true)} onDisableClick={() => localStorage.nsfw = true} />
 				: <Container>
+					{
+						router.query.category === '빗금 명령어' && <Segment className='mb-4'>
+							<h1 className='text-2xl font-bold pt-3.5 pb-1'>빗금 명령어</h1>
+							<Markdown text={'빗금 명렁어는 디스코드 채팅창에 `/` 를 입력하여 사용할 수 있습니다.'} />
+						</Segment>
+					}
 					<Advertisement />
 					<ResponsiveGrid>
 						{

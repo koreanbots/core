@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 
@@ -7,14 +7,26 @@ import Fetch from '@utils/Fetch'
 import { BotList, ResponseProps } from '@types'
 
 import DiscordAvatar from '@components/DiscordAvatar'
+import Day from '@utils/Day'
 
 const Search = (): JSX.Element => {
 	const router = useRouter()
 	const [query, setQuery] = useState('')
+	const [recentSearch, setRecentSearch] = useState([])
 	const [data, setData] = useState<ResponseProps<BotList>>(null)
 	const [loading, setLoading] = useState(false)
 	const [abortControl, setAbortControl] = useState(new AbortController())
 	const [hidden, setHidden] = useState(true)
+	useEffect(() => {
+		setQuery('')
+		setData(null)
+		setLoading(false)
+		try {
+			setRecentSearch(JSON.parse(localStorage.recentSearch))
+		} catch {
+			setRecentSearch([])
+		}
+	}, [router])
 	const SearchResults = async (value: string) => {
 		setQuery(value)
 		try {
@@ -32,16 +44,34 @@ const Search = (): JSX.Element => {
 		setLoading(false)
 	}
 
-	const onSubmit = async () => {
-		setHidden(true)
-		redirectTo(router, `/search/?q=${encodeURIComponent(query)}`)
+	const onSubmit = () => {
+		if(query.length < 3) return
+		if(!localStorage.recentSearch) localStorage.recentSearch = '[]'
+		try {
+			const d = JSON.parse(localStorage.recentSearch).reverse()
+			if(d.findIndex(n => n.value === query) !== -1) d.splice(d.findIndex(n => n.value === query), 1)
+			d.push({
+				value: query,
+				date: new Date().getTime()
+			})
+			d.reverse()
+			setRecentSearch(d.slice(0, 10))
+			localStorage.recentSearch = JSON.stringify(d.slice(0, 10))
+		} catch {
+			setRecentSearch([{
+				value: query,
+				date: new Date().getTime()
+			}])
+			localStorage.recentSearch = JSON.stringify(recentSearch)
+		} finally {
+			redirectTo(router, `/search/?q=${encodeURIComponent(query)}`)
+		}
 	}
 
 	return (
-		<div>
+		<div onFocus={() => setHidden(false)}
+			onBlur={() => setTimeout(() => setHidden(true), 80)}>
 			<div
-				onFocus={() => setHidden(false)}
-				onBlur={() => setTimeout(() => setHidden(true), 80)}
 				className='relative z-10 flex mt-5 w-full text-black dark:text-gray-100 dark:bg-very-black bg-white rounded-lg'
 			>
 				<input
@@ -53,7 +83,9 @@ const Search = (): JSX.Element => {
 						SearchResults(e.target.value)
 					}}
 					onKeyDown={e => {
-						if (e.key === 'Enter') return onSubmit()
+						if (e.key === 'Enter') {
+							onSubmit()
+						}
 					}}
 				/>
 				<button
@@ -103,11 +135,35 @@ const Search = (): JSX.Element => {
 									) : (
 										(data.errors && data.errors[0]) || data.message
 									)
-								) : query.length < 3 ? (
-									'최소 2글자 이상 입력해주세요.'
-								) : (
-									'검색어를 입력해주세요.'
-								)}
+								) : query.length === 0 ?	!recentSearch || !Array.isArray(recentSearch) || recentSearch.length === 0? '최근 검색 기록이 없습니다.'
+									: <>
+										<li className='h-15 px-3 py-2 cursor-pointer font-semibold'>
+											최근 검색어
+											<button className='absolute right-0 pr-10 text-sm text-red-500 hover:opacity-90' onClick={() => {
+												setRecentSearch([])
+												localStorage.recentSearch = '[]'
+											}}>
+												전체 삭제
+											</button>
+										</li>
+										{
+											recentSearch.slice(0, 10).map((el, n) => (
+												<Link key={n} href={`/search?q=${encodeURIComponent(el)}`}>
+													<li className='h-15 px-3 py-2 cursor-pointer'>
+														<i className='fas fa-history' /> {el?.value}
+														<span className='absolute right-0 pr-10 text-gray-400 text-sm'>
+															{Day(el?.date).format('MM.DD.')}
+														</span>
+													</li>
+												</Link>
+											))
+										}
+									</> :
+									query.length < 3 ? (
+										'최소 2글자 이상 입력해주세요.'
+									) : (
+										'검색어를 입력해주세요.'
+									)}
 							</li>
 						)}
 					</ul>

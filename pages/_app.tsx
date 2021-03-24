@@ -1,9 +1,10 @@
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
+import { Router, useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { GlobalHotKeys } from 'react-hotkeys'
+import NProgress from 'nprogress'
 
 import { init } from '@utils/Sentry'
 import Logger from '@utils/Logger'
@@ -27,6 +28,12 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import PlatformDisplay from '@components/PlatformDisplay'
 
 init()
+
+// Progress Bar
+NProgress.configure({ showSpinner: false })
+Router.events.on('routeChangeStart', NProgress.start)
+Router.events.on('routeChangeComplete', NProgress.done)
+Router.events.on('routeChangeError', NProgress.end)
 
 export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX.Element {
 	const [ betaKey, setBetaKey ] = useState('')

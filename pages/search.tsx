@@ -21,7 +21,7 @@ const Search:NextPage<SearchProps> = ({ data, query }) => {
 	const router = useRouter()
 	if(!query?.q) {
 		redirectTo(router, '/')
-		return
+		return <></>
 	}
 	return <>
 		<Hero header={`"${query.q}" 검색 결과`} description={`'${query.q}' 에 대한 검색 결과입니다.`} />
@@ -48,7 +48,7 @@ export const getServerSideProps = async(ctx: Context) => {
 	if(!ctx.query.page) ctx.query.page = '1'
 	const validate = await SearchQuerySchema.validate(ctx.query).then(el => el).catch(() => null)
 	if(!validate || isNaN(Number(ctx.query.page))) data = null
-	else data = await get.list.search.load(JSON.stringify({ query: ctx.query.q, page: ctx.query.page }))
+	else data = await get.list.search.load(JSON.stringify({ query: ctx.query.q || '', page: ctx.query.page })).then(el => el).catch(() => null)
 
 	return {
 		props: {

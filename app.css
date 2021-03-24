@@ -119,6 +119,10 @@ button {
 	cursor: pointer;
 }
 
+.cursor-heart {
+	cursor: url("/img/heart.svg"), auto;
+}
+
 /* NProgress */
 
 #nprogress {

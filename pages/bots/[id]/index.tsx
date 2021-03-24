@@ -85,7 +85,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken }) => {
 								<div className='w-full text-center lg:w-1/4'>
 									<DiscordAvatar
 										userID={data.id}
-										className='w-full'
+										className={`w-full ${router.query.id === 'iu' ? 'cursor-heart' : ''}`}
 									/>
 								</div>
 								<div className='flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left'>

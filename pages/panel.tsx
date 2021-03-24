@@ -30,8 +30,9 @@ const Panel:NextPage<PanelProps> = ({ logged, user, submits, csrfToken }) => {
 	return <Container paddingTop className='pt-5 pb-10'>
 		<SEO title='관리 패널' />
 		<h1 className='text-4xl font-bold'>관리 패널</h1>
-		<h2 className='text-3xl font-bold my-4'>깃허브 계정 연동</h2>
-		<Button className='bg-github-black hover:opacity-80' onClick={user.github ? async () => {
+		<h2 className='text-2xl font-bold mt-4'>깃허브 계정 연동</h2>
+		<p className='text-gray-400 mb-2'>연동한 깃허브 계정은 프로필에 표시됩니다.</p>
+		<Button className={`${user.github ? 'bg-red-600 text-white' : 'bg-gray-200 dark:bg-github-black'} hover:opacity-80`} onClick={user.github ? async () => {
 			await Fetch('/api/auth/github', {
 				method: 'DELETE',
 				body: JSON.stringify({
@@ -59,8 +60,7 @@ const Panel:NextPage<PanelProps> = ({ logged, user, submits, csrfToken }) => {
 				submits.length === 0 ? <h2 className='text-xl'>심사이력이 없습니다.</h2> : 
 					<>
 						<p className='text-left text-gray-400 text-sm font-medium'>자세히 보려면 카드를 클릭하세요.</p>
-
-						<div className='grid gap-4 2xl:grid-cols-4 lg:grid-cols-2 mt-12'>
+						<div className='grid gap-4 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-12'>
 							{
 								submits.slice(0, submitLimit).map(el=> <SubmittedBotCard key={el.date} href={`/pendingBots/${el.id}/${el.date}`} submit={el} />)
 							}

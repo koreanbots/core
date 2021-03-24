@@ -26,20 +26,22 @@ const Search:NextPage<SearchProps> = ({ data, query }) => {
 	return <>
 		<Hero header={`"${query.q}" 검색 결과`} description={`'${query.q}' 에 대한 검색 결과입니다.`} />
 		<SEO title={`"${query.q}" 검색 결과`} description={`'${query.q}' 에 대한 검색 결과입니다.`} />
-		<Container>
-			<Advertisement />
-			{ !data || data.data.length === 0 ? <h1 className='text-3xl font-bold text-center py-20'>검색 결과가 없습니다.</h1> :
-				<>
-					<ResponsiveGrid>
-						{
-							data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
-						}
-					</ResponsiveGrid>
-					<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname={`/search?q=${query.q}`} />
-				</>
-			}
-			<Advertisement />
-		</Container>
+		<section id='list'>
+			<Container>
+				<Advertisement />
+				{ !data || data.data.length === 0 ? <h1 className='text-3xl font-bold text-center py-20'>검색 결과가 없습니다.</h1> :
+					<>
+						<ResponsiveGrid>
+							{
+								data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
+							}
+						</ResponsiveGrid>
+						<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname={`/search?q=${query.q}`} />
+					</>
+				}
+				<Advertisement />
+			</Container>
+		</section>
 	</>
 }
 

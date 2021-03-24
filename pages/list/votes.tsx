@@ -23,16 +23,18 @@ const Votes:NextPage<VotesProps> = ({ data }) => {
 	return <>
 		<Hero header='하트 랭킹' description='하트를 많이 받은 봇들의 순위입니다!'/>
 		<SEO title='하트 랭킹' description='하트를 많이 받은 봇들의 순위입니다!'/>
-		<Container>
-			<Advertisement />
-			<ResponsiveGrid>
-				{
-					data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
-				}
-			</ResponsiveGrid>
-			<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname='/list/votes' />
-			<Advertisement />
-		</Container>
+		<section id='list'>
+			<Container>
+				<Advertisement />
+				<ResponsiveGrid>
+					{
+						data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
+					}
+				</ResponsiveGrid>
+				<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname='/list/votes' />
+				<Advertisement />
+			</Container>
+		</section>
 	</>
 }
 export const getServerSideProps = async (ctx:Context) => {

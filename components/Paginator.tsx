@@ -29,7 +29,7 @@ const Paginator = ({ currentPage, totalPage, pathname }: PaginatorProps): JSX.El
 	return (
 		<div className='flex flex-col items-center justify-center py-4 text-center'>
 			<div className='flex'>
-				<Link href={{ pathname, query: { page: currentPage - 1 } }}>
+				<Link href={{ pathname, hash: 'list', query: { page: currentPage - 1 } }}>
 					<a
 						className={`${
 							currentPage === 1 ? 'invisible' : ''
@@ -39,7 +39,7 @@ const Paginator = ({ currentPage, totalPage, pathname }: PaginatorProps): JSX.El
 					</a>
 				</Link>
 				{pages.map((el, i) => (
-					<Link key={i} href={{ pathname, query: { page: el } }}>
+					<Link key={i} href={{ pathname, hash: 'list', query: { page: el } }}>
 						<a
 							className={`w-12 flex justify-center items-center cursor-pointer leading-5 transition duration-150 ease-in ${
 								i === 0 && i === pages.length - 1
@@ -59,7 +59,7 @@ const Paginator = ({ currentPage, totalPage, pathname }: PaginatorProps): JSX.El
 						</a>
 					</Link>
 				))}
-				<Link href={{ pathname, query: { page: currentPage + 1 } }}>
+				<Link href={{ pathname, hash: 'list', query: { page: currentPage + 1 } }}>
 					<a
 						className={`${
 							currentPage === totalPage ? 'invisible' : ''

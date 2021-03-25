@@ -29,7 +29,6 @@
 		"dataloader": "2.0.0",
 		"dayjs": "1.10.4",
 		"discord.js": "12.5.1",
-		"domhandler": "4.0.0",
 		"emoji-mart": "3.0.1",
 		"express-rate-limit": "5.2.6",
 		"formik": "2.2.6",

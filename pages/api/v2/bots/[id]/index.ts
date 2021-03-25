@@ -1,4 +1,5 @@
 import { NextApiRequest } from 'next'
+import rateLimit from 'express-rate-limit'
 
 import { get, put, update } from '@utils/Query'
 import ResponseWrapper from '@utils/ResponseWrapper'
@@ -8,6 +9,16 @@ import RequestHandler from '@utils/RequestHandler'
 import { User } from '@types'
 import { checkUserFlag } from '@utils/Tools'
 
+const patchLimiter = rateLimit({
+	windowMs: 2 * 60 * 1000,
+	max: 2,
+	handler: (_req, res) => ResponseWrapper(res, { code: 429 }),
+	keyGenerator: (req) => req.headers['x-forwarded-for'] as string,
+	skip: (_req, res) => {
+		res.removeHeader('X-RateLimit-Global')
+		return false
+	}
+})
 const Bots = RequestHandler()
 	.get(async (req: GetApiRequest, res) => {
 		const bot = await get.bot.load(req.query.id)
@@ -61,7 +72,7 @@ const Bots = RequestHandler()
 			})
 		return ResponseWrapper(res, { code: 200, data: result })
 	})
-	.patch(async (req: PatchApiRequest, res) => {
+	.patch(patchLimiter).patch(async (req: PatchApiRequest, res) => {
 		const bot = await get.bot.load(req.query.id)
 		if(!bot) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })
 		const user = await get.Authorization(req.cookies.token)
@@ -82,7 +93,7 @@ const Bots = RequestHandler()
 		const result = await update.bot(req.query.id, validated)
 		if(result === 0) return ResponseWrapper(res, { code: 400 })
 		else {
-			get.user.clear(req.query.id)
+			get.bot.clear(req.query.id)
 			return ResponseWrapper(res, { code: 200 })
 		}
 		

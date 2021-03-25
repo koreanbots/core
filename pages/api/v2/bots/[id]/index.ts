@@ -75,6 +75,7 @@ const Bots = RequestHandler()
 	.patch(patchLimiter).patch(async (req: PatchApiRequest, res) => {
 		const bot = await get.bot.load(req.query.id)
 		if(!bot) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })
+		if(['reported', 'blocked', 'archived'].includes(bot.state)) return ResponseWrapper(res, { code: 403, message: '해당 봇은 수정할 수 없습니다.', errors: ['오류라고 생각되면 문의해주세요.'] })
 		const user = await get.Authorization(req.cookies.token)
 		if (!user) return ResponseWrapper(res, { code: 401 })
 		const userInfo = await get.user.load(user)

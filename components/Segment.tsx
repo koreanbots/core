@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+
 const Segment = ({ children, className = '' }: SegmentProps): JSX.Element => {
 	return (
 		<div
@@ -10,7 +12,7 @@ const Segment = ({ children, className = '' }: SegmentProps): JSX.Element => {
 
 interface SegmentProps {
 	className?: string
-	children: JSX.Element | JSX.Element[]
+	children: ReactNode
 }
 
 export default Segment

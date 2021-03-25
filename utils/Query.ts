@@ -10,7 +10,7 @@ import knex from './Knex'
 import { DiscordBot, getMainGuild } from './DiscordBot'
 import { sign, verify } from './Jwt'
 import { serialize } from './Tools'
-import { AddBotSubmit } from './Yup'
+import { AddBotSubmit, ManageBot } from './Yup'
 
 export const imageRateLimit = new TLRU<unknown, number>({ maxAgeMs: 60000 })
 
@@ -225,6 +225,25 @@ async function getBotSpec(id: string, userID: string) {
 	return serialize(res[0])
 }
 
+async function updateBot(id: string, data: ManageBot) {
+	const res = await knex('bots').where({ id })
+	if(res.length === 0 || res[0].state !== 'ok') return 0
+	await knex('bots').update({
+		id,
+		prefix: data.prefix,
+		lib: data.library,
+		web: data.website,
+		git: data.git,
+		url: data.url,
+		discord: data.discord,
+		category: JSON.stringify(data.category),
+		intro: data.intro,
+		desc: data.desc
+	}).where({ id })
+
+	return 1
+}
+
 /**
  * @returns 1 - Limit of 100k servers
  * @returns 2 - Limit of 10M servers
@@ -381,7 +400,8 @@ export const update = {
 	updateBotApplication,
 	resetBotToken,
 	updateServer,
-	Github
+	Github,
+	bot: updateBot
 }
 
 export const put = {

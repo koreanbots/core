@@ -1,6 +1,6 @@
 import ReactSelect from 'react-select'
 
-const Select = ({ placeholder, options, handleChange, handleTouch }: SelectProps): JSX.Element => {
+const Select = ({ placeholder, options, handleChange, handleTouch, value }: SelectProps): JSX.Element => {
 	return (
 		<ReactSelect
 			styles={{
@@ -24,6 +24,7 @@ const Select = ({ placeholder, options, handleChange, handleTouch }: SelectProps
 			onChange={handleChange}
 			onBlur={handleTouch}
 			noOptionsMessage={() => '검색 결과가 없습니다.'}
+			defaultValue={value}
 		/>
 	)
 }
@@ -33,6 +34,7 @@ interface SelectProps {
 	handleChange: (value: Option) => void
 	handleTouch: () => void
 	options: Option[]
+	value?: Option
 }
 
 interface Option {

@@ -1,10 +1,12 @@
 import { NextApiRequest } from 'next'
 
-import { get, put } from '@utils/Query'
+import { get, put, update } from '@utils/Query'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { checkToken } from '@utils/Csrf'
-import { AddBotSubmit, AddBotSubmitSchema } from '@utils/Yup'
+import { AddBotSubmit, AddBotSubmitSchema, ManageBot, ManageBotSchema } from '@utils/Yup'
 import RequestHandler from '@utils/RequestHandler'
+import { User } from '@types'
+import { checkUserFlag } from '@utils/Tools'
 
 const Bots = RequestHandler()
 	.get(async (req: GetApiRequest, res) => {
@@ -59,8 +61,31 @@ const Bots = RequestHandler()
 			})
 		return ResponseWrapper(res, { code: 200, data: result })
 	})
-	.patch(async (req, res) => {
-		return res.send('Reserved')
+	.patch(async (req: PatchApiRequest, res) => {
+		const bot = await get.bot.load(req.query.id)
+		if(!bot) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })
+		const user = await get.Authorization(req.cookies.token)
+		if (!user) return ResponseWrapper(res, { code: 401 })
+		const userInfo = await get.user.load(user)
+		if(!(bot.owners as User[]).find(el => el.id === user) && !checkUserFlag(userInfo?.flags, 'staff')) return ResponseWrapper(res, { code: 403 })
+		const csrfValidated = checkToken(req, res, req.body._csrf)
+		if (!csrfValidated) return
+
+		const validated = await ManageBotSchema.validate(req.body, { abortEarly: false })
+			.then(el => el)
+			.catch(e => {
+				ResponseWrapper(res, { code: 400, errors: e.errors })
+				return null
+			})
+
+		if (!validated) return
+		const result = await update.bot(req.query.id, validated)
+		if(result === 0) return ResponseWrapper(res, { code: 400 })
+		else {
+			get.user.clear(req.query.id)
+			return ResponseWrapper(res, { code: 200 })
+		}
+		
 	})
 
 interface GetApiRequest extends NextApiRequest {
@@ -71,6 +96,13 @@ interface GetApiRequest extends NextApiRequest {
 
 interface PostApiRequest extends GetApiRequest {
 	body: AddBotSubmit | null
+	query: {
+		id: string
+	}
+}
+
+interface PatchApiRequest extends GetApiRequest {
+	body: ManageBot | null
 	query: {
 		id: string
 	}

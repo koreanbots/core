@@ -49,7 +49,7 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 		toLogin()
 		return <SEO title='봇 정보 수정하기' description='봇의 정보를 수정합니다.'/>
 	}
-	if(!(bot.owners as User[]).find(el => el.id === user?.id) && !checkUserFlag(user?.flags, 'staff')) return <Forbidden />
+	if(!(bot.owners as User[]).find(el => el.id === user.id) && !checkUserFlag(user.flags, 'staff')) return <Forbidden />
 	return <Container paddingTop className='pt-5 pb-10'>
 		<SEO title={`${bot.name} 수정하기`} description='봇의 정보를 수정합니다.'/>
 		<h1 className='text-3xl font-bold mb-8'>봇 관리하기</h1>

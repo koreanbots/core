@@ -43,7 +43,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 		toLogin()
 		return <SEO title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.'/>
 	}
-	return <Container paddingTop className='pt-5'>
+	return <Container paddingTop className='py-5'>
 		<SEO title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.'/>
 		<h1 className='text-3xl font-bold'>새로운 봇 추가하기</h1>
 		<div className='mt-1 mb-5'>
@@ -109,7 +109,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 					<Label For='agree' error={errors.agree && touched.agree ? errors.agree : null} grid={false}>
 						<div className='flex items-center'>
 							<CheckBox name='agree' />
-							<strong className='text-sm'>해당 내용을 숙지하였으며, 모두 이행하였고 위 내용에 해당하는 거부 사유는 답변받지 않는다는 점을 이해합니다.</strong>
+							<strong className='text-sm ml-2'>해당 내용을 숙지하였으며, 모두 이행하였고 위 내용에 해당하는 거부 사유는 답변받지 않는다는 점을 이해합니다.</strong>
 						</div>
 					</Label>
 					<Divider />

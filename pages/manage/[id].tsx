@@ -119,7 +119,7 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 						<Input name='url' placeholder='https://discord.com/oauth2/authorize?client_id=653534001742741552&scope=bot&permissions=0' />
 						<span className='text-gray-400 mt-1 text-sm'>
 							<Link href='/calculator'>
-								<a className='text-blue-500 hover:text-blue-400'>이곳</a>
+								<a rel='noreferrer' target='_blank' className='text-blue-500 hover:text-blue-400'>이곳</a>
 							</Link>에서 초대링크를 생성하실 수 있습니다!
 						</span>
 					</Label>

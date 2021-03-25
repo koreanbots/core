@@ -378,7 +378,7 @@ export const GuildPermissions = {
 			flag: 0x00400000
 		},
 		{
-			name: '멤버의 헤드셋 음소거하기',
+			name: '멤버의 헤드셋 음소거하기',
 			flag: 0x00800000
 		},
 		{

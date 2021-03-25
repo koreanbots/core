@@ -2,14 +2,15 @@ import { NextPage, NextPageContext } from 'next'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import { Form, Formik } from 'formik'
 import { ParsedUrlQuery } from 'node:querystring'
 
 import { get } from '@utils/Query'
 import { checkUserFlag, cleanObject, makeBotURL, parseCookie, redirectTo } from '@utils/Tools'
-import { AddBotSubmit, ManageBot, ManageBotSchema } from '@utils/Yup'
+import { ManageBot, ManageBotSchema } from '@utils/Yup'
 import { categories, library } from '@utils/Constants'
-import { Bot, ResponseProps, SubmittedBot, Theme, User } from '@types'
+import { Bot, Theme, User } from '@types'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
 
@@ -19,6 +20,7 @@ import Forbidden from '@components/Forbidden'
 const Label = dynamic(() => import('@components/Form/Label'))
 const Input = dynamic(() => import('@components/Form/Input'))
 const Divider = dynamic(() => import('@components/Divider'))
+const Redirect = dynamic(() => import('@components/Redirect'))
 const TextArea = dynamic(() => import('@components/Form/TextArea'))
 const Segment = dynamic(() => import('@components/Segment'))
 const Markdown = dynamic(() => import('@components/Markdown'))
@@ -78,11 +80,13 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 					</div>
 					{
 						data ? data.code === 200 ? <div className='mt-4'>
-							<Message type='success'>
-								<h2 className='text-lg font-black'>정보를 저장했습니다.</h2>
-								<p>반영까지는 시간이 조금 걸릴 수 있습니다!</p>
-								{redirectTo(router, makeBotURL(bot))}
-							</Message>
+							<Redirect to={makeBotURL(bot)}>
+								<Message type='success'>
+									<h2 className='text-lg font-black'>정보를 저장했습니다.</h2>
+									<p>반영까지는 시간이 조금 걸릴 수 있습니다!</p>
+								</Message>
+							</Redirect>
+							
 						</div> : <div className='mt-4'>
 							<Message type='error'>
 								<h2 className='text-lg font-black'>{data.message || '오류가 발생했습니다.'}</h2>
@@ -113,6 +117,11 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 					</Label>
 					<Label For='inviteLink' label='초대링크' labelDesc='봇의 초대링크입니다. 비워두시면 자동으로 생성합니다.' error={errors.url && touched.url ? errors.url : null}>
 						<Input name='url' placeholder='https://discord.com/oauth2/authorize?client_id=653534001742741552&scope=bot&permissions=0' />
+						<span className='text-gray-400 mt-1 text-sm'>
+							<Link href='/calculator'>
+								<a className='text-blue-500 hover:text-blue-400'>이곳</a>
+							</Link>에서 초대링크를 생성하실 수 있습니다!
+						</span>
 					</Label>
 					{
 						values.category.includes('빗금 명령어') && <Message type='warning'>

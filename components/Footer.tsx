@@ -36,7 +36,7 @@ const Footer = ({ theme, setTheme }: FooterProps): JSX.Element => {
 									</Link>
 								</li>
 								<li>
-									<Link href='/api'>
+									<Link href='/developers'>
 										<a className='hover:text-gray-300'>개발자</a>
 									</Link>
 								</li>

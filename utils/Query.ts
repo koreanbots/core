@@ -4,12 +4,12 @@ import DataLoader from 'dataloader'
 import { User as DiscordUser } from 'discord.js'
 
 import { Bot, User, ListType, BotList, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot } from '@types'
-import { categories } from './Constants'
+import { categories, SpecialEndPoints } from './Constants'
 
 import knex from './Knex'
 import { DiscordBot, getMainGuild } from './DiscordBot'
 import { sign, verify } from './Jwt'
-import { serialize } from './Tools'
+import { formData, serialize } from './Tools'
 import { AddBotSubmit, ManageBot } from './Yup'
 
 export const imageRateLimit = new TLRU<unknown, number>({ maxAgeMs: 60000 })
@@ -319,6 +319,23 @@ async function BotAuthorization(token: string):Promise<string|false> {
 async function addRequest(ip: string, map: TLRU<unknown, number>) {
 	if(!map.has(ip)) map.set(ip, 0)
 	map.set(ip, map.get(ip) + 1)
+}
+
+export async function CaptchaVerify(response: string): Promise<boolean> {
+	const res:{ success: boolean } = await fetch(SpecialEndPoints.HCaptcha.Verify, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded'
+		},
+		body: formData({
+			response,
+			secret: process.env.HCAPTCHA_KEY
+		})
+	}).then(r=> r.json())
+
+	console.log(res)
+
+	return res.success
 }
 
 export const get = {

@@ -185,6 +185,9 @@ export const SpecialEndPoints = {
 	Github: {
 		Token: (clientID: string, clientSecret: string, code: string) => `https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${code}`,
 		Me: 'https://api.github.com/user'
+	},
+	HCaptcha: {
+		Verify: 'https://hcaptcha.com/siteverify'
 	}
 }
 

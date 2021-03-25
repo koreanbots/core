@@ -1,9 +1,10 @@
 import { NextPage, NextPageContext } from 'next'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { Form, Formik } from 'formik'
+import HCaptcha from '@hcaptcha/react-hcaptcha'
 
 import { get } from '@utils/Query'
 import { cleanObject, parseCookie, redirectTo } from '@utils/Tools'
@@ -25,18 +26,44 @@ const Selects = dynamic(() => import('@components/Form/Selects'))
 const Button = dynamic(() => import('@components/Button'))
 const Container = dynamic(() => import('@components/Container'))
 const Message = dynamic(() => import('@components/Message'))
+const Captcha = dynamic(() => import('@components/Captcha'))
 const SEO = dynamic(() => import('@components/SEO'))
 
 const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 	const [ data, setData ] = useState<ResponseProps<SubmittedBot>>(null)
+	const [ captcha, setCaptcha ] = useState(false)
+	const captchaRef = useRef<HCaptcha>()
 	const router = useRouter()
+	const initialValues: AddBotSubmit = {
+		agree: false,
+		id: '',
+		prefix: '',
+		library: '',
+		category: [],
+		intro: '',
+		desc: `<!-- 이 설명을 지우시고 원하시는 설명을 적으셔도 좋습니다! -->
+# 봇이름
+자신의 봇을 자유롭게 표현해보세요!
+
+## ✏️ 소개
+
+무엇이 목적인 봇인가요?
+
+## 🛠️ 기능
+
+- 어떤
+- 기능
+- 있나요?`,
+		_csrf: csrfToken,
+		_captcha: 'captcha'
+	}
 	function toLogin() {
 		localStorage.redirectTo = window.location.href
 		redirectTo(router, 'login')
 	}
 
-	async function submitBot(value: AddBotSubmit) {
-		const res = await Fetch<SubmittedBot>(`/bots/${value.id}`, { method: 'POST', body: JSON.stringify(cleanObject<AddBotSubmit>(value)) })
+	async function submitBot(value: AddBotSubmit, token: string) {
+		const res = await Fetch<SubmittedBot>(`/bots/${value.id}`, { method: 'POST', body: JSON.stringify(cleanObject<AddBotSubmit>({ ...value, _captcha: token})) })
 		setData(res)
 	}
 	if(!logged) {
@@ -61,31 +88,10 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 				
 			</Message> : <></>
 		}
-		<Formik initialValues={{
-			agree: false,
-			id: '',
-			prefix: '',
-			library: '',
-			category: [],
-			intro: '',
-			desc: `<!-- 이 설명을 지우시고 원하시는 설명을 적으셔도 좋습니다! -->
-# 봇이름
-자신의 봇을 자유롭게 표현해보세요!
-
-## ✏️ 소개
-
-무엇이 목적인 봇인가요?
-
-## 🛠️ 기능
-
-- 어떤
-- 기능
-- 있나요?`,
-			_csrf: csrfToken
-		}}
-		validationSchema={AddBotSubmitSchema}
-		onSubmit={submitBot}>
-			{({ errors, touched, values, setFieldTouched, setFieldValue }) => (
+		<Formik initialValues={initialValues}
+			validationSchema={AddBotSubmitSchema}
+			onSubmit={() => setCaptcha(true)}>
+			{({ errors, touched, values, isValid, setFieldTouched, setFieldValue }) => (
 				<Form>
 					<div className='py-3'>
 						<Message type='warning'>
@@ -113,7 +119,6 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 						</div>
 					</Label>
 					<Divider />
-
 					<Label For='id' label='봇 ID' labelDesc='봇의 클라이언트 ID를 의미합니다.' error={errors.id && touched.id ? errors.id : null} short required>
 						<Input name='id' placeholder='653534001742741552' />
 					</Label>
@@ -169,11 +174,20 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 						</Segment>
 					</Label>
 					<Divider />
-					<Button type='submit' onClick={() => window.scrollTo({ top: 0 })}>
-						<>
-							<i className='far fa-paper-plane'/> 제출
-						</>
-					</Button>
+					{
+						captcha ? <Captcha ref={captchaRef} dark={theme === 'dark'} onVerify={(token) => {
+							submitBot(values, token)
+							window.scrollTo({ top: 0 })
+							setCaptcha(false)
+							captchaRef?.current?.resetCaptcha()
+						}} /> : <Button type='submit' onClick={() => {
+							if(!isValid) window.scrollTo({ top: 0 })
+						} }>
+							<>
+								<i className='far fa-paper-plane'/> 제출
+							</>
+						</Button>
+					}
 				</Form>
 			)}
 		</Formik>

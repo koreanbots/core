@@ -1,7 +1,7 @@
 import { NextApiRequest } from 'next'
 import rateLimit from 'express-rate-limit'
 
-import { get, put, update } from '@utils/Query'
+import { CaptchaVerify, get, put, update } from '@utils/Query'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { checkToken } from '@utils/Csrf'
 import { AddBotSubmit, AddBotSubmitSchema, ManageBot, ManageBotSchema } from '@utils/Yup'
@@ -41,6 +41,8 @@ const Bots = RequestHandler()
 		if (!validated) return
 		if (validated.id !== req.query.id)
 			return ResponseWrapper(res, { code: 400, errors: ['요청 주소와 Body의 정보가 다릅니다.'] })
+		const captcha = await CaptchaVerify(validated._captcha)
+		if(!captcha) return ResponseWrapper(res, { code: 400, message: '캡챠 검증에 실패하였습니다.' })
 		const result = await put.submitBot(user, validated)
 		if (result === 1)
 			return ResponseWrapper(res, {

@@ -16,7 +16,7 @@ const Label = ({
 			>
 				{label && (
 					<div className='col-span-1 text-sm'>
-						<h3 className='text-discord-blurple text-lg font-bold'>
+						<h3 className='text-koreanbots-blue text-lg font-bold'>
 							{label}
 							{required && (
 								<span className='align-text-top text-red-500 text-base font-semibold'> *</span>

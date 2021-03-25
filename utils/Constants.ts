@@ -162,6 +162,7 @@ export const BotBadgeType = (data: Bot) => {
 export const DiscordEnpoints = {
 	Token: BASE_URLs.api + '/oauth2/token',
 	Me: BASE_URLs.api + '/v8/users/@me',
+	InviteApplication: (id: string, perms: { [perm: string]: boolean }, scope: string, redirect?: string): string => `${BASE_URLs.api}/oauth2/authorize?client_id=${id ? id.split(' ')[0] : 'CLIENT_ID'}&permissions=${Object.keys(perms).filter(el => perms[el]).map(el => Number(el)).reduce((prev, curr) => prev | curr, 0)}&scope=${scope ? encodeURI(scope) : 'bot'}${redirect ? `&redirect_uri=${encodeURIComponent(redirect)}` : ''}`,
 	CDN: class CDN {
 		static root = BASE_URLs.cdn
 		static emoji (id: string, options:ImageOptions={}) { return makeImageURL(`${this.root}/emojis/${id}`, options) }
@@ -245,4 +246,151 @@ export const ErrorText = {
 	429: '지정된 시간에 너무 많은 요청을 보내셨습니다. 잠시 후 다시 시도해주세요.',
 	500: '서버 내부 오류가 발생하였습니다.',
 	502: '올바르지 않은 게이트웨이입니다.'
+}
+
+export const GuildPermissions = {
+	general: [
+		{
+			name: '채널 보기',
+			flag: 0x00000400
+		},
+		{
+			name: '채널 관리하기',
+			flag: 0x00000010,
+			twofactor: true
+		},
+		{
+			name: '역할 관리하기',
+			flag: 0x10000000,
+			twofactor: true
+		},
+		{
+			name: '이모티콘 관리하기',
+			flag: 0x40000000,
+			twofactor: true
+		},
+		{
+			name: '감사 로그 보기',
+			flag: 0x00000080
+		},
+		{
+			name: '웹후크 관리하기',
+			flag: 0x20000000,
+			twofactor: true
+		},
+		{
+			name: '서버 관리하기',
+			flag: 0x00000020,
+			twofactor: true
+		}
+	],
+	membership: [
+		{
+			name: '초대 코드 만들기',
+			flag: 0x00000001
+		},
+		{
+			name: '별명 변경하기',
+			flag: 0x04000000
+		},
+		{
+			name: '별명 관리하기',
+			flag: 0x08000000
+		},
+		{
+			name: '멤버 추방하기',
+			flag: 0x00000002,
+			twofactor: true
+		},
+		{
+			name: '멤버 차단하기',
+			flag: 0x00000004,
+			twofactor: true
+		}
+	],
+	channel: [
+		{
+			name: '메세지 보내기',
+			flag: 0x00000800
+		},
+		{
+			name: '링크 첨부',
+			flag: 0x00004000
+		},
+		{
+			name: '파일 첨부',
+			flag: 0x00008000
+		},
+		{
+			name: '반응 추가하기',
+			flag: 0x00000040
+		},
+		{
+			name: '외부 이모티콘 사용',
+			flag: 0x00040000
+		},
+		{
+			name: '@everyone, @here 모든 역할 멘션하기',
+			flag: 0x00020000
+		},
+		{
+			name: '메세지 관리',
+			flag: 0x00002000,
+			twofactor: true
+		},
+		{
+			name: '메세지 기록 보기',
+			flag: 0x00010000
+		},
+		{
+			name: '텍스트 음성 변환 메세지 전송',
+			flag: 0x00001000
+		},
+		{
+			name: '빗금 명령어 사용',
+			flag: 0x80000000
+		}
+	],
+	voice: [
+		{
+			name: '연결',
+			flag: 0x00100000
+		},
+		{
+			name: '말하기',
+			flag: 0x00200000
+		},
+		{
+			name: '동영상',
+			flag: 0x00000200
+
+		},
+		{
+			name: '음성 감지 사용',
+			flag: 0x02000000
+		},
+		{
+			name: '우선 발언권',
+			flag: 0x00000100
+		},
+		{
+			name: '멤버들의 마이크 음소거하기',
+			flag: 0x00400000
+		},
+		{
+			name: '멤버의 헤드셋 음소거하기',
+			flag: 0x00800000
+		},
+		{
+			name: '멤버 이동',
+			flag: 0x01000000
+		}
+	],
+	advanced: [
+		{
+			name: '관리자',
+			flag: 0x8,
+			twofactor: true
+		}
+	]
 }

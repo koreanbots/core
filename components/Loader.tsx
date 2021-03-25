@@ -13,7 +13,7 @@ const Loader = ({ text, visible = true }: LoaderProps): JSX.Element => {
 }
 
 interface LoaderProps {
-	text: string
+	text: string | JSX.Element
 	visible?: boolean
 }
 

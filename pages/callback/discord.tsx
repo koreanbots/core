@@ -35,7 +35,7 @@ const DiscordCallback:NextPage<DiscordCallbackProps> = ({ data }) => {
 	}
   
 	return <>
-		<Loader text='로그인중입니다. 잠시만 기다려주세요.' />
+		<Loader text={<>로그인중입니다. 잠시만 기다려주세요.<br />이 페이지가 계속 표시된다면 새로고침해주세요.</>} />
 		{
 			redirect ? redirectWhere() : ''
 		}

@@ -289,12 +289,23 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken }) => {
 									</div>
 									<Advertisement size='tall' />
 								</div>
-								<div className='markdown-body pt-10 w-full lg:pr-5 lg:w-3/4'>
+								<div className='w-full lg:pr-5 lg:w-3/4'>
 									<Advertisement />
-									<Segment className='my-4'>
-										<Markdown text={data.desc}/>
-									</Segment>
-									<Advertisement />
+									{
+										checkBotFlag(data.flags, 'hackerthon') ? <Segment className='mt-10'>
+											<h1 className='text-3xl font-semibold'>
+												<i className='fas fa-trophy mr-4 my-2 text-yellow-300' /> 해당 봇은 한국 디스코드봇 리스트 해커톤 수상작품입니다!
+											</h1>
+											<p>해당 봇은 한국 디스코드봇 리스트 주최로 진행되었던 "한국 디스코드봇 리스트 제1회 해커톤"에서 우수한 성적을 거둔 봇입니다.</p>
+											<p>자세한 내용은 <a className='text-blue-500 hover:text-blue-400' href='https://blog.koreanbots.dev/first-hackathon-results/'>해당 글</a>을 확인해주세요.</p>
+										</Segment> : ''
+									}
+									<div className='markdown-body pt-4 w-full'>
+										<Segment className='my-4'>
+											<Markdown text={data.desc}/>
+										</Segment>
+										<Advertisement />
+									</div>
 								</div>
 							</div>
 						</>

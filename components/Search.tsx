@@ -119,10 +119,10 @@ const Search = (): JSX.Element => {
 						) : loading ? (
 							<li className='px-3 py-3.5'>검색중입니다...</li>
 						) : (
-							<li className='px-3 py-3.5'>
+							<>
 								{query && data ? (
 									data.message?.includes('문법') ? (
-										<>
+										<li className='px-3 py-3.5'>
 											검색 문법이 잘못되었습니다.
 											<br />
 											<a
@@ -133,11 +133,9 @@ const Search = (): JSX.Element => {
 											>
 												더 알아보기
 											</a>
-										</>
-									) : (
-										(data.errors && data.errors[0]) || data.message
-									)
-								) : query.length === 0 ?	!recentSearch || !Array.isArray(recentSearch) || recentSearch.length === 0? '최근 검색 기록이 없습니다.'
+										</li>
+									) : <li className='px-3 py-3.5'>{(data.errors && data.errors[0]) || data.message}</li>
+								) : query.length === 0 ?	!recentSearch || !Array.isArray(recentSearch) || recentSearch.length === 0? <li className='px-3 py-3.5'>최근 검색 기록이 없습니다.</li>
 									: <>
 										<li className='h-15 px-3 py-2 cursor-pointer font-semibold'>
 											최근 검색어
@@ -166,7 +164,7 @@ const Search = (): JSX.Element => {
 									) : (
 										'검색어를 입력해주세요.'
 									)}
-							</li>
+							</>
 						)}
 					</ul>
 				</div>

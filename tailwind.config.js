@@ -46,5 +46,5 @@ module.exports = {
 			inset: ['checked']
 		},
 	},
-	plugins: [],
+	plugins: [require('@tailwindcss/custom-forms')],
 }

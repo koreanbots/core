@@ -148,7 +148,7 @@ const Search = (): JSX.Element => {
 										</li>
 										{
 											recentSearch.slice(0, 10).map((el, n) => (
-												<Link key={n} href={`/search?q=${encodeURIComponent(el)}`}>
+												<Link key={n} href={`/search?q=${encodeURIComponent(el?.value)}`}>
 													<li className='h-15 px-3 py-2 cursor-pointer'>
 														<i className='fas fa-history' /> {el?.value}
 														<span className='absolute right-0 pr-10 text-gray-400 text-sm'>

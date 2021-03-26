@@ -254,7 +254,7 @@ export const ErrorText = {
 export const GuildPermissions = {
 	general: [
 		{
-			name: '채널 보기',
+			name: '채널 보기',
 			flag: 0x00000400
 		},
 		{
@@ -273,7 +273,7 @@ export const GuildPermissions = {
 			twofactor: true
 		},
 		{
-			name: '감사 로그 보기',
+			name: '감사 로그 보기',
 			flag: 0x00000080
 		},
 		{

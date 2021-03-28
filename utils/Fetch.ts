@@ -2,6 +2,7 @@ import { ResponseProps } from '@types'
 import { KoreanbotsEndPoints } from './Constants'
 
 const Fetch = async <T>(endpoint: string, options?: RequestInit, rawEndpoint=false): Promise<ResponseProps<T>> => {
+	options = options ?? {}
 	const url = (rawEndpoint ? '' : KoreanbotsEndPoints.baseAPI) + (endpoint.startsWith('/') ? endpoint : '/' + endpoint)
 
 	const res = await fetch(url, {

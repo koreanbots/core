@@ -54,7 +54,6 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 		res[0].category = JSON.parse(res[0].category)
 		res[0].owners = JSON.parse(res[0].owners)
 		res[0].status = discordBot.presence?.activities?.find(r => r.type === 'STREAMING') ? 'streaming' : discordBot.presence?.status || null
-		console.log(res[0].name, discordBot.presence?.status)
 		delete res[0].trusted
 		delete res[0].partnered
 		if (owners)
@@ -172,6 +171,7 @@ async function getBotSubmit(id: string, date: number) {
 }
 
 async function getBotSubmits(id: string) {
+	if(!id) return []
 	let res = await knex('submitted').select(['id', 'date', 'category', 'lib', 'prefix', 'intro', 'desc', 'url', 'web', 'git', 'discord', 'state', 'owners', 'reason']).orderBy('date', 'desc').where('owners', 'LIKE', `%${id}%`)
 	res = await Promise.all(res.map(async el=> {
 		el.category = JSON.parse(el.category)

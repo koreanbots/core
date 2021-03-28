@@ -12,7 +12,7 @@ const Button = ({
 	return href ? (
 		<Link href={!disabled && href}>
 			<a
-				className={`cursor-pointer rounded-md px-4 py-2 m-1 transition duration-300 ease select-none outline-none foucs:outline-none ${className ??
+				className={`cursor-pointer rounded-md px-4 py-2 transition duration-300 ease select-none outline-none foucs:outline-none ${className ??
 					'bg-discord-blurple hover:opacity-80 dark:bg-very-black dark:hover:bg-discord-dark-hover text-white'}`}
 			>
 				{children}
@@ -22,7 +22,7 @@ const Button = ({
 		<button
 			type={disabled ? 'button' : type}
 			onClick={disabled ? null : onClick}
-			className={`cursor-pointer rounded-md px-4 py-2 m-0.5 transition duration-300 ease select-none outline-none foucs:outline-none ${className ??
+			className={`cursor-pointer rounded-md px-4 py-2 transition duration-300 ease select-none outline-none foucs:outline-none ${className ??
 				'bg-discord-blurple hover:opacity-80 dark:bg-very-black dark:hover:bg-discord-dark-hover text-white'}`}
 		>
 			{children}
@@ -30,7 +30,7 @@ const Button = ({
 	) : (
 		<button
 			type={disabled ? 'button' : type}
-			className={`cursor-pointer rounded-md px-4 py-2 m-0.5 transition duration-300 ease select-none outline-none foucs:outline-none ${className ??
+			className={`cursor-pointer rounded-md px-4 py-2 transition duration-300 ease select-none outline-none foucs:outline-none ${className ??
 				'bg-discord-blurple hover:opacity-80 dark:bg-very-black dark:hover:bg-discord-dark-hover text-white'}`}
 		>
 			{children}

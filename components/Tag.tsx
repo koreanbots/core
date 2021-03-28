@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ReactNode } from 'react'
 
 const Tag = ({
 	blurple = false,
@@ -92,7 +93,7 @@ interface LabelProps {
 	blurple?: boolean
 	github?: boolean
 	href?: string
-	text: string | JSX.Element | JSX.Element[]
+	text: ReactNode
 	className?: string
 	icon?: string
 	circular?: boolean

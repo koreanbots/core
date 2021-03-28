@@ -1,10 +1,11 @@
 import { NextPage, NextPageContext } from 'next'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { Form, Formik } from 'formik'
 import { ParsedUrlQuery } from 'node:querystring'
+import { getJosaPicker } from 'josa'
 
 import { get } from '@utils/Query'
 import { checkUserFlag, cleanObject, makeBotURL, parseCookie, redirectTo } from '@utils/Tools'
@@ -29,11 +30,18 @@ const Selects = dynamic(() => import('@components/Form/Selects'))
 const Button = dynamic(() => import('@components/Button'))
 const Container = dynamic(() => import('@components/Container'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
+const Tag = dynamic(() => import('@components/Tag'))
 const Message = dynamic(() => import('@components/Message'))
+const Modal = dynamic(() => import('@components/Modal'))
+const Captcha = dynamic(() => import('@components/Captcha'))
 const SEO = dynamic(() => import('@components/SEO'))
 
 const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }) => {
 	const [ data, setData ] = useState(null)
+	const [ adminModal, setAdminModal ] = useState(false)
+	const [ transferModal, setTransferModal ] = useState(false)
+	const [ deleteModal, setDeleteModal ] = useState(false)
+	const deleteRef = useRef()
 	const router = useRouter()
 	function toLogin() {
 		localStorage.redirectTo = window.location.href
@@ -44,6 +52,13 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 		const res = await Fetch(`/bots/${bot.id}`, { method: 'PATCH', body: JSON.stringify(cleanObject<ManageBot>(value)) })
 		setData(res)
 	}
+
+	async function getUser(id: string) {
+		const u = await Fetch<User>(`/users/${encodeURIComponent(id)}`)
+		if(u.code === 200 && u.data) return u.data
+		else return null
+	}
+
 	if(!bot) return <NotFound />
 	if(!user) {
 		toLogin()
@@ -147,7 +162,6 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 							<Markdown text={values.desc} />
 						</Segment>
 					</Label>
-					<Divider />
 					<Button type='submit' onClick={() => window.scrollTo({ top: 0 })}>
 						<>
 							<i className='far fa-save'/> 저장
@@ -156,6 +170,124 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 				</Form>
 			)}
 		</Formik>
+		{
+			(checkUserFlag(user.flags, 'staff') || (bot.owners as User[])[0].id === user.id) && <div className='py-4'>
+				<Divider />
+				<h2 className='text-2xl font-semibold pb-2'>위험구역</h2>
+				<Segment>
+					<div className='lg:flex items-center'>
+						<div className='flex-grow py-1'>
+							<h3 className='text-lg font-semibold'>관리자 수정</h3>
+							<p className='text-gray-400'>봇의 관리자를 추가하거나 삭제합니다.</p>
+						</div>
+						<Button onClick={() => setAdminModal(true)} className='h-10 bg-red-500 hover:opacity-80 text-white lg:w-1/8'><i className='fas fa-user-cog' /> 관리자 수정</Button>
+						<Modal full header='관리자 수정' isOpen={adminModal} dark={theme === 'dark'} onClose={() => setAdminModal(false)} closeIcon>
+							<Formik initialValues={{ owners: (bot.owners as User[]), id: '' }} onSubmit={(v) => alert(JSON.stringify(v.owners.map(el => el.id)))}>
+								{
+									({ values, setFieldValue }) => <Form>
+										<Message type='warning'>
+											<p>소유자는 삭제할 수 없습니다. 소유권을 이전하고 싶으시다면 소유권 이전을 사용해주세요.</p>
+										</Message>
+										<div className='py-4'>
+											<h2 className='text-md my-1'>이전하실 유저 ID를 입력해주세요.</h2>
+											<div className='flex flex-wrap'>
+												{
+													(values.owners as User[]).map((el, n) => <Tag className='flex items-center' text={<>
+														<DiscordAvatar userID={el.id} size={128} className='w-6 h-6 mr-1 rounded-full' /> {el.username}#{el.tag}
+														{
+															n !== 0 && <button className='ml-0.5 hover:text-red-500' onClick={() => {
+																setFieldValue('owners', (() => {
+																	const arr = [...values.owners]
+																	arr.splice(n, 1)
+																	return arr
+																})())
+															}}>
+																<i className='fas fa-times' />
+															</button>
+														}
+													</>} key={el.id} />)
+												}
+											</div>
+											<div className='flex'>
+												<div className='flex-grow pr-2'>
+													<Input name='id' placeholder='추가할 유저 ID' />
+												</div>
+												<Button className='w-16 bg-discord-blurple' onClick={async () => {
+													const user = await getUser(values.id)
+													const arr = [...values.owners]
+													if(!user) return
+													else {
+														arr.push(user)
+														setFieldValue('owners', arr)
+														setFieldValue('id', '')
+													}
+												}}>
+													<i className='fas fa-user-plus' />
+												</Button>
+											</div>
+										</div>
+										<Button className='mt-2 bg-red-500 text-white hover:opacity-80' type='submit'><i className='fas fa-save text-sm' /> 저장</Button>
+									</Form>
+								}
+							</Formik>
+						</Modal>
+					</div>
+					<Divider />
+					<div className='lg:flex items-center'>
+						<div className='flex-grow py-1'>
+							<h3 className='text-lg font-semibold'>소유권 이전</h3>
+							<p className='text-gray-400'>봇의 소유권을 이전합니다. 소유권을 이전하게 되면 소유권을 잃게 됩니다.</p>
+						</div>
+						<Button onClick={() => setTransferModal(true)} className='h-10 bg-red-500 hover:opacity-80 text-white lg:w-1/8'><i className='fas fa-exchange-alt' /> 소유권 이전</Button>
+						<Modal full header={`${bot.name} 소유권 이전하기`} isOpen={transferModal} dark={theme === 'dark'} onClose={() => setTransferModal(false)} closeIcon>
+							<Formik initialValues={{ ownerID: '', name: '', _captcha: '' }} onSubmit={(v) => alert(JSON.stringify(v))}>
+								{
+									({ values, setFieldValue }) => <Form>
+										<Message type='warning'>
+											<p>봇의 소유권을 이전하게 되면 봇의 소유자 권한을 이전하게 됩니다.</p>
+										</Message>
+										<div className='py-4'>
+											<h2 className='text-md my-1'>이전하실 유저 ID를 입력해주세요.</h2>
+											<Input name='ownerID' placeholder='이전할 유저 ID' />
+											<Divider />
+											<h2 className='text-md my-1'>계속 하시려면 <strong>{bot.name}</strong>{getJosaPicker('을')(bot.name)} 입력해주세요.</h2>
+											<Input name='name' placeholder={bot.name} />
+										</div>
+										<Captcha ref={deleteRef} dark={theme === 'dark'} onVerify={(k) => setFieldValue('_captcha', k)} />
+										<Button disabled={!values.ownerID || values.name !== bot.name || !values._captcha} className={`mt-4 bg-red-500 text-white ${!values.ownerID ||values.name !== bot.name || !values._captcha ? 'opacity-80' : 'hover:opacity-80'}`} type='submit'><i className='fas fa-exchange-alt' /> 소유권 이전</Button>
+									</Form>
+								}
+							</Formik>
+						</Modal>
+					</div>
+					<Divider />
+					<div className='lg:flex items-center'>
+						<div className='flex-grow py-1'>
+							<h3 className='text-lg font-semibold'>봇 삭제하기</h3>
+							<p className='text-gray-400'>봇을 삭제하게 되면 되돌릴 수 없습니다.</p>
+						</div>
+						<Button onClick={() => setDeleteModal(true)} className='h-10 bg-red-500 hover:opacity-80 text-white lg:w-1/8'><i className='fas fa-trash' /> 봇 삭제하기</Button>
+						<Modal full header={`${bot.name} 삭제하기`} isOpen={deleteModal} dark={theme === 'dark'} onClose={() => setDeleteModal(false)} closeIcon>
+							<Formik initialValues={{ name: '', _captcha: '' }} onSubmit={(v) => alert(JSON.stringify(v))}>
+								{
+									({ values, setFieldValue }) => <Form>
+										<Message type='warning'>
+											<p>봇을 삭제하게 되면 되돌릴 수 없습니다.<br/>하트 수를 포함한 모든 봇 정보가 영구적으로 삭제됩니다.</p>
+											<p>계속 하시려면 봇의 이름 <strong>{bot.name}</strong>{getJosaPicker('을')(bot.name)} 입력해주세요.</p>
+										</Message>
+										<div className='py-4'>
+											<Input name='name' placeholder={bot.name} />
+										</div>
+										<Captcha ref={deleteRef} dark={theme === 'dark'} onVerify={(k) => setFieldValue('_captcha', k)} />
+										<Button disabled={values.name !== bot.name || !values._captcha} className={`mt-4 bg-red-500 text-white ${values.name !== bot.name || !values._captcha ? 'opacity-80' : 'hover:opacity-80'}`} type='submit'><i className='fas fa-trash' /> 삭제</Button>
+									</Form>
+								}
+							</Formik>
+						</Modal>
+					</div>
+				</Segment>
+			</div>
+		}
 	</Container>
 }
 

@@ -28,7 +28,7 @@
 		"csrf": "3.1.0",
 		"dataloader": "2.0.0",
 		"dayjs": "1.10.4",
-		"discord.js": "12.5.1",
+		"discord.js": "12.5.2",
 		"emoji-mart": "3.0.1",
 		"express-rate-limit": "5.2.6",
 		"formik": "2.2.6",

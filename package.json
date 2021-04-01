@@ -16,9 +16,9 @@
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "5.15.3",
 		"@hcaptcha/react-hcaptcha": "0.3.6",
-		"@sentry/browser": "6.2.3",
-		"@sentry/integrations": "6.2.3",
-		"@sentry/node": "6.2.3",
+		"@sentry/browser": "6.2.5",
+		"@sentry/integrations": "6.2.5",
+		"@sentry/node": "6.2.5",
 		"@sentry/webpack-plugin": "1.14.2",
 		"@types/nprogress": "0.2.0",
 		"autoprefixer": "10.2.5",

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import AbortController from 'abort-controller'
 
 import { makeBotURL, redirectTo } from '@utils/Tools'
 import Fetch from '@utils/Fetch'
@@ -39,7 +40,7 @@ const Search = (): JSX.Element => {
 		}
 		const controller = new AbortController()
 		setAbortControl(controller)
-		if (value.length > 2) setLoading(true)
+		if (value.length > 1) setLoading(true)
 		const res = await Fetch<BotList>(`/search/bots?q=${encodeURIComponent(value)}`, {
 			signal: controller.signal,
 		})
@@ -48,7 +49,7 @@ const Search = (): JSX.Element => {
 	}
 
 	const onSubmit = () => {
-		if(query.length < 3) return
+		if(query.length < 2) return
 		if(!localStorage.recentSearch) localStorage.recentSearch = '[]'
 		try {
 			const d = JSON.parse(localStorage.recentSearch).reverse()

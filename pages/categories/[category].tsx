@@ -6,7 +6,7 @@ import { get } from '@utils/Query'
 import { BotList } from '@types'
 import { botCategoryListArgumentSchema } from '@utils/Yup'
 import NotFound from 'pages/404'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 const Hero = dynamic(() => import('@components/Hero'))
@@ -21,8 +21,11 @@ const Markdown = dynamic(() => import('@components/Markdown'))
 const NSFW = dynamic(() => import('@components/NSFW'))
 
 const Category: NextPage<CategoryProps> = ({ data, query }) => {
-	const [ nsfw, setNSFW ] = useState(localStorage.nsfw)
+	const [ nsfw, setNSFW ] = useState<boolean>()
 	const router = useRouter()
+	useEffect(() => {
+		setNSFW(localStorage.nsfw)
+	}, [])
 	if(!data || data.data.length === 0 || data.totalPage < Number(query.page)) return <NotFound />
 	return <>
 		<Hero header={`${query.category} 카테고리 봇들`} description={`다양한 "${query.category}" 카테고리의 봇들을 만나보세요.`} />

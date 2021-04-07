@@ -2,7 +2,7 @@ import { NextPage, NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Field, Form, Formik } from 'formik'
 
 import { SnowflakeUtil } from 'discord.js'
@@ -39,13 +39,16 @@ const NSFW = dynamic(() => import('@components/NSFW'))
 const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken }) => {
 	const bg = checkBotFlag(data?.flags, 'trusted') && data?.banner
 	const router = useRouter()
-	const [ nsfw, setNSFW ] = useState(localStorage.nsfw)
+	const [ nsfw, setNSFW ] = useState<boolean>()
 	const [ reportModal, setReportModal ] = useState(false)
 	const [ reportRes, setReportRes ] = useState<ResponseProps<null>>(null)
 	function toLogin() {
 		localStorage.redirectTo = window.location.href
 		redirectTo(router, 'login')
 	}
+	useEffect(() => {
+		setNSFW(localStorage.nsfw)
+	}, [])
 	if (!data?.id) return <NotFound />
 	if((checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}`)
 	return <div style={bg ? { background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${data.bg}") center top / cover no-repeat fixed` } : {}}>

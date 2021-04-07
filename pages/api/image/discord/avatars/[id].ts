@@ -1,26 +1,33 @@
 import { NextApiRequest } from 'next'
+import rateLimit from 'express-rate-limit'
 
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { DiscordEnpoints } from '@utils/Constants'
-import { get, ratelimit } from '@utils/Query'
-import RateLimitHandler from '@utils/RateLimitHandler'
+import { get } from '@utils/Query'
 import { ImageOptionsSchema } from '@utils/Yup'
 import RequestHandler from '@utils/RequestHandler'
 
+const rateLimiter = rateLimit({
+	windowMs: 60 * 1000,
+	max: 150,
+	handler: async (_req, res) => {
+		const img = await get.images.user.load(DiscordEnpoints.CDN.default(Math.floor(Math.random() * 6), { format: 'png' }))
+		res.setHeader('Content-Type', 'image/png')
+		res.setHeader('Cache-Control', 'no-cache')
+		res.send(img)
+	},
+	keyGenerator: (req) => req.headers['x-forwarded-for'] as string,
+	skip: (_req, res) => {
+		res.removeHeader('X-RateLimit-Global')
+		return false
+	}
+})
+
 const Avatar = RequestHandler()
+	.get(rateLimiter)
 	.get(async(req: ApiRequest, res) => {
 		res.setHeader('Access-Control-Allow-Origin', process.env.KOREANBOTS_URL)
-		const { imageRateLimit } = await import('@utils/Query')
 		const { id: param, size='256' } = req.query
-		const rate = ratelimit.image(req.socket.remoteAddress)
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const ratelimited = RateLimitHandler(res, { used: rate, limit: 200, reset: (<any>imageRateLimit).scheduler.get(req.socket.remoteAddress).expiry, onLimitExceed: async(res) => {
-			const img = await get.images.user.load(DiscordEnpoints.CDN.default(Math.floor(Math.random() * 6), { format: 'png' }))
-			res.setHeader('Content-Type', 'image/png')
-			res.setHeader('Cache-Control', 'no-cache')
-			res.send(img)
-		} })
-		if(ratelimited) return
 		const splitted = param.split('.')
 		let ext = splitted[1]
 		const id = splitted[0]
@@ -32,7 +39,7 @@ const Avatar = RequestHandler()
 
 		const user = await get.discord.user.load(id)
 		let img: Buffer
-		if(!user || !user.avatar) img = await get.images.user.load(DiscordEnpoints.CDN.default(Math.floor(Math.random() * 6), { format: 'png', size: validated.size }))
+		if(!user?.avatar) img = await get.images.user.load(DiscordEnpoints.CDN.default(user?.discriminator ? Number(user.discriminator) % 5 : Math.floor(Math.random() * 6), { format: 'png', size: validated.size }))
 		else img = await get.images.user.load(DiscordEnpoints.CDN.user(id, user.avatar, { format: validated.ext === 'gif' && !user.avatar.startsWith('a_') ? 'png' : validated.ext }))
 		if(!img) {
 			img = await get.images.user.load(DiscordEnpoints.CDN.default(user.discriminator, { format: 'png', size: validated.size }))

@@ -1,8 +1,9 @@
+import { createHmac } from 'crypto'
 import { Readable } from 'stream'
 import cookie from 'cookie'
 
 import { BotFlags, ImageOptions, UserFlags } from '@types'
-import { KoreanbotsEndPoints, Oauth } from './Constants'
+import { BASE_URLs, KoreanbotsEndPoints, Oauth } from './Constants'
 import { NextRouter } from 'next/router'
 
 export function formatNumber(value: number):string  {
@@ -121,4 +122,21 @@ export function cleanObject<T extends Record<any, any>>(obj: T): T {
 	return obj
 }
 
-export { anchorHeader, twemoji, customEmoji } from './ShowdownExtensions'
+export function camoUrl(url: string): string {
+	return BASE_URLs.camo + `/${HMAC(url)}/${toHex(url)}`
+}
+
+export function HMAC(value: string, secret=process.env.CAMO_SECRET):string|null {
+	try {
+		return createHmac('sha1', secret).update(value, 'utf8').digest('hex')
+	}
+	catch {
+		return null
+	}
+}
+
+export function toHex(value: string): string {
+	return Buffer.from(value).toString('hex')
+}
+
+export * from './ShowdownExtensions'

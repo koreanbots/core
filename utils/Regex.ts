@@ -11,3 +11,4 @@ export const Emoji =
 export const Heading = '<h\\d id="(.+?)">(.*?)<\\/h(\\d)>'
 export const EmojiSyntax = ':(\\w+):'
 export const ImageTag = /<img\s[^>]*?alt\s*=\s*['"]([^'"]*?)['"][^>]*?>/
+export const markdownImage = /!\[([^\]]*)\]\((.*?)\s*("(?:.*[^"])")?\s*\)/g

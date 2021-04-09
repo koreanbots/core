@@ -4,13 +4,14 @@ import DataLoader from 'dataloader'
 import { User as DiscordUser } from 'discord.js'
 
 import { Bot, User, ListType, BotList, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot } from '@types'
-import { categories, SpecialEndPoints } from './Constants'
+import { categories, imageSafeHost, SpecialEndPoints } from './Constants'
 
 import knex from './Knex'
 import { DiscordBot, getMainGuild } from './DiscordBot'
 import { sign, verify } from './Jwt'
-import { formData, serialize } from './Tools'
+import { camoUrl, formData, serialize } from './Tools'
 import { AddBotSubmit, ManageBot } from './Yup'
+import { markdownImage } from './Regex'
 
 export const imageRateLimit = new TLRU<unknown, number>({ maxAgeMs: 60000 })
 
@@ -43,7 +44,6 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 		.orWhere({ vanity: id, trusted: true })
 		.orWhere({ vanity: id, partnered: true })
 	if (res[0]) {
-
 		const discordBot = await get.discord.user.load(res[0].id)
 		await getMainGuild()?.members?.fetch(res[0].id).catch(e=> e)
 		if(!discordBot) return null
@@ -353,6 +353,17 @@ export const get = {
 		async (ids: string[]) =>
 			(await Promise.all(ids.map(async (el: string) => await getBot(el, false)))).map(row => serialize(row))
 		, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 60000 }) }),
+	botDescSafe: async (id: string) => {
+		const bot = await get.bot.load(id)
+		return bot?.desc.replace(markdownImage, (matches: string, alt: string|undefined, link: string|undefined, description: string|undefined): string => {
+			try {
+				const url = new URL(link)
+				return `![${alt || description || ''}](${imageSafeHost.find(el => url.host.endsWith(el)) ? link : camoUrl(link) })`
+			} catch {
+				return matches
+			}
+		}) || null
+	},
 	user: new DataLoader(
 		async (ids: string[]) =>
 			(await Promise.all(ids.map(async (el: string) => await getUser(el)))).map(row => serialize(row))

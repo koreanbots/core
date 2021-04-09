@@ -5,7 +5,7 @@ import { KoreanbotsEmoji } from './Constants'
 export const anchorHeader = {
 	type:    'output',
 	regex:   Heading,
-	replace: function (__match: string, id:string, title:string, level:number) {
+	replace: function (__match: string, id:string, title:string, level:number): string {
 
 		// github anchor style
 		const href = id.replace(ImageTag, '$1').replace(/"/gi, '')
@@ -33,7 +33,7 @@ export const twemoji = {
 export const customEmoji = {
 	type: 'output',
 	regex: EmojiSyntax,
-	replace: function(__match: string, name: string) {
+	replace: function(__match: string, name: string): string {
 		const result = KoreanbotsEmoji.find(el => el.short_names.includes(name))
 		if(!name || !result) return `:${name}:`
 		return `<img class="emoji special" draggable="false" alt="${name}" src="${result.imageUrl}"/>`

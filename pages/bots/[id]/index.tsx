@@ -36,7 +36,7 @@ const TextArea = dynamic(() => import('@components/Form/TextArea'))
 const Modal = dynamic(() => import('@components/Modal'))
 const NSFW = dynamic(() => import('@components/NSFW'))
 
-const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken }) => {
+const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken }) => {
 	const bg = checkBotFlag(data?.flags, 'trusted') && data?.banner
 	const router = useRouter()
 	const [ nsfw, setNSFW ] = useState<boolean>()
@@ -305,7 +305,7 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken }) => {
 									}
 									<div className='markdown-body pt-4 w-full'>
 										<Segment className='my-4'>
-											<Markdown text={data.desc}/>
+											<Markdown text={desc}/>
 										</Segment>
 										<Advertisement />
 									</div>
@@ -320,10 +320,12 @@ const Bots: NextPage<BotsProps> = ({ data, date, user, theme, csrfToken }) => {
 export const getServerSideProps = async (ctx: Context) => {
 	const parsed = parseCookie(ctx.req)
 	const data = await get.bot.load(ctx.query.id) ?? { id: '' }
+	const desc = await get.botDescSafe(data.id)
 	const user = await get.Authorization(parsed?.token)
 	return {
 		props: {
 			data,
+			desc,
 			date: SnowflakeUtil.deconstruct(data.id ?? '0').date.toJSON(),
 			user: await get.user.load(user || ''),
 			csrfToken: getToken(ctx.req, ctx.res)
@@ -335,6 +337,7 @@ export default Bots
 
 interface BotsProps {
 	data: Bot
+	desc: string
 	date: Date
 	user: User
 	theme: Theme

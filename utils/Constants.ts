@@ -122,6 +122,12 @@ export const reportCats = [
 	'기타',
 ]
 
+export const imageSafeHost = [
+	'koreanbots.dev',
+	'githubusercontent.com',
+	'cdn.discordapp.com'	
+]
+
 export const MessageColor = {
 	success: 'bg-green-200 text-green-800',
 	error: 'bg-red-200 text-red-800',
@@ -131,7 +137,8 @@ export const MessageColor = {
 
 export const BASE_URLs = {
 	api: 'https://discord.com/api',
-	cdn: 'https://cdn.discordapp.com'
+	cdn: 'https://cdn.discordapp.com',
+	camo: 'https://camo.koreanbots.dev'
 }
 
 export const BotBadgeType = (data: Bot) => {

@@ -4,7 +4,7 @@ import rateLimit from 'express-rate-limit'
 import { CaptchaVerify, get, put, update } from '@utils/Query'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { checkToken } from '@utils/Csrf'
-import { AddBotSubmit, AddBotSubmitSchema, ManageBot, ManageBotSchema } from '@utils/Yup'
+import { AddBotSubmit, AddBotSubmitSchema, CsrfCaptcha, ManageBot, ManageBotSchema } from '@utils/Yup'
 import RequestHandler from '@utils/RequestHandler'
 import { User } from '@types'
 import { checkUserFlag } from '@utils/Tools'
@@ -72,7 +72,25 @@ const Bots = RequestHandler()
 				message: '디스코드 서버에 참가해주세요.',
 				errors: ['봇 신청하시기 위해서는 공식 디스코드 서버에 참가해주셔야합니다.'],
 			})
+		get.botSubmits.clear(user)
 		return ResponseWrapper(res, { code: 200, data: result })
+	})
+	.delete(async (req: DeleteApiRequest, res) => {
+		const bot = await get.bot.load(req.query.id)
+		if(!bot) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })
+		const user = await get.Authorization(req.cookies.token)
+		if (!user) return ResponseWrapper(res, { code: 401 })
+		if((bot.owners as User[])[0].id !== user) return ResponseWrapper(res, { code: 403 })
+		const csrfValidated = checkToken(req, res, req.body._csrf)
+		if (!csrfValidated) return
+		const captcha = await CaptchaVerify(req.body._captcha)
+		if(!captcha) return ResponseWrapper(res, { code: 400, message: '캡챠 검증에 실패하였습니다.' })
+		if(req.body.name !== bot.name) return ResponseWrapper(res, { code: 400, message: '봇 이름을 입력해주세요.' })
+		// 봇 삭제 구분 테스트를 위해 비활성화
+		// remove.bot(bot.id)
+
+		return ResponseWrapper(res, { code: 200, message: '성공적으로 삭제했습니다.' })
+		
 	})
 	.patch(patchLimiter).patch(async (req: PatchApiRequest, res) => {
 		const bot = await get.bot.load(req.query.id)
@@ -110,16 +128,14 @@ interface GetApiRequest extends NextApiRequest {
 
 interface PostApiRequest extends GetApiRequest {
 	body: AddBotSubmit | null
-	query: {
-		id: string
-	}
 }
 
 interface PatchApiRequest extends GetApiRequest {
 	body: ManageBot | null
-	query: {
-		id: string
-	}
+}
+
+interface DeleteApiRequest extends GetApiRequest {
+		body: CsrfCaptcha & { name: string } | null
 }
 
 export default Bots

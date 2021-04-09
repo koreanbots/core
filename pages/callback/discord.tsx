@@ -14,6 +14,7 @@ const DiscordCallback:NextPage<DiscordCallbackProps> = ({ data }) => {
 	const router = useRouter()
 	const [ redirect, setRedirect ] = useState(false)
 	useEffect(() => {
+		if(!data) router.push('/api/auth/discord')
 		localStorage.userCache = JSON.stringify({
 			id: data.id,
 			username: data.username,
@@ -21,20 +22,20 @@ const DiscordCallback:NextPage<DiscordCallbackProps> = ({ data }) => {
 			version: 2
 		})
 		setRedirect(true)
-	}, [ data ])
+		
+	}, [ data, router ])
 	function redirectWhere() {
 		redirectTo(router, localStorage.redirectTo ?? '/')
 		localStorage.removeItem('redirectTo')
 		return
 	}
 	if(!data) {
-		router.push('/api/auth/discord')
 		return <div className='absolute right-1/2 bottom-1/2 text-center'>
 			<h1 className='text-3xl text-bold'>리다이랙트중입니다.</h1>
 		</div>
 	}
   
-	return <>
+	else return <>
 		<Loader text={<>로그인중입니다. 잠시만 기다려주세요.<br />이 페이지가 계속 표시된다면 새로고침해주세요.</>} />
 		{
 			redirect ? redirectWhere() : ''

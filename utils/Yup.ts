@@ -267,6 +267,16 @@ export interface ManageBot {
 	_csrf: string
 }
 
+export const CsrfCaptchaSchema: Yup.SchemaOf<CsrfCaptcha> = Yup.object({
+	_csrf: Yup.string().required(),
+	_captcha: Yup.string().required()
+})
+
+export interface CsrfCaptcha {
+	_csrf: string
+	_captcha: string
+}
+
 export const DeveloperBotSchema: Yup.SchemaOf<DeveloperBot> = Yup.object({
 	webhook: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')

@@ -15,13 +15,15 @@ const DiscordCallback:NextPage<DiscordCallbackProps> = ({ data }) => {
 	const [ redirect, setRedirect ] = useState(false)
 	useEffect(() => {
 		if(!data) router.push('/api/auth/discord')
-		localStorage.userCache = JSON.stringify({
-			id: data.id,
-			username: data.username,
-			tag: data.tag,
-			version: 2
-		})
-		setRedirect(true)
+		else {
+			localStorage.userCache = JSON.stringify({
+				id: data.id,
+				username: data.username,
+				tag: data.tag,
+				version: 2
+			})
+			setRedirect(true)
+		}
 		
 	}, [ data, router ])
 	function redirectWhere() {

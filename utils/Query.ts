@@ -225,6 +225,12 @@ async function getBotSpec(id: string, userID: string) {
 	return serialize(res[0])
 }
 
+async function deleteBot(id: string): Promise<boolean> {
+	const bot = await knex('bots').where({ id }).del()
+
+	return !!bot
+}
+
 async function updateBot(id: string, data: ManageBot) {
 	const res = await knex('bots').where({ id })
 	if(res.length === 0 || res[0].state !== 'ok') return 0
@@ -434,6 +440,10 @@ export const update = {
 
 export const put = {
 	submitBot
+}
+
+export const remove = {
+	bot: deleteBot
 }
 
 export const ratelimit = {

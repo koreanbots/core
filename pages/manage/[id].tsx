@@ -1,5 +1,5 @@
 import { NextPage, NextPageContext } from 'next'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
@@ -41,7 +41,6 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 	const [ adminModal, setAdminModal ] = useState(false)
 	const [ transferModal, setTransferModal ] = useState(false)
 	const [ deleteModal, setDeleteModal ] = useState(false)
-	const deleteRef = useRef()
 	const router = useRouter()
 	function toLogin() {
 		localStorage.redirectTo = window.location.href
@@ -182,7 +181,7 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 						</div>
 						<Button onClick={() => setAdminModal(true)} className='h-10 bg-red-500 hover:opacity-80 text-white lg:w-1/8'><i className='fas fa-user-cog' /> 관리자 수정</Button>
 						<Modal full header='관리자 수정' isOpen={adminModal} dark={theme === 'dark'} onClose={() => setAdminModal(false)} closeIcon>
-							<Formik initialValues={{ owners: (bot.owners as User[]), id: '' }} onSubmit={(v) => alert(JSON.stringify(v.owners.map(el => el.id)))}>
+							<Formik initialValues={{ owners: (bot.owners as User[]), id: '', _captcha: '' }} onSubmit={(v) => alert(JSON.stringify(v.owners.map(el => el.id)))}>
 								{
 									({ values, setFieldValue }) => <Form>
 										<Message type='warning'>
@@ -213,20 +212,22 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 													<Input name='id' placeholder='추가할 유저 ID' />
 												</div>
 												<Button className='w-16 bg-discord-blurple' onClick={async () => {
+													if(values.owners.find(el => el.id === values.id)) return alert('이미 존재하는 유저입니다.')
 													const user = await getUser(values.id)
 													const arr = [...values.owners]
-													if(!user) return
+													if(!user) return alert('올바르지 않은 유저입니다.')
 													else {
 														arr.push(user)
 														setFieldValue('owners', arr)
 														setFieldValue('id', '')
 													}
 												}}>
-													<i className='fas fa-user-plus' />
+													<i className='fas fa-user-plus text-white' />
 												</Button>
 											</div>
 										</div>
-										<Button className='mt-2 bg-red-500 text-white hover:opacity-80' type='submit'><i className='fas fa-save text-sm' /> 저장</Button>
+										<Captcha dark={theme === 'dark'} onVerify={(k) => setFieldValue('_captcha', k)} />
+										<Button disabled={!values._captcha} className='mt-2 bg-red-500 text-white hover:opacity-80' type='submit'><i className='fas fa-save text-sm' /> 저장</Button>
 									</Form>
 								}
 							</Formik>
@@ -253,7 +254,7 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 											<h2 className='text-md my-1'>계속 하시려면 <strong>{bot.name}</strong>{getJosaPicker('을')(bot.name)} 입력해주세요.</h2>
 											<Input name='name' placeholder={bot.name} />
 										</div>
-										<Captcha ref={deleteRef} dark={theme === 'dark'} onVerify={(k) => setFieldValue('_captcha', k)} />
+										<Captcha dark={theme === 'dark'} onVerify={(k) => setFieldValue('_captcha', k)} />
 										<Button disabled={!values.ownerID || values.name !== bot.name || !values._captcha} className={`mt-4 bg-red-500 text-white ${!values.ownerID ||values.name !== bot.name || !values._captcha ? 'opacity-80' : 'hover:opacity-80'}`} type='submit'><i className='fas fa-exchange-alt' /> 소유권 이전</Button>
 									</Form>
 								}
@@ -268,7 +269,14 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 						</div>
 						<Button onClick={() => setDeleteModal(true)} className='h-10 bg-red-500 hover:opacity-80 text-white lg:w-1/8'><i className='fas fa-trash' /> 봇 삭제하기</Button>
 						<Modal full header={`${bot.name} 삭제하기`} isOpen={deleteModal} dark={theme === 'dark'} onClose={() => setDeleteModal(false)} closeIcon>
-							<Formik initialValues={{ name: '', _captcha: '' }} onSubmit={(v) => alert(JSON.stringify(v))}>
+							<Formik initialValues={{ name: '', _captcha: '', _csrf: csrfToken }} onSubmit={async (v) => {
+								const res = await Fetch(`/bots/${bot.id}`, { method: 'DELETE', body: JSON.stringify(v) })
+								if(res.code !== 200) alert(res.message)
+								else {
+									alert('성공적으로 삭제하였습니다.')
+									redirectTo(router, '/')
+								}
+							}}>
 								{
 									({ values, setFieldValue }) => <Form>
 										<Message type='warning'>
@@ -278,7 +286,7 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 										<div className='py-4'>
 											<Input name='name' placeholder={bot.name} />
 										</div>
-										<Captcha ref={deleteRef} dark={theme === 'dark'} onVerify={(k) => setFieldValue('_captcha', k)} />
+										<Captcha dark={theme === 'dark'} onVerify={(k) => setFieldValue('_captcha', k)} />
 										<Button disabled={values.name !== bot.name || !values._captcha} className={`mt-4 bg-red-500 text-white ${values.name !== bot.name || !values._captcha ? 'opacity-80' : 'hover:opacity-80'}`} type='submit'><i className='fas fa-trash' /> 삭제</Button>
 									</Form>
 								}

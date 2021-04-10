@@ -1,28 +1,42 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { redirectTo } from '@utils/Tools'
-import { UserCache } from '@types'
+import { User, UserCache } from '@types'
 
 import DiscordAvatar from '@components/DiscordAvatar'
+import Fetch from '@utils/Fetch'
 
-const Navbar = (): JSX.Element => {
-	let userCache:UserCache
-	try {
-		userCache = JSON.parse(localStorage.userCache)
-	} catch {
-		userCache = null
-	}
-
+const Navbar = ({ token }:{ token: string }): JSX.Element => {
+	const [userCache, setUserCache] = useState<UserCache>()
 	const [navbarOpen, setNavbarOpen] = useState<boolean>(false)
 	const [dropdownOpen, setDropdownOpen] = useState<boolean>(false)
 	const router = useRouter()
 	const logged = userCache?.id && userCache.version === 2
 	const dev = router.pathname.startsWith('/developers')
+
+	useEffect(() => {
+		try {
+			if(localStorage.userCache) {
+				setUserCache(token ? JSON.parse(localStorage.userCache) : null)
+			}
+			Fetch<User>('/users/@me').then(data => {
+				if(data.code !== 200) return
+				setUserCache(JSON.parse(localStorage.userCache = JSON.stringify({
+					id: data.data.id,
+					username: data.data.username,
+					tag: data.data.tag,
+					version: 2
+				})))
+			})
+		} catch {
+			setUserCache(null)
+		}
+	}, [ token ])
 	return (
 		<>
 			<nav className='fixed z-40 top-0 flex flex-wrap items-center justify-between px-2 py-3 w-full text-gray-100 dark:bg-discord-black bg-discord-blurple bg-transparent lg:absolute'>

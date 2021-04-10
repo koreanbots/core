@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import type { AppProps } from 'next/app'
+import App, { AppContext, AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import { Router, useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -8,15 +8,13 @@ import NProgress from 'nprogress'
 
 import { init } from '@utils/Sentry'
 import Logger from '@utils/Logger'
-import { systemTheme } from '@utils/Tools'
+import { parseCookie, systemTheme } from '@utils/Tools'
 import { shortcutKeyMap } from '@utils/Constants'
 import { Theme } from '@types'
 
 const Footer = dynamic(() => import('@components/Footer'))
 const Navbar = dynamic(() => import('@components/Navbar'))
 const Modal = dynamic(() => import('@components/Modal'))
-
-import Crypto from 'crypto'
 
 import 'core-js/es/promise'
 import 'core-js/es/set'
@@ -26,7 +24,6 @@ import '../app.css'
 import '../github-markdown.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import PlatformDisplay from '@components/PlatformDisplay'
-
 init()
 
 // Progress Bar
@@ -35,14 +32,12 @@ Router.events.on('routeChangeStart', NProgress.start)
 Router.events.on('routeChangeComplete', NProgress.done)
 Router.events.on('routeChangeError', NProgress.done)
 
-export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX.Element {
-	const [ betaKey, setBetaKey ] = useState('')
+const KoreanbotsApp = ({ Component, pageProps, err, cookie }: KoreanbotsProps): JSX.Element => {
 	const [ shortcutModal, setShortcutModal ] = useState(false)
 	const [ theme, setTheme ] = useState<Theme>('system')
 	const router = useRouter()
 
 	useEffect(() => {
-		setBetaKey(localStorage.betaKey)
 		console.log(
 			'%c' + 'KOREANBOTS',
 			'color: #3366FF; -webkit-text-stroke: 2px black; font-size: 72px; font-weight: bold;'
@@ -71,16 +66,9 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 			<link rel='shortcut icon' href='/logo.png' />
 			<meta name='theme-color' content='#3366FF' />
 		</Head>
-		<Navbar />
+		<Navbar token={cookie.token} />
 		<div className='iu-is-the-best min-h-screen text-black dark:text-gray-100 dark:bg-discord-dark bg-white'>
-			{
-				process.env.NEXT_PUBLIC_TESTER_KEY === Crypto.createHmac('sha256', betaKey ?? '').digest('hex') ? 
-					<Component {...pageProps} err={err} theme={theme} setTheme={setTheme} /> : 
-					<div className='text-center py-40 px-10'>
-						<h1 className='text-3xl font-bold'>주어진 테스터키를 입력해주세요.</h1><br/>
-						<input value={betaKey} name='field_name' className='text-black border outline-none px-4 py-2 rounded-2xl' type='text' placeholder='테스터 키' onChange={(e)=> { localStorage.setItem('betaKey', e.target.value); setBetaKey(e.target.value) }} />
-					</div>
-			}
+			<Component {...pageProps} err={err} theme={theme} setTheme={setTheme} />
 		</div>
 		{
 			!(router.pathname.startsWith('/developers')) && <Footer theme={theme} setTheme={setTheme} />
@@ -126,6 +114,20 @@ export default function App({ Component, pageProps, err }: KoreanbotsProps): JSX
 	</div>
 }
 
+KoreanbotsApp.getInitialProps = async (appCtx: AppContext) => {
+	const appProps = await App.getInitialProps(appCtx)
+	const parsed = parseCookie(appCtx.ctx.req)
+	return {
+		...appProps,
+		cookie: parsed
+	}
+}
+
+export default KoreanbotsApp
+
 interface KoreanbotsProps extends AppProps {
 	err: unknown
+	cookie: {
+		token?: string
+	}
 }

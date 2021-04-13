@@ -1,10 +1,5 @@
 name: CI
-on:
-  push:
-  pull_request:
-    branches:
-      - '*'
-      - '!master'
+on: [push, pull_request]
 jobs:
   eslint:
     name: ESLint
@@ -57,7 +52,7 @@ jobs:
       - name: Create needed files
         run: echo '{"tester":"DEMO_KEY"}' > secret.json
       - name: Build
-        if: github.ref == 'refs/heads/master'
+        if: success() && github.ref == 'refs/heads/master'
         run: yarn build
         env:
           NEXT_PUBLIC_SENTRY_SERVER_ROOT_DIR: ./api

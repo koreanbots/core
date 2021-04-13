@@ -57,11 +57,13 @@ jobs:
       - name: Create needed files
         run: echo '{"tester":"DEMO_KEY"}' > secret.json
       - name: Build
+        if: github.ref == 'refs/heads/master'
         run: yarn build
         env:
           NEXT_PUBLIC_SENTRY_SERVER_ROOT_DIR: ./api
           SENTRY_ORG: koreanbots
           SENTRY_PROJECT: v2
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SOURCE_BRANCH: ${{ github.head_ref }}
           SOURCE_COMMIT: ${{ github.sha }}

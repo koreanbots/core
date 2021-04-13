@@ -34,7 +34,6 @@ module.exports = {
       SENTRY_ORG &&
       SENTRY_PROJECT &&
 			SENTRY_AUTH_TOKEN &&
-			SENTRY_RELEASE &&
 			VERSION &&
       NODE_ENV === 'production'
 		) {
@@ -45,7 +44,7 @@ module.exports = {
 					ignore: ['node_modules'],
 					stripPrefix: ['webpack://_N_E/'],
 					urlPrefix: `~${basePath}/_next`,
-					release: `${SENTRY_RELEASE === 'stable' ? VERSION : SOURCE_COMMIT || VERSION}-${SOURCE_BRANCH || SENTRY_RELEASE}`,
+					release: `${SOURCE_BRANCH === 'stable' ? VERSION : SOURCE_COMMIT || VERSION}-${SOURCE_BRANCH || SENTRY_RELEASE}`,
 				})
 			)
 		}

@@ -1,5 +1,12 @@
 name: CI
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - 'master'
+      - 'stable'
+  pull_request:
+    branches:
+      - '*'
 jobs:
   eslint:
     name: ESLint
@@ -52,7 +59,6 @@ jobs:
       - name: Create needed files
         run: echo '{"tester":"DEMO_KEY"}' > secret.json
       - name: Build
-        if: success() && github.ref == 'refs/heads/master'
         run: yarn build
         env:
           NEXT_PUBLIC_SENTRY_SERVER_ROOT_DIR: ./api
@@ -60,7 +66,7 @@ jobs:
           SENTRY_PROJECT: v2
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SOURCE_BRANCH: ${{ github.head_ref }}
+          SOURCE_BRANCH: ${{ github.event_name == 'push' && github.head_ref || null }}
           SOURCE_COMMIT: ${{ github.sha }}
           CI: true
 

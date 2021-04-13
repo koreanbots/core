@@ -1,7 +1,10 @@
 name: CI
 on:
-  - push
-  - pull_request
+  push:
+  pull_request:
+    branches:
+      - '*'
+      - '!master'
 jobs:
   eslint:
     name: ESLint
@@ -29,19 +32,18 @@ jobs:
           node-version: 14
       - name: yarn install
         run: yarn install
-      - name: run jest
-        run: yarn test
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: install node v14
-        uses: actions/setup-node@v2
+      - name: Setup MySQL
+        uses: getong/mariadb-action@v1.1
         with:
-          node-version: 14
-      - name: yarn install
-        run: yarn install
+          mysql database: 'discordbots'
+          mysql root password: 'test'
+      - name: Wait for MySQL
+        run: |
+          while ! mysqladmin ping --host=127.0.0.1 --password=test --silent; do
+            sleep 1
+          done
+      - name: Run Jest
+        run: yarn test
       - name: Generate RSA Key Pair
         run: |
           ssh-keygen -b 2048 -t rsa -f key -q -P ""
@@ -57,7 +59,14 @@ jobs:
       - name: Build
         run: yarn build
         env:
+          NEXT_PUBLIC_SENTRY_SERVER_ROOT_DIR: ./api
+          SENTRY_ORG: koreanbots
+          SENTRY_PROJECT: v2
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SOURCE_BRANCH: ${{ github.head_ref }}
+          SOURCE_COMMIT: ${{ github.sha }}
           CI: true
+
   # docker:
   #   needs:
   #     - eslint

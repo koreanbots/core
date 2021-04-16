@@ -29,6 +29,7 @@ module.exports = {
 				),
 			})
 		)
+		console.log(SENTRY_DSN, SENTRY_ORG, SENTRY_PROJECT, SENTRY_AUTH_TOKEN, VERSION, NODE_ENV)
 		if (
 			SENTRY_DSN &&
       SENTRY_ORG &&

@@ -10,6 +10,7 @@ const SEO = dynamic(() => import('@components/SEO'))
 
 const DeveloperLayout = ({ children, enabled, docs, currentDoc }:DeveloperLayout):JSX.Element => {
 	const [ navbarEnabled, setNavbarOpen ] = useState(false)
+
 	return <div className='flex min-h-screen'>
 		<SEO title='한디리 개발자' description='한국 디스코드봇 리스트 API를 활용하여 봇에 다양한 기능을 추가해보세요.' />
 		<div className='block lg:hidden h-screen relative'>

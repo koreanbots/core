@@ -4,7 +4,7 @@ const ColorCard = ({ header, first, second, className }: ColorCardProps): JSX.El
 			<h2 className='text-2xl font-bold'>{header}</h2>
 			<p className='opacity-80'>
 				{first} 
-                <br />
+				<br />
 				{second}
 			</p>
 		</div>

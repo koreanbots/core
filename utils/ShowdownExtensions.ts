@@ -21,7 +21,7 @@ export const anchorHeader = {
 
 export const twemoji = {
 	type: 'output',
-	regex: `${Emoji}{2}|${Emoji}`,
+	regex: `${Emoji}{1,2}`,
 	replace: function(__match: string, two: string, one: string) {
 		const parsed = __match || two || one
 		const emoj = Twemoji.parse(parsed, { folder: 'svg', ext: '.svg' })

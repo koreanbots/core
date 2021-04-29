@@ -10,7 +10,7 @@ import { ErrorMessage } from '@utils/Constants'
 
 const Container = dynamic(() => import('@components/Container'))
 
-const MyError = ({ statusCode }) => {
+const MyError = () => {
 	return <div
 		className='flex items-center h-screen select-none px-20'
 	>

@@ -1,10 +1,10 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
+import { NextApiHandler } from 'next'
 import { getMainGuild } from '@utils/DiscordBot'
+import RequestHandler from '@utils/RequestHandler'
 
-const HelloWorld: NextApiHandler = (_req: NextApiRequest, res: NextApiResponse) => {
+const HelloWorld: NextApiHandler = RequestHandler().all(async (req, res) => {
 	getMainGuild() // Load Discord Bot
-	res.statusCode = 200
-	res.json({ happy: 'hacking' })
-}
+	res.status(200).json({ happy: 'hacking' })
+})
 
 export default HelloWorld

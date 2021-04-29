@@ -258,6 +258,8 @@ export const ErrorText = {
 	502: '올바르지 않은 게이트웨이입니다.'
 }
 
+export const ErrorMessage = ['지나가던 고양이가 선을 밟았어요..', '무언가 잘못되었어요..!', '이게 아닌데...', '어쩜 이렇게 오류가 또 나는건지?']
+
 export const GuildPermissions = {
 	general: [
 		{

@@ -139,4 +139,8 @@ export function toHex(value: string): string {
 	return Buffer.from(value).toString('hex')
 }
 
+export function getRandom<T=unknown>(arr: T[]): T {
+	return arr[Math.floor(Math.random() * arr.length)]
+}
+
 export * from './ShowdownExtensions'

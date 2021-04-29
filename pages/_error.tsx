@@ -1,20 +1,35 @@
 /* https://github.com/vercel/next.js/blob/canary/examples/with-sentry/pages/_error.js */
 
 import { NextPageContext } from 'next'
+import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import NextErrorComponent, { ErrorProps } from 'next/error'
-import * as Sentry from '@sentry/node'
+import * as Sentry from '@sentry/react'
+import { getRandom } from '@utils/Tools'
+import { ErrorMessage } from '@utils/Constants'
 
+const Container = dynamic(() => import('@components/Container'))
 
-const MyError = ({ statusCode, hasGetInitialPropsRun, err }) => {
-	if (!hasGetInitialPropsRun && err) {
-		// getInitialProps is not called in case of
-		// https://github.com/vercel/next.js/issues/8592. As a workaround, we pass
-		// err via _app.js so it can be captured
-		Sentry.captureException(err)
-		// Flushing is not required in this case as it only happens on the client
-	}
-
-	return <NextErrorComponent statusCode={statusCode} />
+const MyError = ({ statusCode }) => {
+	return <div
+		className='flex items-center h-screen select-none px-20'
+	>
+		<Container>
+			<h2 className='text-4xl font-semibold'>{getRandom(ErrorMessage)}</h2>
+			<p className='text-md mt-1'>예상치 못한 오류가 발생하였습니다. 문제가 지속적으로 발생한다면 문의해주세요!</p>
+			<a className='text-sm text-blue-500 hover:text-blue-400' href='https://status.koreanbots.dev' target='_blank' rel='noreferrer'>상태 페이지</a>
+			<div>
+				<Link href='/discord'>
+					<a target='_blank' rel='noreferrer' className='text-lg hover:opacity-80 cursor-pointer'>
+						<i className='fab fa-discord' />
+					</a>
+				</Link>
+				<a href='https://twitter.com/koreanbots' target='_blank' rel='noreferrer' className='text-lg ml-2 hover:opacity-80 cursor-pointer'>
+					<i className='fab fa-twitter' />
+				</a>
+			</div>
+		</Container>
+	</div>
 }
 
 MyError.getInitialProps = async ({ res, err, asPath, pathname, query, AppTree }:NextPageContext) => {
@@ -55,7 +70,7 @@ MyError.getInitialProps = async ({ res, err, asPath, pathname, query, AppTree }:
 	)
 	await Sentry.flush(2000)
 
-	return errorInitialProps
+	return { err }
 }
 
 interface CustomErrorProps extends ErrorProps {

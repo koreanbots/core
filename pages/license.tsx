@@ -5,13 +5,12 @@ import * as generateLicenseFile from 'generate-license-file'
 import { ILicense } from 'generate-license-file/dist/models/license.interface'
 import { readFileSync } from 'fs'
 
-const Docs = dynamic(()=> import('@components/Docs'))
+const Docs = dynamic(() => import('@components/Docs'))
 const Segment = dynamic(() => import('@components/Segment'))
 const Markdown = dynamic(() => import('@components/Markdown'))
 
 
 const Opensource: NextPage<OpensourceProps> = ({ packageJson, mainLicense, license }) => {
-	console.log(license)
 	return <Docs title='오픈소스' header={<h1 className='font-black text-4xl'>
 		<span className='text-koreanbots-blue'>한디리</span>
 		<span><i className='text-red-500 fas fa-heart mx-2' /> </span>

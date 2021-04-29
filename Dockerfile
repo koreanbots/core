@@ -2,7 +2,7 @@ FROM node:14.16-alpine
 
 # install packages
 RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh python3 py3-pip
+    apk add --no-cache bash git openssh python3 py3-pip build-base
 
 # Create app directory
 RUN mkdir -p /usr/src/app

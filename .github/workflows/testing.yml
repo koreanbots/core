@@ -60,6 +60,7 @@ jobs:
         run: echo '{"tester":"DEMO_KEY"}' > secret.json
       - name: Build
         run: yarn build
+        env:
           CI: true
 
   # docker:

@@ -27,7 +27,7 @@ ALTER TABLE `users` ADD `stared` TEXT NOT NULL DEFAULT '[]';
 ALTER TABLE `users` ADD `discord` TEXT NOT NULL AFTER `token`;
 UPDATE `users` SET `stared` = `votes` WHERE `id`=`id`;
 ALTER TABLE `users` CHANGE `perm` `perm` TEXT NOT NULL DEFAULT 'user';
-ALTER TABLE `users` CHANGE `votes` `votes` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{}';
+ALTER TABLE `users` CHANGE `votes` `votes` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{}';
 ALTER TABLE `users` CHANGE `avatar` `avatar` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
 UPDATE `users` SET votes="{}";
 

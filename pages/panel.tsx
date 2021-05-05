@@ -30,7 +30,7 @@ const Panel:NextPage<PanelProps> = ({ logged, user, submits, csrfToken }) => {
 	return <Container paddingTop className='pt-5 pb-10'>
 		<SEO title='관리 패널' />
 		<h1 className='text-4xl font-bold'>관리 패널</h1>
-		<h2 className='text-2xl font-bold mt-4'>깃허브 계정 연동</h2>
+		<h2 className='text-2xl font-bold mt-4'>깃허브 계정 연동</h2>
 		<p className='text-gray-400 mb-2'>연동한 깃허브 계정은 프로필에 표시됩니다.</p>
 		<Button className={`${user.github ? 'bg-red-600 text-white' : 'bg-gray-200 dark:bg-github-black'} hover:opacity-80`} onClick={user.github ? async () => {
 			await Fetch('/api/auth/github', {

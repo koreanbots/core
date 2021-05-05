@@ -1,13 +1,15 @@
-import { NextPage } from 'next'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { GetServerSideProps, NextPage } from 'next'
 
 const Developers: NextPage = () => {
-	const router = useRouter()
-	useEffect(() => {
-		router.push('/developers/applications')
-	})
 	return <></>
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+	ctx.res.statusCode = 301
+	ctx.res.setHeader('Location', '/developers/applications')
+	return {
+		props: {}
+	}
 }
 
 export default Developers

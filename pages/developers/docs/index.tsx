@@ -1,13 +1,15 @@
-import { NextPage } from 'next'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { GetServerSideProps, NextPage } from 'next'
 
 const Docs: NextPage = () => {
-	const router = useRouter()
-	useEffect(() => {
-		router.push('/developers/docs/시작하기')
-	})
 	return <></>
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+	ctx.res.statusCode = 301
+	ctx.res.setHeader('Location', encodeURI('/developers/docs/시작하기'))
+	return {
+		props: {}
+	}
 }
 
 export default Docs

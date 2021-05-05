@@ -254,7 +254,7 @@ async function getBotSpec(id: string, userID: string) {
 
 async function deleteBot(id: string): Promise<boolean> {
 	const bot = await knex('bots').where({ id }).del()
-
+	get.bot.clear(id)
 	return !!bot
 }
 

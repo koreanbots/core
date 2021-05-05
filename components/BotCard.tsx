@@ -10,23 +10,25 @@ import DiscordAvatar from '@components/DiscordAvatar'
 
 const BotCard = ({ manage = false, bot }: BotProps): JSX.Element => {
 	return (
-		<div className='container mb-16 transform hover:-translate-y-1 transition duration-100 ease-in'>
-			<div className='relative'>
-				<div className='container mx-auto'>
-					<div className='h-full'>
-						<div
-							className='relative mx-auto h-full text-black dark:text-white dark:bg-discord-black bg-little-white rounded-2xl shadow-xl'
-							style={
-								checkBotFlag(bot.flags, 'trusted') && bot.banner
-									? {
-										background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${bot.banner}") center top / cover no-repeat`,
-										color: 'white',
+		<Link href={makeBotURL(bot)}>
+			<a>
+				<div className='container mb-16 transform hover:-translate-y-1 transition duration-100 ease-in cursor-pointer'>
+					<div className='relative'>
+						<div className='container mx-auto'>
+							<div className='h-full'>
+								<div
+									className='relative mx-auto h-full text-black dark:text-white dark:bg-discord-black bg-little-white rounded-2xl shadow-xl'
+									style={
+										checkBotFlag(bot.flags, 'trusted') && bot.banner
+											? {
+												background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${bot.banner}") center top / cover no-repeat`,
+												color: 'white',
+											}
+											: {}
 									}
-									: {}
-							}
-						>
-							<Link href={makeBotURL(bot)}>
-								<a className='cursor-pointer'>
+								>
+							
+
 									<div className='flex h-44'>
 										<div className='w-3/5'>
 											<div className='flex justify-start'>
@@ -71,45 +73,48 @@ const BotCard = ({ manage = false, bot }: BotProps): JSX.Element => {
 										))}{' '}
 										{bot.category.length > 3 && <Tag text={`+${bot.category.length - 3}`} dark />}
 									</div>
-								</a>
-							</Link>
-							<Divider />
-							<div className='flex justify-evenly'>
-								<Link href={makeBotURL(bot)}>
-									<a className='py-3 w-full text-center text-koreanbots-blue hover:text-white text-sm font-bold hover:bg-koreanbots-blue rounded-bl-2xl hover:shadow-lg transition duration-100 ease-in'>
+							
+									<Divider />
+									<div>
+										<div className='flex justify-evenly'>
+											<Link href={makeBotURL(bot)}>
+												<a className='py-3 w-full text-center text-koreanbots-blue hover:text-white text-sm font-bold hover:bg-koreanbots-blue rounded-bl-2xl hover:shadow-lg transition duration-100 ease-in'>
 										보기
-									</a>
-								</Link>
-								{manage ? (
-									<Link href={`/manage/${bot.id}`}>
-										<a className='py-3 w-full text-center text-green-500 hover:text-white text-sm font-bold hover:bg-green-500 rounded-br-2xl hover:shadow-lg transition duration-100 ease-in'>
+												</a>
+											</Link>
+											{manage ? (
+												<Link href={`/manage/${bot.id}`}>
+													<a className='py-3 w-full text-center text-green-500 hover:text-white text-sm font-bold hover:bg-green-500 rounded-br-2xl hover:shadow-lg transition duration-100 ease-in'>
 											관리하기
-										</a>
-									</Link>
-								) : bot.state !== 'ok' ? <a
-									className='py-3 w-full text-center text-discord-blurple text-sm font-bold rounded-br-2xl hover:shadow-lg transition duration-100 ease-in opacity-50 cursor-default select-none'
-								>
+													</a>
+												</Link>
+											) : bot.state !== 'ok' ? <a
+												className='py-3 w-full text-center text-discord-blurple text-sm font-bold rounded-br-2xl hover:shadow-lg transition duration-100 ease-in opacity-50 cursor-default select-none'
+											>
 								초대하기
-								</a> : <Link
-									href={
-										bot.url ||
+											</a> : <Link
+												href={
+													bot.url ||
 									`https://discordapp.com/oauth2/authorize?client_id=${bot.id}&scope=bot&permissions=0`
-									}
-								>
-									<a
-										rel='noopener noreferrer'
-										target='_blank'
-										className='py-3 w-full text-center text-discord-blurple hover:text-white text-sm font-bold hover:bg-discord-blurple rounded-br-2xl hover:shadow-lg transition duration-100 ease-in'
-									>
+												}
+											>
+												<a
+													rel='noopener noreferrer'
+													target='_blank'
+													className='py-3 w-full text-center text-discord-blurple hover:text-white text-sm font-bold hover:bg-discord-blurple rounded-br-2xl hover:shadow-lg transition duration-100 ease-in'
+												>
 									초대하기
-									</a>
-								</Link>}
+												</a>
+											</Link>}
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
+			</a>
+		</Link>
 	)
 }
 

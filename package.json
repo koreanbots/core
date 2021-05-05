@@ -16,9 +16,9 @@
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "5.15.3",
 		"@hcaptcha/react-hcaptcha": "0.3.6",
-		"@sentry/node": "^6.3.3",
-		"@sentry/react": "^6.3.3",
-		"@sentry/tracing": "^6.3.3",
+		"@sentry/node": "6.3.5",
+		"@sentry/react": "6.3.5",
+		"@sentry/tracing": "6.3.5",
 		"abort-controller": "3.0.0",
 		"autoprefixer": "10.2.5",
 		"badgen": "3.2.2",

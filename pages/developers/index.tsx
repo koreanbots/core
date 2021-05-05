@@ -1,9 +1,12 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 const Developers: NextPage = () => {
 	const router = useRouter()
-	router.push('/developers/applications')
+	useEffect(() => {
+		router.push('/developers/applications')
+	})
 	return <></>
 }
 

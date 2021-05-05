@@ -4,7 +4,7 @@ import DataLoader from 'dataloader'
 import { User as DiscordUser } from 'discord.js'
 
 import { Bot, User, ListType, BotList, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot } from '@types'
-import { categories, imageSafeHost, SpecialEndPoints } from './Constants'
+import { categories, imageSafeHost, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'
 
 import knex from './Knex'
 import { DiscordBot, getMainGuild } from './DiscordBot'
@@ -182,6 +182,33 @@ async function getBotSubmits(id: string) {
 }
 
 /**
+ * @param userID
+ * @param botID
+ * @returns Timestamp
+ */
+async function getBotVote(userID: string, botID: string): Promise<number|null> {
+	const user = await knex('users').select(['votes']).where({ id: userID })
+	if(user.length === 0) return null
+	const data = JSON.parse(user[0].votes)
+	return data[botID] || 0
+	
+	
+}
+
+async function voteBot(userID: string, botID: string): Promise<number|boolean> {
+	const user = await knex('users').select(['votes']).where({ id: userID })
+	if(user.length === 0) return null
+	const date = +new Date()
+	const data = JSON.parse(user[0].votes)
+	const lastDate = data[botID] || 0
+	if(date - lastDate < VOTE_COOLDOWN) return VOTE_COOLDOWN - (date - lastDate)
+	data[botID] = date
+	await knex('bots').where({ id: botID }).increment('votes', 1)
+	await knex('users').where({ id: userID }).update({ votes: JSON.stringify(data) })
+	return true
+}
+
+/**
  * @returns 1 - Has pending Bots
  * @returns 2 - Already submitted ID
  * @returns 3 - Bot User does not exists
@@ -339,8 +366,6 @@ export async function CaptchaVerify(response: string): Promise<boolean> {
 		})
 	}).then(r=> r.json())
 
-	console.log(res)
-
 	return res.success
 }
 
@@ -425,6 +450,7 @@ export const get = {
 				(await Promise.all(urls.map(async (url: string) => await getImage(url))))
 			, { cacheMap: new TLRU({ maxStoreSize: 500, maxAgeMs: 3600000 }) }),
 	},
+	botVote: getBotVote,
 	Authorization,
 	BotAuthorization
 }
@@ -439,6 +465,7 @@ export const update = {
 }
 
 export const put = {
+	voteBot,
 	submitBot
 }
 

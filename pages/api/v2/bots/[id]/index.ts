@@ -1,7 +1,7 @@
 import { NextApiRequest } from 'next'
 import rateLimit from 'express-rate-limit'
 
-import { CaptchaVerify, get, put, update } from '@utils/Query'
+import { CaptchaVerify, get, put, remove, update } from '@utils/Query'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { checkToken } from '@utils/Csrf'
 import { AddBotSubmit, AddBotSubmitSchema, CsrfCaptcha, ManageBot, ManageBotSchema } from '@utils/Yup'
@@ -86,8 +86,7 @@ const Bots = RequestHandler()
 		const captcha = await CaptchaVerify(req.body._captcha)
 		if(!captcha) return ResponseWrapper(res, { code: 400, message: '캡챠 검증에 실패하였습니다.' })
 		if(req.body.name !== bot.name) return ResponseWrapper(res, { code: 400, message: '봇 이름을 입력해주세요.' })
-		// 봇 삭제 구분 테스트를 위해 비활성화
-		// remove.bot(bot.id)
+		remove.bot(bot.id)
 
 		return ResponseWrapper(res, { code: 200, message: '성공적으로 삭제했습니다.' })
 		

@@ -12,7 +12,7 @@ const BotVote = RequestHandler()
 		const bot = await get.BotAuthorization(req.headers.authorization)
 		if(!bot) return ResponseWrapper(res, { code: 401 })
 		if(req.query.id !== bot) return ResponseWrapper(res, { code: 403 })
-		const userID = await Yup.string().required().validate(req.query.userID).then(el => el).catch(e => {
+		const userID = await Yup.string().required().label('userID').validate(req.query.userID).then(el => el).catch(e => {
 			ResponseWrapper(res, { code: 400, errors: e.errors })
 			return null
 		})

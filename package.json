@@ -29,7 +29,7 @@
 		"dayjs": "1.10.4",
 		"discord.js": "12.5.3",
 		"emoji-mart": "3.0.1",
-		"erlpack": "^0.1.3",
+		"erlpack": "0.1.3",
 		"express-rate-limit": "5.2.6",
 		"formik": "2.2.6",
 		"generate-license-file": "1.1.0",
@@ -59,7 +59,7 @@
 		"url-regex-safe": "2.0.2",
 		"yup": "0.32.9",
 		"yup-locales-ko": "1.0.2",
-		"zlib-sync": "^0.1.7"
+		"zlib-sync": "0.1.7"
 	},
 	"devDependencies": {
 		"@tailwindcss/custom-forms": "0.2.1",

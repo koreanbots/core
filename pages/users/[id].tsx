@@ -15,7 +15,7 @@ import Fetch from '@utils/Fetch'
 import { ReportSchema } from '@utils/Yup'
 
 import NotFound from '../404'
-import { reportCats } from '@utils/Constants'
+import { KoreanbotsEndPoints, reportCats } from '@utils/Constants'
 
 const Container = dynamic(() => import('@components/Container'))
 const SEO = dynamic(() => import('@components/SEO'))
@@ -50,11 +50,7 @@ const Users: NextPage<UserProps> = ({ user, data, csrfToken, theme }) => {
 						.map(el => el.name)
 						.join(', ')}#{을} 제작합니다.`
 				)}
-				image={
-					data.avatar
-						? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png?size=1024`
-						: `https://cdn.discordapp.com/embed/avatars/${Number(data.tag) % 5}.png?size=1024`
-				}
+				image={KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 })}
 			/>
 			<div className='lg:flex'>
 				<div className='w-full text-center lg:w-1/4'>

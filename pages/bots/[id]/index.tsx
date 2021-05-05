@@ -9,7 +9,7 @@ import { SnowflakeUtil } from 'discord.js'
 import { ParsedUrlQuery } from 'querystring'
 import { Bot, ResponseProps, Theme, User } from '@types'
 
-import { git, reportCats, Status } from '@utils/Constants'
+import { git, KoreanbotsEndPoints, reportCats, Status } from '@utils/Constants'
 import { get } from '@utils/Query'
 import Day from '@utils/Day'
 import { ReportSchema } from '@utils/Yup'
@@ -56,11 +56,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 			<SEO
 				title={data.name}
 				description={data.intro}
-				image={
-					data.avatar
-						? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png?size=1024`
-						: `https://cdn.discordapp.com/embed/avatars/${Number(data.tag) % 5}.png?size=1024`
-				}
+				image={KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 })}
 			/>
 			{
 				data.state === 'blocked' ? <div className='pb-40'>

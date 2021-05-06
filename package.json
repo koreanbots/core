@@ -23,13 +23,13 @@
 		"autoprefixer": "10.2.5",
 		"badgen": "3.2.2",
 		"cookie": "0.4.1",
-		"core-js": "3.11.2",
+		"core-js": "3.11.3",
 		"csrf": "3.1.0",
 		"dataloader": "2.0.0",
 		"dayjs": "1.10.4",
 		"discord.js": "12.5.3",
 		"emoji-mart": "3.0.1",
-		"erlpack": "^0.1.3",
+		"erlpack": "0.1.3",
 		"express-rate-limit": "5.2.6",
 		"formik": "2.2.6",
 		"generate-license-file": "1.1.0",
@@ -42,7 +42,7 @@
 		"next-session": "3.4.0",
 		"node-emoji": "1.10.0",
 		"nprogress": "0.2.0",
-		"postcss": "8.2.13",
+		"postcss": "8.2.14",
 		"postcss-preset-env": "6.7.0",
 		"react": "17.0.2",
 		"react-dom": "17.0.2",
@@ -59,7 +59,7 @@
 		"url-regex-safe": "2.0.2",
 		"yup": "0.32.9",
 		"yup-locales-ko": "1.0.2",
-		"zlib-sync": "^0.1.7"
+		"zlib-sync": "0.1.7"
 	},
 	"devDependencies": {
 		"@tailwindcss/custom-forms": "0.2.1",
@@ -90,7 +90,7 @@
 		"jest": "26.6.3",
 		"prettier": "2.2.1",
 		"prettier-plugin-tailwind": "2.2.10",
-		"ts-jest": "26.5.5",
+		"ts-jest": "26.5.6",
 		"typescript": "4.2.4"
 	},
 	"license": "AGPL-3.0"

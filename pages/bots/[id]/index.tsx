@@ -14,7 +14,7 @@ import { get } from '@utils/Query'
 import Day from '@utils/Day'
 import { ReportSchema } from '@utils/Yup'
 import Fetch from '@utils/Fetch'
-import { checkBotFlag, checkUserFlag, formatNumber, parseCookie, redirectTo } from '@utils/Tools'
+import { checkBotFlag, checkUserFlag, formatNumber, parseCookie } from '@utils/Tools'
 import { getToken } from '@utils/Csrf'
 
 import NotFound from '../../404'

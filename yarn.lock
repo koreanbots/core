@@ -2254,10 +2254,10 @@ core-js-pure@^3.0.0:
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.10.1.tgz#28642697dfcf02e0fd9f4d9891bd03a22df28ecf"
   integrity sha512-PeyJH2SE0KuxY5eCGNWA+W+CeDpB6M1PN3S7Am7jSv/Ttuxz2SnWbIiVQOn/TDaGaGtxo8CRWHkXwJscbUHtVw==
 
-core-js@3.11.2:
-  version "3.11.2"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.11.2.tgz#af087a43373fc6e72942917c4a4c3de43ed574d6"
-  integrity sha512-3tfrrO1JpJSYGKnd9LKTBPqgUES/UYiCzMKeqwR1+jF16q4kD1BY2NvqkfuzXwQ6+CIWm55V9cjD7PQd+hijdw==
+core-js@3.11.3:
+  version "3.11.3"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.11.3.tgz#2835b1f4d10f6d0400bf820cfe6fe64ad067dd3f"
+  integrity sha512-DFEW9BllWw781Op5KdYGtXfj3s9Cmykzt16bY6elaVuqXHCUwF/5pv0H3IJ7/I3BGjK7OeU+GrjD1ChCkBJPuA==
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -2813,7 +2813,7 @@ env-paths@^2.2.0:
   resolved "https://registry.yarnpkg.com/env-paths/-/env-paths-2.2.1.tgz#420399d416ce1fbe9bc0a07c62fa68d67fd0f8f2"
   integrity sha512-+h1lkLKhZMTYjog1VEpJNG7NZJWcuc2DDk/qsqSTRRCOXiLjeQ1d1/udrUGhqMxUgAlwKNZ0cf2uqan5GLuS2A==
 
-erlpack@^0.1.3:
+erlpack@0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/erlpack/-/erlpack-0.1.3.tgz#f6cd2a0d5b2f9d054b310c1dda98f60744b9f857"
   integrity sha512-QeG9v8CVsY/a/IoQi8zjn23aYKcziOihAxwjUl3tI/KB4R1FjTtctDAAMovgtpC16S+WiOauers2oWwIOQtKBQ==
@@ -6377,6 +6377,15 @@ postcss@8.2.13:
     nanoid "^3.1.22"
     source-map "^0.6.1"
 
+postcss@8.2.14:
+  version "8.2.14"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.2.14.tgz#dcf313eb8247b3ce8078d048c0e8262ca565ad2b"
+  integrity sha512-+jD0ZijcvyCqPQo/m/CW0UcARpdFylq04of+Q7RKX6f/Tu+dvpUI/9Sp81+i6/vJThnOBX09Quw0ZLOVwpzX3w==
+  dependencies:
+    colorette "^1.2.2"
+    nanoid "^3.1.22"
+    source-map "^0.6.1"
+
 postcss@^6.0.9:
   version "6.0.23"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-6.0.23.tgz#61c82cc328ac60e677645f979054eb98bc0e3324"
@@ -7949,10 +7958,10 @@ trouter@^3.1.0:
   dependencies:
     regexparam "^1.3.0"
 
-ts-jest@26.5.5:
-  version "26.5.5"
-  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.5.5.tgz#e40481b6ee4dd162626ba481a2be05fa57160ea5"
-  integrity sha512-7tP4m+silwt1NHqzNRAPjW1BswnAhopTdc2K3HEkRZjF0ZG2F/e/ypVH0xiZIMfItFtD3CX0XFbwPzp9fIEUVg==
+ts-jest@26.5.6:
+  version "26.5.6"
+  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.5.6.tgz#c32e0746425274e1dfe333f43cd3c800e014ec35"
+  integrity sha512-rua+rCP8DxpA8b4DQD/6X2HQS8Zy/xzViVYfEs2OQu68tkCuKLV0Md8pmX55+W24uRIyAsf/BajRfxOs+R2MKA==
   dependencies:
     bs-logger "0.x"
     buffer-from "1.x"
@@ -8540,7 +8549,7 @@ yup@0.32.9:
     property-expr "^2.0.4"
     toposort "^2.0.2"
 
-zlib-sync@^0.1.7:
+zlib-sync@0.1.7:
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/zlib-sync/-/zlib-sync-0.1.7.tgz#b0b24f9428e434943e306ad586428ef8baf3ed60"
   integrity sha512-UmciU6ZrIwtwPC8noMzq+kGMdiWwNRZ3wC0SbED4Ew5Ikqx14MqDPRs/Pbk+3rZPh5SzsOgUBs1WRE0iieddpg==

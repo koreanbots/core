@@ -185,7 +185,7 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 								}) })
 								if(res.code === 200) {
 									alert('성공적으로 수정했습니다.')
-									setAdminModal(false)
+									router.push(makeBotURL(bot))
 								} else {
 									alert(res.message)
 									setAdminModal(false)

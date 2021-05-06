@@ -313,9 +313,14 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 export const getServerSideProps = async (ctx: Context) => {
 	const parsed = parseCookie(ctx.req)
 	const data = await get.bot.load(ctx.query.id)
+	if(!data) return {
+		props: {
+			data
+		}
+	}
 	const desc = await get.botDescSafe(data.id)
 	const user = await get.Authorization(parsed?.token)
-	if(data && (checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data?.vanity && data.vanity !== ctx.query.id) {
+	if((checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== ctx.query.id) {
 		ctx.res.statusCode = 301
 		ctx.res.setHeader('Location', `/bots/${data.vanity}`)
 		return {
@@ -324,7 +329,7 @@ export const getServerSideProps = async (ctx: Context) => {
 	}
 	return {
 		props: {
-			data: data ?? { id: '' },
+			data,
 			desc,
 			date: SnowflakeUtil.deconstruct(data.id ?? '0').date.toJSON(),
 			user: await get.user.load(user || ''),

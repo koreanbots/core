@@ -29,6 +29,7 @@ const BotOwners = RequestHandler()
 		if(userFetched.indexOf(null) !== -1) return ResponseWrapper(res, { code: 400, message: '올바르지 않은 유저 ID를 포함하고 있습니다.' })
 		if(userFetched.length > 1 && userFetched[0].id !== (bot.owners as User[])[0].id) return ResponseWrapper(res, { code: 400, errors: ['소유자를 이전할 때는 다른 관리자를 포함할 수 없습니다.'] })
 		await update.botOwners(bot.id, validated.owners)
+		get.user.clear(user)
 		return ResponseWrapper(res, { code: 200 })
 	})
 

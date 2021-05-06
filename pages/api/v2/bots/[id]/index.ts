@@ -87,7 +87,7 @@ const Bots = RequestHandler()
 		if(!captcha) return ResponseWrapper(res, { code: 400, message: '캡챠 검증에 실패하였습니다.' })
 		if(req.body.name !== bot.name) return ResponseWrapper(res, { code: 400, message: '봇 이름을 입력해주세요.' })
 		remove.bot(bot.id)
-
+		get.user.clear(user)
 		return ResponseWrapper(res, { code: 200, message: '성공적으로 삭제했습니다.' })
 		
 	})

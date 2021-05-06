@@ -56,8 +56,11 @@ const Users: NextPage<UserProps> = ({ user, data, csrfToken, theme }) => {
 				</div>
 				<div className='flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left'>
 					<div>
-						<h1 className='mt-3 mb-1 text-4xl font-bold'>{data.username}<span className='ml-0.5 text-gray-400 text-4xl font-semibold'>#{data.tag}</span></h1>
-						<div className='badges flex mb-2'>
+						<div className='lg:flex mt-3 mb-1 '>
+							<h1 className='text-4xl font-bold'>{data.username}</h1>
+							<span className='ml-0.5 text-gray-400 text-3xl font-semibold mt-1'>#{data.tag}</span>
+						</div>
+						<div className='badges flex mb-2 justify-center lg:justify-start'>
 							{checkUserFlag(data.flags, 'staff') && (
 								<Tooltip text='한국 디스코드봇 리스트 스탭입니다.' direction='left'>
 									<div className='pr-5 text-koreanbots-blue text-2xl'>

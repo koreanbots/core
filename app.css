@@ -43,7 +43,7 @@ i {
 	width: 20px;
 }
 
-html * ::-webkit-scrollbar {
+/* html * ::-webkit-scrollbar {
 	-webkit-appearance: none;
 	width: 8px;
 	height: 8px;
@@ -75,7 +75,7 @@ html * ::-webkit-scrollbar-track {
 html .dark * ::-webkit-scrollbar-track {
 	background: #2e3338;
 	border-radius: 0;
-}
+} */
 
 .dark .__multi-value,
 .dark .__multi-value__label,

@@ -23,6 +23,7 @@ import 'core-js/es/map'
 
 import '../app.css'
 import '../github-markdown.css'
+import 'rc-tooltip/assets/bootstrap_white.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import PlatformDisplay from '@components/PlatformDisplay'
 

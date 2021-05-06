@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { Field, Form, Formik } from 'formik'
+import Tooltip from 'rc-tooltip'
 
 import { SnowflakeUtil } from 'discord.js'
 import { ParsedUrlQuery } from 'querystring'
@@ -28,7 +29,6 @@ const Segment = dynamic(() => import('@components/Segment'))
 const SEO = dynamic(() => import('@components/SEO'))
 const LongButton = dynamic(() => import('@components/LongButton'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
-const Tooltip = dynamic(() => import('@components/Tooltip'))
 const Markdown = dynamic(() => import ('@components/Markdown'))
 const Message = dynamic(() => import('@components/Message'))
 const Button = dynamic(() => import('@components/Button'))
@@ -97,7 +97,8 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 									<h1 className='mb-2 mt-3 text-4xl font-bold' style={bg ? { color: 'white' } : {}}>
 										{data.name}{' '}
 										{checkBotFlag(data.flags, 'trusted') ? (
-											<Tooltip text='해당봇은 한국 디스코드봇 리스트에서 엄격한 기준을 통과한 봇입니다!' direction='left' size='large' href='/verification'>
+											<Tooltip placement='bottom' overlay='해당 봇은 한국 디스코드봇 리스트에서 엄격한 기준을 통과한 봇입니다!'>
+
 												<span className='text-koreanbots-blue text-3xl'>
 													<i className='fas fa-award' />
 												</span>
@@ -160,7 +161,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 										<div>{Day(date).fromNow(false)}</div>
 										{
 											checkBotFlag(data.flags, 'trusted') ?
-												<Tooltip direction='left' text='해당 봇은 디스코드측에서 인증된 봇입니다.'>
+												<Tooltip overlay='해당 봇은 디스코드측에서 인증된 봇입니다.'>
 													<div>
 														<i className='fas fa-check text-discord-blurple' /> 디스코드 인증됨
 													</div>

@@ -177,7 +177,20 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 						</div>
 						<Button onClick={() => setAdminModal(true)} className='h-10 bg-red-500 hover:opacity-80 text-white lg:w-1/8'><i className='fas fa-user-cog' /> 관리자 수정</Button>
 						<Modal full header='관리자 수정' isOpen={adminModal} dark={theme === 'dark'} onClose={() => setAdminModal(false)} closeIcon>
-							<Formik initialValues={{ owners: (bot.owners as User[]), id: '', _captcha: '' }} onSubmit={(v) => alert(JSON.stringify(v.owners.map(el => el.id)))}>
+							<Formik initialValues={{ owners: (bot.owners as User[]), id: '', _captcha: '' }} onSubmit={async (v) => {
+								const res = await Fetch(`/bots/${bot.id}/owners`, { method: 'PATCH', body: JSON.stringify({
+									_captcha: v._captcha,
+									_csrf: csrfToken,
+									owners: v.owners.map(el => el.id)
+								}) })
+								if(res.code === 200) {
+									alert('성공적으로 수정했습니다.')
+									setAdminModal(false)
+								} else {
+									alert(res.message)
+									setAdminModal(false)
+								}
+							}}>
 								{
 									({ values, setFieldValue }) => <Form>
 										<Message type='warning'>
@@ -223,7 +236,7 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 											</div>
 										</div>
 										<Captcha dark={theme === 'dark'} onVerify={(k) => setFieldValue('_captcha', k)} />
-										<Button disabled={!values._captcha} className='mt-2 bg-red-500 text-white hover:opacity-80' type='submit'><i className='fas fa-save text-sm' /> 저장</Button>
+										<Button disabled={!values._captcha} className={`mt-2 bg-red-500 text-white ${!values._captcha ? 'opacity-80' : 'hover:opacity-80'}`} type='submit'><i className='fas fa-save text-sm' /> 저장</Button>
 									</Form>
 								}
 							</Formik>
@@ -237,11 +250,25 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 						</div>
 						<Button onClick={() => setTransferModal(true)} className='h-10 bg-red-500 hover:opacity-80 text-white lg:w-1/8'><i className='fas fa-exchange-alt' /> 소유권 이전</Button>
 						<Modal full header={`${bot.name} 소유권 이전하기`} isOpen={transferModal} dark={theme === 'dark'} onClose={() => setTransferModal(false)} closeIcon>
-							<Formik initialValues={{ ownerID: '', name: '', _captcha: '' }} onSubmit={(v) => alert(JSON.stringify(v))}>
+							<Formik initialValues={{ ownerID: '', name: '', _captcha: '' }} onSubmit={async (v) => {
+								const res = await Fetch(`/bots/${bot.id}/owners`, { method: 'PATCH', body: JSON.stringify({
+									_captcha: v._captcha,
+									_csrf: csrfToken,
+									owners: [ v.ownerID ]
+								}) })
+								if(res.code === 200) {
+									alert('성공적으로 소유권을 이전했습니다.')
+									router.push('/')
+								} else {
+									alert(res.message)
+									setTransferModal(false)
+								}
+							}}>
 								{
 									({ values, setFieldValue }) => <Form>
 										<Message type='warning'>
-											<p>봇의 소유권을 이전하게 되면 봇의 소유자 권한을 이전하게 됩니다.</p>
+											<h2 className='text-2xl font-bold'>주의해주세요!</h2>
+											<p>봇의 소유권을 이전하게 되면 봇의 소유자 권한을 이전하게 되며, 본인을 포함한 모든 관리자가 해당 봇에 대한 권한을 잃게됩니다.</p>
 										</Message>
 										<div className='py-4'>
 											<h2 className='text-md my-1'>이전하실 유저 ID를 입력해주세요.</h2>
@@ -267,11 +294,11 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 						<Modal full header={`${bot.name} 삭제하기`} isOpen={deleteModal} dark={theme === 'dark'} onClose={() => setDeleteModal(false)} closeIcon>
 							<Formik initialValues={{ name: '', _captcha: '', _csrf: csrfToken }} onSubmit={async (v) => {
 								const res = await Fetch(`/bots/${bot.id}`, { method: 'DELETE', body: JSON.stringify(v) })
-								if(res.code !== 200) alert(res.message)
-								else {
+								if(res.code === 200) {
 									alert('성공적으로 삭제하였습니다.')
 									redirectTo(router, '/')
 								}
+								else alert(res.message)
 							}}>
 								{
 									({ values, setFieldValue }) => <Form>

@@ -15,7 +15,8 @@ export function sign(payload: string | Record<string, unknown>, options?: JWTSig
 export function verify(token: string): any | null {
 	try {
 		return jwt.verify(token, publicPem)
-	} catch {
+	} catch(e) {
+		console.log(e)
 		return null
 	}
 }

@@ -21,9 +21,9 @@ export const getToken = (req: IncomingMessage, res: ServerResponse) => {
 		res.setHeader(
 			'set-cookie',
 			serialize(csrfKey, key, {
-				expires: new Date(+new Date() + 24 * 60 * 60 * 1000),
 				httpOnly: true,
-				path: '/',
+				sameSite: 'lax',
+				path: '/'
 			})
 		)
 	}

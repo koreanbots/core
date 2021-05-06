@@ -295,6 +295,11 @@ async function updateBotApplication(id: string, value: { webhook: string }) {
 	return true
 }
 
+async function updateOwner(id: string, owners: string[]): Promise<void> {
+	await knex('bots').where({ id }).update({ owners: JSON.stringify(owners) })
+	get.bot.clear(id)
+}
+
 async function resetBotToken(id: string, beforeToken: string) {
 	const token = sign({ id })
 	const bot = await knex('bots').update({ token }).where({ id, token: beforeToken })
@@ -461,7 +466,8 @@ export const update = {
 	resetBotToken,
 	updateServer,
 	Github,
-	bot: updateBot
+	bot: updateBot,
+	botOwners: updateOwner
 }
 
 export const put = {

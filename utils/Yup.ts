@@ -246,11 +246,6 @@ export const ManageBotSchema: Yup.SchemaOf<ManageBot> = Yup.object({
 		.min(100, '봇 설명은 최소 100자여야합니다.')
 		.max(1500, '봇 설명은 최대 1500자여야합니다.')
 		.required('봇 설명은 필수 항목입니다.'),
-	// owners: Yup.array(Yup.string())
-	// 	.min(1, '최소 한 명의 소유자는 입력해주세요.')
-	// 	.max(10, '소유자는 최대 10명까지만 가능합니다.')
-	// 	.unique('소유자 아이디는 중복될 수 없습니다.')
-	// 	.required('소유자는 필수 항목입니다.'),
 	_csrf: Yup.string().required(),
 })
 
@@ -290,7 +285,7 @@ export interface DeveloperBot {
 	_csrf: string
 }
 
-export const ResetBotTokenSchema = Yup.object({
+export const ResetBotTokenSchema: Yup.SchemaOf<ResetBotToken> = Yup.object({
 	token: Yup.string().required(),
 	_csrf: Yup.string().required(),
 })
@@ -298,6 +293,22 @@ export const ResetBotTokenSchema = Yup.object({
 export interface ResetBotToken {
 	token: string
 	_csrf: string
+}
+
+export const EditBotOwnerSchema: Yup.SchemaOf<EditBotOwner> = Yup.object({
+	owners: Yup.array(Yup.string())
+		.min(1, '최소 한 명의 소유자는 입력해주세요.')
+		.max(10, '소유자는 최대 10명까지만 가능합니다.')
+		.unique('소유자 아이디는 중복될 수 없습니다.')
+		.required('소유자는 필수 항목입니다.'),
+	_csrf: Yup.string().required(),
+	_captcha: Yup.string().required()
+})
+
+export interface EditBotOwner {
+	owners: string[]
+	_csrf: string
+	_captcha: string
 }
 
 export default Yup

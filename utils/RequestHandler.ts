@@ -13,7 +13,7 @@ Sentry.init({
 		new Sentry.Integrations.Http({ tracing: true })
 	],
 	tracesSampleRate: 1.0,
-	enabled: true
+	enabled: process.env.NODE_ENV === 'production'
 })
 
 const limiter = rateLimit({

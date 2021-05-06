@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 
 import { get } from '@utils/Query'
-import { parseCookie, redirectTo } from '@utils/Tools'
+import { parseCookie } from '@utils/Tools'
 import { Bot, SubmittedBot, User } from '@types'
 import Fetch from '@utils/Fetch'
 import { getToken } from '@utils/Csrf'
@@ -15,18 +15,14 @@ const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 const Button = dynamic(() => import('@components/Button'))
 const BotCard = dynamic(() => import('@components/BotCard'))
 const SubmittedBotCard = dynamic(() => import('@components/SubmittedBotCard'))
+const Login = dynamic(() => import('@components/Login'))
 
 const Panel:NextPage<PanelProps> = ({ logged, user, submits, csrfToken }) => {
 	const router = useRouter()
 	const [ submitLimit, setSubmitLimit ] = useState(8)
-	function toLogin() {
-		localStorage.redirectTo = window.location.href
-		redirectTo(router, 'login')
-	}
-	if(!logged) {
-		toLogin()
-		return <SEO title='관리 패널' />
-	}
+	if(!logged) return <Login>
+		<SEO title='관리 패널' />
+	</Login>
 	return <Container paddingTop className='pt-5 pb-10'>
 		<SEO title='관리 패널' />
 		<h1 className='text-4xl font-bold'>관리 패널</h1>

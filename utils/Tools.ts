@@ -103,7 +103,8 @@ export function bufferToStream(binary: Buffer) {
 	return readableInstanceStream
 }
 
-export function parseCookie(req: { headers: { cookie?: string }}): { [key: string]: string } {
+export function parseCookie(req?: { headers: { cookie?: string }}): { [key: string]: string } {
+	if(!req) return {}
 	return cookie.parse(req.headers.cookie || '')
 }
 

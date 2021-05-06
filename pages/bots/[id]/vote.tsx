@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 
 import { Bot, CsrfContext, ResponseProps, Theme, User } from '@types'
 import { get } from '@utils/Query'
-import { makeBotURL, parseCookie, checkBotFlag, redirectTo } from '@utils/Tools'
+import { makeBotURL, parseCookie, checkBotFlag } from '@utils/Tools'
 
 import { ParsedUrlQuery } from 'querystring'
 
@@ -16,6 +16,7 @@ import { useState } from 'react'
 import Fetch from '@utils/Fetch'
 import Day from '@utils/Day'
 import { getJosaPicker } from 'josa'
+import { KoreanbotsEndPoints } from '@utils/Constants'
 
 
 const Container = dynamic(() => import('@components/Container'))
@@ -25,6 +26,7 @@ const Tag = dynamic(() => import('@components/Tag'))
 const Segment = dynamic(() => import('@components/Segment'))
 const SEO = dynamic(() => import('@components/SEO'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
+const Login = dynamic(() => import('@components/Login'))
 
 const VoteBot: NextPage<VoteBotProps> = ({ data, user, csrfToken, theme }) => {
 	const [ votingStatus, setVotingStatus ] = useState(0)
@@ -35,18 +37,13 @@ const VoteBot: NextPage<VoteBotProps> = ({ data, user, csrfToken, theme }) => {
 		router.push(`/bots/${data.id}`)
 		return <></>
 	}
-	if(!user) {
-		localStorage.redirectTo = window.location.href
-		redirectTo(router, 'login')
-		return <SEO title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.'/>
-	}
+	if(!user) return <Login>
+		<SEO title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요`} image={KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 })} />
+	</Login>
+	
 	if((checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}/vote?csrfToken=${csrfToken}`)
 	return <Container paddingTop className='py-10'>
-		<SEO title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요`} image={
-			data.avatar
-				? `https://cdn.discordapp.com/avatars/${data.id}/${data.avatar}.png?size=1024`
-				: `https://cdn.discordapp.com/embed/avatars/${Number(data.tag) % 5}.png?size=1024`
-		} />
+		<SEO title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요`} image={KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 })} />
 		<Advertisement />
 		<Link href={makeBotURL(data)}>
 			<a className='text-blue-500 hover:opacity-80'><i className='fas fa-arrow-left mt-3 mb-3' /> <strong>{data.name}</strong>{getJosaPicker('로')(data.name)} 돌아가기</a>

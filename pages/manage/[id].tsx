@@ -35,6 +35,7 @@ const Message = dynamic(() => import('@components/Message'))
 const Modal = dynamic(() => import('@components/Modal'))
 const Captcha = dynamic(() => import('@components/Captcha'))
 const SEO = dynamic(() => import('@components/SEO'))
+const Login = dynamic(() => import('@components/Login'))
 
 const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }) => {
 	const [ data, setData ] = useState(null)
@@ -42,10 +43,6 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 	const [ transferModal, setTransferModal ] = useState(false)
 	const [ deleteModal, setDeleteModal ] = useState(false)
 	const router = useRouter()
-	function toLogin() {
-		localStorage.redirectTo = window.location.href
-		redirectTo(router, 'login')
-	}
 
 	async function submitBot(value: ManageBot) {
 		const res = await Fetch(`/bots/${bot.id}`, { method: 'PATCH', body: JSON.stringify(cleanObject<ManageBot>(value)) })
@@ -59,10 +56,9 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 	}
 
 	if(!bot) return <NotFound />
-	if(!user) {
-		toLogin()
-		return <SEO title='봇 정보 수정하기' description='봇의 정보를 수정합니다.'/>
-	}
+	if(!user) return <Login>
+		<SEO title='봇 정보 수정하기' description='봇의 정보를 수정합니다.'/>
+	</Login>
 	if(!(bot.owners as User[]).find(el => el.id === user.id) && !checkUserFlag(user.flags, 'staff')) return <Forbidden />
 	return <Container paddingTop className='pt-5 pb-10'>
 		<SEO title={`${bot.name} 수정하기`} description='봇의 정보를 수정합니다.'/>

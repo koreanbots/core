@@ -1,12 +1,10 @@
 import { NextPage, NextPageContext } from 'next'
 import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 
 import { BotList } from '@types'
 import { get } from '@utils/Query'
 import { SearchQuerySchema } from '@utils/Yup'
-import { redirectTo } from '@utils/Tools'
 
 
 const Hero = dynamic(() => import('@components/Hero'))
@@ -16,13 +14,10 @@ const BotCard = dynamic(() => import('@components/BotCard'))
 const Container = dynamic(() => import('@components/Container'))
 const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 const Paginator = dynamic(() => import('@components/Paginator'))
+const Redirect = dynamic(() => import('@components/Redirect'))
 
 const Search:NextPage<SearchProps> = ({ data, query }) => {
-	const router = useRouter()
-	if(!query?.q) {
-		redirectTo(router, '/')
-		return <></>
-	}
+	if(!query?.q) return <Redirect text={false} to='/' />
 	return <>
 		<Hero header={`"${query.q}" 검색 결과`} description={`'${query.q}' 에 대한 검색 결과입니다.`} />
 		<SEO title={`"${query.q}" 검색 결과`} description={`'${query.q}' 에 대한 검색 결과입니다.`} />
@@ -46,6 +41,11 @@ const Search:NextPage<SearchProps> = ({ data, query }) => {
 }
 
 export const getServerSideProps = async(ctx: Context) => {
+	if(!ctx.query?.q) {
+		ctx.res.statusCode = 301
+		ctx.res.setHeader('Location', '/')
+		return { props: {} }
+	}
 	let data: BotList
 	if(!ctx.query.page) ctx.query.page = '1'
 	const validate = await SearchQuerySchema.validate(ctx.query).then(el => el).catch(() => null)

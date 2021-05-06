@@ -1,6 +1,5 @@
 import { NextPage, NextPageContext } from 'next'
 import { useState } from 'react'
-import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import { SnowflakeUtil } from 'discord.js'
 import { ParsedUrlQuery } from 'querystring'
@@ -9,7 +8,7 @@ import { Field, Form, Formik } from 'formik'
 
 import { Bot, User, ResponseProps, Theme } from '@types'
 import { get } from '@utils/Query'
-import { checkUserFlag, parseCookie, redirectTo } from '@utils/Tools'
+import { checkUserFlag, parseCookie } from '@utils/Tools'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
 import { ReportSchema } from '@utils/Yup'
@@ -30,15 +29,11 @@ const Message = dynamic(() => import('@components/Message'))
 const Modal = dynamic(() => import('@components/Modal'))
 const Button = dynamic(() => import('@components/Button'))
 const TextArea = dynamic(() => import('@components/Form/TextArea'))
+const Login = dynamic(() => import('@components/Login'))
 
 const Users: NextPage<UserProps> = ({ user, data, csrfToken, theme }) => {
-	const router = useRouter()
 	const [ reportModal, setReportModal ] = useState(false)
 	const [ reportRes, setReportRes ] = useState<ResponseProps<null>>(null)
-	function toLogin() {
-		localStorage.redirectTo = window.location.href
-		redirectTo(router, 'login')
-	}
 	if (!data?.id) return <NotFound />
 	return (
 		<Container paddingTop className='py-10'>
@@ -92,7 +87,7 @@ const Users: NextPage<UserProps> = ({ user, data, csrfToken, theme }) => {
 						)}
 						<div className='list-none mt-2'>
 							<a className='text-red-600 hover:underline cursor-pointer' onClick={() => {
-								if(!user) toLogin()
+								if(!user) return <Login />
 								else setReportModal(true)
 							}} aria-hidden='true'>
 								<i className='far fa-flag' />

@@ -35,6 +35,7 @@ const Button = dynamic(() => import('@components/Button'))
 const TextArea = dynamic(() => import('@components/Form/TextArea'))
 const Modal = dynamic(() => import('@components/Modal'))
 const NSFW = dynamic(() => import('@components/NSFW'))
+const Login = dynamic(() => import('@components/Login'))
 
 const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken }) => {
 	const bg = checkBotFlag(data?.flags, 'trusted') && data?.banner
@@ -42,10 +43,6 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 	const [ nsfw, setNSFW ] = useState<boolean>()
 	const [ reportModal, setReportModal ] = useState(false)
 	const [ reportRes, setReportRes ] = useState<ResponseProps<null>>(null)
-	function toLogin() {
-		localStorage.redirectTo = window.location.href
-		redirectTo(router, 'login')
-	}
 	useEffect(() => {
 		setNSFW(localStorage.nsfw)
 	}, [])
@@ -188,7 +185,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 									))}
 									<div className='list grid'>
 										<a className='text-red-600 hover:underline cursor-pointer' onClick={() => {
-											if(!user) toLogin()
+											if(!user) return <Login />
 											else setReportModal(true)
 										}} aria-hidden='true'>
 											<i className='far fa-flag' />

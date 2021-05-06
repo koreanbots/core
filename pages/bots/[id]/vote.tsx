@@ -35,15 +35,15 @@ const VoteBot: NextPage<VoteBotProps> = ({ data, user, csrfToken, theme }) => {
 	if(!data?.id) return <NotFound />
 	if(typeof window !== 'undefined' && csrfToken !== router.query.csrfToken) {
 		router.push(`/bots/${data.id}`)
-		return <SEO title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요`} image={KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 })} />
+		return <SEO title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요.`} image={KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 })} />
 	}
 	if(!user) return <Login>
-		<SEO title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요`} image={KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 })} />
+		<SEO title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요.`} image={KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 })} />
 	</Login>
 	
 	if((checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}/vote?csrfToken=${csrfToken}`)
 	return <Container paddingTop className='py-10'>
-		<SEO title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요`} image={KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 })} />
+		<SEO title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요.`} image={KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 })} />
 		<Advertisement />
 		<Link href={makeBotURL(data)}>
 			<a className='text-blue-500 hover:opacity-80'><i className='fas fa-arrow-left mt-3 mb-3' /> <strong>{data.name}</strong>{getJosaPicker('로')(data.name)} 돌아가기</a>

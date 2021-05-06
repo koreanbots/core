@@ -179,7 +179,7 @@ const Navbar = ({ token }:{ token: string }): JSX.Element => {
 									strokeLinejoin='round'
 								/>
 							</svg>
-							<span className='px-2 font-medium'>소개</span>
+							<span onClick={() => setNavbarOpen(!navbarOpen)} className='px-2 font-medium'>소개</span>
 						</a>
 					</Link>
 					<Link href='/addbot'>
@@ -194,18 +194,19 @@ const Navbar = ({ token }:{ token: string }): JSX.Element => {
 					{
 						logged ? <>
 							<Link href={`/users/${userCache.id}`}>
-								<a className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+								<a className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300' onClick={() => setNavbarOpen(!navbarOpen)}>
 									<i className='far fa-user' />
 									<span className='px-2 font-medium'>{userCache.username}</span>
 								</a>
 							</Link>
 							<Link href='/panel'>
-								<a className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+								<a className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300' onClick={() => setNavbarOpen(!navbarOpen)}>
 									<i className='fas fa-cogs' />
 									<span className='px-2 font-medium'>관리패널</span>
 								</a>
 							</Link>
 							<a onClick={()=> {
+								setNavbarOpen(!navbarOpen)
 								localStorage.removeItem('userCache')
 								redirectTo(router, 'logout')
 							}} className='flex items-center px-8 py-2 text-red-500 hover:text-red-400'>

@@ -42,12 +42,11 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 	const router = useRouter()
 	const [ nsfw, setNSFW ] = useState<boolean>()
 	const [ reportModal, setReportModal ] = useState(false)
-	const [ reportRes, setReportRes ] = useState<ResponseProps<null>>(null)
+	const [ reportRes, setReportRes ] = useState<ResponseProps<unknown>>(null)
 	useEffect(() => {
 		setNSFW(localStorage.nsfw)
 	}, [])
 	if (!data?.id) return <NotFound />
-	if((checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}`)
 	return <div style={bg ? { background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${data.bg}") center top / cover no-repeat fixed` } : {}}>
 		<Container paddingTop className='py-10'>
 			<SEO
@@ -201,7 +200,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 													<h2 className='text-lg font-semibold'>성공적으로 신고하였습니다!</h2>
 													<p>더 자세한 설명이 필요할 수 있습니다! <a className='text-blue-600 hover:text-blue-500' href='/discord'>공식 디스코드</a>에 참여해주세요</p>
 												</Message> : <Formik onSubmit={async (body) => {
-													const res = await Fetch<null>(`/bots/${data.id}/report`, { method: 'POST', body: JSON.stringify(body) })
+													const res = await Fetch(`/bots/${data.id}/report`, { method: 'POST', body: JSON.stringify(body) })
 													setReportRes(res)
 												}} validationSchema={ReportSchema} initialValues={{
 													category: null,
@@ -313,12 +312,19 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 
 export const getServerSideProps = async (ctx: Context) => {
 	const parsed = parseCookie(ctx.req)
-	const data = await get.bot.load(ctx.query.id) ?? { id: '' }
+	const data = await get.bot.load(ctx.query.id)
 	const desc = await get.botDescSafe(data.id)
 	const user = await get.Authorization(parsed?.token)
+	if(data && (checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data?.vanity && data.vanity !== ctx.query.id) {
+		ctx.res.statusCode = 301
+		ctx.res.setHeader('Location', `/bots/${data.vanity}`)
+		return {
+			props: {}
+		}
+	}
 	return {
 		props: {
-			data,
+			data: data ?? { id: '' },
 			desc,
 			date: SnowflakeUtil.deconstruct(data.id ?? '0').date.toJSON(),
 			user: await get.user.load(user || ''),

@@ -33,9 +33,9 @@ const VoteBot: NextPage<VoteBotProps> = ({ data, user, csrfToken, theme }) => {
 	const [ result, setResult ] = useState<ResponseProps<{retryAfter?: number}>>(null)
 	const router = useRouter()
 	if(!data?.id) return <NotFound />
-	if(csrfToken !== router.query.csrfToken) {
+	if(typeof window !== 'undefined' && csrfToken !== router.query.csrfToken) {
 		router.push(`/bots/${data.id}`)
-		return <></>
+		return <SEO title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요`} image={KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 })} />
 	}
 	if(!user) return <Login>
 		<SEO title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요`} image={KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 })} />

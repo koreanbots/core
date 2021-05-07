@@ -286,7 +286,9 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 									<Advertisement size='tall' />
 								</div>
 								<div className='w-full lg:pr-5 lg:w-3/4'>
-									<Advertisement />
+									<div className='hidden lg:block'>
+										<Advertisement />
+									</div>
 									{
 										checkBotFlag(data.flags, 'hackerthon') ? <Segment className='mt-10'>
 											<h1 className='text-3xl font-semibold'>

@@ -2,8 +2,6 @@ import Head from 'next/head'
 import App, { AppContext, AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import { Router, useRouter } from 'next/router'
-import * as Sentry from '@sentry/react'
-import { Integrations } from '@sentry/tracing'
 import { useEffect, useState } from 'react'
 import { GlobalHotKeys } from 'react-hotkeys'
 import NProgress from 'nprogress'
@@ -32,13 +30,6 @@ NProgress.configure({ showSpinner: false })
 Router.events.on('routeChangeStart', NProgress.start)
 Router.events.on('routeChangeComplete', NProgress.done)
 Router.events.on('routeChangeError', NProgress.done)
-
-Sentry.init({
-	dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-	integrations: [new Integrations.BrowserTracing()],
-	tracesSampleRate: 1.0,
-	enabled: process.env.NODE_ENV === 'production'
-})
 
 const KoreanbotsApp = ({ Component, pageProps, err, cookie }: KoreanbotsProps): JSX.Element => {
 	const [ shortcutModal, setShortcutModal ] = useState(false)

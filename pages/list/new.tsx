@@ -15,7 +15,7 @@ const New:NextPage<NewProps> = ({ data }) => {
 	return <>
 		<Hero header='새로운 봇' description='최근에 한국 디스코드봇 리스트에 추가된 봇들입니다!' />
 		<SEO title='새로운 봇' description='최근에 추가된 봇들입니다!' />
-		<Container>
+		<Container className='pb-10'>
 			<Advertisement />
 			<ResponsiveGrid>
 				{

@@ -24,7 +24,7 @@ const Votes:NextPage<VotesProps> = ({ data }) => {
 		<Hero header='하트 랭킹' description='하트를 많이 받은 봇들의 순위입니다!'/>
 		<SEO title='하트 랭킹' description='하트를 많이 받은 봇들의 순위입니다!'/>
 		<section id='list'>
-			<Container>
+			<Container className='pb-10'>
 				<Advertisement />
 				<ResponsiveGrid>
 					{

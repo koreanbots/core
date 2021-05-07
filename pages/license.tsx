@@ -13,7 +13,7 @@ const Markdown = dynamic(() => import('@components/Markdown'))
 const Opensource: NextPage<OpensourceProps> = ({ packageJson, mainLicense, license }) => {
 	return <Docs title='오픈소스' header={<h1 className='font-black text-4xl'>
 		<span className='text-koreanbots-blue'>한디리</span>
-		<span><i className='text-red-500 fas fa-heart mx-2' /> </span>
+		<span><i className='text-red-500 fas fa-heart ml-2 mr-3' /> </span>
 		<span>오픈소스</span>
 	</h1>} subheader='한국 디스코드봇은 오픈소스 프로젝트이며, 다양한 오픈소스 프로젝트가 사용되었습니다.'>
 		<h1 className='text-3xl font-bold'>소스코드</h1>

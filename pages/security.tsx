@@ -1,10 +1,16 @@
-import { NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 
-const Docs = dynamic(() => import('@components/Docs'))
-const Button = dynamic(() => import('@components/Button'))
+import { User } from '@types'
+import { BUG_REPORTERS } from '@utils/Constants'
+import { get } from '@utils/Query'
 
-const Security: NextPage = () => {
+const Docs = dynamic(() => import('@components/Docs'))
+const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
+const Button = dynamic(() => import('@components/Button'))
+const Divider = dynamic(() => import('@components/Divider'))
+
+const Security: NextPage<SecurityProps> = ({ bugReports }) => {
   return <Docs
     header='버그 바운티 프로그램'
     description='한국 디스코드봇 리스트는 보안을 최우선으로 생각합니다.'
@@ -33,11 +39,32 @@ const Security: NextPage = () => {
       <li>DoS 공격</li>
       <li>본인에게만 영향이 미치는 취약점(Self XSS 등)</li>
     </ul>
-    <div className='text-center'>
-      <h1 className='text-3xl font-bold mt-40 mb-10'>취약점을 발견하셨나요?</h1>
+    <h1 className='mt-6 mb-3 text-3xl font-bold text-koreanbots-blue'>취약점을 제보해주신 분들</h1>
+      <div className='flex flex-wrap'>
+        {
+          bugReports.filter(el=>el).map(u => <div className='flex items-center mr-2.5'>
+            <DiscordAvatar userID={u.id} size={128} className='rounded-full w-6 h-6 mr-1' />
+            <span className='text-base text-gray-300'>{u.username}#{u.tag}</span>
+          </div>)
+        }
+      </div>
+    <div className='text-center py-36'>
+      <h1 className='text-3xl font-bold mb-6'>취약점을 발견하셨나요?</h1>
       <Button href='mailto:koreanbots.dev@gmail.com'>제보하기</Button>
     </div>
   </Docs>
 }
 
+export const getServerSideProps: GetServerSideProps<SecurityProps> = async () => {
+   return {
+     props: {
+      bugReports: await Promise.all(BUG_REPORTERS.map(u => get.user.load(u)))
+     }
+   }
+}
+
 export default Security
+
+interface SecurityProps {
+  bugReports: User[]
+}

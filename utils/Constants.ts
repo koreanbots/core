@@ -3,6 +3,7 @@ import { KeyMap } from 'react-hotkeys'
 import { formatNumber, makeImageURL } from './Tools'
 
 export const VOTE_COOLDOWN = 12 * 60 * 60 * 1000
+export const BUG_REPORTERS = ['345265069132742657', '260303569591205888']
 export const Status = {
 	online: {
 		text: '온라인',

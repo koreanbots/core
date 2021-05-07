@@ -40,6 +40,11 @@ const Footer = ({ theme, setTheme }: FooterProps): JSX.Element => {
 										<a className='hover:text-gray-300'>개발자</a>
 									</Link>
 								</li>
+								<li>
+									<Link href='/security'>
+										<a className='hover:text-gray-300'>버그 바운티</a>
+									</Link>
+								</li>
 							</ul>
 						</div>
 						<div className='col-span-2 mb-2'>
@@ -65,11 +70,11 @@ const Footer = ({ theme, setTheme }: FooterProps): JSX.Element => {
 						<div className='col-span-1 mb-2'>
 							<h2 className='text-koreanbots-blue text-base font-bold'>커뮤니티</h2>
 							<ul className='text-sm'>
-								<li>
+								{/* <li>
 									<Link href='/partners'>
 										<a className='hover:text-gray-300'>파트너</a>
 									</Link>
-								</li>
+								</li> */}
 								<li>
 									<Link href='/verification'>
 										<a className='hover:text-gray-300'>인증</a>

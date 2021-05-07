@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { ReactNode, useState } from 'react'
@@ -50,8 +51,12 @@ const DeveloperLayout = ({ children, enabled, docs, currentDoc }:DeveloperLayout
 				</ul>
 				{
 					enabled === 'docs' && <>
-						<Divider />
-						<ul className='text-sm text-gray-600 dark:text-gray-300 px-0.5 mt-6'>
+						<Divider className='hidden lg:block' />
+						<ul className='text-sm text-gray-600 dark:text-gray-300 px-0.5 lg:mt-6'>
+							<li onClick={() => setNavbarOpen(false)} className='lg:hidden cursor-pointer py-1 px-4 rounded-md mb-2'>
+								<i className='fas fa-times' /> 닫기
+							</li>
+							<Divider className='lg:hidden' />
 							{
 								docs?.map(el => {
 									if(el.list) return <div key={el.name} className='mt-2'>
@@ -60,7 +65,7 @@ const DeveloperLayout = ({ children, enabled, docs, currentDoc }:DeveloperLayout
 											{
 												el.list.map(e => 
 													<Link key={e.name} href={`/developers/docs/${el.name}/${e.name}`}>
-														<li className={`cursor-pointer px-4 py-2 rounded-md ${currentDoc === e.name ? 'bg-discord-blurple text-white' : 'hover:text-gray-500 dark:hover:text-white'}`}>
+														<li onClick={() => setNavbarOpen(false)} className={`cursor-pointer px-4 py-2 rounded-md ${currentDoc === e.name ? 'bg-discord-blurple text-white' : 'hover:text-gray-500 dark:hover:text-white'}`}>
 															{e.name}
 														</li>
 													</Link>
@@ -70,7 +75,7 @@ const DeveloperLayout = ({ children, enabled, docs, currentDoc }:DeveloperLayout
 									</div>
 								
 									return <Link key={el.name} href={`/developers/docs/${el.name}`}>
-										<li className={`cursor-pointer py-2 px-4 rounded-md ${currentDoc === el.name ? 'bg-discord-blurple text-white' : 'hover:text-gray-500 dark:hover:text-white'}`}>
+										<li onClick={() => setNavbarOpen(false)} className={`cursor-pointer py-2 px-4 rounded-md ${currentDoc === el.name ? 'bg-discord-blurple text-white' : 'hover:text-gray-500 dark:hover:text-white'}`}>
 											{el.name}
 										</li>
 									</Link>

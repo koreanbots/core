@@ -9,8 +9,8 @@ const Docs = ({ title, header, description, subheader, children }: DocsProps): J
 				title={typeof header === 'string' ? header : title}
 				description={description || subheader}
 			/>
-			<div className='dark:bg-discord-black bg-discord-blurple'>
-				<Container className='pb-10 pt-20' ignoreColor>
+			<div className='dark:bg-discord-black bg-discord-blurple z-20'>
+				<Container className='py-20' ignoreColor>
 					<h1 className='mt-10 text-center text-gray-100 text-4xl font-bold sm:text-left'>
 						{header}
 					</h1>
@@ -22,11 +22,7 @@ const Docs = ({ title, header, description, subheader, children }: DocsProps): J
 					</h2>
 				</Container>
 			</div>
-			<Wave
-				color='currentColor'
-				className='hidden dark:text-discord-black text-discord-blurple dark:bg-discord-dark bg-white md:block'
-			/>
-			<Container className='pb-20'>
+			<Container className='pt-10 pb-20'>
 				<div>{children}</div>
 			</Container>
 		</>

@@ -66,20 +66,22 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 				<DiscordAvatar userID={bot.id} />
 			</div>
 			<div className='lg:w-4/5 relative'>
-				{
-					!data ? '' : data.code === 200 ? 
-						<Message type='success'>
-							<h2 className='text-lg font-black'>수정 성공!</h2>
-							<p>봇 정보를 저장했습니다.</p>
-						</Message> : <Message type='error'>
-							<h2 className='text-lg font-black'>{data.message}</h2>
-							<ul className='list-disc list-inside'>
-								{
-									data.errors?.map((el, i)=> <li key={i}>{el}</li>)
-								}
-							</ul>
-						</Message>
-				}
+				<div className='mt-4'>
+					{
+						!data ? '' : data.code === 200 ? 
+							<Message type='success'>
+								<h2 className='text-lg font-black'>수정 성공!</h2>
+								<p>봇 정보를 저장했습니다.</p>
+							</Message> : <Message type='error'>
+								<h2 className='text-lg font-black'>{data.message}</h2>
+								<ul className='list-disc list-inside'>
+									{
+										data.errors?.map((el, i)=> <li key={i}>{el}</li>)
+									}
+								</ul>
+							</Message>
+					}
+				</div>
 				<div className='grid text-left px-6'>
 					<h2 className='text-3xl font-bold mb-2 mt-3'>{bot.name}#{bot.tag}</h2>
 					<h3 className='text-lg font-semibold'>봇 토큰</h3>

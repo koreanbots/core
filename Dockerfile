@@ -12,8 +12,6 @@ WORKDIR /usr/src/app
 ARG NEXT_PUBLIC_SENTRY_DSN
 ARG SENTRY_DSN
 ARG SENTRY_AUTH_TOKEN
-ARG SENTRY_ORG
-ARG SENTRY_PROJECT
 
 ENV NEXT_PUBLIC_SENTRY_DSN $NEXT_PUBLIC_SENTRY_DSN
 ENV SENTRY_DSN $SENTRY_DSN
@@ -28,10 +26,6 @@ RUN yarn install
 # Copying source files
 COPY . /usr/src/app
 
-# env to file
-
-RUN env
-RUN env > .env.production.local
 
 RUN printf "NEXT_PUBLIC_TESTER_KEY=9f9c4a7ae9afeb045fe818ed8b741c70b1d25ec236b189566a0db020c5596441\nNEXT_PUBLIC_COMMIT_HASH=$(git rev-parse HEAD)\nNEXT_PUBLIC_BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')" > .env.local
 

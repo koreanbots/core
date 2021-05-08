@@ -65,18 +65,18 @@ const BotCard = ({ manage = false, bot }: BotProps): JSX.Element => {
 									<p className='mb-10 px-4 h-6 text-left text-gray-400 text-sm font-medium'>
 										{bot.intro}
 									</p>
-									<div className='category flex flex-wrap px-2'>
-										{bot.category.slice(0, 3).map(el => (
-											<Tag key={el} text={el} href={`/categories/${el}`} dark />
-										))}{' '}
-										{bot.category.length > 3 && <Tag text={`+${bot.category.length - 3}`} dark />}
+									<div>
+										<div className='category flex flex-wrap px-2'>
+											{bot.category.slice(0, 3).map(el => (
+												<Tag key={el} text={el} href={`/categories/${el}`} dark />
+											))}{' '}
+											{bot.category.length > 3 && <Tag text={`+${bot.category.length - 3}`} dark />}
+										</div>
 									</div>
 								</div>
 							</Link>
-
-							
 							<Divider />
-							<div>
+							<div className='w-full'>
 								<div className='flex justify-evenly'>
 									<Link href={makeBotURL(bot)}>
 										<a className='py-3 w-full text-center text-koreanbots-blue hover:text-white text-sm font-bold hover:bg-koreanbots-blue rounded-bl-2xl hover:shadow-lg transition duration-100 ease-in'>

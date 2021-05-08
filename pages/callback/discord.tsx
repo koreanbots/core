@@ -15,7 +15,7 @@ const DiscordCallback:NextPage = () => {
 	}, [router])
   
 	return <>
-		<Loader text={<>리다이랙트 중 입니다.</>} />
+		<Loader text={<>리다이렉트 중 입니다.</>} />
 	</>
 }
 

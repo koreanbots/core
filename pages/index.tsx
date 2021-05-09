@@ -29,6 +29,15 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 				</ResponsiveGrid>
 				<Paginator totalPage={votes.totalPage} currentPage={votes.currentPage} pathname='/list/votes' />
 				<Advertisement />
+				<h1 className='text-3xl font-bold mb-2'>
+					<i className='fa fa-check mr-3 mt-10 text-green-500' /> 신뢰된 봇
+				</h1>
+				<p className='text-base'>KOREANBOTS에서 인증받은 신뢰할 수 있는 봇들입니다!!</p>
+				<ResponsiveGrid>
+					{
+						trusted.data.slice(0, 4).map(bot=> <BotCard key={bot.id} bot={bot} />)
+					}
+				</ResponsiveGrid>
 				<h1 className='text-3xl font-bold mt-20 mb-2'>
 					<i className='far fa-star mr-3 text-yellow-500' /> 새로운 봇
 				</h1>
@@ -39,15 +48,6 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 					}
 				</ResponsiveGrid>
 				<LongButton href='/list/new' center>더보기</LongButton>
-				<h1 className='text-3xl font-bold mb-2'>
-					<i className='fa fa-check mr-3 mt-10 text-green-500' /> 신뢰된 봇
-				</h1>
-				<p className='text-base'>KOREANBOTS에서 인증받은 신뢰할 수 있는 봇들입니다!!</p>
-				<ResponsiveGrid>
-					{
-						trusted.data.slice(0, 4).map(bot=> <BotCard key={bot.id} bot={bot} />)
-					}
-				</ResponsiveGrid>
 				<Advertisement />
 			</Container>
 		</>

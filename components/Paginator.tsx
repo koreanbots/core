@@ -77,7 +77,7 @@ interface PaginatorProps {
 	pathname: string
 	currentPage: number
 	totalPage: number
-	searchParams: Record<string, string|string[]>
+	searchParams?: Record<string, string|string[]>
 }
 
 export default Paginator

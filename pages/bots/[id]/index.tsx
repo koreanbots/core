@@ -222,7 +222,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 																		</div>
 																	}
 																	<h3 className='font-bold'>신고 구분</h3>
-																	<p className='text-gray-400 text-sm mb-1'>해당되는 항복을 선택해주세요.</p>
+																	<p className='text-gray-400 text-sm mb-1'>해당되는 항목을 선택해주세요.</p>
 																	{
 																		reportCats.map(el => 
 																			<div key={el}>

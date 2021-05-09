@@ -17,7 +17,7 @@ const Redirect = ({ to, text=true, children }:RedirectProps):JSX.Element => {
 	</>
 	return <Container paddingTop>
 		<div>
-			<a href={to} className='text-blue-400'>{text && '자동으로 리다이렉트되지 않는다면 클릭해세요.'}</a>
+			<a href={to} className='text-blue-400'>{text && '자동으로 리다이렉트되지 않는다면 클릭하세요.'}</a>
 		</div>
 	</Container>
 }

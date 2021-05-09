@@ -53,7 +53,7 @@ const VoteBot: NextPage<VoteBotProps> = ({ data, user, csrfToken, theme }) => {
 				<DiscordAvatar userID={data.id} className='mx-auto w-52 h-52 bg-white mb-4' />
 				<Tag text={<span><i className='fas fa-heart text-red-600' /> {data.votes}</span>} dark />
 				<h1 className='text-3xl font-bold mt-3'>{data.name}</h1>
-				<h4 className='text-md mt-1'>12시간 마다 다시 투표하실 수 있습니다.</h4>
+				<h4 className='text-md mt-1'>12시간마다 다시 투표하실 수 있습니다.</h4>
 				<div className='inline-block mt-2'>
 					{
 						votingStatus === 0 ? <Button onClick={()=> setVotingStatus(1)}>

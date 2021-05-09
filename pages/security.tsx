@@ -24,7 +24,7 @@ const Security: NextPage<SecurityProps> = ({ bugReports }) => {
 			<li>발견한 문제에 대한 모든 정보는 보안팀이 완벽하게 조사하고 해결하기 전까지는 절대로 제3자에게 공개/공유해서는 안됩니다.</li>
 			<li>한국 디스코드봇 리스트는 제보된 문제에 관한 모든 정보를 공개할 권한을 가집니다.</li>
 		</ul>
-		<h1 className='mt-6 mb-3 text-3xl font-bold text-koreanbots-blue'>범위</h1>
+		<h1 className='mt-6 mb-3 text-3xl font-bold text-koreanbots-blue'>범위</h1>
 		<ul className='list-disc list-inside'>
 			{
 				['koreanbots.dev 및 *.koreanbots.dev', 'kbots.link', '디스코드.한국'].map(el => <li key={el}>{el}</li>)

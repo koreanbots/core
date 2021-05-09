@@ -26,7 +26,7 @@ const About:NextPage = () => {
 						</div>
 						<div className='mx-auto font-normal'>
 							<h2 className='text-3xl mb-1 font-bold text-koreanbots-blue'>인증 시스템</h2>
-							<p className='text-base'>디스코드 봇 인증보다 한단계 까다로운 기준을 적용하여, 이용자분들에게 신뢰감을 줍니다.</p>
+							<p className='text-base'>디스코드 봇 인증보다 한 단계 까다로운 기준을 적용하여, 이용자분들에게 신뢰감을 줍니다.</p>
 						</div>
 						<div className='mx-auto font-normal'>
 							<h2 className='text-3xl mb-1 font-bold text-koreanbots-blue'>API 제공</h2>

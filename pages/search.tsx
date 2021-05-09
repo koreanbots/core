@@ -31,7 +31,7 @@ const Search:NextPage<SearchProps> = ({ data, query }) => {
 								data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
 							}
 						</ResponsiveGrid>
-						<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname={`/search?q=${query.q}`} />
+						<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname='/search' searchParams={query} />
 					</>
 				}
 				<Advertisement />

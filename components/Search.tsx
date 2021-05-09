@@ -35,7 +35,7 @@ const Search = (): JSX.Element => {
 		setQuery(value)
 		try {
 			abortControl.abort()
-		} catch {
+		} catch (e) {
 			return null
 		}
 		const controller = new AbortController()
@@ -43,8 +43,11 @@ const Search = (): JSX.Element => {
 		if (value.length > 1) setLoading(true)
 		const res = await Fetch<BotList>(`/search/bots?q=${encodeURIComponent(value)}`, {
 			signal: controller.signal,
+		}).catch((e) => {
+			if(e.name !== 'AbortError') throw e
+			else return
 		})
-		setData(res)
+		setData(res || {})
 		setLoading(false)
 	}
 

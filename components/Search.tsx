@@ -98,7 +98,7 @@ const Search = (): JSX.Element => {
 					<i className='fas fa-search text-gray-600 hover:text-gray-700 text-2xl' />
 				</button>
 			</div>
-			<div className={`relative ${hidden ? 'hidden' : 'block'}`}>
+			<div className={`relative ${hidden ? 'hidden' : 'block'} z-50`}>
 				<div className='pin-t pin-l absolute my-2 w-full h-60 text-black dark:text-gray-100 dark:bg-very-black bg-white rounded shadow-md overflow-y-scroll md:h-80'>
 					<ul>
 						{data && data.code === 200 && data.data ? (

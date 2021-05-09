@@ -65,7 +65,7 @@ const Navbar = ({ token }:{ token: string }): JSX.Element => {
 							</li>
 							<li className='flex items-center'>
 								<Link href='/discord'>
-									<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'
+									<a target='_blank' rel='noreferrer' className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'
 									>
 									디스코드
 									</a>
@@ -162,7 +162,7 @@ const Navbar = ({ token }:{ token: string }): JSX.Element => {
 						</a>
 					</Link>
 					<Link href='/discord'>
-						<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+						<a target='_blank' rel='noreferrer' onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
 							<i className='fab fa-discord' />
 							<span className='px-2 font-medium'>디스코드 서버</span>
 						</a>

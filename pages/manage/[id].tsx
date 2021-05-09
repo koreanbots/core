@@ -157,6 +157,10 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 							<Markdown text={values.desc} />
 						</Segment>
 					</Label>
+					<Divider />
+					<p className='text-base mt-2 mb-5'>
+						<span className='text-red-500 font-semibold'> *</span> = 필수 항목
+					</p>
 					<Button type='submit' onClick={() => window.scrollTo({ top: 0 })}>
 						<>
 							<i className='far fa-save'/> 저장

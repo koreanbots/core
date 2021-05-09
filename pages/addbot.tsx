@@ -174,6 +174,9 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 						</Segment>
 					</Label>
 					<Divider />
+					<p className='text-base mt-2 mb-5'>
+						<span className='text-red-500 font-semibold'> *</span> = 필수 항목
+					</p>
 					{
 						captcha ? <Captcha ref={captchaRef} dark={theme === 'dark'} onVerify={(token) => {
 							submitBot(values, token)

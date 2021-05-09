@@ -161,7 +161,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 										{
 											checkBotFlag(data.flags, 'trusted') ?
 												<Tooltip overlay='해당 봇은 디스코드측에서 인증된 봇입니다.'>
-													<div>
+													<div className='col-span-2'>
 														<i className='fas fa-check text-discord-blurple' /> 디스코드 인증됨
 													</div>
 												</Tooltip>

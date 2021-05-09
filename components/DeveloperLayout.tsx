@@ -34,7 +34,7 @@ const DeveloperLayout = ({ children, enabled, docs, currentDoc }:DeveloperLayout
 			</div>
 		</div>
 		<div className={`${navbarEnabled ? 'block' : 'hidden'} lg:block relative`}>
-			<div className='bg-little-white dark:bg-discord-black pt-20 px-6 fixed h-screen w-screen lg:w-60 overflow-y-scroll'>
+			<div className='bg-little-white dark:bg-discord-black pt-20 px-6 fixed h-screen w-screen lg:w-60 overflow-y-auto'>
 				<ul className='text-base text-gray-600 dark:text-gray-300 mb-6 hidden lg:block'>
 					<li className='cursor-pointer py-2 px-4 rounded-md hover:text-gray-500 dark:hover:text-white lg:hidden' onKeyDown={() => setNavbarOpen(false)} onClick={() => setNavbarOpen(false)}>닫기</li>
 					<Divider className='lg:hidden' />

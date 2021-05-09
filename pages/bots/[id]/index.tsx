@@ -278,8 +278,8 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 												className='hover:underline'
 												href={data.git}
 											>
-												<i className={`fab fa-${git?.[new URL(data.git).hostname].icon ?? 'git-alt'}`} />
-												{git?.[new URL(data.git).hostname].text ?? 'Git'}
+												<i className={`fab fa-${git[new URL(data.git).hostname]?.icon ?? 'git-alt'}`} />
+												{git[new URL(data.git).hostname]?.text ?? 'Git'}
 											</a>
 										)}
 									</div>

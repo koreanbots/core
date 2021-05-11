@@ -14,6 +14,7 @@ class MyDocument extends Document {
 						rel='stylesheet'
 						href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/solarized-dark.min.css'
 					/>
+					<link rel='search' type='application/opensearchdescription+xml' title='한국 디스코드봇 리스트' href='/opensearch.xml' />
 					<script src='//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js'></script>
 					<script
 						data-ad-client='ca-pub-4856582423981759'

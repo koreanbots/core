@@ -1,6 +1,6 @@
 {
 	"labels": ["meta: dependencies"],
-	"reviewers": ["team:koreanbots-devs"],
+	"reviewers": ["team:core-developer"],
 	"schedule": ["before 8am"],
 	"extends": ["config:base"],
 	"timezone": "Asia/Seoul"

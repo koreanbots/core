@@ -4,4 +4,5 @@
     <InputEncoding>UTF-8</InputEncoding>
     <Image width="16" height="16" type="image/x-icon">https://beta.koreanbots.dev/logo.png</Image>
     <Url type="text/html" method="get" template="https://beta.koreanbots.dev/search?q={searchTerms}"/>
+    <moz:SearchForm>https://beta.koreanbots.dev/search</moz:SearchForm>
 </OpenSearchDescription>

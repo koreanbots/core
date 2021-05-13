@@ -1,4 +1,4 @@
-import { NextApiRequest} from 'next'
+import { NextApiRequest } from 'next'
 import rateLimit from 'express-rate-limit'
 
 import { get, update } from '@utils/Query'

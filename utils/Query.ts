@@ -162,7 +162,7 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 	return { type, data: (await Promise.all(res.map(async el => await getBot(el.id)))).map(r=> ({...r})), currentPage: page, totalPage: Math.ceil(Number(count) / 16) }
 }
 
-async function getBotSubmit(id: string, date: number) {
+async function getBotSubmit(id: string, date: number): Promise<SubmittedBot> {
 	const res = await knex('submitted').select(['id', 'date', 'category', 'lib', 'prefix', 'intro', 'desc', 'url', 'web', 'git', 'discord', 'state', 'owners', 'reason']).where({ id, date })
 	if(res.length === 0) return null
 	res[0].category = JSON.parse(res[0].category)
@@ -170,7 +170,7 @@ async function getBotSubmit(id: string, date: number) {
 	return res[0]
 }
 
-async function getBotSubmits(id: string) {
+async function getBotSubmits(id: string): Promise<SubmittedBot[]> {
 	if(!id) return []
 	let res = await knex('submitted').select(['id', 'date', 'category', 'lib', 'prefix', 'intro', 'desc', 'url', 'web', 'git', 'discord', 'state', 'owners', 'reason']).orderBy('date', 'desc').where('owners', 'LIKE', `%${id}%`)
 	res = await Promise.all(res.map(async el=> {
@@ -374,6 +374,13 @@ export async function CaptchaVerify(response: string): Promise<boolean> {
 	return res.success
 }
 
+// Private APIs
+
+async function getBotSubmitList() {
+	const res = await knex('submitted').select(['id', 'date']).where({ state: 0 })
+	return await Promise.all(res.map(b => get.botSubmit.load(JSON.stringify({ id: b.id, date: b.date }))))
+}
+
 export const get = {
 	discord: {
 		user: new DataLoader(
@@ -457,7 +464,8 @@ export const get = {
 	},
 	botVote: getBotVote,
 	Authorization,
-	BotAuthorization
+	BotAuthorization,
+	botSubmitList: getBotSubmitList
 }
 
 export const update = {

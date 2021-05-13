@@ -100,6 +100,13 @@ const Markdown = ({ text, options={}, allowedTag=[], components={} }: MarkdownPr
 							...allowedTag
 						],
 						allowedAttributes: false,
+						allowedClasses: {
+							'*': ['align-middle'],
+							a: ['anchor', 'mr-1'],
+							svg: ['octicon-link'],
+							img: ['emoji', 'special']
+						},
+						allowedStyles: {}
 					})
 				}
 			/>

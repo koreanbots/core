@@ -127,7 +127,7 @@ const Navbar = ({ token, pwa }:{ token: string, pwa: boolean }): JSX.Element => 
 										<a tabIndex={0} onClick={()=> {
 											localStorage.redirectTo = window.location.href
 											setNavbarOpen(false)
-											if(pwa) window.open('/api/auth/discord')
+											if(pwa) window.open('/api/auth/discord', '_blank')
 											else redirectTo(router, 'login')
 										}} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100 cursor-pointer outline-none'>
 											로그인
@@ -200,7 +200,7 @@ const Navbar = ({ token, pwa }:{ token: string, pwa: boolean }): JSX.Element => 
 						</> : <a onClick={() => {
 							localStorage.redirectTo = window.location.href
 							setNavbarOpen(false)
-							if(pwa) window.open('/api/auth/discord')
+							if(pwa) window.open('/api/auth/discord', '_blank')
 							else redirectTo(router, 'login')
 						}} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
 							<i className='far fa-user' />

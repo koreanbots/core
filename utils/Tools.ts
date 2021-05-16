@@ -12,8 +12,11 @@ export function handlePWA(): boolean {
 	if (window.navigator.standalone || window.matchMedia(mqStandAlone).matches) {
 		displayMode = 'standalone'
 	}
-	window?.ga('set', 'dimension1', displayMode)
-
+	try {
+		window.ga('set', 'dimension1', displayMode)
+	} catch {
+		console.warn('GA Failed')
+	}
 	return displayMode === 'standalone'
 }
 export function formatNumber(value: number):string  {

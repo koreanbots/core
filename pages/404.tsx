@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import { ErrorText } from '@utils/Constants'
 
-const NotFound: NextPage = () => {
+const NotFound: NextPage<{ message?: string }> = ({ message }) => {
 	return (
 		<div
 			className='flex items-center justify-center h-screen select-none text-center'
@@ -13,7 +13,7 @@ const NotFound: NextPage = () => {
 					4
 				</div>
 				<h2 className='text-2xl font-semibold'>
-					{ErrorText[404]}
+					{message || ErrorText[404]}
 				</h2>
 			</div>
 			

@@ -26,7 +26,7 @@ const Category: NextPage<CategoryProps> = ({ data, query }) => {
 	useEffect(() => {
 		setNSFW(localStorage.nsfw)
 	}, [])
-	if(!data || data.data.length === 0 || data.totalPage < Number(query.page)) return <NotFound />
+	if(!data || data.data.length === 0 || data.totalPage < Number(query.page)) return <NotFound message={data.data.length === 0 ? '해당 카테고리에 해당되는 봇이 존재하지 않습니다.' : null} />
 	return <>
 		<Hero header={`${query.category} 카테고리 봇들`} description={`다양한 "${query.category}" 카테고리의 봇들을 만나보세요.`} />
 		<SEO title={`${query.category} 카테고리 봇들`} description={`다양한 ${query.category} 카테고리의 봇들을 만나보세요.`} />

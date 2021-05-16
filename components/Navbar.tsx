@@ -11,7 +11,7 @@ import { User, UserCache } from '@types'
 import DiscordAvatar from '@components/DiscordAvatar'
 import Fetch from '@utils/Fetch'
 
-const Navbar = ({ token }:{ token: string }): JSX.Element => {
+const Navbar = ({ token, pwa }:{ token: string, pwa: boolean }): JSX.Element => {
 	const [userCache, setUserCache] = useState<UserCache>()
 	const [navbarOpen, setNavbarOpen] = useState<boolean>(false)
 	const [dropdownOpen, setDropdownOpen] = useState<boolean>(false)
@@ -124,18 +124,11 @@ const Navbar = ({ token }:{ token: string }): JSX.Element => {
 												</ul>
 											</div>
 										</> :
-										<a tabIndex={0} onKeyPress={()=> {
-											if(!(logged)) {
-												localStorage.redirectTo = window.location.href
-												setNavbarOpen(false)
-												redirectTo(router, 'login')
-											}
-										}} onClick={()=> {
-											if(!(logged)) {
-												localStorage.redirectTo = window.location.href
-												setNavbarOpen(false)
-												redirectTo(router, 'login')
-											}
+										<a tabIndex={0} onClick={()=> {
+											localStorage.redirectTo = window.location.href
+											setNavbarOpen(false)
+											if(pwa) window.open('/api/auth/discord')
+											else redirectTo(router, 'login')
 										}} className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100 cursor-pointer outline-none'>
 											로그인
 										</a>
@@ -204,15 +197,15 @@ const Navbar = ({ token }:{ token: string }): JSX.Element => {
 								<i className='fas fa-sign-out-alt' />
 								<span className='px-2 font-medium'>로그아웃</span>
 							</a>
-						</> : <Link href='/api/auth/discord'>
-							<a onClick={()=> {
-								localStorage.redirectTo = window.location.href
-								setNavbarOpen(false)
-							}} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
-								<i className='far fa-user' />
-								<span className='px-2 font-medium'>로그인</span>
-							</a>
-						</Link>
+						</> : <a onClick={() => {
+							localStorage.redirectTo = window.location.href
+							setNavbarOpen(false)
+							if(pwa) window.open('/api/auth/discord')
+							else redirectTo(router, 'login')
+						}} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+							<i className='far fa-user' />
+							<span className='px-2 font-medium'>로그인</span>
+						</a>
 					}
 				</div>
 			</div>

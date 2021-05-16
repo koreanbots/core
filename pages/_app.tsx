@@ -7,7 +7,7 @@ import { GlobalHotKeys } from 'react-hotkeys'
 import NProgress from 'nprogress'
 
 import Logger from '@utils/Logger'
-import { parseCookie, systemTheme } from '@utils/Tools'
+import { handlePWA, parseCookie, systemTheme } from '@utils/Tools'
 import { shortcutKeyMap } from '@utils/Constants'
 import { Theme } from '@types'
 
@@ -34,6 +34,7 @@ Router.events.on('routeChangeError', NProgress.done)
 const KoreanbotsApp = ({ Component, pageProps, err, cookie }: KoreanbotsProps): JSX.Element => {
 	const [ shortcutModal, setShortcutModal ] = useState(false)
 	const [ theme, setTheme ] = useState<Theme>('system')
+	const [ standalone, setStandalone ] = useState(false)
 	const router = useRouter()
 
 	useEffect(() => {
@@ -50,24 +51,17 @@ const KoreanbotsApp = ({ Component, pageProps, err, cookie }: KoreanbotsProps): 
 			setTheme(systemTheme())
 		}
 		else setTheme(localStorage.theme)
+		setStandalone(handlePWA())
 	}, [])
 
 	return <div className={theme}>
 		<Head>
-			<meta name='viewport' content='width=device-width, initial-scale=1.0' />
+			<meta name='viewport' content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' />
 			<title>한국 디스코드봇 리스트</title>
-			<meta name='description' content='다양한 국내 디스코드봇들을 확인하고, 초대해보세요!' />
-			<meta name='og:title' content='한국 디스코드봇 리스트' />
-			<meta name='og:url' content='https://koreanbots.dev' />
-			<meta name='og:description' content='다양한 국내 디스코드봇들을 확인하고, 초대해보세요!' />
-			<meta name='og:image' content='/logo.png' />
-			<meta charSet='utf-8' />
-			<link rel='shortcut icon' href='/logo.png' />
-			<meta name='theme-color' content='#3366FF' />
 		</Head>
-		<Navbar token={cookie.token} />
+		<Navbar token={cookie.token} pwa={standalone} />
 		<div className='iu-is-the-best min-h-screen text-black dark:text-gray-100 dark:bg-discord-dark bg-white'>
-			<Component {...pageProps} err={err} theme={theme} setTheme={setTheme} />
+			<Component {...pageProps} err={err} theme={theme} setTheme={setTheme} pwa={standalone} />
 		</div>
 		{
 			!(router.pathname.startsWith('/developers')) && <Footer theme={theme} setTheme={setTheme} />

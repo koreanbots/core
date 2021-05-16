@@ -6,6 +6,16 @@ import { BotFlags, ImageOptions, UserFlags } from '@types'
 import { BASE_URLs, KoreanbotsEndPoints, Oauth } from './Constants'
 import { NextRouter } from 'next/router'
 
+export function handlePWA(): boolean {
+	let displayMode = 'browser'
+	const mqStandAlone = '(display-mode: standalone)'
+	if (window.navigator.standalone || window.matchMedia(mqStandAlone).matches) {
+		displayMode = 'standalone'
+	}
+	window?.ga('set', 'dimension1', displayMode)
+
+	return displayMode === 'standalone'
+}
 export function formatNumber(value: number):string  {
 	const suffixes = ['', '만', '억', '조','해']
 	const suffixNum = Math.floor((''+value).length/4)

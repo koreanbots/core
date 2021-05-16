@@ -40,6 +40,7 @@
 		"mysql": "2.18.1",
 		"next": "10.2.0",
 		"next-connect": "0.10.1",
+		"next-pwa": "5.2.21",
 		"next-session": "3.4.0",
 		"node-emoji": "1.10.0",
 		"nprogress": "0.2.0",

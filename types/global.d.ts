@@ -8,6 +8,9 @@ declare global {
 			highlightBlock(e: Element): void
 		}
 	}
+	interface Navigator {
+		standalone?: boolean
+	}
 }
 declare module 'yup' {
 	class ArraySchema extends Yup.array {

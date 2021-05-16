@@ -122,7 +122,7 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 					<Label For='website' label='웹사이트' labelDesc='봇의 웹사이트를 작성해주세요.' error={errors.website && touched.website ? errors.website : null}>
 						<Input name='website' placeholder='https://koreanbots.dev' />
 					</Label>
-					<Label For='git' label='깃 URL' labelDesc='봇의 소스코드 깃 주소를 입력해주세요 (오픈소스인 경우)' error={errors.git && touched.git ? errors.git : null}>
+					<Label For='git' label='Git URL' labelDesc='봇 소스코드의 Git 주소를 입력해주세요 (오픈소스인 경우)' error={errors.git && touched.git ? errors.git : null}>
 						<Input name='git' placeholder='https://github.com/koreanbots/koreanbots'/>
 					</Label>
 					<Label For='inviteLink' label='초대링크' labelDesc='봇의 초대링크입니다. 비워두시면 자동으로 생성합니다.' error={errors.url && touched.url ? errors.url : null}>

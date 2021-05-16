@@ -17,7 +17,7 @@ const Forbidden = ():JSX.Element => {
 					{ErrorText[403]}
 				</h2>
 				<Button onClick={router.back}>뒤로 가기</Button>
-				<p className='text-gray-400 text-sm mt-2'>해당 작업을 수행할 수 있는 권한이 없습니다. 무언가 잘못된 거 같다면 문의해주세요.</p>
+				<p className='text-gray-400 text-sm mt-2'>해당 작업을 수행할 수 있는 권한이 없습니다. 무언가 잘못된 것 같다면 문의해주세요.</p>
 			</div>
 		</div>
 	</>

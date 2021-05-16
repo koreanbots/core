@@ -208,7 +208,7 @@ export const Oauth = {
 	discord: (clientID: string, scope: string) => `https://discord.com/oauth2/authorize?client_id=${clientID}&scope=${scope}&permissions=0&response_type=code&redirect_uri=${process.env.KOREANBOTS_URL}/api/auth/discord/callback&prompt=none`,
 	github: (clientID: string) => `https://github.com/login/oauth/authorize?client_id=${clientID}&redirect_uri=${process.env.KOREANBOTS_URL}/api/auth/github/callback`
 }
-export const git = { 'github.com': { icon: 'github', text: 'Github' },  'gitlab.com':  { icon: 'gitlab', text: 'Gitlab' }}
+export const git = { 'github.com': { icon: 'github', text: 'GitHub' },  'gitlab.com':  { icon: 'gitlab', text: 'GitLab' }}
 
 export const KoreanbotsDiscord = 'https://discord.gg/JEh53MQ'
 export const ThemeColors = [{ name: '파랑', rgb: 'rgb(51, 102, 255)', hex: '#3366FF', color: 'koreanbots-blue' }, { name: '하양', rgb: 'rgb(251, 251, 251)', hex: '#FBFBFB', color: 'little-white' }, { name: '검정', rgb: 'rgb(27, 30, 35)', hex: '#1B1E23', color: 'very-black' }, { name: '보라', rgb: 'rgb(114, 137, 218)', hex: '#7289DA', color: 'discord-blurple' } ]

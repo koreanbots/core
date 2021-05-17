@@ -1,5 +1,5 @@
-import Logger from '@utils/Logger'
 import { useEffect } from 'react'
+import Logger from '@utils/Logger'
 
 const Advertisement = ({ size = 'short' }: AdvertisementProps): JSX.Element => {
 	useEffect(() => {

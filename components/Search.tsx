@@ -59,7 +59,7 @@ const Search = (): JSX.Element => {
 			if(d.findIndex(n => n.value === query) !== -1) d.splice(d.findIndex(n => n.value === query), 1)
 			d.push({
 				value: query,
-				date: new Date().getTime()
+				date: Date.now()
 			})
 			d.reverse()
 			setRecentSearch(d.slice(0, 10))
@@ -67,7 +67,7 @@ const Search = (): JSX.Element => {
 		} catch {
 			setRecentSearch([{
 				value: query,
-				date: new Date().getTime()
+				date: Date.now()
 			}])
 			localStorage.recentSearch = JSON.stringify(recentSearch)
 		} finally {

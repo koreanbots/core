@@ -3,7 +3,6 @@ import dynamic from 'next/dynamic'
 import { categories, categoryIcon } from '@utils/Constants'
 
 const Container = dynamic(()=> import('@components/Container'))
-const Wave  = dynamic(()=> import('@components/Wave'))
 const Tag = dynamic(()=> import('@components/Tag'))
 const Search = dynamic(()=> import('@components/Search'))
 

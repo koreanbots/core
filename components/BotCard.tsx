@@ -1,12 +1,13 @@
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 
 import { checkBotFlag, formatNumber, makeBotURL } from '@utils/Tools'
 import { Status } from '@utils/Constants'
 import { Bot } from '@types'
 
-import Divider from '@components/Divider'
-import Tag from '@components/Tag'
-import DiscordAvatar from '@components/DiscordAvatar'
+const Divider = dynamic(() => import('@components/Divider'))
+const Tag = dynamic(() => import('@components/Tag'))
+const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 
 const BotCard = ({ manage = false, bot }: BotProps): JSX.Element => {
 	return (

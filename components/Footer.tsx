@@ -1,8 +1,10 @@
 import Link from 'next/link'
-import Container from '@components/Container'
+import dynamic from 'next/dynamic'
 
-import Toggle from './Toggle'
 import { Theme } from '@types'
+
+const Container = dynamic(() => import('@components/Container'))
+const Toggle = dynamic(() => import('@components/Toggle'))
 
 const Footer = ({ theme, setTheme }: FooterProps): JSX.Element => {
 	return (

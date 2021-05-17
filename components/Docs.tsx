@@ -1,7 +1,7 @@
-import Container from '@components/Container'
-import Wave from '@components/Wave'
-import SEO from './SEO'
+import dynamic from 'next/dynamic'
 
+const Container = dynamic(() => import('@components/Container'))
+const SEO = dynamic(() => import('@components/SEO'))
 const Docs = ({ title, header, description, subheader, children }: DocsProps): JSX.Element => {
 	return (
 		<>

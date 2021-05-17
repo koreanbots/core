@@ -1,5 +1,7 @@
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import DiscordAvatar from './DiscordAvatar'
+
+const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 
 const Application = ({ type, id, name }: ApplicationProps): JSX.Element => {
 	return (

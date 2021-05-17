@@ -11,7 +11,7 @@ const Redirect = ({ to, text=true, children }:RedirectProps):JSX.Element => {
 	if(!to) throw new Error('No Link')
 	useEffect(() => {
 		redirectTo(router, to)
-	}, [])
+	})
 	if(children) return <>
 		{children}
 	</>

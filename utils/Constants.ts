@@ -8,7 +8,8 @@ export const DESCRIPTION = '다양한 국내 디스코드 봇들을 확인하고
 export const THEME_COLOR = '#3366FF'
 
 export const VOTE_COOLDOWN = 12 * 60 * 60 * 1000
-export const BUG_REPORTERS = ['345265069132742657', '260303569591205888']
+export const BUG_REPORTERS = ['260303569591205888']
+export const BUG_REPORT_GROUPS = ['경북소프트웨어고등학교 해킹방어 그룹']
 export const Status = {
 	online: {
 		text: '온라인',

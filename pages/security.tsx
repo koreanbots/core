@@ -2,7 +2,7 @@ import { GetServerSideProps, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 
 import { User } from '@types'
-import { BUG_REPORTERS } from '@utils/Constants'
+import { BUG_REPORTERS, BUG_REPORT_GROUPS } from '@utils/Constants'
 import { get } from '@utils/Query'
 
 const Docs = dynamic(() => import('@components/Docs'))
@@ -41,12 +41,22 @@ const Security: NextPage<SecurityProps> = ({ bugReports }) => {
 		<h1 className='mt-6 mb-3 text-3xl font-bold text-koreanbots-blue'>취약점을 제보해주신 분들</h1>
 		<div className='flex flex-wrap'>
 			{
-				bugReports.filter(el=>el).map(u => <div key={u.id} className='flex items-center mr-2.5'>
-					<DiscordAvatar userID={u.id} size={128} className='rounded-full w-6 h-6 mr-1' />
-					<span className='text-base dark:text-gray-300'>{u.username}#{u.tag}</span>
-				</div>)
+				bugReports.filter(el=>el).map(u => 
+					<div key={u.id} className='flex items-center mr-2.5'>
+						<DiscordAvatar userID={u.id} size={128} className='rounded-full w-6 h-6 mr-1' />
+						<span className='text-base font-semibold dark:text-gray-300'>{u.username}#{u.tag}</span>
+					</div>
+				)
 			}
 		</div>
+		<ul className='flex flex-wrap mt-2 list-disc list-inside'>
+			{
+				BUG_REPORT_GROUPS.map((g, i) => <li key={i} className='text-base font-semibold dark:text-gray-300'>
+					{g}
+				</li>
+				)
+			}
+		</ul>
 		<div className='text-center py-36'>
 			<h1 className='text-3xl font-bold mb-6'>취약점을 발견하셨나요?</h1>
 			<Button href='mailto:koreanbots.dev@gmail.com'>제보하기</Button>

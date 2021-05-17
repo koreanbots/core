@@ -5,6 +5,7 @@ const VERSION = require('./package.json').version
 
 const NextConfig = {
 	pwa: {
+		dest: 'public',
 		register: false
 	},
 	env: {

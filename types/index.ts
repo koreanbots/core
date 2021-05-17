@@ -61,7 +61,7 @@ export enum BotFlags {
 	official = 1 << 0,
 	trusted = 1 << 2,
 	partnered = 1 << 3,
-	verifed = 1 << 4,
+	verified = 1 << 4,
 	premium = 1 << 5,
 	hackerthon = 1 << 6,
 }

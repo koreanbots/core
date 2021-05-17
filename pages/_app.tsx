@@ -54,7 +54,7 @@ const KoreanbotsApp = ({ Component, pageProps, err, cookie }: KoreanbotsProps): 
 		setStandalone(handlePWA())
 		
 		if('serviceWorker' in navigator) {
-			navigator.serviceWorker.register("/sw.js")
+			navigator.serviceWorker.register('/sw.js')
 		} else Logger.warn('[SW] Load Failed')
 	}, [])
 

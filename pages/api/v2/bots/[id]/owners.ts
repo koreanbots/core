@@ -4,6 +4,7 @@ import RequestHandler from '@utils/RequestHandler'
 import { CaptchaVerify, get, update } from '@utils/Query'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { checkToken } from '@utils/Csrf'
+import { checkUserFlag } from '@utils/Tools'
 import { EditBotOwner, EditBotOwnerSchema } from '@utils/Yup'
 import { User } from '@types'
 
@@ -11,9 +12,11 @@ const BotOwners = RequestHandler()
 	.patch(async (req: PostApiRequest, res) => {
 		const user = await get.Authorization(req.cookies.token)
 		if (!user) return ResponseWrapper(res, { code: 401 })
+		const userinfo = await get.user.load(user)
 		const bot = await get.bot.load(req.query.id)
 		if(!bot) return ResponseWrapper(res, { code: 404 })
-		if((bot.owners as User[])[0].id !== user) return ResponseWrapper(res, { code: 403 })
+		if((bot.owners as User[])[0].id !== user && !checkUserFlag(userinfo.flags, 'staff')) return ResponseWrapper(res, { code: 403 })
+		if(['reported', 'blocked', 'archived'].includes(bot.state) && !checkUserFlag(userinfo.flags, 'staff')) return ResponseWrapper(res, { code: 403, message: '해당 봇은 수정할 수 없습니다.', errors: ['오류라고 생각되면 문의해주세요.'] })
 		const validated = await EditBotOwnerSchema.validate(req.body, { abortEarly: false })
 			.then(el => el)
 			.catch(e => {

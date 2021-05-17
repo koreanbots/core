@@ -141,19 +141,23 @@ export const AddBotSubmitSchema: Yup.SchemaOf<AddBotSubmit> = Yup.object({
 	website: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')
 		.matches(Url, '올바른 웹사이트 URL을 입력해주세요.')
-		.max(64, 'URL은 최대 64자까지만 가능합니다.'),
+		.max(64, 'URL은 최대 64자까지만 가능합니다.')
+		.nullable(),
 	url: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')
 		.matches(Url, '올바른 초대링크 URL을 입력해주세요.')
-		.max(128, 'URL은 최대 128자까지만 가능합니다.'),
+		.max(128, 'URL은 최대 128자까지만 가능합니다.')
+		.nullable(),
 	git: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')
 		.matches(Url, '올바른 깃 URL을 입력해주세요.')
-		.max(64, 'URL은 최대 64자까지만 가능합니다.'),
+		.max(64, 'URL은 최대 64자까지만 가능합니다.')
+		.nullable(),
 	discord: Yup.string()
 		.matches(Vanity, '디스코드 초대코드 형식을 지켜주세요.')
 		.min(2, '지원 디스코드는 최소 2자여야합니다.')
-		.max(32, '지원 디스코드는 최대 32자까지만 가능합니다.'),
+		.max(32, '지원 디스코드는 최대 32자까지만 가능합니다.')
+		.nullable(),
 	category: Yup.array(Yup.string().oneOf(categories))
 		.min(1, '최소 한 개의 카테고리를 선택해주세요.')
 		.unique('카테고리는 중복될 수 없습니다.')
@@ -221,19 +225,23 @@ export const ManageBotSchema: Yup.SchemaOf<ManageBot> = Yup.object({
 	website: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')
 		.matches(Url, '올바른 웹사이트 URL을 입력해주세요.')
-		.max(64, 'URL은 최대 64자까지만 가능합니다.'),
+		.max(64, 'URL은 최대 64자까지만 가능합니다.')
+		.nullable(),
 	url: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')
 		.matches(Url, '올바른 초대링크 URL을 입력해주세요.')
-		.max(128, 'URL은 최대 128자까지만 가능합니다.'),
+		.max(128, 'URL은 최대 128자까지만 가능합니다.')
+		.nullable(),
 	git: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')
 		.matches(Url, '올바른 깃 URL을 입력해주세요.')
-		.max(64, 'URL은 최대 64자까지만 가능합니다.'),
+		.max(64, 'URL은 최대 64자까지만 가능합니다.')
+		.nullable(),
 	discord: Yup.string()
 		.matches(Vanity, '디스코드 초대코드 형식을 지켜주세요.')
 		.min(2, '지원 디스코드는 최소 2자여야합니다.')
-		.max(32, '지원 디스코드는 최대 32자까지만 가능합니다.'),
+		.max(32, '지원 디스코드는 최대 32자까지만 가능합니다.')
+		.nullable(),
 	category: Yup.array(Yup.string().oneOf(categories))
 		.min(1, '최소 한 개의 카테고리를 선택해주세요.')
 		.unique('카테고리는 중복될 수 없습니다.')
@@ -276,7 +284,8 @@ export const DeveloperBotSchema: Yup.SchemaOf<DeveloperBot> = Yup.object({
 	webhook: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')
 		.matches(Url, '올바른 웹훅 URL을 입력해주세요.')
-		.max(150, 'URL은 최대 150자까지만 가능합니다.'),
+		.max(150, 'URL은 최대 150자까지만 가능합니다.')
+		.nullable(),
 	_csrf: Yup.string().required(),
 })
 

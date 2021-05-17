@@ -76,11 +76,13 @@ const Bots = RequestHandler()
 		return ResponseWrapper(res, { code: 200, data: result })
 	})
 	.delete(async (req: DeleteApiRequest, res) => {
-		const bot = await get.bot.load(req.query.id)
-		if(!bot) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })
 		const user = await get.Authorization(req.cookies.token)
 		if (!user) return ResponseWrapper(res, { code: 401 })
+		const bot = await get.bot.load(req.query.id)
+		if(!bot) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })
 		if((bot.owners as User[])[0].id !== user) return ResponseWrapper(res, { code: 403 })
+		const userInfo = await get.user.load(user)
+		if(['reported', 'blocked', 'archived'].includes(bot.state) && !checkUserFlag(userInfo?.flags, 'staff')) return ResponseWrapper(res, { code: 403, message: '해당 봇은 수정할 수 없습니다.', errors: ['오류라고 생각되면 문의해주세요.'] })
 		const csrfValidated = checkToken(req, res, req.body._csrf)
 		if (!csrfValidated) return
 		const captcha = await CaptchaVerify(req.body._captcha)
@@ -94,10 +96,10 @@ const Bots = RequestHandler()
 	.patch(patchLimiter).patch(async (req: PatchApiRequest, res) => {
 		const bot = await get.bot.load(req.query.id)
 		if(!bot) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })
-		if(['reported', 'blocked', 'archived'].includes(bot.state)) return ResponseWrapper(res, { code: 403, message: '해당 봇은 수정할 수 없습니다.', errors: ['오류라고 생각되면 문의해주세요.'] })
 		const user = await get.Authorization(req.cookies.token)
 		if (!user) return ResponseWrapper(res, { code: 401 })
 		const userInfo = await get.user.load(user)
+		if(['reported', 'blocked', 'archived'].includes(bot.state) && !checkUserFlag(userInfo?.flags, 'staff')) return ResponseWrapper(res, { code: 403, message: '해당 봇은 수정할 수 없습니다.', errors: ['오류라고 생각되면 문의해주세요.'] })
 		if(!(bot.owners as User[]).find(el => el.id === user) && !checkUserFlag(userInfo?.flags, 'staff')) return ResponseWrapper(res, { code: 403 })
 		const csrfValidated = checkToken(req, res, req.body._csrf)
 		if (!csrfValidated) return
@@ -110,6 +112,7 @@ const Bots = RequestHandler()
 			})
 
 		if (!validated) return
+		console.log(validated)
 		const result = await update.bot(req.query.id, validated)
 		if(result === 0) return ResponseWrapper(res, { code: 400 })
 		else {

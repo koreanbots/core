@@ -132,7 +132,7 @@ export function redirectTo(router: NextRouter, to: string) {
 export function cleanObject<T extends Record<any, any>>(obj: T): T {
 	for (const propName in obj) {
 		if (obj[propName] !== 0 && !obj[propName]) {
-			delete obj[propName]
+			obj[propName] = null
 		}
 	}
 	return obj

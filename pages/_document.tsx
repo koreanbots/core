@@ -99,7 +99,7 @@ class MyDocument extends Document {
 						function gtag(){window.dataLayer.push(arguments);}
 						gtag('js', new Date());
 
-						gtag('config', 'UA-165454387-1');
+						gtag('config', 'UA-165454387-1', { 'optimize_id': 'OPT-NXSXXB5' });
 						
 						if(/MSIE \\d|Trident.*rv:/.test(navigator.userAgent)) {
 							window.location = 'microsoft-edge:' + window.location;

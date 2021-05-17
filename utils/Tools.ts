@@ -3,7 +3,8 @@ import { Readable } from 'stream'
 import cookie from 'cookie'
 
 import { BotFlags, ImageOptions, UserFlags } from '@types'
-import { BASE_URLs, KoreanbotsEndPoints, Oauth } from './Constants'
+import Logger from '@utils/Logger'
+import { BASE_URLs, KoreanbotsEndPoints, Oauth } from '@utils/Constants'
 import { NextRouter } from 'next/router'
 
 export function handlePWA(): boolean {
@@ -15,10 +16,11 @@ export function handlePWA(): boolean {
 	try {
 		window.ga('set', 'dimension1', displayMode)
 	} catch {
-		console.warn('GA Failed')
+		Logger.warn('[GA] Blocked.')
 	}
 	return displayMode === 'standalone'
 }
+
 export function formatNumber(value: number):string  {
 	const suffixes = ['', '만', '억', '조','해']
 	const suffixNum = Math.floor((''+value).length/4)

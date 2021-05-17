@@ -2,6 +2,11 @@ import { Bot, ImageOptions, KoreanbotsImageOptions } from '@types'
 import { KeyMap } from 'react-hotkeys'
 import { formatNumber, makeImageURL } from './Tools'
 
+// Website META DATA
+export const TITLE = '한국 디스코드봇 리스트'
+export const DESCRIPTION = '다양한 국내 디스코드 봇들을 확인하고, 초대해보세요!'
+export const THEME_COLOR = '#3366FF'
+
 export const VOTE_COOLDOWN = 12 * 60 * 60 * 1000
 export const BUG_REPORTERS = ['345265069132742657', '260303569591205888']
 export const Status = {

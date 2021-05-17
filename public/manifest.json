@@ -4,9 +4,12 @@
  "lang": "ko-KR",
  "description": "다양한 국내 디스코드봇들을 확인하고, 초대해보세요!",
  "start_url": "/",
+ "scope": "/",
  "background_color": "#3366FF",
  "theme_color": "#3366FF",
  "display": "standalone",
+ "orientation": "portrait",
+ "prefer_related_applications": true,
  "icons": [
   {
    "src": "\/android-icon-36x36.png",
@@ -43,6 +46,11 @@
    "sizes": "192x192",
    "type": "image\/png",
    "density": "4.0"
-  }
+  },
+   {
+    "src": "\/android-icon-512x512.png",
+    "sizes": "512x512",
+    "type": "image\/png"
+   }
  ]
 }

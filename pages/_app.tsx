@@ -8,7 +8,7 @@ import NProgress from 'nprogress'
 
 import Logger from '@utils/Logger'
 import { handlePWA, parseCookie, systemTheme } from '@utils/Tools'
-import { shortcutKeyMap } from '@utils/Constants'
+import { shortcutKeyMap, TITLE } from '@utils/Constants'
 import { Theme } from '@types'
 
 const Footer = dynamic(() => import('@components/Footer'))
@@ -52,12 +52,16 @@ const KoreanbotsApp = ({ Component, pageProps, err, cookie }: KoreanbotsProps): 
 		}
 		else setTheme(localStorage.theme)
 		setStandalone(handlePWA())
+		
+		if('serviceWorker' in navigator) {
+			navigator.serviceWorker.register("/sw.js")
+		} else Logger.warn('[SW] Load Failed')
 	}, [])
 
 	return <div className={theme}>
 		<Head>
 			<meta name='viewport' content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' />
-			<title>한국 디스코드봇 리스트</title>
+			<title>{TITLE}</title>
 		</Head>
 		<Navbar token={cookie.token} pwa={standalone} />
 		<div className='iu-is-the-best min-h-screen text-black dark:text-gray-100 dark:bg-discord-dark bg-white'>

@@ -1,3 +1,4 @@
+import { DESCRIPTION, THEME_COLOR, TITLE } from '@utils/Constants'
 import Document, { DocumentContext, Html, Head, Main, NextScript } from 'next/document'
 
 class MyDocument extends Document {
@@ -8,21 +9,62 @@ class MyDocument extends Document {
 	}
 	render() {
 		return (
-			<Html>
+			<Html lang='ko-KR'>
 				<Head>
+					{/* META */}
 					<meta charSet='utf-8' />
 					<meta httpEquiv='X-UA-Compatible' content='IE=edge' />
-					<meta name='description' content='다양한 국내 디스코드봇들을 확인하고, 초대해보세요!' />
-					<meta name='og:title' content='한국 디스코드봇 리스트' />
+					<meta name='description' content={DESCRIPTION} />
+					<meta name='keywords' content='Korea, Korean, Discord, Bot, 디스코드봇, 한디리' /> 
+					<meta name='og:title' content={TITLE} />
 					<meta name='og:url' content='https://koreanbots.dev' />
-					<meta name='og:description' content='다양한 국내 디스코드봇들을 확인하고, 초대해보세요!' />
+					<meta name='og:description' content={DESCRIPTION} />
 					<meta name='og:image' content='/favicon.ico' />
-					<link rel='shortcut icon' href='/favicon.ico' />
+
+					{/* Android */}
+					<meta name='theme-color' content={THEME_COLOR} />
+					<meta name='mobile-web-app-capable' content='yes' />
+					
+					{/* iOS */}
+					<meta name='apple-mobile-web-app-title' content='Application Title' />
+					<meta name='apple-mobile-web-app-capable' content='yes' />
+					<meta name='apple-mobile-web-app-status-bar-style' content='default' />
+					
+					{/* Windows */}
+					<meta name='msapplication-navbutton-color' content={THEME_COLOR} />
+					<meta name='msapplication-TileColor' content={THEME_COLOR} />
+					<meta name='msapplication-TileImage' content='/ms-icon-144x144.png' />
+					<meta name='msapplication-config' content='browserconfig.xml' />
+
+					{/* Pinned Sites */}
+					<meta name='application-name' content={TITLE} />
+					<meta name='msapplication-tooltip' content={DESCRIPTION} />
+					<meta name='msapplication-starturl' content='/' />
+
+					{/* Tap highlighting */}
+					<meta name='msapplication-tap-highlight' content='no' />
+
+					{/* UC Mobile Browser */}
+					<meta name='full-screen' content='yes' />
+					<meta name='browsermode' content='application' />
+
+					<meta name='nightmode' content='disable' />
+					<meta name='layoutmode' content='fitscreen' />
+					<meta name='imagemode' content='force' />
+					<meta name='screen-orientation' content='portrait' />
+					
+					{/* LINK */}
+					<link rel='manifest' href='/manifest.json' />
+					<link rel='search' type='application/opensearchdescription+xml' title={TITLE} href='/opensearch.xml' />
 					<link
 						rel='stylesheet'
 						href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/solarized-dark.min.css'
 					/>
-					<link rel='search' type='application/opensearchdescription+xml' title='한국 디스코드봇 리스트' href='/opensearch.xml' />
+					<link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png' />
+					<link rel='icon' type='image/png' sizes='96x96' href='/favicon-96x96.png' />
+					<link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png' />
+
+					{/* iOS */}
 					<link rel='apple-touch-icon' sizes='57x57' href='/apple-icon-57x57.png' />
 					<link rel='apple-touch-icon' sizes='60x60' href='/apple-icon-60x60.png' />
 					<link rel='apple-touch-icon' sizes='72x72' href='/apple-icon-72x72.png' />
@@ -32,14 +74,17 @@ class MyDocument extends Document {
 					<link rel='apple-touch-icon' sizes='144x144' href='/apple-icon-144x144.png' />
 					<link rel='apple-touch-icon' sizes='152x152' href='/apple-icon-152x152.png' />
 					<link rel='apple-touch-icon' sizes='180x180' href='/apple-icon-180x180.png' />
+					<link rel='apple-touch-icon' sizes='256x256' href='/apple-icon-256x256.png' />
+					<link rel='apple-touch-icon' sizes='512x512' href='/apple-icon-512x512.png' />
+
+
+					{/* Android */}
 					<link rel='icon' type='image/png' sizes='192x192'  href='/android-icon-192x192.png' />
-					<link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png' />
-					<link rel='icon' type='image/png' sizes='96x96' href='/favicon-96x96.png' />
-					<link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png' />
-					<link rel='manifest' href='/manifest.json' />
-					<meta name='msapplication-TileColor' content='#3366FF' />
-					<meta name='msapplication-TileImage' content='/ms-icon-144x144.png' />
-					<meta name='theme-color' content='#3366FF' />
+
+					{/* Others */}
+					<link rel='shortcut icon' href='/favicon.ico' />
+
+					{/* SCRIPT */}
 					<script src='//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js'></script>
 					<script
 						data-ad-client='ca-pub-4856582423981759'

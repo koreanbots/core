@@ -3,9 +3,9 @@ const { withSentryConfig } = require('@sentry/nextjs')
 const withPWA = require('next-pwa')
 const VERSION = require('./package.json').version
 
-module.exports = withSentryConfig(withPWA({
+const NextConfig = {
 	pwa: {
-		dest: 'public'
+		register: false
 	},
 	env: {
 		NEXT_PUBLIC_RELEASE_VERSION: VERSION,
@@ -17,4 +17,5 @@ module.exports = withSentryConfig(withPWA({
 	experimental: { 
 		scrollRestoration: true
 	}
-}), {})
+}
+module.exports = withSentryConfig(withPWA(NextConfig))

@@ -5,7 +5,7 @@ const VERSION = require('./package.json').version
 
 const NextConfig = {
 	pwa: {
-		dest: 'public',
+		disable: process.env.NODE_ENV !== 'production',
 		register: false
 	},
 	env: {

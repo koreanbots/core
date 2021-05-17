@@ -33,7 +33,7 @@ class MyDocument extends Document {
 					{/* Windows */}
 					<meta name='msapplication-navbutton-color' content={THEME_COLOR} />
 					<meta name='msapplication-TileColor' content={THEME_COLOR} />
-					<meta name='msapplication-TileImage' content='/ms-icon-144x144.png' />
+					<meta name='msapplication-TileImage' content='/static/ms-icon-144x144.png' />
 					<meta name='msapplication-config' content='browserconfig.xml' />
 
 					{/* Pinned Sites */}
@@ -65,21 +65,21 @@ class MyDocument extends Document {
 					<link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png' />
 
 					{/* iOS */}
-					<link rel='apple-touch-icon' sizes='57x57' href='/apple-icon-57x57.png' />
-					<link rel='apple-touch-icon' sizes='60x60' href='/apple-icon-60x60.png' />
-					<link rel='apple-touch-icon' sizes='72x72' href='/apple-icon-72x72.png' />
-					<link rel='apple-touch-icon' sizes='76x76' href='/apple-icon-76x76.png' />
-					<link rel='apple-touch-icon' sizes='114x114' href='/apple-icon-114x114.png' />
-					<link rel='apple-touch-icon' sizes='120x120' href='/apple-icon-120x120.png' />
-					<link rel='apple-touch-icon' sizes='144x144' href='/apple-icon-144x144.png' />
-					<link rel='apple-touch-icon' sizes='152x152' href='/apple-icon-152x152.png' />
-					<link rel='apple-touch-icon' sizes='180x180' href='/apple-icon-180x180.png' />
-					<link rel='apple-touch-icon' sizes='256x256' href='/apple-icon-256x256.png' />
-					<link rel='apple-touch-icon' sizes='512x512' href='/apple-icon-512x512.png' />
+					<link rel='apple-touch-icon' sizes='57x57' href='/static/apple-icon-57x57.png' />
+					<link rel='apple-touch-icon' sizes='60x60' href='/static/apple-icon-60x60.png' />
+					<link rel='apple-touch-icon' sizes='72x72' href='/static/apple-icon-72x72.png' />
+					<link rel='apple-touch-icon' sizes='76x76' href='/static/apple-icon-76x76.png' />
+					<link rel='apple-touch-icon' sizes='114x114' href='/static/apple-icon-114x114.png' />
+					<link rel='apple-touch-icon' sizes='120x120' href='/static/apple-icon-120x120.png' />
+					<link rel='apple-touch-icon' sizes='144x144' href='/static/apple-icon-144x144.png' />
+					<link rel='apple-touch-icon' sizes='152x152' href='/static/apple-icon-152x152.png' />
+					<link rel='apple-touch-icon' sizes='180x180' href='/static/apple-icon-180x180.png' />
+					<link rel='apple-touch-icon' sizes='256x256' href='/static/apple-icon-256x256.png' />
+					<link rel='apple-touch-icon' sizes='512x512' href='/static/apple-icon-512x512.png' />
 
 
 					{/* Android */}
-					<link rel='icon' type='image/png' sizes='192x192'  href='/android-icon-192x192.png' />
+					<link rel='icon' type='image/png' sizes='192x192'  href='/static/android-icon-192x192.png' />
 
 					{/* Others */}
 					<link rel='shortcut icon' href='/favicon.ico' />

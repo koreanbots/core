@@ -4,5 +4,5 @@
 	"schedule": ["before 8am"],
 	"extends": ["config:base"],
 	"timezone": "Asia/Seoul",
-	"ignorePaths": ["/public"]
+	"ignorePaths": ["public/"]
 }

@@ -53,6 +53,11 @@ const Footer = ({ theme, setTheme }: FooterProps): JSX.Element => {
 							<h2 className='text-koreanbots-blue text-base font-bold'>정책</h2>
 							<ul className='text-sm'>
 								<li>
+									<Link href='/tos'>
+										<a className='hover:text-gray-300'>서비스 이용약관</a>
+									</Link>
+								</li>
+								<li>
 									<Link href='/privacy'>
 										<a className='hover:text-gray-300'>개인정보취급방침</a>
 									</Link>
@@ -64,7 +69,7 @@ const Footer = ({ theme, setTheme }: FooterProps): JSX.Element => {
 								</li>
 								<li>
 									<Link href='/license'>
-										<a className='hover:text-gray-300'>오픈소스 라이선스</a>
+										<a className='hover:text-gray-300'>라이선스</a>
 									</Link>
 								</li>
 							</ul>

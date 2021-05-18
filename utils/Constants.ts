@@ -198,6 +198,7 @@ export const KoreanbotsEndPoints = {
 
 export const SpecialEndPoints = {
 	Github: {
+		Content: (owner: string, repo: string, path: string) => `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
 		Token: (clientID: string, clientSecret: string, code: string) => `https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${code}`,
 		Me: 'https://api.github.com/user'
 	},

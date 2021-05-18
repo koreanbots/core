@@ -26,7 +26,7 @@
 
 이슈와 PR은 언제든지 환영입니다.
 
-[기여 규칙](./.github/CONTRIBUTING)
+[기여 규칙](./.github/CONTRIBUTING.md)
 
 ## 기여자
 

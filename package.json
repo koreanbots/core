@@ -78,7 +78,7 @@
 		"@types/node-fetch": "2.5.10",
 		"@types/nprogress": "0.2.0",
 		"@types/rc-tooltip": "3.7.3",
-		"@types/react": "17.0.5",
+		"@types/react": "17.0.6",
 		"@types/react-select": "4.0.15",
 		"@types/sanitize-html": "2.3.1",
 		"@types/twemoji": "12.1.1",

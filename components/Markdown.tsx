@@ -5,7 +5,7 @@ import { FunctionComponent } from 'react'
 
 import { anchorHeader, customEmoji, twemoji } from '@utils/Tools'
 
-const Markdown = ({ text, options={}, allowedTag=[], components={} }: MarkdownProps): JSX.Element => {
+const Markdown: React.FC<MarkdownProps> = ({ text, options={}, allowedTag=[], components={} }) => {
 	return (
 		<div className='markdown-body w-full'>
 			<MarkdownView

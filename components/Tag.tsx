@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { ReactNode } from 'react'
 
-const Tag = ({
+const Tag: React.FC<LabelProps> = ({
 	blurple = false,
 	github = false,
 	href,
@@ -13,7 +13,7 @@ const Tag = ({
 	newTab = false,
 	bigger = false,
 	...props
-}: LabelProps): JSX.Element => {
+}) => {
 	return href ? (
 		newTab ? (
 			<a

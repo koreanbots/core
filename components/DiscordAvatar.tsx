@@ -3,12 +3,7 @@ import { KoreanbotsEndPoints } from '@utils/Constants'
 import { supportsWebP } from '@utils/Tools'
 import Logger from '@utils/Logger'
 
-const DiscordAvatar = (props: {
-	alt?: string
-	userID: string
-	className?: string
-	size? : 128 | 256 | 512
-}) => {
+const DiscordAvatar: React.FC<DiscordAvatarProps> = props => {
 	const fallback = '/img/default.png'
 	const [ webpUnavailable, setWebpUnavailable ] = useState<boolean>()
 	
@@ -46,7 +41,12 @@ const DiscordAvatar = (props: {
 	/>
 }
 
-export default DiscordAvatar
+interface DiscordAvatarProps {
+	alt?: string
+	userID: string
+	className?: string
+	size? : 128 | 256 | 512
+}
 
 interface ImageEvent extends Event {
 	target: ImageTarget
@@ -56,3 +56,5 @@ interface ImageTarget extends EventTarget {
 	src: string
 	onerror: (event: SyntheticEvent<HTMLImageElement, ImageEvent>) => void
 }
+
+export default DiscordAvatar

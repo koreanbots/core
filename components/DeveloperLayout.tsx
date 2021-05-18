@@ -9,7 +9,7 @@ const Container = dynamic(() => import('@components/Container'))
 const Divider = dynamic(() => import('@components/Divider'))
 const SEO = dynamic(() => import('@components/SEO'))
 
-const DeveloperLayout = ({ children, enabled, docs, currentDoc }:DeveloperLayout):JSX.Element => {
+const DeveloperLayout: React.FC<DeveloperLayout> = ({ children, enabled, docs, currentDoc }:DeveloperLayout) => {
 	const [ navbarEnabled, setNavbarOpen ] = useState(false)
 
 	return <div className='flex min-h-screen'>

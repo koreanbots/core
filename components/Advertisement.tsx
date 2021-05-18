@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import Logger from '@utils/Logger'
 
-const Advertisement = ({ size = 'short' }: AdvertisementProps): JSX.Element => {
+const Advertisement: React.FC<AdvertisementProps> = ({ size = 'short' }) => {
 	useEffect(() => {
 		if (process.env.NODE_ENV === 'production') {
 			window.adsbygoogle = window.adsbygoogle || []

@@ -6,7 +6,7 @@ import { redirectTo } from '@utils/Tools'
 
 const Container = dynamic(() => import('@components/Container'))
 
-const Redirect = ({ to, text=true, children }:RedirectProps):JSX.Element => {
+const Redirect: React.FC<RedirectProps> = ({ to, text=true, children }) => {
 	const router = useRouter()
 	if(!to) throw new Error('No Link')
 	useEffect(() => {

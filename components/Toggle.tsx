@@ -1,4 +1,4 @@
-const Toggle = ({ checked, onChange }: ToggleProps): JSX.Element => {
+const Toggle: React.FC<ToggleProps> = ({ checked, onChange }: ToggleProps) => {
 	return (
 		<button
 			className='relative inline-block align-middle mr-2 w-10 outline-none select-none'

@@ -1,4 +1,4 @@
-const Notice = ({ header, desc }: NoticeProps) => {
+const Notice: React.FC<NoticeProps> = ({ header, desc }) => {
 	return (
 		<div className='mx-auto my-auto px-10 py-48 h-screen text-center'>
 			<h1 className='text-4xl font-bold'>KOREANBOTS</h1>

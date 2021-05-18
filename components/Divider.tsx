@@ -1,4 +1,4 @@
-const Divider = ({ className }: { className?: string }) => {
+const Divider: React.FC<DividerProps> = ({ className }) => {
 	return (
 		<div
 			className={`my-2 px-5 ${className || ''}`}
@@ -8,6 +8,10 @@ const Divider = ({ className }: { className?: string }) => {
 			}}
 		/>
 	)
+}
+
+interface DividerProps {
+	className?: string
 }
 
 export default Divider

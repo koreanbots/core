@@ -6,7 +6,7 @@ import { Theme } from '@types'
 const Container = dynamic(() => import('@components/Container'))
 const Toggle = dynamic(() => import('@components/Toggle'))
 
-const Footer = ({ theme, setTheme }: FooterProps): JSX.Element => {
+const Footer: React.FC<FooterProps> = ({ theme, setTheme }) => {
 	return (
 		<div className='releative z-30'>
 			<div className='bottom-0 text-white bg-discord-black py-24'>

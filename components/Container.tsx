@@ -1,11 +1,11 @@
 import { ReactNode } from 'react'
 
-const Container = ({
+const Container: React.FC<ContainerProps> = ({
 	ignoreColor,
 	className,
 	paddingTop = false,
 	children,
-}: ContainerProps): JSX.Element => {
+}) => {
 	return (
 		<div
 			className={`${ignoreColor ? '' : 'text-black dark:text-gray-100'} ${

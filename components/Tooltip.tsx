@@ -1,12 +1,12 @@
 import Link from 'next/link'
 
-const Tooltip = ({
+const Tooltip: React.FC<TooltipProps> = ({
 	href,
 	size = 'small',
 	children,
 	direction = 'center',
 	text,
-}: TooltipProps): JSX.Element => {
+}) => {
 	return href ? (
 		<Link href={href}>
 			<a className='inline'>

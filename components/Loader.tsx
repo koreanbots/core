@@ -1,4 +1,4 @@
-const Loader = ({ text, visible = true }: LoaderProps): JSX.Element => {
+const Loader: React.FC<LoaderProps> = ({ text, visible = true }) => {
 	return (
 		<div
 			className={`${
@@ -13,7 +13,7 @@ const Loader = ({ text, visible = true }: LoaderProps): JSX.Element => {
 }
 
 interface LoaderProps {
-	text: string | JSX.Element
+	text: string | React.ReactNode
 	visible?: boolean
 }
 

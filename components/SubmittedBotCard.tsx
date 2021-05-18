@@ -5,7 +5,7 @@ import Tag from '@components/Tag'
 import { SubmittedBot } from '@types'
 import Link from 'next/link'
 
-const SubmittedBotCard = ({ href, submit }: SubmittedBotProps): JSX.Element => {
+const SubmittedBotCard: React.FC<SubmittedBotProps> = ({ href, submit }) => {
 	return (
 		<Link href={href}>
 			<a className='relative mx-auto px-4 py-5 w-full h-full text-black dark:text-white dark:bg-discord-black bg-little-white rounded-2xl shadow-xl transform hover:-translate-y-1 transition duration-100 ease-in'>

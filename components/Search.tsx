@@ -11,7 +11,7 @@ import DiscordAvatar from '@components/DiscordAvatar'
 import Day from '@utils/Day'
 import useOutsideClick from '@utils/useOutsideClick'
 
-const Search = (): JSX.Element => {
+const Search: React.FC = () => {
 	const router = useRouter()
 	const ref = useRef()
 	const [query, setQuery] = useState('')

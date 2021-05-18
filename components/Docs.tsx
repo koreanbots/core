@@ -2,7 +2,8 @@ import dynamic from 'next/dynamic'
 
 const Container = dynamic(() => import('@components/Container'))
 const SEO = dynamic(() => import('@components/SEO'))
-const Docs = ({ title, header, description, subheader, children }: DocsProps): JSX.Element => {
+
+const Docs: React.FC<DocsProps> = ({ title, header, description, subheader, children }) => {
 	return (
 		<>
 			<SEO
@@ -32,9 +33,9 @@ const Docs = ({ title, header, description, subheader, children }: DocsProps): J
 export default Docs
 
 interface DocsProps {
-	header: string | JSX.Element
+	header: string | React.ReactNode
 	title?: string
 	description?: string
 	subheader?: string
-	children: JSX.Element | JSX.Element[]
+	children: React.ReactNode
 }

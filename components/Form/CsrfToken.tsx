@@ -1,6 +1,6 @@
 import { Field } from 'formik'
 
-const CsrfToken = ({ token }: CsrfTokenProps): JSX.Element => {
+const CsrfToken: React.FC<CsrfTokenProps> = ({ token }) => {
 	return <Field name='_csrf' hidden value={token} readOnly />
 }
 

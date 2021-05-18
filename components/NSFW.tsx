@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 const Button = dynamic(() => import('@components/Button'))
 const Container = dynamic(() => import('@components/Container'))
 
-const NSFW = ({ onClick, onDisableClick }:NSFWProps): JSX.Element => {
+const NSFW: React.FC<NSFWProps> = ({ onClick, onDisableClick }) => {
 	return <Container>
 		<div className='flex items-center h-screen select-none'>
 			<div className='px-10'>

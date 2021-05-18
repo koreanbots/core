@@ -6,7 +6,7 @@ import { ErrorText } from '@utils/Constants'
 const SEO = dynamic(() => import('@components/SEO'))
 const Button = dynamic(() => import('@components/Button'))
 
-const Forbidden = ():JSX.Element => {
+const Forbidden:React.FC = () => {
 	const router = useRouter()
 	return <>
 		<SEO title='권한이 없습니다' />

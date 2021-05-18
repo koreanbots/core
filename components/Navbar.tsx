@@ -3,15 +3,16 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 
 import { redirectTo } from '@utils/Tools'
+import Fetch from '@utils/Fetch'
 import { User, UserCache } from '@types'
 
-import DiscordAvatar from '@components/DiscordAvatar'
-import Fetch from '@utils/Fetch'
+const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 
-const Navbar = ({ token, pwa }:{ token: string, pwa: boolean }): JSX.Element => {
+const Navbar: React.FC<NavbarProps> = ({ token, pwa }) => {
 	const [userCache, setUserCache] = useState<UserCache>()
 	const [navbarOpen, setNavbarOpen] = useState<boolean>(false)
 	const [dropdownOpen, setDropdownOpen] = useState<boolean>(false)
@@ -211,6 +212,11 @@ const Navbar = ({ token, pwa }:{ token: string, pwa: boolean }): JSX.Element => 
 			</div>
 		</>
 	)
+}
+
+interface NavbarProps {
+	token: string
+	pwa: boolean
 }
 
 export default Navbar

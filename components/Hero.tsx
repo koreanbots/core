@@ -6,7 +6,7 @@ const Container = dynamic(()=> import('@components/Container'))
 const Tag = dynamic(()=> import('@components/Tag'))
 const Search = dynamic(()=> import('@components/Search'))
 
-const Hero = ({ header, description }:HeroProps):JSX.Element => {
+const Hero:React.FC<HeroProps> = ({ header, description }) => {
 	return <>
 		<div className='dark:bg-discord-black bg-discord-blurple text-gray-100 md:p-0 mb-8'>
 			<Container className='pt-24 pb-16 md:pb-20' ignoreColor>

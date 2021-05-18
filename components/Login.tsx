@@ -1,6 +1,7 @@
-import { redirectTo } from '@utils/Tools'
-import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { useRouter } from 'next/router'
+
+import { redirectTo } from '@utils/Tools'
 
 const Login: React.FC = ({ children }) => {
 	const router = useRouter()

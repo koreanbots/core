@@ -10,7 +10,7 @@ import 'emoji-mart/css/emoji-mart.css'
 
 
 
-const TextArea = ({ name, placeholder, theme='auto', setValue, value }:TextAreaProps):JSX.Element => {
+const TextArea: React.FC<TextAreaProps> = ({ name, placeholder, theme='auto', setValue, value }) => {
 	const ref = useRef()
 	const [ emojiPickerHidden, setEmojiPickerHidden ] = useState(true)
 	useOutsideClick(ref, () => {

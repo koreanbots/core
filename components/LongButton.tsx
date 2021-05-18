@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import Link from 'next/link'
 
-const LongButton = ({ children, newTab=false, href, onClick, center=false }:LongButtonProps):JSX.Element => {
+const LongButton: React.FC<LongButtonProps> = ({ children, newTab=false, href, onClick, center=false }) => {
 	if(href) {
 		if(newTab)  return <a href={href} rel='noopener noreferrer'
 			target='_blank'>

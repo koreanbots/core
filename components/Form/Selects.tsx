@@ -31,7 +31,7 @@ const SortableMultiValueLabel = SortableHandle(props => (
 
 const SortableSelect = SortableContainer(ReactSelect)
 
-const Select = ({ placeholder, options, values, setValues, handleChange, handleTouch }:SelectProps):JSX.Element => {
+const Select: React.FC<SelectProps> = ({ placeholder, options, values, setValues, handleChange, handleTouch }) => {
 	const onSortEnd = ({ oldIndex, newIndex }) => {
 		const newValue = arrayMove(values, oldIndex, newIndex)
 		setValues(newValue)

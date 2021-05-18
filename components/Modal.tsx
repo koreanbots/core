@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { Modal as ReactModal } from 'react-responsive-modal'
 import 'react-responsive-modal/styles.css'
 
-const Modal = ({ children, isOpen, onClose, closeIcon=false, dark, header, full=false }: ModalProps): JSX.Element => {
+const Modal: React.FC<ModalProps> = ({ children, isOpen, onClose, closeIcon=false, dark, header, full=false }) => {
 	return (
 		<ReactModal
 			open={isOpen}

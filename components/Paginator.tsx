@@ -1,5 +1,5 @@
 import Link from 'next/link'
-const Paginator = ({ currentPage, totalPage, pathname, searchParams }: PaginatorProps): JSX.Element => {
+const Paginator: React.FC<PaginatorProps> = ({ currentPage, totalPage, pathname, searchParams }) => {
 	let pages = []
 	if (currentPage < 4)
 		pages = [

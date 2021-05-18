@@ -1,4 +1,4 @@
-const Wave = ({ color, className }: WaveProps): JSX.Element => {
+const Wave: React.FC<WaveProps> = ({ color, className }) => {
 	return (
 		<svg viewBox='0 0 1440 320' className={className}>
 			<path

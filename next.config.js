@@ -4,6 +4,12 @@ const withPWA = require('next-pwa')
 const VERSION = require('./package.json').version
 
 const NextConfig = {
+	webpack: (config, { isServer }) => {
+		if (!isServer) {
+			config.resolve.fallback.fs = false
+		}
+		return config
+	},
 	pwa: {
 		disable: process.env.NODE_ENV !== 'production',
 		register: false

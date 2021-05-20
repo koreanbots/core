@@ -1,5 +1,6 @@
 import { NextApiRequest } from 'next'
 import rateLimit from 'express-rate-limit'
+import { MessageEmbed } from 'discord.js'
 
 import { CaptchaVerify, get, put, remove, update } from '@utils/Query'
 import ResponseWrapper from '@utils/ResponseWrapper'
@@ -7,7 +8,9 @@ import { checkToken } from '@utils/Csrf'
 import { AddBotSubmit, AddBotSubmitSchema, CsrfCaptcha, ManageBot, ManageBotSchema } from '@utils/Yup'
 import RequestHandler from '@utils/RequestHandler'
 import { User } from '@types'
-import { checkUserFlag } from '@utils/Tools'
+import { checkUserFlag, diff, inspect, makeDiscordCodeblock, objectDiff, serialize } from '@utils/Tools'
+import { discordLog, getBotReviewLogChannel } from '@utils/DiscordBot'
+import { KoreanbotsEndPoints } from '@utils/Constants'
 
 const patchLimiter = rateLimit({
 	windowMs: 2 * 60 * 1000,
@@ -73,6 +76,12 @@ const Bots = RequestHandler()
 				errors: ['봇 신청하시기 위해서는 공식 디스코드 서버에 참가해주셔야합니다.'],
 			})
 		get.botSubmits.clear(user)
+
+		await discordLog('BOT/SUBMIT', user, new MessageEmbed().setDescription(`[${result.id}/${result.date}](${KoreanbotsEndPoints.URL.submittedBot(result.id, result.date)})`), {
+			content: inspect(serialize(result)),
+			format: 'js'
+		})
+		await getBotReviewLogChannel().send(new MessageEmbed().setTitle('심사 대기 중').setColor('GREY').setDescription(`[${result.id}/${result.date}](${KoreanbotsEndPoints.URL.submittedBot(result.id, result.date)})`).setFooter(Date.now()))
 		return ResponseWrapper(res, { code: 200, data: result })
 	})
 	.delete(async (req: DeleteApiRequest, res) => {
@@ -90,8 +99,13 @@ const Bots = RequestHandler()
 		if(req.body.name !== bot.name) return ResponseWrapper(res, { code: 400, message: '봇 이름을 입력해주세요.' })
 		remove.bot(bot.id)
 		get.user.clear(user)
+		await discordLog('BOT/DELETE', user, (new MessageEmbed().setDescription(`${bot.name} - <@${bot.id}> ([${bot.id}](${KoreanbotsEndPoints.URL.bot(bot.id)}))`)),
+			{
+				content: inspect(bot),
+				format: 'js'
+			}
+		)
 		return ResponseWrapper(res, { code: 200, message: '성공적으로 삭제했습니다.' })
-		
 	})
 	.patch(patchLimiter).patch(async (req: PatchApiRequest, res) => {
 		const bot = await get.bot.load(req.query.id)
@@ -112,11 +126,24 @@ const Bots = RequestHandler()
 			})
 
 		if (!validated) return
-		console.log(validated)
 		const result = await update.bot(req.query.id, validated)
 		if(result === 0) return ResponseWrapper(res, { code: 400 })
 		else {
 			get.bot.clear(req.query.id)
+			const embed = new MessageEmbed().setDescription(`${bot.name} - <@${bot.id}> ([${bot.id}](${KoreanbotsEndPoints.URL.bot(bot.id)}))`)
+			const diffData = objectDiff(
+				{ prefix: bot.prefix, library: bot.lib, web: bot.web, git: bot.git, url: bot.url, discord: bot.discord, intro: bot.intro, category: JSON.stringify(bot.category) },
+				{ prefix: validated.prefix, library: validated.library, web: validated.website, git: validated.git, url: validated.url, discord: validated.discord, intro: validated.intro, category: JSON.stringify(validated.category)  }
+			)
+			diffData.map(d => {
+				embed.addField(d[0], makeDiscordCodeblock(diff(d[1][0] || '', d[1][1] || ''), 'diff'))
+			})
+			await discordLog('BOT/EDIT', user, embed,
+				{
+					content: `--- 설명\n${diff(bot.desc, validated.desc, true)}`,
+					format: 'diff'
+				}
+			)
 			return ResponseWrapper(res, { code: 200 })
 		}
 		

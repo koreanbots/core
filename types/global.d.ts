@@ -17,3 +17,8 @@ declare module 'yup' {
 		unique(format?: string): this
 	}
 }
+
+
+declare module 'difflib' {
+	export function unifiedDiff(before: string, after: string): string[]
+}

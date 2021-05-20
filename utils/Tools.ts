@@ -1,11 +1,13 @@
+import { NextRouter } from 'next/router'
+import { inspect as utilInspect } from 'util'
 import { createHmac } from 'crypto'
 import { Readable } from 'stream'
 import cookie from 'cookie'
+import * as difflib from 'difflib'
 
 import { BotFlags, ImageOptions, UserFlags } from '@types'
 import Logger from '@utils/Logger'
 import { BASE_URLs, KoreanbotsEndPoints, Oauth } from '@utils/Constants'
-import { NextRouter } from 'next/router'
 
 export function handlePWA(): boolean {
 	let displayMode = 'browser'
@@ -54,6 +56,30 @@ export function makeBotURL({id, vanity, flags=0}: { flags?: number, vanity?:stri
 
 export function serialize<T>(data: T): T {
 	return JSON.parse(JSON.stringify(data))
+}
+
+export function diff(original: string, current: string, header=false, sep='\n', join?: string) {
+	return difflib.unifiedDiff(original.split(sep), current.split(sep)).slice(header ? 2 : 3).join(join ?? sep)
+}
+
+export function objectDiff(original: Record<string, string>, current: Record<string, string>): [string, (string|null)[] ][] {
+	const obj: Record<string, string[]> = {}
+	Object.entries(original).forEach(k =>
+		obj[k[0]] = [ k[1] ]
+	)
+	Object.entries(current).forEach(k => {
+		if(!obj[k[0]]) obj[k[0]] = []
+		obj[k[0]][1] = k[1]
+	})
+	return Object.entries(obj).filter(k => k[1][0] !== k[1][1])
+}
+
+export function makeDiscordCodeblock(content: string, lang?: string): string {
+	return `\`\`\`${lang || ''}\n${content.replace(/```/g, '\\`\\`\\`')}\n\`\`\``
+}
+
+export function inspect(object: unknown) {
+	return utilInspect(object, { depth: Infinity, maxArrayLength: Infinity, maxStringLength: Infinity})
 }
 
 export function supportsWebP() {

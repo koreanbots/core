@@ -1,15 +1,20 @@
 import { NextApiRequest } from 'next'
 import rateLimit from 'express-rate-limit'
+import { MessageEmbed } from 'discord.js'
 
 import { get, update } from '@utils/Query'
 import RequestHandler from '@utils/RequestHandler'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { BotStatUpdate, BotStatUpdateSchema } from '@utils/Yup'
+import { discordLog } from '@utils/DiscordBot'
+import { makeDiscordCodeblock } from '@utils/Tools'
+import { KoreanbotsEndPoints } from '@utils/Constants'
 
 const limiter = rateLimit({
 	windowMs: 3 * 60 * 1000,
 	max: 3,
 	statusCode: 429,
+	skipFailedRequests: true,
 	handler: (_req, res) => ResponseWrapper(res, { code: 429 }),
 	keyGenerator: (req) => req.headers.authorization,
 	skip: (req, res) => {
@@ -37,6 +42,8 @@ const BotStats = RequestHandler().post(limiter)
 		if(botInfo.id !== bot) return ResponseWrapper(res, { code: 403 })
 		const d = await update.updateServer(botInfo.id, validated.servers)
 		if(d===1 || d===2) return ResponseWrapper(res, { code: 403, message: `서버 수를 ${[null, '1만', '100만'][d]} 이상으로 설정하실 수 없습니다. 문의해주세요.` })
+		get.bot.clear(req.query.id)
+		await discordLog('BOT/STATS', botInfo.id, (new MessageEmbed().setDescription(`${botInfo.name} - <@${botInfo.id}> ([${botInfo.id}](${KoreanbotsEndPoints.URL.bot(botInfo.id)}))`)), null, makeDiscordCodeblock(`${botInfo.servers > validated.servers ? '-' : '+'} ${botInfo.servers} -> ${validated.servers} (${botInfo.servers > validated.servers ? '▼' : '▲'}${Math.abs(validated.servers - botInfo.servers)})`, 'diff'))
 		return ResponseWrapper(res, { code: 200, message: '성공적으로 업데이트 했습니다.'})
 	})
 

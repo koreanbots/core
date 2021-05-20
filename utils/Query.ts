@@ -215,7 +215,7 @@ async function voteBot(userID: string, botID: string): Promise<number|boolean> {
  * @returns 4 - Discord not Joined
  * @returns obj - Success
  */
-async function submitBot(id: string, data: AddBotSubmit):Promise<number|SubmittedBot> {
+async function submitBot(id: string, data: AddBotSubmit):Promise<1|2|3|4|SubmittedBot> {
 	const submits = await knex('submitted').select(['id']).where({ state: 0 }).andWhere('owners', 'LIKE', `%${id}%`)
 	if(submits.length > 1) return 1
 	const botId = data.id

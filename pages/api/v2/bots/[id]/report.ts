@@ -12,6 +12,7 @@ const limiter = rateLimit({
 	windowMs: 5 * 60 * 1000,
 	max: 3,
 	statusCode: 429,
+	skipFailedRequests: true,
 	handler: (_req, res) => ResponseWrapper(res, { code: 429 }),
 	keyGenerator: (req) => req.headers['x-forwarded-for'] as string,
 	skip: (_req, res) => {

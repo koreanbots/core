@@ -1,9 +1,12 @@
 import * as Discord from 'discord.js'
 
-const DiscordBot = new Discord.Client()
+export const DiscordBot = new Discord.Client()
 
 const guildID = '653083797763522580'
+
 const reportChannelID = '813255797823766568'
+const loggingChannelID = '844006379823955978'
+const botReviewLogChannelID = '844044961975500840'
 
 DiscordBot.on('ready', async () => {
 	console.log('I\'m Ready')
@@ -13,6 +16,17 @@ DiscordBot.on('ready', async () => {
 
 DiscordBot.login(process.env.DISCORD_TOKEN)
 
-const getMainGuild = () => DiscordBot.guilds.cache.get(guildID)
-const getReportChannel = (): Discord.TextChannel => DiscordBot.channels.cache.get(reportChannelID) as Discord.TextChannel
-export { DiscordBot, getMainGuild, getReportChannel }
+export const getMainGuild = () => DiscordBot.guilds.cache.get(guildID)
+export const getReportChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(reportChannelID) as Discord.TextChannel
+export const getLoggingChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(loggingChannelID) as Discord.TextChannel
+export const getBotReviewLogChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(botReviewLogChannelID) as Discord.TextChannel
+export const discordLog = async (type: string, issuerID: string, embed?: Discord.MessageEmbed, attachment?: { content: string, format: string}, content?: string): Promise<void> => {
+	getLoggingChannel().send({ 
+		content: `[${type}] <@${issuerID}> (${issuerID})\n${content || ''}`,
+		embed: embed && embed.setTitle(type).setTimestamp(new Date()),
+		...(attachment && { files: [
+			attachment && new Discord.MessageAttachment(Buffer.from(attachment.content), `${type.toLowerCase().replace(/\//g, '-')}-${issuerID}-${Date.now()}.${attachment.format}`)
+		]
+		})
+	})
+}

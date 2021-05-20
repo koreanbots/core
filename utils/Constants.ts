@@ -133,7 +133,7 @@ export const reportCats = [
 export const imageSafeHost = [
 	'koreanbots.dev',
 	'githubusercontent.com',
-	'cdn.discordapp.com'	
+	'cdn.discordapp.com'
 ]
 
 export const MessageColor = {
@@ -188,8 +188,14 @@ export const DiscordEnpoints = {
 }
 
 export const KoreanbotsEndPoints = {
-	CDN: class CDN {
-		static avatar (id: string, options: KoreanbotsImageOptions) { return makeImageURL(`/api/image/discord/avatars/${id}`, options) }
+	CDN: class {
+		static root = '/api/image'
+		static avatar (id: string, options: KoreanbotsImageOptions) { return makeImageURL(`${this.root}/discord/avatars/${id}`, options) }
+	},
+	URL: class {
+		static root = process.env.KOREANBOTS_URL || 'https://koreanbots.dev'
+		static bot (id: string) { return `${this.root}/bots/${id}` }
+		static submittedBot(id: string, date: number) { return `${this.root}/pendingBots/${id}/${date}` }
 	},
 	baseAPI: '/api/v2',
 	login: '/api/auth/discord',

@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import * as Sentry from '@sentry/nextjs'
 import nc from 'next-connect'
 import rateLimit from 'express-rate-limit'
 
@@ -22,6 +23,11 @@ const RequestHandler = () =>
 		onNoMatch(_req, res) {
 			return ResponseWrapper(res, { code: 405 })
 		},
+		onError(err, _req, res) {
+			console.error(err)
+			Sentry.captureException(err)
+			return ResponseWrapper(res, { code: 500 })
+		}
 	})
 		.use(limiter)
 

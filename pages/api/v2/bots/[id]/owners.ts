@@ -4,9 +4,12 @@ import RequestHandler from '@utils/RequestHandler'
 import { CaptchaVerify, get, update } from '@utils/Query'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { checkToken } from '@utils/Csrf'
-import { checkUserFlag } from '@utils/Tools'
+import { checkUserFlag, diff, makeDiscordCodeblock } from '@utils/Tools'
 import { EditBotOwner, EditBotOwnerSchema } from '@utils/Yup'
 import { User } from '@types'
+import { discordLog } from '@utils/DiscordBot'
+import { MessageEmbed } from 'discord.js'
+import { KoreanbotsEndPoints } from '@utils/Constants'
 
 const BotOwners = RequestHandler()
 	.patch(async (req: PostApiRequest, res) => {
@@ -33,6 +36,7 @@ const BotOwners = RequestHandler()
 		if(userFetched.length > 1 && userFetched[0].id !== (bot.owners as User[])[0].id) return ResponseWrapper(res, { code: 400, errors: ['소유자를 이전할 때는 다른 관리자를 포함할 수 없습니다.'] })
 		await update.botOwners(bot.id, validated.owners)
 		get.user.clear(user)
+		await discordLog('BOT/OWNERS', userinfo.id, (new MessageEmbed().setDescription(`${bot.name} - <@${bot.id}> ([${bot.id}](${KoreanbotsEndPoints.URL.bot(bot.id)}))`)), null, makeDiscordCodeblock(diff(JSON.stringify(bot.owners.map(el => el.id)), JSON.stringify(validated.owners)), 'diff'))
 		return ResponseWrapper(res, { code: 200 })
 	})
 

@@ -188,6 +188,18 @@ export const DiscordEnpoints = {
 }
 
 export const KoreanbotsEndPoints = {
+	OG: class {
+		static root = 'https://og.kbots.link'
+		static bot(id: string, name: string, bio: string, tags: string[], stats: string[]) {
+			const u = new URL(this.root)
+			u.pathname = name
+			u.searchParams.append('image', KoreanbotsEndPoints.CDN.avatar(id, { format: 'webp', size: 256 }))
+			u.searchParams.append('bio', bio)
+			tags.map(t => u.searchParams.append('tags', t))
+			stats.map(s => u.searchParams.append('stats', s))
+			return u.href
+		}
+	},
 	CDN: class {
 		static root = '/api/image'
 		static avatar (id: string, options: KoreanbotsImageOptions) { return makeImageURL(`${this.root}/discord/avatars/${id}`, options) }
@@ -195,6 +207,7 @@ export const KoreanbotsEndPoints = {
 	URL: class {
 		static root = process.env.KOREANBOTS_URL || 'https://koreanbots.dev'
 		static bot (id: string) { return `${this.root}/bots/${id}` }
+		static user (id: string) { return `${this.root}/users/${id}` }
 		static submittedBot(id: string, date: number) { return `${this.root}/pendingBots/${id}/${date}` }
 	},
 	baseAPI: '/api/v2',

@@ -381,6 +381,10 @@ async function getBotSubmitList() {
 	return await Promise.all(res.map(b => get.botSubmit.load(JSON.stringify({ id: b.id, date: b.date }))))
 }
 
+async function denyBotSubmission(id: string, date: number, reason?: string) {
+	await knex('submitted').update({ state: 2 }).where({ state: 0, id, date, reason: reason || null })
+}
+
 export const get = {
 	discord: {
 		user: new DataLoader(
@@ -475,7 +479,8 @@ export const update = {
 	updateServer,
 	Github,
 	bot: updateBot,
-	botOwners: updateOwner
+	botOwners: updateOwner,
+	denyBotSubmission
 }
 
 export const put = {

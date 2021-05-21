@@ -15,6 +15,11 @@ UPDATE `bots` SET bg=NULL where bg='false' or bg='';
 UPDATE `bots` SET banner=NULL where banner='false' or banner='';
 ALTER TABLE `bots` ADD COLUMN webhook TEXT DEFAULT NULL;
 ALTER TABLE `bots` CHANGE id id VARCHAR(50) NOT NULL PRIMARY KEY;
+ALTER TABLE `bots` CHANGE `status` `status` TEXT DEFAULT NULL;
+ALTER TABLE `bots` CHANGE `name` `name` TEXT DEFAULT NULL;
+ALTER TABLE `bots` CHANGE avatar avatar TEXT DEFAULT NULL;
+ALTER TABLE `bots` CHANGE tag tag TEXT DEFAULT NULL;
+
 ALTER TABLE `bots` CHANGE token token TEXT DEFAULT NULL;
 ALTER TABLE `bots` ENGINE=mroonga;
 ALTER TABLE `bots` COMMENT='engine "innodb"';

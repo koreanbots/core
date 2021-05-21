@@ -3,6 +3,5 @@
 	"reviewers": ["team:core-developer"],
 	"schedule": ["before 8am"],
 	"extends": ["config:base"],
-	"timezone": "Asia/Seoul",
-	"ignorePaths": ["public/*"]
+	"timezone": "Asia/Seoul"
 }

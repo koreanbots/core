@@ -1,4 +1,4 @@
-import { DESCRIPTION, THEME_COLOR, TITLE } from '@utils/Constants'
+import { TITLE } from '@utils/Constants'
 import Document, { DocumentContext, Html, Head, Main, NextScript } from 'next/document'
 
 class MyDocument extends Document {
@@ -11,48 +11,6 @@ class MyDocument extends Document {
 		return (
 			<Html lang='ko-KR'>
 				<Head>
-					{/* META */}
-					<meta charSet='utf-8' />
-					<meta httpEquiv='X-UA-Compatible' content='IE=edge' />
-					<meta name='description' content={DESCRIPTION} />
-					<meta name='keywords' content='Korea, Korean, Discord, Bot, 디스코드봇, 한디리' /> 
-					<meta name='og:title' content={TITLE} />
-					<meta name='og:url' content='https://koreanbots.dev' />
-					<meta name='og:description' content={DESCRIPTION} />
-					<meta name='og:image' content='/favicon.ico' />
-
-					{/* Android */}
-					<meta name='theme-color' content={THEME_COLOR} />
-					<meta name='mobile-web-app-capable' content='yes' />
-					
-					{/* iOS */}
-					<meta name='apple-mobile-web-app-title' content='Application Title' />
-					<meta name='apple-mobile-web-app-capable' content='yes' />
-					<meta name='apple-mobile-web-app-status-bar-style' content='default' />
-					
-					{/* Windows */}
-					<meta name='msapplication-navbutton-color' content={THEME_COLOR} />
-					<meta name='msapplication-TileColor' content={THEME_COLOR} />
-					<meta name='msapplication-TileImage' content='/static/ms-icon-144x144.png' />
-					<meta name='msapplication-config' content='browserconfig.xml' />
-
-					{/* Pinned Sites */}
-					<meta name='application-name' content={TITLE} />
-					<meta name='msapplication-tooltip' content={DESCRIPTION} />
-					<meta name='msapplication-starturl' content='/' />
-
-					{/* Tap highlighting */}
-					<meta name='msapplication-tap-highlight' content='no' />
-
-					{/* UC Mobile Browser */}
-					<meta name='full-screen' content='yes' />
-					<meta name='browsermode' content='application' />
-
-					<meta name='nightmode' content='disable' />
-					<meta name='layoutmode' content='fitscreen' />
-					<meta name='imagemode' content='force' />
-					<meta name='screen-orientation' content='portrait' />
-					
 					{/* LINK */}
 					<link rel='manifest' href='/manifest.json' />
 					<link rel='search' type='application/opensearchdescription+xml' title={TITLE} href='/opensearch.xml' />

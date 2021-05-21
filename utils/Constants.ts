@@ -288,6 +288,14 @@ export const ErrorText = {
 
 export const ErrorMessage = ['지나가던 고양이가 선을 밟았어요..', '무언가 잘못되었어요..!', '이게 아닌데...', '어쩜 이렇게 오류가 또 나는건지?']
 
+export const BotSubmissionDenyReasonPresetsName = {
+	MISSING_VERIFY: '개발자 확인 불가',
+	OFFLINE: '봇 오프라인',
+	INVALID_CATEGORY: '올바르지 않은 카테고리',
+	PRIVATE: '프라이빗 봇',
+	LICENSE_VIOLATION: '오픈소스 라이선스 위반'
+}
+
 export const GuildPermissions = {
 	general: [
 		{

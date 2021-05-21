@@ -382,7 +382,15 @@ async function getBotSubmitList() {
 }
 
 async function denyBotSubmission(id: string, date: number, reason?: string) {
-	await knex('submitted').update({ state: 2 }).where({ state: 0, id, date, reason: reason || null })
+	await knex('submitted').update({ state: 2, reason: reason || null }).where({ state: 0, id, date })
+}
+
+async function approveBotSubmission(id: string, date: number) {
+	const data = await knex('submitted').select(['id', 'date', 'category', 'lib', 'prefix', 'intro', 'desc', 'url', 'web', 'git', 'discord', 'state', 'owners', 'reason']).where({ state: 0, id, date })
+	if(!data[0]) return false
+	await knex('submitted').where({ state: 0, id, date }).update({ state: 1 })
+	await knex('bots').insert({ id, date, owners: data[0].owners, lib: data[0].lib, prefix: data[0].prefix, intro: data[0].intro, desc: data[0].desc, url: data[0].url, web: data[0].web, git: data[0].git, category: data[0].category, discord: data[0].discord, token: sign({ id }) })
+	return true
 }
 
 export const get = {
@@ -480,7 +488,8 @@ export const update = {
 	Github,
 	bot: updateBot,
 	botOwners: updateOwner,
-	denyBotSubmission
+	denyBotSubmission,
+	approveBotSubmission
 }
 
 export const put = {

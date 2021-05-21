@@ -3,8 +3,9 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { NextSeo } from 'next-seo'
 import { Form, Formik } from 'formik'
-import { ParsedUrlQuery } from 'node:querystring'
+import { ParsedUrlQuery } from 'querystring'
 import { getJosaPicker } from 'josa'
 
 import { get } from '@utils/Query'
@@ -34,7 +35,6 @@ const Tag = dynamic(() => import('@components/Tag'))
 const Message = dynamic(() => import('@components/Message'))
 const Modal = dynamic(() => import('@components/Modal'))
 const Captcha = dynamic(() => import('@components/Captcha'))
-const SEO = dynamic(() => import('@components/SEO'))
 const Login = dynamic(() => import('@components/Login'))
 
 const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }) => {
@@ -57,11 +57,11 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 
 	if(!bot) return <NotFound />
 	if(!user) return <Login>
-		<SEO title='봇 정보 수정하기' description='봇의 정보를 수정합니다.'/>
+		<NextSeo title='봇 정보 수정하기' description='봇의 정보를 수정합니다.'/>
 	</Login>
 	if(!(bot.owners as User[]).find(el => el.id === user.id) && !checkUserFlag(user.flags, 'staff')) return <Forbidden />
 	return <Container paddingTop className='pt-5 pb-10'>
-		<SEO title={`${bot.name} 수정하기`} description='봇의 정보를 수정합니다.'/>
+		<NextSeo title={`${bot.name} 수정하기`} description='봇의 정보를 수정합니다.'/>
 		<h1 className='text-3xl font-bold mb-8'>봇 관리하기</h1>
 		<Formik initialValues={cleanObject({
 			agree: false,

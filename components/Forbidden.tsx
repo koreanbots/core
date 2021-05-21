@@ -1,15 +1,15 @@
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 
 import { ErrorText } from '@utils/Constants'
 
-const SEO = dynamic(() => import('@components/SEO'))
 const Button = dynamic(() => import('@components/Button'))
 
 const Forbidden:React.FC = () => {
 	const router = useRouter()
 	return <>
-		<SEO title='권한이 없습니다' />
+		<NextSeo title='권한이 없습니다' />
 		<div className='flex items-center justify-center h-screen select-none'>
 			<div className='container mx-auto px-20 md:text-left text-center'>
 				<h1 className='text-8xl font-semibold'>403</h1>

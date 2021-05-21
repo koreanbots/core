@@ -1,4 +1,5 @@
 import { NextPage, NextPageContext } from 'next'
+import { NextSeo } from 'next-seo'
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
@@ -10,7 +11,6 @@ import Fetch from '@utils/Fetch'
 import { getToken } from '@utils/Csrf'
 
 const Container = dynamic(() => import('@components/Container'))
-const SEO = dynamic(() => import('@components/SEO'))
 const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 const Button = dynamic(() => import('@components/Button'))
 const BotCard = dynamic(() => import('@components/BotCard'))
@@ -21,10 +21,10 @@ const Panel:NextPage<PanelProps> = ({ logged, user, submits, csrfToken }) => {
 	const router = useRouter()
 	const [ submitLimit, setSubmitLimit ] = useState(8)
 	if(!logged) return <Login>
-		<SEO title='관리 패널' />
+		<NextSeo title='관리 패널' />
 	</Login>
 	return <Container paddingTop className='pt-5 pb-10'>
-		<SEO title='관리 패널' />
+		<NextSeo title='관리 패널' />
 		<h1 className='text-4xl font-bold'>관리 패널</h1>
 		<h2 className='text-2xl font-bold mt-4'>깃허브 계정 연동</h2>
 		<p className='text-gray-400 mb-2'>연동한 깃허브 계정은 프로필에 표시됩니다.</p>

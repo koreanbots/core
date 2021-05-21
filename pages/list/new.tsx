@@ -6,7 +6,6 @@ import { BotList } from '@types'
 
 const Hero = dynamic(() => import('@components/Hero'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
-const SEO = dynamic(() => import('@components/SEO'))
 const BotCard = dynamic(() => import('@components/BotCard'))
 const Container = dynamic(() => import('@components/Container'))
 const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
@@ -14,7 +13,6 @@ const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 const New:NextPage<NewProps> = ({ data }) => {
 	return <>
 		<Hero header='새로운 봇' description='최근에 한국 디스코드봇 리스트에 추가된 봇들입니다!' />
-		<SEO title='새로운 봇' description='최근에 추가된 봇들입니다!' />
 		<Container className='pb-10'>
 			<Advertisement />
 			<ResponsiveGrid>

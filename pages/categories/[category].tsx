@@ -11,7 +11,6 @@ import { useRouter } from 'next/router'
 
 const Hero = dynamic(() => import('@components/Hero'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
-const SEO = dynamic(() => import('@components/SEO'))
 const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 const BotCard = dynamic(() => import('@components/BotCard'))
 const Container = dynamic(() => import('@components/Container'))
@@ -29,7 +28,6 @@ const Category: NextPage<CategoryProps> = ({ data, query }) => {
 	if(!data || data.data.length === 0 || data.totalPage < Number(query.page)) return <NotFound message={data?.data.length === 0 ? '해당 카테고리에 해당되는 봇이 존재하지 않습니다.' : null} />
 	return <>
 		<Hero header={`${query.category} 카테고리 봇들`} description={`다양한 "${query.category}" 카테고리의 봇들을 만나보세요.`} />
-		<SEO title={`${query.category} 카테고리 봇들`} description={`다양한 ${query.category} 카테고리의 봇들을 만나보세요.`} />
 		{
 			query.category === 'NSFW' && !nsfw ? <NSFW onClick={() => setNSFW(true)} onDisableClick={() => localStorage.nsfw = true} />
 				: <Container>

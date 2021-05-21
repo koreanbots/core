@@ -9,7 +9,6 @@ import { SearchQuerySchema } from '@utils/Yup'
 
 const Hero = dynamic(() => import('@components/Hero'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
-const SEO = dynamic(() => import('@components/SEO'))
 const BotCard = dynamic(() => import('@components/BotCard'))
 const Container = dynamic(() => import('@components/Container'))
 const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
@@ -20,7 +19,6 @@ const Search:NextPage<SearchProps> = ({ data, query }) => {
 	if(!query?.q) return <Redirect text={false} to='/' />
 	return <>
 		<Hero header={`"${query.q}" 검색 결과`} description={`'${query.q}' 에 대한 검색 결과입니다.`} />
-		<SEO title={`"${query.q}" 검색 결과`} description={`'${query.q}' 에 대한 검색 결과입니다.`} />
 		<section id='list'>
 			<Container>
 				<Advertisement />

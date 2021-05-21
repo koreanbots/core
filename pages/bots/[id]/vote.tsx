@@ -17,6 +17,7 @@ import Fetch from '@utils/Fetch'
 import Day from '@utils/Day'
 import { getJosaPicker } from 'josa'
 import { KoreanbotsEndPoints } from '@utils/Constants'
+import { NextSeo } from 'next-seo'
 
 
 const Container = dynamic(() => import('@components/Container'))
@@ -24,26 +25,39 @@ const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 const Button = dynamic(() => import('@components/Button'))
 const Tag = dynamic(() => import('@components/Tag'))
 const Segment = dynamic(() => import('@components/Segment'))
-const SEO = dynamic(() => import('@components/SEO'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
 const Login = dynamic(() => import('@components/Login'))
 
-const VoteBot: NextPage<VoteBotProps> = ({ data, user, csrfToken, theme }) => {
+const VoteBot: NextPage<VoteBotProps> = ({ data, user, theme, csrfToken }) => {
 	const [ votingStatus, setVotingStatus ] = useState(0)
 	const [ result, setResult ] = useState<ResponseProps<{retryAfter?: number}>>(null)
 	const router = useRouter()
 	if(!data?.id) return <NotFound />
-	if(typeof window !== 'undefined' && csrfToken !== router.query.csrfToken) {
-		router.push(`/bots/${data.id}`)
-		return <SEO title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요.`} image={KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 })} />
-	}
 	if(!user) return <Login>
-		<SEO title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요.`} image={KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 })} />
+		<NextSeo title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요.`} openGraph={{
+			images: [
+				{
+					url: KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 }),
+					width: 256,
+					height: 256,
+					alt: 'Bot Avatar'
+				}
+			]
+		}} />
 	</Login>
 	
 	if((checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}/vote?csrfToken=${csrfToken}`)
 	return <Container paddingTop className='py-10'>
-		<SEO title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요.`} image={KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 })} />
+		<NextSeo title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요.`} openGraph={{
+			images: [
+				{
+					url: KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 }),
+					width: 256,
+					height: 256,
+					alt: 'Bot Avatar'
+				}
+			]
+		}} />
 		<Advertisement />
 		<Link href={makeBotURL(data)}>
 			<a className='text-blue-500 hover:opacity-80'><i className='fas fa-arrow-left mt-3 mb-3' /> <strong>{data.name}</strong>{getJosaPicker('로')(data.name)} 돌아가기</a>

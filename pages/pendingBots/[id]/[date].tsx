@@ -1,9 +1,11 @@
 import { NextPage, NextPageContext } from 'next'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { NextSeo } from 'next-seo'
 
 import { get } from '@utils/Query'
 import { git } from '@utils/Constants'
+import Day from '@utils/Day'
 
 import { SubmittedBot, User } from '@types'
 
@@ -11,9 +13,8 @@ import useCopyClipboard from 'react-use-clipboard'
 import { ParsedUrlQuery } from 'querystring'
 
 import NotFound from 'pages/404'
-import Day from '@utils/Day'
+
 const Container = dynamic(() => import('@components/Container'))
-const SEO = dynamic(() => import('@components/SEO'))
 const Divider = dynamic(() => import('@components/Divider'))
 const LongButton = dynamic(() => import('@components/LongButton'))
 const Tag = dynamic(() => import('@components/Tag'))
@@ -29,7 +30,7 @@ const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
 	})
 	if(!data) return <NotFound />
 	return <Container paddingTop className='py-10'>
-		<SEO title='심사이력' />
+		<NextSeo title='심사이력' />
 		<div className='lg:flex w-full'>
 			<div className='w-full lg:w-3/4 lg:pr-5 py-8 text-center lg:text-left'>
 				{

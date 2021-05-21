@@ -1,5 +1,6 @@
 import { NextPage, NextPageContext } from 'next'
 import dynamic from 'next/dynamic'
+import { NextSeo } from 'next-seo'
 
 import { get } from '@utils/Query'
 import { parseCookie } from '@utils/Tools'
@@ -8,12 +9,11 @@ import { Bot, User } from '@types'
 
 const Application = dynamic(() => import('@components/Application'))
 const DeveloperLayout = dynamic(() => import('@components/DeveloperLayout'))
-const SEO = dynamic(() => import('@components/SEO'))
 const Login = dynamic(() => import('@components/Login'))
 
 const Applications: NextPage<ApplicationsProps> = ({ user }) => {
 	if(!user) return <Login>
-		<SEO title='한디리 개발자' description='한국 디스코드봇 리스트 API를 활용하여 봇에 다양한 기능을 추가해보세요.' />
+		<NextSeo title='한디리 개발자' description='한국 디스코드봇 리스트 API를 활용하여 봇에 다양한 기능을 추가해보세요.' />
 	</Login>
 	return <DeveloperLayout enabled='applications'>
 		<h1 className='text-3xl font-bold'>나의 봇</h1>

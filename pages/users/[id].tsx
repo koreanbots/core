@@ -15,9 +15,9 @@ import { ReportSchema } from '@utils/Yup'
 
 import NotFound from '../404'
 import { KoreanbotsEndPoints, reportCats } from '@utils/Constants'
+import { NextSeo } from 'next-seo'
 
 const Container = dynamic(() => import('@components/Container'))
-const SEO = dynamic(() => import('@components/SEO'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 const Divider = dynamic(() => import('@components/Divider'))
 const BotCard = dynamic(() => import('@components/BotCard'))
@@ -37,7 +37,7 @@ const Users: NextPage<UserProps> = ({ user, data, csrfToken, theme }) => {
 	if (!data?.id) return <NotFound />
 	return (
 		<Container paddingTop className='py-10'>
-			<SEO
+			<NextSeo
 				title={data.username}
 				description={data.bots.length === 0 ? `${data.username}님의 프로필입니다.` : josa(
 					`${(data.bots as Bot[])
@@ -45,7 +45,14 @@ const Users: NextPage<UserProps> = ({ user, data, csrfToken, theme }) => {
 						.map(el => el.name)
 						.join(', ')}#{을} 제작합니다.`
 				)}
-				image={KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 })}
+				openGraph={{
+					images: [{
+						url: KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 }),
+						width: 256,
+						height: 256,
+						alt: 'User Avatar'
+					}]
+				}}
 			/>
 			<div className='lg:flex'>
 				<div className='w-full text-center lg:w-1/4'>

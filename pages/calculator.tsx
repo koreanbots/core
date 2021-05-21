@@ -1,13 +1,14 @@
 import { GetServerSideProps, NextPage } from 'next'
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
-import { DiscordEnpoints, GuildPermissions } from '@utils/Constants'
+import { NextSeo } from 'next-seo'
 import { Formik, Form } from 'formik'
-import { ParsedUrlQuery } from 'node:querystring'
+import { ParsedUrlQuery } from 'querystring'
+
+import { DiscordEnpoints, GuildPermissions } from '@utils/Constants'
 
 const Container = dynamic(() => import('@components/Container'))
 const Input = dynamic(() => import('@components/Form/Input'))
-const SEO = dynamic(() => import('@components/SEO'))
 
 const Calculator:NextPage<CalculatorProps> = ({ query }) => {
 	const [ value, setValue ] = useState<{[perm: string]: boolean}>({})
@@ -23,7 +24,7 @@ const Calculator:NextPage<CalculatorProps> = ({ query }) => {
 	
 	}
 	return <Container paddingTop className='pb-10'>
-		<SEO title='봇 초대링크 생성기' description='디스코드 봇 초대링크를 간편하게 생성하세요' />
+		<NextSeo title='봇 초대링크 생성기' description='디스코드 봇 초대링크를 간편하게 생성하세요' />
 		<h1 className='text-4xl font-bold mt-2 mb-4'>봇 초대링크 생성기</h1>
 		<div className='text-2xl font-bold inline-flex items-center'>권한: {Object.keys(value).filter(el => value[el]).map(el => Number(el)).reduce((prev, curr) => prev | curr, 0)} 
 			<span className='ml-2 text-lg font-semibold'>= { Object.keys(value).filter(el => value[el]).map(el => `0x${Number(el).toString(16)}`).join(' | ') }</span>

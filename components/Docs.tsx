@@ -1,15 +1,12 @@
+import { NextSeo } from 'next-seo'
 import dynamic from 'next/dynamic'
 
 const Container = dynamic(() => import('@components/Container'))
-const SEO = dynamic(() => import('@components/SEO'))
 
 const Docs: React.FC<DocsProps> = ({ title, header, description, subheader, children }) => {
 	return (
 		<>
-			<SEO
-				title={typeof header === 'string' ? header : title}
-				description={description || subheader}
-			/>
+			<NextSeo title={typeof header === 'string' ? header : title} description={description || subheader}/>
 			<div className='dark:bg-discord-black bg-discord-blurple z-20'>
 				<Container className='py-20' ignoreColor>
 					<h1 className='mt-10 text-center text-gray-100 text-4xl font-bold sm:text-left'>

@@ -2,6 +2,7 @@ import { NextPage, NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { NextSeo } from 'next-seo'
 import { useEffect, useState } from 'react'
 import { Field, Form, Formik } from 'formik'
 import Tooltip from 'rc-tooltip'
@@ -26,7 +27,6 @@ const Divider = dynamic(() => import('@components/Divider'))
 const Tag = dynamic(() => import('@components/Tag'))
 const Owner = dynamic(() => import('@components/Owner'))
 const Segment = dynamic(() => import('@components/Segment'))
-const SEO = dynamic(() => import('@components/SEO'))
 const LongButton = dynamic(() => import('@components/LongButton'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
 const Markdown = dynamic(() => import ('@components/Markdown'))
@@ -49,10 +49,22 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 	if (!data?.id) return <NotFound />
 	return <div style={bg ? { background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${data.bg}") center top / cover no-repeat fixed` } : {}}>
 		<Container paddingTop className='py-10'>
-			<SEO
+			<NextSeo
 				title={data.name}
 				description={data.intro}
-				image={KoreanbotsEndPoints.OG.bot(data.id, data.name, data.intro, data.category, [formatNumber(data.votes), formatNumber(data.servers)])}
+				twitter={{
+					cardType: 'summary_large_image'
+				}}
+				openGraph={{
+					images: [
+						{
+							url: KoreanbotsEndPoints.OG.bot(data.id, data.name, data.intro, data.category, [formatNumber(data.votes), formatNumber(data.servers)]),
+							width: 2048,
+							height: 1170,
+							alt: 'Bot Preview Image'
+						}
+					]
+				}}
 			/>
 			{
 				data.state === 'blocked' ? <div className='pb-40'>
@@ -120,7 +132,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 											</h4>
 										</LongButton>
 									}
-									<Link href={{ pathname: `/bots/${router.query.id}/vote`, query: { csrfToken } }}>
+									<Link href={`/bots/${router.query.id}/vote`}>
 										<LongButton>
 											<h4>
 												<i className='fas fa-heart text-red-600' /> 하트 추가

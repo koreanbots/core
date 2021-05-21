@@ -3,6 +3,7 @@ import { useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { NextSeo } from 'next-seo'
 import { Form, Formik } from 'formik'
 import HCaptcha from '@hcaptcha/react-hcaptcha'
 
@@ -10,9 +11,9 @@ import { get } from '@utils/Query'
 import { cleanObject, parseCookie, redirectTo } from '@utils/Tools'
 import { AddBotSubmit, AddBotSubmitSchema } from '@utils/Yup'
 import { categories, library } from '@utils/Constants'
-import { ResponseProps, SubmittedBot, Theme, User } from '@types'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
+import { ResponseProps, SubmittedBot, Theme, User } from '@types'
 
 const CheckBox = dynamic(() => import('@components/Form/CheckBox'))
 const Label = dynamic(() => import('@components/Form/Label'))
@@ -27,7 +28,6 @@ const Button = dynamic(() => import('@components/Button'))
 const Container = dynamic(() => import('@components/Container'))
 const Message = dynamic(() => import('@components/Message'))
 const Captcha = dynamic(() => import('@components/Captcha'))
-const SEO = dynamic(() => import('@components/SEO'))
 
 const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 	const [ data, setData ] = useState<ResponseProps<SubmittedBot>>(null)
@@ -68,10 +68,10 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 	}
 	if(!logged) {
 		toLogin()
-		return <SEO title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.'/>
+		return <NextSeo title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.' />
 	}
 	return <Container paddingTop className='py-5'>
-		<SEO title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.'/>
+		<NextSeo title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.' />
 		<h1 className='text-3xl font-bold'>새로운 봇 추가하기</h1>
 		<div className='mt-1 mb-5'>
 			안녕하세요, <span className='font-semibold'>{user.username}#{user.tag}</span>님! <a role='button' tabIndex={0} onKeyDown={toLogin} onClick={toLogin} className='text-discord-blurple cursor-pointer outline-none'>본인이 아니신가요?</a>

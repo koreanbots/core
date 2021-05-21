@@ -3,6 +3,7 @@ import App, { AppContext, AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import { Router, useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { DefaultSeo } from 'next-seo'
 import { GlobalHotKeys } from 'react-hotkeys'
 import NProgress from 'nprogress'
 
@@ -59,17 +60,36 @@ const KoreanbotsApp = ({ Component, pageProps, err, cookie }: KoreanbotsProps): 
 	}, [])
 
 	return <div className={theme}>
+		<DefaultSeo
+			titleTemplate='%s - 한국 디스코드봇 리스트'
+			defaultTitle={TITLE}
+			description={DESCRIPTION}
+			openGraph={{
+				type: 'website',
+				title: TITLE,
+				url: 'https://koreanbots.dev',
+				site_name: TITLE,
+				description: DESCRIPTION,
+				images: [
+					{
+						url: '/logo.png',
+						width: 300,
+						height: 300,
+						alt: 'Logo'
+					}
+				]
+			}}
+			twitter={{
+				site: '@koreanbots',
+				handle: '@koreanbots',
+				cardType: 'summary'
+			}}
+		/>
 		<Head>
-			<title>{TITLE}</title>
 			{/* META */}
 			<meta charSet='utf-8' />
 			<meta httpEquiv='X-UA-Compatible' content='IE=edge' />
-			<meta name='description' content={DESCRIPTION} />
 			<meta name='keywords' content='Korea, Korean, Discord, Bot, 디스코드봇, 한디리' /> 
-			<meta name='og:title' content={TITLE} />
-			<meta name='og:url' content='https://koreanbots.dev' />
-			<meta name='og:description' content={DESCRIPTION} />
-			<meta name='og:image' content='/favicon.ico' />
 			<meta name='viewport' content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no' />
 
 			{/* Android */}

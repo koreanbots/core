@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic'
+import { NextSeo } from 'next-seo'
 
 import { categories, categoryIcon } from '@utils/Constants'
 
@@ -8,6 +9,7 @@ const Search = dynamic(()=> import('@components/Search'))
 
 const Hero:React.FC<HeroProps> = ({ header, description }) => {
 	return <>
+		<NextSeo title={header} description={description} />
 		<div className='dark:bg-discord-black bg-discord-blurple text-gray-100 md:p-0 mb-8'>
 			<Container className='pt-24 pb-16 md:pb-20' ignoreColor>
 				<h1 className='hidden md:block text-left text-3xl font-bold'>

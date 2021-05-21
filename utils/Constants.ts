@@ -190,10 +190,11 @@ export const DiscordEnpoints = {
 export const KoreanbotsEndPoints = {
 	OG: class {
 		static root = 'https://og.kbots.link'
+		static origin = 'https://beta.koreanbots.dev'
 		static bot(id: string, name: string, bio: string, tags: string[], stats: string[]) {
 			const u = new URL(this.root)
 			u.pathname = name
-			u.searchParams.append('image', KoreanbotsEndPoints.CDN.avatar(id, { format: 'webp', size: 256 }))
+			u.searchParams.append('image', this.origin + KoreanbotsEndPoints.CDN.avatar(id, { format: 'webp', size: 256 }))
 			u.searchParams.append('bio', bio)
 			tags.map(t => u.searchParams.append('tags', t))
 			stats.map(s => u.searchParams.append('stats', s))

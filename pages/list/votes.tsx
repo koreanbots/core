@@ -11,7 +11,6 @@ import { PageCount } from '@utils/Yup'
 
 const Hero = dynamic(() => import('@components/Hero'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
-const SEO = dynamic(() => import('@components/SEO'))
 const BotCard = dynamic(() => import('@components/BotCard'))
 const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 const Container = dynamic(() => import('@components/Container'))
@@ -22,7 +21,6 @@ const Votes:NextPage<VotesProps> = ({ data }) => {
 	if(!data || data.data.length === 0 || data.totalPage < Number(router.query.page)) return <NotFound />
 	return <>
 		<Hero header='하트 랭킹' description='하트를 많이 받은 봇들의 순위입니다!'/>
-		<SEO title='하트 랭킹' description='하트를 많이 받은 봇들의 순위입니다!'/>
 		<section id='list'>
 			<Container className='pb-10'>
 				<Advertisement />

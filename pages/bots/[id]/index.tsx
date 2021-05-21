@@ -52,7 +52,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 			<SEO
 				title={data.name}
 				description={data.intro}
-				image={KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 })}
+				image={KoreanbotsEndPoints.OG.bot(data.id, data.name, data.intro, data.category, [formatNumber(data.votes), formatNumber(data.servers)])}
 			/>
 			{
 				data.state === 'blocked' ? <div className='pb-40'>

@@ -44,7 +44,7 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 		.orWhere({ vanity: id, trusted: true })
 		.orWhere({ vanity: id, partnered: true })
 	if (res[0]) {
-		const discordBot = await get.discord.user.load(res[0].id)
+		const discordBot = await DiscordBot.users.fetch(res[0].id)
 		await getMainGuild()?.members?.fetch(res[0].id).catch(e=> e)
 		if(!discordBot) return null
 		res[0].flags = res[0].flags | (discordBot.flags && DiscordUserFlags.VERIFIED_BOT ? BotFlags.verified : 0) | (res[0].trusted ? BotFlags.trusted : 0) | (res[0].partnered ? BotFlags.partnered : 0)
@@ -223,7 +223,7 @@ async function submitBot(id: string, data: AddBotSubmit):Promise<1|2|3|4|Submitt
 	const sameID = await knex('submitted').select(['id']).where({ id: botId, state: 0 })
 	const bot = await get.bot.load(data.id)
 	if(sameID.length !== 0 || bot) return 2
-	const user = await get.discord.user.load(data.id)
+	const user = await DiscordBot.users.fetch(data.id)
 	if(!user) return 3
 	const member = await getMainGuild().members.fetch(id).then(() => true).catch(() => false)
 	if(!member) return 4

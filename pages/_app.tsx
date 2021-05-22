@@ -125,7 +125,7 @@ const KoreanbotsApp = ({ Component, pageProps, err, cookie }: KoreanbotsProps): 
 			<meta name='screen-orientation' content='portrait' />
 					
 		</Head>
-		<Navbar token={cookie.token} pwa={standalone} />
+		<Navbar token={cookie.token} />
 		<div className='iu-is-the-best min-h-screen text-black dark:text-gray-100 dark:bg-discord-dark bg-white'>
 			<Component {...pageProps} err={err} theme={theme} setTheme={setTheme} pwa={standalone} />
 		</div>

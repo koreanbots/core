@@ -6,12 +6,14 @@ html {
 	scroll-behavior: smooth;
 	min-height: 100%;
 	overflow-x: hidden;
-	width: 100%
+	width: 100%;
+	position: absolute;
 }
 
 body {
 	min-height: 100vh;
-	width: 100%
+	width: 100%;
+	position: absolute;
 }
 
 body * {

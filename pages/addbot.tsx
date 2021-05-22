@@ -32,6 +32,7 @@ const Captcha = dynamic(() => import('@components/Captcha'))
 const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 	const [ data, setData ] = useState<ResponseProps<SubmittedBot>>(null)
 	const [ captcha, setCaptcha ] = useState(false)
+	const [ touchedSumbit, setTouched ] = useState(false)
 	const captchaRef = useRef<HCaptcha>()
 	const router = useRouter()
 	const initialValues: AddBotSubmit = {
@@ -183,13 +184,19 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 							window.scrollTo({ top: 0 })
 							setCaptcha(false)
 							captchaRef?.current?.resetCaptcha()
-						}} /> : <Button type='submit' onClick={() => {
-							if(!isValid) window.scrollTo({ top: 0 })
-						} }>
-							<>
-								<i className='far fa-paper-plane'/> 제출
-							</>
-						</Button>
+						}} /> : <>
+							{
+								touchedSumbit && !isValid && <div className='my-1 text-red-500 text-xs font-light'>누락되거나 잘못된 항목이 있습니다. 다시 확인해주세요.</div>
+							}
+							<Button type='submit' onClick={() => {
+								setTouched(true)
+								if(!isValid) window.scrollTo({ top: 0 })
+							} }>
+								<>
+									<i className='far fa-paper-plane'/> 제출
+								</>
+							</Button>
+						</>
 					}
 				</Form>
 			)}

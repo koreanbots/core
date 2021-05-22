@@ -17,6 +17,7 @@ import { ResponseProps, SubmittedBot, Theme, User } from '@types'
 
 const CheckBox = dynamic(() => import('@components/Form/CheckBox'))
 const Label = dynamic(() => import('@components/Form/Label'))
+const Login = dynamic(() => import('@components/Login'))
 const Input = dynamic(() => import('@components/Form/Input'))
 const Divider = dynamic(() => import('@components/Divider'))
 const TextArea = dynamic(() => import('@components/Form/TextArea'))
@@ -58,19 +59,20 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 		_csrf: csrfToken,
 		_captcha: 'captcha'
 	}
+
 	function toLogin() {
 		localStorage.redirectTo = window.location.href
 		redirectTo(router, 'login')
 	}
-
+	
 	async function submitBot(value: AddBotSubmit, token: string) {
 		const res = await Fetch<SubmittedBot>(`/bots/${value.id}`, { method: 'POST', body: JSON.stringify(cleanObject<AddBotSubmit>({ ...value, _captcha: token})) })
 		setData(res)
 	}
-	if(!logged) {
-		toLogin()
-		return <NextSeo title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.' />
-	}
+
+	if(!logged) return <Login>
+		<NextSeo title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.' />
+	</Login>
 	return <Container paddingTop className='py-5'>
 		<NextSeo title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.' />
 		<h1 className='text-3xl font-bold'>새로운 봇 추가하기</h1>

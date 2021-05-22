@@ -25,7 +25,7 @@ export const discordLog = async (type: string, issuerID: string, embed?: Discord
 		content: `[${type}] <@${issuerID}> (${issuerID})\n${content || ''}`,
 		embed: embed && embed.setTitle(type).setTimestamp(new Date()),
 		...(attachment && { files: [
-			attachment && new Discord.MessageAttachment(Buffer.from(attachment.content), `${type.toLowerCase().replace(/\//g, '-')}-${issuerID}-${Date.now()}.${attachment.format}`)
+			new Discord.MessageAttachment(Buffer.from(attachment.content), `${type.toLowerCase().replace(/\//g, '-')}-${issuerID}-${Date.now()}.${attachment.format}`)
 		]
 		})
 	})

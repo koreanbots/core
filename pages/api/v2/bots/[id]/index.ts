@@ -136,7 +136,7 @@ const Bots = RequestHandler()
 				{ prefix: bot.prefix, library: bot.lib, web: bot.web, git: bot.git, url: bot.url, discord: bot.discord, intro: bot.intro, category: JSON.stringify(bot.category) },
 				{ prefix: validated.prefix, library: validated.library, web: validated.website, git: validated.git, url: validated.url, discord: validated.discord, intro: validated.intro, category: JSON.stringify(validated.category)  }
 			)
-			diffData.map(d => {
+			diffData.forEach(d => {
 				embed.addField(d[0], makeDiscordCodeblock(diff(d[1][0] || '', d[1][1] || ''), 'diff'))
 			})
 			await discordLog('BOT/EDIT', user, embed,

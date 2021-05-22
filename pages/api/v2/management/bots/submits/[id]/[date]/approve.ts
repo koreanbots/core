@@ -19,7 +19,7 @@ const ApproveBotSubmit = RequestHandler()
 		get.botSubmit.clear(JSON.stringify({ id: req.query.id, date: req.query.date }))
 		get.bot.clear(req.query.id)
 		const embed = new MessageEmbed().setTitle('승인').setColor('GREEN').setDescription(`[${submit.id}/${submit.date}](${KoreanbotsEndPoints.URL.submittedBot(submit.id, submit.date)})`).setTimestamp()
-		if(req.body.note) embed.addField('📃 정보', `${req.body.note ? `${req.body.note}` : ''}`)
+		if(req.body.note) embed.addField('📃 정보', req.body.note)
 		await getBotReviewLogChannel().send(embed)
 		return ResponseWrapper(res, { code: 200 })
 	})

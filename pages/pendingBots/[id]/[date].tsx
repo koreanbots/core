@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { NextSeo } from 'next-seo'
 
 import { get } from '@utils/Query'
-import { git } from '@utils/Constants'
+import { BotSubmissionDenyReasonPresetsName, git } from '@utils/Constants'
 import Day from '@utils/Day'
 
 import { SubmittedBot, User } from '@types'
@@ -47,7 +47,12 @@ const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
 							<h2 className='text-lg font-black'>거부됨</h2>
 							<p>아쉽게도 신청하신 해당 봇은 거부되었습니다.</p>
 							{
-								data.reason && <p>사유: <strong>{data.reason}</strong></p>
+								data.reason && <>
+									<p>사유: <strong>{BotSubmissionDenyReasonPresetsName[data.reason] || data.reason}</strong></p>
+									<div className='pt-2'>
+										{DenyPresetsArticle[data.reason]}
+									</div>
+								</>
 							}
 						</Message>
 				}
@@ -174,6 +179,33 @@ export const getServerSideProps = async (ctx: Context) => {
 			data
 		}
 	}
+}
+
+const DenyPresetsArticle = {
+	MISSING_VERIFY: <>
+		<p><strong>개발자 확인 불가</strong>로 거부되셨다면 본인이 봇의 소유자라는 것을 증명할 수 없다는 뜻입니다.</p>
+		<p>본인이 봇 소유자임을 증명하려면, 개발자의 태그(username#0000 형식)가 반드시 다음 명령어중에 포함되어야합니다.
+			<ul className='list-inside list-disc'>
+				<li>도움 명령어: 도움, 도움말, 명령어, help, commands</li>
+				<li>[접두사]hellothisisverification 응답: 유저#태그(아이디)</li>
+			</ul>
+		</p>
+	</>,
+	OFFLINE: <>
+		<p><strong>봇 오프라인</strong>으로 거부되셨다면 심사 당시에 봇이 오프라인으로 명령어가 응답하지 않았다는 뜻입니다.</p>
+		<p>봇이 24시간 호스팅 되지 않는다면, 아쉽게도 저희가 심사 시간을 맞춰드릴 수 없기에 심사 시간과 봇의 온라인 시간이 맞지 않는다면 심사를 진행할 수 없습니다.</p>
+	</>,
+	INVALID_CATEGORY:	<p>한 개 이상의 올바르지 않은 카테고리가 포함되어 있습니다. 반드시 <strong>봇에 해당되는</strong> 카테고리만 선택해주세요.</p>,
+	PRIVATE: <p>봇을 초대할 수 없어, 심사를 진행할 수 없습니다. 다음 항목을 확인해주세요.
+		<ul className='list-inside list-disc'>
+			<li>봇이 공개 봇인가요?</li>
+			<li>봇이 아직 인증을 받지 못하였는데 100서버에 도달하여 초대가 불가한가요?</li>
+			<li>"REQUIRES OAUTH2 CODE GRANT" 옵션을 사용하고 있나요?</li>
+			위 항목들을 해결하신 뒤에 다시 신청해주세요.
+		</ul>
+	</p>,
+	LICENSE_VIOLATION: <p>한 건 이상의 오픈소스 라이선스 위반사항이 있습니다. 사용하신 오픈소스를 라이선스에 맞추어, 사이트 내 봇 설명과 봇 명령어 안에 기재해주세요.</p>,
+	ABSENT_AT_DISCORD: <p>반드시 <a href='/discord'>공식 디스코드</a>에 참가해주세요.</p>
 }
 
 interface PendingBotProps {

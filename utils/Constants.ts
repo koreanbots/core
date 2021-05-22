@@ -294,7 +294,8 @@ export const BotSubmissionDenyReasonPresetsName = {
 	OFFLINE: '봇 오프라인',
 	INVALID_CATEGORY: '올바르지 않은 카테고리',
 	PRIVATE: '프라이빗 봇',
-	LICENSE_VIOLATION: '오픈소스 라이선스 위반'
+	LICENSE_VIOLATION: '오픈소스 라이선스 위반',
+	ABSENT_AT_DISCORD: '공식 디스코드 서버 미참여'
 }
 
 export const GuildPermissions = {

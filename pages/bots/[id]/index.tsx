@@ -109,7 +109,6 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 										{data.name}{' '}
 										{checkBotFlag(data.flags, 'trusted') ? (
 											<Tooltip placement='bottom' overlay='해당 봇은 한국 디스코드봇 리스트에서 엄격한 기준을 통과한 봇입니다!'>
-
 												<span className='text-koreanbots-blue text-3xl'>
 													<i className='fas fa-award' />
 												</span>

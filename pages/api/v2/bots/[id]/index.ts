@@ -82,7 +82,7 @@ const Bots = RequestHandler()
 			format: 'js'
 		})
 		const userinfo = await get.user.load(user)
-		await getBotReviewLogChannel().send(new MessageEmbed().setAuthor(`${userinfo.username}#${userinfo.tag}`, KoreanbotsEndPoints.CDN.avatar(userinfo.id, { format: 'png', size: 256 }), KoreanbotsEndPoints.URL.user(userinfo.id)).setTitle('대기 중').setColor('GREY').setDescription(`[${result.id}/${result.date}](${KoreanbotsEndPoints.URL.submittedBot(result.id, result.date)})`).setTimestamp())
+		await getBotReviewLogChannel().send(new MessageEmbed().setAuthor(`${userinfo.username}#${userinfo.tag}`, KoreanbotsEndPoints.URL.root + KoreanbotsEndPoints.CDN.avatar(userinfo.id, { format: 'png', size: 256 }), KoreanbotsEndPoints.URL.user(userinfo.id)).setTitle('대기 중').setColor('GREY').setDescription(`[${result.id}/${result.date}](${KoreanbotsEndPoints.URL.submittedBot(result.id, result.date)})`).setTimestamp())
 		return ResponseWrapper(res, { code: 200, data: result })
 	})
 	.delete(async (req: DeleteApiRequest, res) => {

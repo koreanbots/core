@@ -8,7 +8,7 @@ import { SearchQuerySchema } from '@utils/Yup'
 import { BotList } from '@types'
 
 const SearchBots = RequestHandler().get(async (req: ApiRequest, res: NextApiResponse) => {
-	const validated = await SearchQuerySchema.validate({ q: req.query.q, page: req.query.page })
+	const validated = await SearchQuerySchema.validate({ q: req.query.q || req.query.query, page: req.query.page })
 		.then(el => el)
 		.catch(e => {
 			ResponseWrapper(res, { code: 400, errors: e.errors })
@@ -30,7 +30,8 @@ const SearchBots = RequestHandler().get(async (req: ApiRequest, res: NextApiResp
 
 interface ApiRequest extends NextApiRequest {
 	query: {
-		q: string
+		q?: string
+		query?: string
 		page: string
 	}
 }

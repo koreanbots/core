@@ -55,13 +55,14 @@ const Users: NextPage<UserProps> = ({ user, data, csrfToken, theme }) => {
 				}}
 			/>
 			<div className='lg:flex'>
-				<div className='w-full text-center lg:w-1/4'>
+				<div className='w-3/5 mx-auto text-center lg:w-1/6'>
 					<DiscordAvatar
+						size={512}
 						userID={data.id}
 						className='w-full'
 					/>
 				</div>
-				<div className='flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left'>
+				<div className='flex-grow px-5 py-10 w-full text-center lg:w-5/12 lg:text-left'>
 					<div>
 						<div className='lg:flex mt-3 mb-1 '>
 							<h1 className='text-4xl font-bold'>{data.username}</h1>

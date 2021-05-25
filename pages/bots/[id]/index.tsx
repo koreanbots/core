@@ -92,7 +92,8 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 								<div className='w-full text-center lg:w-1/4'>
 									<DiscordAvatar
 										userID={data.id}
-										className={`w-full ${router.query.id === 'iu' ? 'cursor-heart' : ''}`}
+										size={256}
+										className='w-full'
 									/>
 								</div>
 								<div className='flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left'>
@@ -148,6 +149,17 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 											</h4>
 										</LongButton>
 									}
+									{
+										((data.owners as User[]).find(el => el.id === user?.id) || checkUserFlag(user?.flags, 'staff')) && <LongButton onClick={async() => {
+											const res = await Fetch(`/bots/${data.id}/stats`, { method: 'PATCH'} )
+											if(res.code !== 200) return alert(res.message)
+											else window.location.reload()
+										}}>
+											<h4>
+												<i className='fas fa-sync' /> 정보 갱신하기
+											</h4>
+										</LongButton>
+									}
 								</div>
 							</div>
 							<Divider className='px-5' />
@@ -199,8 +211,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 											if(!user) return <Login />
 											else setReportModal(true)
 										}} aria-hidden='true'>
-											<i className='far fa-flag' />
-						신고하기
+											<i className='far fa-flag' /> 신고하기
 										</a>
 										<Modal header={`${data.name}#${data.tag} 신고하기`} closeIcon isOpen={reportModal} onClose={() => {
 											setReportModal(false)

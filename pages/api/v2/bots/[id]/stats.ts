@@ -7,8 +7,9 @@ import RequestHandler from '@utils/RequestHandler'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { BotStatUpdate, BotStatUpdateSchema } from '@utils/Yup'
 import { discordLog } from '@utils/DiscordBot'
-import { makeDiscordCodeblock } from '@utils/Tools'
+import { checkUserFlag, makeDiscordCodeblock } from '@utils/Tools'
 import { KoreanbotsEndPoints } from '@utils/Constants'
+import type { User } from '@types'
 
 const limiter = rateLimit({
 	windowMs: 3 * 60 * 1000,
@@ -21,6 +22,19 @@ const limiter = rateLimit({
 		res.removeHeader('X-RateLimit-Global')
 		if(!req.headers.authorization) return true
 		else return false
+	}
+})
+
+const patchLimiter = rateLimit({
+	windowMs: 2 * 60 * 1000,
+	max: 6,
+	statusCode: 429,
+	skipFailedRequests: true,
+	handler: (_req, res) => ResponseWrapper(res, { code: 429 }),
+	keyGenerator: (req) => req.headers['x-forwarded-for'] as string,
+	skip: (_req, res) => {
+		res.removeHeader('X-RateLimit-Global')
+		return false
 	}
 })
 
@@ -46,9 +60,25 @@ const BotStats = RequestHandler().post(limiter)
 		await discordLog('BOT/STATS', botInfo.id, (new MessageEmbed().setDescription(`${botInfo.name} - <@${botInfo.id}> ([${botInfo.id}](${KoreanbotsEndPoints.URL.bot(botInfo.id)}))`)), null, makeDiscordCodeblock(`${botInfo.servers > validated.servers ? '-' : '+'} ${botInfo.servers} -> ${validated.servers} (${botInfo.servers > validated.servers ? '▼' : '▲'}${Math.abs(validated.servers - botInfo.servers)})`, 'diff'))
 		return ResponseWrapper(res, { code: 200, message: '성공적으로 업데이트 했습니다.'})
 	})
+	.patch(patchLimiter).patch(async (req: ApiRequest, res) => {
+		console.log('1')
+		const user = await get.Authorization(req.cookies.token)
+		if (!user) return ResponseWrapper(res, { code: 401 })
+		const userinfo = await get.user.load(user)
+		const bot = await get.bot.load(req.query.id)
+		if(!bot) return ResponseWrapper(res, { code: 404 })
+		if(!(bot.owners as User[]).find(el => el.id === user) && !checkUserFlag(userinfo.flags, 'staff')) return ResponseWrapper(res, { code: 403 })
+		get.bot.clear(req.query.id)
+		return ResponseWrapper(res, { code: 200 })
+	})
 
 
-interface PostApiRequest extends NextApiRequest {
+interface ApiRequest extends NextApiRequest {
+	query: {
+		id: string
+	}
+}
+interface PostApiRequest extends ApiRequest {
   query: {
     id: string
   }

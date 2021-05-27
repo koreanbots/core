@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  mysql:
+    image: wonderlandpark/mariadb-mroonga:latest
+    hostname: mysql
+    container_name: mysql
+    env_file:
+      - .env
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - /home/ubuntu/mysql-beta:/var/lib/mysql
+  web:
+    container_name: web
+    ports:
+      - 4000:3000
+    links:
+      - mysql
+    env_file:
+      - .env.beta.production.local
+    image: wonderlandpark/koreanbots:nightly
+    deploy:
+      resources:
+        limits:
+          memory: 500M

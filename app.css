@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+	scroll-behavior: smooth;
+	min-height: 100%;
+	overflow-x: hidden;
+	width: 100%;
+}
+
+body {
+	min-height: 100vh;
+	width: 100%;
+}
+
+body * {
+	outline: none;
+}
+
+@font-face {
+	font-family: 'Uni Sans Heavy CAPS';
+	src: url('/logofont.otf');
+	font-display: swap;
+}
+
+.logofont {
+	font-family: 'Uni Sans Heavy CAPS';
+}
+
+.animation-dropdown {
+	animation: dropdown 0.1s linear;
+}
+
+.iu-is-the-best {
+	min-height: 100vh;
+}
+
+.__control--is-focused {
+	border: none !important;
+	box-shadow: none !important;
+}
+
+i {
+	width: 20px;
+}
+
+/* html * ::-webkit-scrollbar {
+	-webkit-appearance: none;
+	width: 8px;
+	height: 8px;
+}
+
+html * ::-webkit-scrollbar-thumb {
+	cursor: pointer;
+	border-radius: 5px;
+	background: #ccc;
+	-webkit-transition: color 0.2s ease;
+	transition: color 0.2s ease;
+}
+
+html .dark * ::-webkit-scrollbar-thumb {
+	cursor: pointer;
+	border-radius: 5px;
+	background: #202225;
+	-webkit-transition: color 0.2s ease;
+	transition: color 0.2s ease;
+}
+
+html * ::-webkit-scrollbar-track {
+	background: #f2f2f2;
+	border-radius: 0;
+	border: 4px solid transparent;
+	border-radius: 8px;
+}
+
+html .dark * ::-webkit-scrollbar-track {
+	background: #2e3338;
+	border-radius: 0;
+} */
+
+.dark .__multi-value,
+.dark .__multi-value__label,
+.dark .__multi-value__remove {
+	background: #2e3338 !important;
+}
+
+.scroll-none {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.scroll-none ::-webkit-scrollbar {
+	display: none;
+}
+
+button {
+	outline: none !important;
+}
+
+.emoji-selector-button {
+	width: 24px;
+	height: 24px;
+	display: inline-block;
+	background-image: url('https://unpkg.com/emoji-datasource-twitter@5.0.1/img/twitter/sheets-256/64.png');
+	background-size: 5700% 5700%;
+	background-position: 53.5714% 62.5%;
+	filter: grayscale(100%);
+}
+
+.emoji-selector-button:hover {
+	filter: grayscale(0%);
+	transform: scale(1.1, 1.1);
+	opacity: 90%;
+	transition: ease-in 100ms;
+	cursor: pointer;
+}
+
+.emoji-mart-category-list > *,
+.emoji-mart-emoji > span {
+	cursor: pointer;
+}
+
+.cursor-heart {
+	cursor: url("/img/heart.svg"), auto;
+}
+
+/* NProgress */
+
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: #3366FF;
+
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 1.5px;
+}
+
+/* Fancy blur effect */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px #3366FF, 0 0 5px #3366FF;
+  opacity: 1.0;
+  transform: rotate(3deg) translate(0px, -4px);
+}
+
+/* Remove these to get rid of the spinner */
+#nprogress .spinner {
+  display: block;
+  position: fixed;
+  z-index: 1031;
+  top: 15px;
+  right: 15px;
+}
+
+#nprogress .spinner-icon {
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+
+  border: solid 2px transparent;
+  border-top-color: #3366FF;
+  border-left-color: #3366FF;
+  border-radius: 50%;
+	animation: nprogress-spinner 400ms linear infinite;
+}
+
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+
+.nprogress-custom-parent #nprogress .spinner,
+.nprogress-custom-parent #nprogress .bar {
+  position: absolute;
+}
+
+@keyframes nprogress-spinner {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

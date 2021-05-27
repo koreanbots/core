@@ -1,0 +1,8 @@
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+    <ShortName>한국 디스코드봇 리스트</ShortName>
+    <Description>국내 디스코드봇을 한 곳에서.</Description>
+    <InputEncoding>UTF-8</InputEncoding>
+    <Image width="16" height="16" type="image/x-icon">https://beta.koreanbots.dev/logo.png</Image>
+    <Url type="text/html" method="get" template="https://beta.koreanbots.dev/search?q={searchTerms}"/>
+    <moz:SearchForm>https://beta.koreanbots.dev/search</moz:SearchForm>
+</OpenSearchDescription>

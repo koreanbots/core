@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  mysql:
+    image: wonderlandpark/mariadb-mroonga:latest
+    hostname: mysql
+    container_name: mysql-stable
+    env_file:
+      - .env
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - /home/ubuntu/mysql:/var/lib/mysql
+  web:
+    container_name: web-stable
+    ports:
+      - 5000:3000
+    links:
+      - mysql
+    env_file:
+      - .env.production.local
+    image: wonderlandpark/koreanbots:stable

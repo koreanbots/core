@@ -5,49 +5,53 @@ use discordbots;
 ALTER TABLE `bots` CHANGE `servers` `servers` INT(11) NULL DEFAULT NULL, CHANGE `web` `web` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL, CHANGE `git` `git` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL, CHANGE `url` `url` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL, CHANGE `category` `category` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '\'[]\'', CHANGE `status` `status` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL, CHANGE `avatar` `avatar` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL, CHANGE `tag` `tag` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, CHANGE `discord` `discord` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL, CHANGE `state` `state` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '\'ok\'', CHANGE `vanity` `vanity` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL, CHANGE `bg` `bg` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL, CHANGE `banner` `banner` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
 
 -- USING NULL
-UPDATE `bots` SET web=NULL where web='false';
-UPDATE `bots` SET git=NULL where git='false';
-UPDATE `bots` SET url=NULL where url='false';
-UPDATE `bots` SET avatar=NULL where avatar='false';
-UPDATE `bots` SET discord=NULL where discord='false';
-UPDATE `bots` SET vanity=NULL where vanity='false';
-UPDATE `bots` SET bg=NULL where bg='false';
-UPDATE `bots` SET banner=NULL where banner='false';
-ALTER TABLE `bots` ADD COLUMN partnered BOOLEAN NOT NULL DEFAULT 0;
+UPDATE `bots` SET web=NULL where web='false' or web='';
+UPDATE `bots` SET git=NULL where git='false' or git='';
+UPDATE `bots` SET `url`=NULL where `url`='false' or `url`='';
+UPDATE `bots` SET avatar=NULL where avatar='false' or avatar='';
+UPDATE `bots` SET discord=NULL where discord='false' or discord='';
+UPDATE `bots` SET vanity=NULL where vanity='false' or vanity='';
+UPDATE `bots` SET bg=NULL where bg='false' or bg='';
+UPDATE `bots` SET banner=NULL where banner='false' or banner='';
+ALTER TABLE `bots` ADD COLUMN webhook TEXT DEFAULT NULL;
+ALTER TABLE `bots` CHANGE id id VARCHAR(50) NOT NULL PRIMARY KEY;
+ALTER TABLE `bots` CHANGE `status` `status` TEXT DEFAULT NULL;
+ALTER TABLE `bots` CHANGE `name` `name` TEXT DEFAULT NULL;
+ALTER TABLE `bots` CHANGE avatar avatar TEXT DEFAULT NULL;
+ALTER TABLE `bots` CHANGE tag tag TEXT DEFAULT NULL;
+
+ALTER TABLE `bots` CHANGE token token TEXT DEFAULT NULL;
+ALTER TABLE `bots` ENGINE=mroonga;
+ALTER TABLE `bots` COMMENT='engine "innodb"';
+ALTER TABLE `bots` ADD `flags` INT NOT NULL DEFAULT 0;
+ALTER TABLE `bots` ADD FULLTEXT KEY `search` (`name`, `intro`, `desc`) COMMENT 'tokenizer "TokenBigramIgnoreBlankSplitSymbolAlphaDigit"';
 
 -- users TABLE
-UPDATE `users` SET perm=0;
-ALTER TABLE `users` CHANGE `perm` `perm` INT(5) NOT NULL DEFAULT '0';
+ALTER TABLE `users` ADD `flags` INT NOT NULL DEFAULT '0';
 ALTER TABLE `users` ADD `email` TEXT NULL AFTER `id`;
-ALTER TABLE `users` ADD `stared` TEXT NOT NULL DEFAULT '[]' AFTER `github
+ALTER TABLE `users` ADD `stared` TEXT NOT NULL DEFAULT '[]';
 ALTER TABLE `users` ADD `discord` TEXT NOT NULL AFTER `token`;
 UPDATE `users` SET `stared` = `votes` WHERE `id`=`id`;
-ALTER TABLE `users` CHANGE `votes` `votes` LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{}';
+ALTER TABLE `users` CHANGE `perm` `perm` TEXT NOT NULL DEFAULT 'user';
+ALTER TABLE `users` CHANGE `votes` `votes` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '{}';
+ALTER TABLE `users` CHANGE `avatar` `avatar` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
 UPDATE `users` SET votes="{}";
 
 -- submitted TABLE
 ALTER TABLE `submitted` CHANGE `servers` `servers` INT(11) NULL DEFAULT NULL, CHANGE `web` `web` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL, CHANGE `git` `git` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL, CHANGE `url` `url` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL, CHANGE `category` `category` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '\'[]\'', CHANGE `status` `status` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '\'???\'', CHANGE `name` `name` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL, CHANGE `avatar` `avatar` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL, CHANGE `verified` `verified` TINYINT(1) NULL DEFAULT '0', CHANGE `trusted` `trusted` TINYINT(1) NULL DEFAULT '0', CHANGE `discord` `discord` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
-ALTER TABLE `submitted` CHANGE `status` `status` MEDIUMTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
-
--- submits TABLE
-
-CREATE TABLE `submits` (
-  `id` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `date` int(11) NOT NULL,
-  `owners` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lib` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `prefix` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `intro` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `desc` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `web` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `git` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `url` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `category` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT '\'[]\'',
-  `tag` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `discord` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `state` int(1) NOT NULL DEFAULT 0,
-  `reason` tinytext COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+ALTER TABLE `submitted` DROP `name`;
+ALTER TABLE `submitted` DROP `tag`;
+ALTER TABLE `submitted` DROP `votes`;
+ALTER TABLE `submitted` DROP `servers`;
+ALTER TABLE `submitted` DROP `status`;
+ALTER TABLE `submitted` DROP `verified`;
+ALTER TABLE `submitted` DROP `trusted`;
+ALTER TABLE `submitted` DROP `avatar`;
+ALTER TABLE `submitted` ADD `reason` TINYTEXT NULL DEFAULT NULL;  
+UPDATE `submitted` SET web=NULL where web='false' or web='';
+UPDATE `submitted` SET git=NULL where git='false' or git='';
+UPDATE `submitted` SET `url`=NULL where `url`='false' or `url`='';
+UPDATE `submitted` SET discord=NULL where discord='false' or discord='';
 
 -- reports TABLE
 

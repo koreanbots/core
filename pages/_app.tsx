@@ -16,10 +16,6 @@ const Footer = dynamic(() => import('@components/Footer'))
 const Navbar = dynamic(() => import('@components/Navbar'))
 const Modal = dynamic(() => import('@components/Modal'))
 
-import 'core-js/es/promise'
-import 'core-js/es/set'
-import 'core-js/es/map'
-
 import '../app.css'
 import '../github-markdown.css'
 import 'rc-tooltip/assets/bootstrap_white.css'

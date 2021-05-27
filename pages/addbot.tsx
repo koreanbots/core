@@ -169,7 +169,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 						<Input name='intro' placeholder='국내 봇을 한 곳에서.' />
 					</Label>
 					<Label For='intro' label='봇 설명' labelDesc={<>봇을 자세하게 설명해주세요! (최대 1500자)<br/>마크다운을 지원합니다!</>} error={errors.desc && touched.desc ? errors.desc : null} required>
-						<TextArea name='desc' placeholder='봇에 대해 최대한 자세히 설명해주세요!' theme={theme === 'dark' ? 'dark' : 'light'} value={values.desc} setValue={(value) => setFieldValue('desc', value)} />
+						<TextArea max={1500} name='desc' placeholder='봇에 대해 최대한 자세히 설명해주세요!' theme={theme === 'dark' ? 'dark' : 'light'} value={values.desc} setValue={(value) => setFieldValue('desc', value)} />
 					</Label>
 					<Label For='preview' label='설명 미리보기' labelDesc='다음 결과는 실제와 다를 수 있습니다.'>
 						<Segment>

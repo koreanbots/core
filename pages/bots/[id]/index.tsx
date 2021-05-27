@@ -143,7 +143,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 										</LongButton>
 									</Link>
 									{
-										((data.owners as User[]).find(el => el.id === user?.id) || checkUserFlag(user?.flags, 'staff')) && <LongButton href={`/manage/${data.id}`}>
+										((data.owners as User[]).find(el => el.id === user?.id) || checkUserFlag(user?.flags, 'staff')) && <LongButton href={`/bots/${data.id}/edit`}>
 											<h4>
 												<i className='fas fa-cogs' /> 관리하기
 											</h4>

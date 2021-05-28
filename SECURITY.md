@@ -2,7 +2,7 @@
 
 ## Korean
 
-[버그 바운티 프로그램](https://beta.koreanbots.dev/security)
+[버그 바운티 프로그램](https://koreanbots.dev/security)
 
 ## English
 

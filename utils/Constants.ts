@@ -190,7 +190,7 @@ export const DiscordEnpoints = {
 export const KoreanbotsEndPoints = {
 	OG: class {
 		static root = 'https://og.kbots.link'
-		static origin = 'https://beta.koreanbots.dev'
+		static origin = 'https://koreanbots.dev'
 		static bot(id: string, name: string, bio: string, tags: string[], stats: string[]) {
 			const u = new URL(this.root)
 			u.pathname = name

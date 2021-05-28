@@ -446,7 +446,7 @@ export const get = {
 					const json = JSON.parse(k)
 					return await getBotList('CATEGORY', json.page, json.category)
 				}))).map(row => serialize(row))
-			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 1000000 }) }),
+			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 500000 }) }),
 		search: new DataLoader(
 			async (key: string[]) => 
 				(await Promise.all(key.map(async (k: string) => {
@@ -454,11 +454,11 @@ export const get = {
 					const res = await getBotList('SEARCH', json.page, json.query)
 					return { ...res, totalPage: Number(res.totalPage), currentPage: Number(res.currentPage) }
 				}))).map(row => serialize(row))
-			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 1000000 }) }),
+			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 500000 }) }),
 		votes: new DataLoader(
 			async (pages: number[]) =>
 				(await Promise.all(pages.map(async (page: number) => await getBotList('VOTE', page)))).map(row => serialize(row))
-			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 1000000 }) }),
+			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 500000 }) }),
 		new: new DataLoader(
 			async (pages: number[]) =>
 				(await Promise.all(pages.map(async (page: number) => await getBotList('NEW', page)))).map(row => serialize(row))

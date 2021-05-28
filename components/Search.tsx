@@ -81,6 +81,7 @@ const Search: React.FC = () => {
 				className='relative z-10 flex mt-5 w-full text-black dark:text-gray-100 dark:bg-very-black bg-white rounded-lg'
 			>
 				<input
+					type='search'
 					maxLength={50}
 					className='flex-grow pr-20 px-7 py-3 h-16 text-xl bg-transparent border-0 border-none outline-none shadow'
 					placeholder='검색...'

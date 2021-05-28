@@ -39,6 +39,7 @@ const Search:NextPage<SearchProps> = ({ data, query }) => {
 }
 
 export const getServerSideProps = async(ctx: Context) => {
+	if(ctx.query.query && !ctx.query.q) ctx.query.q = ctx.query.query
 	if(!ctx.query?.q) {
 		ctx.res.statusCode = 301
 		ctx.res.setHeader('Location', '/')
@@ -69,7 +70,8 @@ interface Context extends NextPageContext {
 }
 
 interface URLQuery extends ParsedUrlQuery {
-  q: string
+  q?: string
+	query?: string
   page?: string
 }
 

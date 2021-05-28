@@ -47,7 +47,7 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 		const discordBot = await DiscordBot.users.fetch(res[0].id)
 		await getMainGuild()?.members?.fetch(res[0].id).catch(e=> e)
 		if(!discordBot) return null
-		res[0].flags = res[0].flags | (discordBot.flags && DiscordUserFlags.VERIFIED_BOT ? BotFlags.verified : 0) | (res[0].trusted ? BotFlags.trusted : 0) | (res[0].partnered ? BotFlags.partnered : 0)
+		res[0].flags = res[0].flags | (discordBot.flags.bitfield && DiscordUserFlags.VERIFIED_BOT ? BotFlags.verified : 0) | (res[0].trusted ? BotFlags.trusted : 0) | (res[0].partnered ? BotFlags.partnered : 0)
 		res[0].tag = discordBot.discriminator
 		res[0].avatar = discordBot.avatar
 		res[0].name = discordBot.username
@@ -446,7 +446,7 @@ export const get = {
 					const json = JSON.parse(k)
 					return await getBotList('CATEGORY', json.page, json.category)
 				}))).map(row => serialize(row))
-			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 3000000 }) }),
+			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 500000 }) }),
 		search: new DataLoader(
 			async (key: string[]) => 
 				(await Promise.all(key.map(async (k: string) => {
@@ -454,11 +454,11 @@ export const get = {
 					const res = await getBotList('SEARCH', json.page, json.query)
 					return { ...res, totalPage: Number(res.totalPage), currentPage: Number(res.currentPage) }
 				}))).map(row => serialize(row))
-			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 3000000 }) }),
+			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 500000 }) }),
 		votes: new DataLoader(
 			async (pages: number[]) =>
 				(await Promise.all(pages.map(async (page: number) => await getBotList('VOTE', page)))).map(row => serialize(row))
-			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 3000000 }) }),
+			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 500000 }) }),
 		new: new DataLoader(
 			async (pages: number[]) =>
 				(await Promise.all(pages.map(async (page: number) => await getBotList('NEW', page)))).map(row => serialize(row))

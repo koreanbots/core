@@ -48,7 +48,7 @@ const TextArea: React.FC<TextAreaProps> = ({ name, placeholder, theme='auto', ma
 				<div className='emoji-selector-button outline-none' onClick={() => setEmojiPickerHidden(false)} onKeyPress={() => setEmojiPickerHidden(false)} role='button' tabIndex={0} />
 			</div>
 			{
-				max && <span className={`absolute bottom-2 right-4${max < value.length ? ' text-red-400' : ''}`}>
+				max && <span className={`absolute bottom-2 right-4 ${max < value.length ? ' text-red-400' : ''}`}>
 					{max-value.length}
 				</span>
 			}

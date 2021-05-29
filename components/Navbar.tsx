@@ -44,7 +44,7 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 				<div className='container flex flex-wrap items-center justify-between mx-auto px-4'>
 					<div className='relative flex justify-between w-full lg:justify-start lg:w-auto'>
 						<Link href={dev ? '/developers' : '/'}>
-							<a className={`${dev ? 'text-koreanbots-blue ' : ''}logofont text-large whitespace-no-wrap inline-block mr-4 py-2 hover:text-gray-300 font-semibold leading-relaxed uppercase sm:text-2xl`}
+							<a className={`${dev ? 'dark:text-koreanbots-blue ' : ''}logofont text-large whitespace-no-wrap inline-block mr-4 py-2 hover:text-gray-300 font-semibold leading-relaxed uppercase sm:text-2xl`}
 							>
 								{ dev ? <><i className='fas fa-tools mr-1'/> DEVELOPERS</> : 'KOREANBOTS'}
 							</a>

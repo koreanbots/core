@@ -9,7 +9,7 @@ import { AddBotSubmit, AddBotSubmitSchema, CsrfCaptcha, ManageBot, ManageBotSche
 import RequestHandler from '@utils/RequestHandler'
 import { User } from '@types'
 import { checkUserFlag, diff, inspect, makeDiscordCodeblock, objectDiff, serialize } from '@utils/Tools'
-import { discordLog, getBotReviewLogChannel } from '@utils/DiscordBot'
+import { discordLog, getBotReviewLogChannel, getMainGuild } from '@utils/DiscordBot'
 import { KoreanbotsEndPoints } from '@utils/Constants'
 
 const patchLimiter = rateLimit({
@@ -98,7 +98,8 @@ const Bots = RequestHandler()
 		const captcha = await CaptchaVerify(req.body._captcha)
 		if(!captcha) return ResponseWrapper(res, { code: 400, message: '캡챠 검증에 실패하였습니다.' })
 		if(req.body.name !== bot.name) return ResponseWrapper(res, { code: 400, message: '봇 이름을 입력해주세요.' })
-		remove.bot(bot.id)
+		await remove.bot(bot.id)
+		await getMainGuild().members.cache.get(bot.id)?.kick('봇 삭제됨.')
 		get.user.clear(user)
 		await discordLog('BOT/DELETE', user, (new MessageEmbed().setDescription(`${bot.name} - <@${bot.id}> ([${bot.id}](${KoreanbotsEndPoints.URL.bot(bot.id)}))`)),
 			{

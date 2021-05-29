@@ -71,10 +71,14 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 	}
 
 	if(!logged) return <Login>
-		<NextSeo title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.' />
+		<NextSeo title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.' openGraph={{
+			title:'새로운 봇 추가하기', description: '자신의 봇을 한국 디스코드봇 리스트에 등록하세요.'
+		}} />
 	</Login>
 	return <Container paddingTop className='py-5'>
-		<NextSeo title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.' />
+		<NextSeo title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.' openGraph={{
+			title:'새로운 봇 추가하기', description: '자신의 봇을 한국 디스코드봇 리스트에 등록하세요.'
+		}} />
 		<h1 className='text-3xl font-bold'>새로운 봇 추가하기</h1>
 		<div className='mt-1 mb-5'>
 			안녕하세요, <span className='font-semibold'>{user.username}#{user.tag}</span>님! <a role='button' tabIndex={0} onKeyDown={toLogin} onClick={toLogin} className='text-discord-blurple cursor-pointer outline-none'>본인이 아니신가요?</a>

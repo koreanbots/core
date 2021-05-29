@@ -4,9 +4,16 @@ import dynamic from 'next/dynamic'
 const Container = dynamic(() => import('@components/Container'))
 
 const Docs: React.FC<DocsProps> = ({ title, header, description, subheader, children }) => {
+	const t = typeof header === 'string' ? header : title
+	const d = description || subheader
 	return (
 		<>
-			<NextSeo title={typeof header === 'string' ? header : title} description={description || subheader}/>
+			<NextSeo title={t} description={d}
+				openGraph={{
+					title: t,
+					description: d
+				}}
+			/>
 			<div className='dark:bg-discord-black bg-discord-blurple z-20'>
 				<Container className='py-20' ignoreColor>
 					<h1 className='mt-10 text-center text-gray-100 text-4xl font-bold sm:text-left'>

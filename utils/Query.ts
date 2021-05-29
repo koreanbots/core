@@ -44,9 +44,9 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 		.orWhere({ vanity: id, trusted: true })
 		.orWhere({ vanity: id, partnered: true })
 	if (res[0]) {
-		const discordBot = await DiscordBot.users.fetch(res[0].id)
-		await getMainGuild()?.members?.fetch(res[0].id).catch(e=> e)
+		const discordBot = await DiscordBot.users.fetch(res[0].id).then(r=> r).catch(() => null)
 		if(!discordBot) return null
+		await getMainGuild()?.members?.fetch(res[0].id)
 		res[0].flags = res[0].flags | (discordBot.flags?.bitfield && DiscordUserFlags.VERIFIED_BOT ? BotFlags.verified : 0) | (res[0].trusted ? BotFlags.trusted : 0) | (res[0].partnered ? BotFlags.partnered : 0)
 		res[0].tag = discordBot.discriminator
 		res[0].avatar = discordBot.avatar

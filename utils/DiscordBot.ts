@@ -6,6 +6,7 @@ const guildID = '653083797763522580'
 
 const reportChannelID = '813255797823766568'
 const loggingChannelID = '844006379823955978'
+const statsLoggingChannelID = '653227346962153472'
 const botReviewLogChannelID = '844044961975500840'
 
 DiscordBot.on('ready', async () => {
@@ -20,6 +21,8 @@ export const getMainGuild = () => DiscordBot.guilds.cache.get(guildID)
 export const getReportChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(reportChannelID) as Discord.TextChannel
 export const getLoggingChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(loggingChannelID) as Discord.TextChannel
 export const getBotReviewLogChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(botReviewLogChannelID) as Discord.TextChannel
+export const getStatsLoggingChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(statsLoggingChannelID) as Discord.TextChannel
+
 export const discordLog = async (type: string, issuerID: string, embed?: Discord.MessageEmbed, attachment?: { content: string, format: string}, content?: string): Promise<void> => {
 	getLoggingChannel().send({ 
 		content: `[${type}] <@${issuerID}> (${issuerID})\n${content || ''}`,

@@ -1,4 +1,4 @@
-FROM node:14.16-alpine
+FROM node:14.17-alpine
 
 # install packages
 RUN apk update && apk upgrade && \

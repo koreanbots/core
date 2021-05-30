@@ -16,7 +16,7 @@ import { get } from '@utils/Query'
 import Day from '@utils/Day'
 import { ReportSchema } from '@utils/Yup'
 import Fetch from '@utils/Fetch'
-import { checkBotFlag, checkUserFlag, formatNumber, parseCookie } from '@utils/Tools'
+import { checkBotFlag, checkUserFlag, formatNumber, parseCookie, redirectTo } from '@utils/Tools'
 import { getToken } from '@utils/Csrf'
 
 import NotFound from '../../404'
@@ -35,7 +35,6 @@ const Button = dynamic(() => import('@components/Button'))
 const TextArea = dynamic(() => import('@components/Form/TextArea'))
 const Modal = dynamic(() => import('@components/Modal'))
 const NSFW = dynamic(() => import('@components/NSFW'))
-const Login = dynamic(() => import('@components/Login'))
 
 const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken }) => {
 	const bg = checkBotFlag(data?.flags, 'trusted') && data?.banner
@@ -208,7 +207,10 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 									))}
 									<div className='list grid'>
 										<a className='text-red-600 hover:underline cursor-pointer' onClick={() => {
-											if(!user) return <Login />
+											if(!user) {
+												localStorage.redirectTo = window.location.href
+												redirectTo(router, 'login')
+											}
 											else setReportModal(true)
 										}} aria-hidden='true'>
 											<i className='far fa-flag' /> 신고하기

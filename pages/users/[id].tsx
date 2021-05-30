@@ -8,7 +8,7 @@ import { Field, Form, Formik } from 'formik'
 
 import { Bot, User, ResponseProps, Theme } from '@types'
 import { get } from '@utils/Query'
-import { checkUserFlag, parseCookie } from '@utils/Tools'
+import { checkUserFlag, parseCookie, redirectTo } from '@utils/Tools'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
 import { ReportSchema } from '@utils/Yup'
@@ -16,6 +16,7 @@ import { ReportSchema } from '@utils/Yup'
 import NotFound from '../404'
 import { KoreanbotsEndPoints, reportCats } from '@utils/Constants'
 import { NextSeo } from 'next-seo'
+import { useRouter } from 'next/router'
 
 const Container = dynamic(() => import('@components/Container'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
@@ -29,9 +30,9 @@ const Message = dynamic(() => import('@components/Message'))
 const Modal = dynamic(() => import('@components/Modal'))
 const Button = dynamic(() => import('@components/Button'))
 const TextArea = dynamic(() => import('@components/Form/TextArea'))
-const Login = dynamic(() => import('@components/Login'))
 
 const Users: NextPage<UserProps> = ({ user, data, csrfToken, theme }) => {
+	const router = useRouter()
 	const [ reportModal, setReportModal ] = useState(false)
 	const [ reportRes, setReportRes ] = useState<ResponseProps<null>>(null)
 	if (!data?.id) return <NotFound />
@@ -98,7 +99,10 @@ const Users: NextPage<UserProps> = ({ user, data, csrfToken, theme }) => {
 						)}
 						<div className='list-none mt-2'>
 							<a className='text-red-600 hover:underline cursor-pointer' onClick={() => {
-								if(!user) return <Login />
+								if(!user) {
+									localStorage.redirectTo = window.location.href
+									redirectTo(router, 'login')
+								}
 								else setReportModal(true)
 							}} aria-hidden='true'>
 								<i className='far fa-flag' />

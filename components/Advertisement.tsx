@@ -3,7 +3,7 @@ import Logger from '@utils/Logger'
 
 const Advertisement: React.FC<AdvertisementProps> = ({ size = 'short' }) => {
 	useEffect(() => {
-		if (true) {
+		if (process.env.NODE_ENV === 'production') {
 			window.adsbygoogle = window.adsbygoogle || []
 			try {
 				window.adsbygoogle.push({})
@@ -19,11 +19,11 @@ const Advertisement: React.FC<AdvertisementProps> = ({ size = 'short' }) => {
 	return <div className='py-5'>
 		<div
 			className={`z-0 mx-auto w-full text-center text-white ${
-				true ? '' : 'py-12 bg-gray-700'
+				process.env.NODE_ENV === 'production' ? '' : 'py-12 bg-gray-700'
 			}`}
-			style={size === 'short' ? { height: '90px' } : { height: '330px', float: 'right' }}
+			style={size === 'short' ? { height: '90px' } : { height: '330px' }}
 		>
-			{true ? (
+			{process.env.NODE_ENV === 'production' ? (
 				<ins
 					className='adsbygoogle'
 					style={{ display: 'block', width: '100%' }}

@@ -5,12 +5,18 @@ const Advertisement: React.FC<AdvertisementProps> = ({ size = 'short' }) => {
 	useEffect(() => {
 		if (process.env.NODE_ENV === 'production') {
 			window.adsbygoogle = window.adsbygoogle || []
-			window.adsbygoogle.push({})
+			try {
+				window.adsbygoogle.push({})
+				Logger.debug('Ad Pushed')
+			}
+			catch {
+				Logger.debug('Ad Push Fail')
+			}
 		}
-		Logger.debug('Ads Pushed')
+		
 	}, [])
 
-	return (
+	return <div className='py-5'>
 		<div
 			className={`z-0 mx-auto w-full text-center text-white ${
 				process.env.NODE_ENV === 'production' ? '' : 'py-12 bg-gray-700'
@@ -19,18 +25,19 @@ const Advertisement: React.FC<AdvertisementProps> = ({ size = 'short' }) => {
 		>
 			{process.env.NODE_ENV === 'production' ? (
 				<ins
-					className='adsbygoogle w-full'
-					style={{ display: 'inline-block', height: '90px' }}
+					className='adsbygoogle'
+					style={{ display: 'block', width: '100%' }}
 					data-ad-client='ca-pub-4856582423981759'
 					data-ad-slot='3250141451'
-					data-adtest='on'
+					data-ad-format='auto'
 					data-full-width-responsive='true'
-				></ins>
+					data-adtest='on'
+				/>
 			) : (
 				'Advertisement'
 			)}
 		</div>
-	)
+	</div>
 }
 
 declare global {

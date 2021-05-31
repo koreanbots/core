@@ -53,8 +53,8 @@ class MyDocument extends Document {
 
 					{/* SCRIPT */}
 					<script src='//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js'></script>
-					<script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'></script>
-					<script async src='https://www.googletagmanager.com/gtag/js?id=UA-165454387-1'></script>
+					<script async src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'></script>
+					<script data-cfasync='false' async src='//www.googletagmanager.com/gtag/js?id=UA-165454387-1'></script>
 					<script
 						dangerouslySetInnerHTML={{
 							__html: `

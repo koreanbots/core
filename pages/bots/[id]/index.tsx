@@ -162,6 +162,9 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 								</div>
 							</div>
 							<Divider className='px-5' />
+							<div className='hidden lg:block'>
+								<Advertisement />
+							</div>
 							<div className='lg:flex lg:flex-row-reverse' style={bg ? { color: 'white' } : {}}>
 								<div className='mb-1 w-full lg:w-1/4'>
 									<h2 className='3xl mb-2 font-bold'>정보</h2>
@@ -310,9 +313,6 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 									<Advertisement size='tall' />
 								</div>
 								<div className='w-full lg:pr-5 lg:w-3/4'>
-									<div className='hidden lg:block'>
-										<Advertisement />
-									</div>
 									{
 										checkBotFlag(data.flags, 'hackerthon') ? <Segment className='mt-10'>
 											<h1 className='text-3xl font-semibold'>
@@ -326,9 +326,12 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 										<Segment className='my-4'>
 											<Markdown text={desc}/>
 										</Segment>
-										<Advertisement />
 									</div>
 								</div>
+								
+							</div>
+							<div className='pt-5'>
+								<Advertisement />
 							</div>
 						</>
 			}

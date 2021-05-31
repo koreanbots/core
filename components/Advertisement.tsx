@@ -29,7 +29,7 @@ const Advertisement: React.FC<AdvertisementProps> = ({ size = 'short' }) => {
 					style={{ display: 'block', width: '100%' }}
 					data-ad-client='ca-pub-4856582423981759'
 					data-ad-slot='3250141451'
-					data-ad-format='auto'
+					data-ad-format={size === 'short' ? 'horizontal' : 'vertical'}
 					data-full-width-responsive='true'
 					data-adtest='on'
 				/>

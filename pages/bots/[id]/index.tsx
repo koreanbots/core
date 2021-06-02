@@ -322,16 +322,11 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 											<p>자세한 내용은 <a className='text-blue-500 hover:text-blue-400' href='https://blog.koreanbots.dev/first-hackathon-results/'>해당 글</a>을 확인해주세요.</p>
 										</Segment> : ''
 									}
-									<div className='markdown-body pt-4 w-full'>
-										<Segment className='my-4'>
-											<Markdown text={desc}/>
-										</Segment>
-									</div>
+									<Segment className='my-4'>
+										<Markdown text={desc}/>
+									</Segment>
+									<Advertisement />
 								</div>
-								
-							</div>
-							<div className='pt-5'>
-								<Advertisement />
 							</div>
 						</>
 			}

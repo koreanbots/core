@@ -324,14 +324,22 @@ async function getDiscordUser(id: string):Promise<DiscordUser> {
 	return DiscordBot.users.cache.get(id) ?? await DiscordBot.users.fetch(id, false, true).then(u => u.toJSON()).catch(()=>null)
 }
 
-async function assignToken(info: TokenRegister):Promise<string> {
-	let token = await knex('users').select(['token']).where({ id: info.id })
+/**
+ * 
+ * @param info 
+ * @returns 1 - UnVerified
+ * @returns 2 - Blocked
+ */
+async function assignToken(info: TokenRegister):Promise<string|1|2> {
+	let token = await knex('users').select(['token', 'perm']).where({ id: info.id })
 	let t: string
+	if(!info.verified) return 1
 	if(token.length === 0) {
 		t = sign({ id: info.id }, { expiresIn: '30d' })
 		await knex('users').insert({ token: t, date: Math.round(Number(new Date()) / 1000), id: info.id, email: info.email, tag: info.discriminator, username: info.username, discord: sign({ access_token: info.access_token, expires_in: info.expires_in, refresh_token: info.refresh_token })  })
 		token = await knex('users').select(['token']).where({ id: info.id })
 	} else await knex('users').update({ email: info.email, tag: info.discriminator, username: info.username, discord: sign({ access_token: info.access_token, expires_in: info.expires_in, refresh_token: info.refresh_token }) }).where({ id: info.id })
+	if(token[0].perm !== 'user') return 2
 	if(!verify(token[0]?.token ?? '')) {
 		t = sign({ id: info.id }, { expiresIn: '30d' })
 		await knex('users').update({ token: t }).where({ id: info.id })

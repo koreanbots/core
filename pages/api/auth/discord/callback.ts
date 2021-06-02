@@ -56,7 +56,8 @@ const Callback = RequestHandler().get(async (req: ApiRequest, res) => {
 		verified: user.verified
 	})
 
-	if(!userToken) return res.redirect(301, 'https://docs.koreanbots.dev/bots/account/unverified')
+	if(userToken === 1) return res.redirect(301, 'https://docs.koreanbots.dev/bots/account/unverified')
+	else if(userToken === 2) return res.redirect(301, 'https://docs.koreanbots.dev/bots/account/blocked')
 	const info = verify(userToken)
 	res.setHeader(
 		'set-cookie',

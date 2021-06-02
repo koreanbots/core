@@ -324,9 +324,10 @@ async function getDiscordUser(id: string):Promise<DiscordUser> {
 	return DiscordBot.users.cache.get(id) ?? await DiscordBot.users.fetch(id, false, true).then(u => u.toJSON()).catch(()=>null)
 }
 
-async function assignToken(info: TokenRegister):Promise<string> {
+async function assignToken(info: TokenRegister):Promise<string|null> {
 	let token = await knex('users').select(['token']).where({ id: info.id })
 	let t: string
+	if(!info.verified) return null
 	if(token.length === 0) {
 		t = sign({ id: info.id }, { expiresIn: '30d' })
 		await knex('users').insert({ token: t, date: Math.round(Number(new Date()) / 1000), id: info.id, email: info.email, tag: info.discriminator, username: info.username, discord: sign({ access_token: info.access_token, expires_in: info.expires_in, refresh_token: info.refresh_token })  })

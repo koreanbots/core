@@ -130,6 +130,7 @@ export interface TokenRegister {
 	email: string
 	username: string
 	discriminator: string
+	verified: boolean
 }
 
 export interface DiscordUserInfo {

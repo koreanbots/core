@@ -1034,6 +1034,18 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@bedrock-layout/use-forwarded-ref@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@bedrock-layout/use-forwarded-ref/-/use-forwarded-ref-1.1.4.tgz#ed8c59ad6acdbffa4fa13bf9af6109e801ddf97a"
+  integrity sha512-DKzkLlCObn9z33YjoMgdKko0dBNtoLagxZzqFnTkG3/SfqPweUa5KayEtnhQmHo7T+w0wqdMBmTC1v6ygM/g1A==
+  dependencies:
+    "@bedrock-layout/use-stateful-ref" "^1.1.4"
+
+"@bedrock-layout/use-stateful-ref@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@bedrock-layout/use-stateful-ref/-/use-stateful-ref-1.1.4.tgz#d0242639530e5270006faa30b205fe901728b899"
+  integrity sha512-OHcQWfdtYcfGbeCSmRDBOraAgZ9fOEFDiZtrGxa/r194tzVWy14EOlZ/46+N0kM1n0+5QCPrJfZiyWz9+mjBVA==
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -7987,11 +7999,12 @@ react-refresh@0.8.3:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
 
-react-responsive-modal@6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/react-responsive-modal/-/react-responsive-modal-6.0.1.tgz#d27ecf5c4689e57f611297282cae89e00638874e"
-  integrity sha512-9p1qPhs9C3G3l3zA2E9yCImZ/99AmdQu0WIbiE6/rLehsdiPsMQP7RyhySy7RHanTbpPZp5dRQt7iEJMFk5z6Q==
+react-responsive-modal@6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/react-responsive-modal/-/react-responsive-modal-6.1.0.tgz#0ac17083e3053268a799755e1e9406052e28d5e3"
+  integrity sha512-A0HUi0VCkLucfKblljLytnPXJ0FTnEOwYh/Yg3HSU0pT6Uevkc5bjDc+ai7RTZ6ENnXS+rR55i62tWpsW7B5EQ==
   dependencies:
+    "@bedrock-layout/use-forwarded-ref" "^1.1.4"
     body-scroll-lock "^3.1.5"
     classnames "^2.2.6"
 

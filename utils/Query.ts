@@ -25,6 +25,7 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 			'prefix',
 			'votes',
 			'servers',
+			'shards',
 			'intro',
 			'desc',
 			'web',
@@ -280,12 +281,14 @@ async function updateBot(id: string, data: ManageBot) {
 /**
  * @returns 1 - Limit of 100k servers
  * @returns 2 - Limit of 10M servers
+ * @returns 3 - Limit of 100 shards
  */
-async function updateServer(id: string, servers: number) {
+async function updateServer(id: string, servers: number, shards: number) {
 	const bot = await get.bot.load(id)
 	if(bot.servers < 10000 && servers >= 10000) return 1
-	if(bot.servers < 1000000 && servers >= 1000000) return 2
-	await knex('bots').update({ servers }).where({ id })
+	else if(bot.servers < 1000000 && servers >= 1000000) return 2
+	if(bot.shards < 200 && shards >= 200) return 3
+	await knex('bots').update({ servers: servers === undefined ? bot.servers : servers, shards: shards === undefined ? bot.shards : shards }).where({ id })
 	return
 }
 

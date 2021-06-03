@@ -13,6 +13,7 @@ export interface Bot {
 	prefix: string
 	votes: number
 	servers: number
+	shards: number
 	intro: string
 	desc: string
 	category: Category[]

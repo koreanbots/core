@@ -194,11 +194,18 @@ export const BotStatUpdateSchema: Yup.SchemaOf<BotStatUpdate> = Yup.object({
 	servers: Yup.number()
 		.positive('서버 수는 양수여야합니다.')
 		.integer('서버 수는 정수여야합니다.')
-		.required()
+		.max(1000000000000)
+		.nullable(),
+	shards: Yup.number()
+		.positive('샤드 수는 양수여야합니다.')
+		.integer('샤드 수는 정수여야합니다.')
+		.max(10000)
+		.nullable(),
 })
 
 export interface BotStatUpdate {
 	servers: number
+	shards: number
 }
 
 export const ReportSchema: Yup.SchemaOf<Report> = Yup.object({

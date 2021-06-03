@@ -179,6 +179,14 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 											<i className='fas fa-users' /> 서버수
 										</div>
 										<div>{data.servers || 'N/A'}</div>
+										{
+											data.shards && data.servers > 1500 && <>
+												<div>
+													<i className='fas fa-sitemap' /> 샤드수
+												</div>
+												<div>{data.shards}</div>
+											</>
+										}
 										<div>
 											<i className='fas fa-calendar-day' /> 봇 생성일
 										</div>

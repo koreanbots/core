@@ -5987,7 +5987,7 @@ jongseong@^0.4.2:
   resolved "https://registry.yarnpkg.com/jongseong/-/jongseong-0.4.2.tgz#5008c13332829257304c54641f550087d2f4caa9"
   integrity sha1-UAjBMzKCklcwTFRkH1UAh9L0yqk=
 
-josa@3.0.1:
+josa@3.0.1, josa@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/josa/-/josa-3.0.1.tgz#e1fa94fc7c78be1d81e965fec0ae43be0a1df352"
   integrity sha1-4fqU/Hx4vh2B6WX+wK5Dvgod81I=
@@ -6455,7 +6455,7 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@4.x, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.7.0:
+lodash@4.x, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.7.0:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -10559,10 +10559,12 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-yup-locales-ko@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/yup-locales-ko/-/yup-locales-ko-1.0.2.tgz#9210c0db9aa5984bb513aa4490d6a2e400aa9d57"
-  integrity sha512-nANJioOxNPn7hpQK3JM3/V/Uuw3fqexEjO1Wp2TH8OsCyiNYvYXcY7ixSQdFKSVAnaOp1DCzmLfLwXyIuGoasg==
+yup-locales-ko@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/yup-locales-ko/-/yup-locales-ko-1.2.0.tgz#5019e1a0f9919e05c6e67bfe52e920a084cfce3f"
+  integrity sha512-W3zaaoaAH3yP/pkIJSY8RIONTqBTd3/rg2vTZI0Bgrrv55N0/uytXPgq2HYafbbO1ffWLRrzccMM2kfPkRLC9Q==
+  dependencies:
+    josa "^3.0.1"
 
 yup@0.32.9:
   version "0.32.9"

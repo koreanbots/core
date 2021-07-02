@@ -22,11 +22,11 @@ const ApproveBotSubmit = RequestHandler()
 		const embed = new MessageEmbed().setTitle('승인').setColor('GREEN').setDescription(`[${submit.id}/${submit.date}](${KoreanbotsEndPoints.URL.submittedBot(submit.id, submit.date)})`).setTimestamp()
 		if(req.body.reviewer) embed.addField('📃 정보', `심사자: ${req.body.reviewer}`)
 		await getBotReviewLogChannel().send(embed)
-		await tracer.trace('botSubmits.approve', (async span => {
+		await tracer.trace('botSubmits.approve', span => {
 			span.setTag('id', submit.id)
 			span.setTag('date', submit.date)
 			span.setTag('reviewer', req.body.reviewer)
-		}))
+		})
 		return ResponseWrapper(res, { code: 200 })
 	})
 

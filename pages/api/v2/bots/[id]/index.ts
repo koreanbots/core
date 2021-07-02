@@ -13,6 +13,7 @@ import { checkUserFlag, diff, inspect, makeDiscordCodeblock, objectDiff, seriali
 import { discordLog, getBotReviewLogChannel, getMainGuild } from '@utils/DiscordBot'
 import { KoreanbotsEndPoints } from '@utils/Constants'
 
+tracer.init()
 const patchLimiter = rateLimit({
 	windowMs: 2 * 60 * 1000,
 	max: 2,
@@ -84,11 +85,11 @@ const Bots = RequestHandler()
 		})
 		const userinfo = await get.user.load(user)
 		await getBotReviewLogChannel().send(new MessageEmbed().setAuthor(`${userinfo.username}#${userinfo.tag}`, KoreanbotsEndPoints.URL.root + KoreanbotsEndPoints.CDN.avatar(userinfo.id, { format: 'png', size: 256 }), KoreanbotsEndPoints.URL.user(userinfo.id)).setTitle('대기 중').setColor('GREY').setDescription(`[${result.id}/${result.date}](${KoreanbotsEndPoints.URL.submittedBot(result.id, result.date)})`).setTimestamp())
-		await tracer.trace('botSubmits.submitted', (async span => {
+		tracer.trace('botSubmits.submitted', span => {
 			span.setTag('id', result.id)
 			span.setTag('date', result.date)
 			span.setTag('user', userinfo.id)
-		}))
+		})
 		return ResponseWrapper(res, { code: 200, data: result })
 	})
 	.delete(async (req: DeleteApiRequest, res) => {

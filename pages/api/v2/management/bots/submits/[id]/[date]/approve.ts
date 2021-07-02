@@ -1,5 +1,6 @@
 import { NextApiRequest } from 'next'
 import { MessageEmbed } from 'discord.js'
+import tracer from 'dd-trace'
 
 import RequestHandler from '@utils/RequestHandler'
 import ResponseWrapper from '@utils/ResponseWrapper'
@@ -19,8 +20,13 @@ const ApproveBotSubmit = RequestHandler()
 		get.botSubmit.clear(JSON.stringify({ id: req.query.id, date: req.query.date }))
 		get.bot.clear(req.query.id)
 		const embed = new MessageEmbed().setTitle('승인').setColor('GREEN').setDescription(`[${submit.id}/${submit.date}](${KoreanbotsEndPoints.URL.submittedBot(submit.id, submit.date)})`).setTimestamp()
-		if(req.body.note) embed.addField('📃 정보', req.body.note)
+		if(req.body.reviewer) embed.addField('📃 정보', `심사자: ${req.body.reviewer}`)
 		await getBotReviewLogChannel().send(embed)
+		await tracer.trace('botSubmits.approve', (async span => {
+			span.setTag('id', submit.id)
+			span.setTag('date', submit.date)
+			span.setTag('reviewer', req.body.reviewer)
+		}))
 		return ResponseWrapper(res, { code: 200 })
 	})
 
@@ -30,7 +36,7 @@ interface ApiRequest extends NextApiRequest {
     date: string
   }
   body: {
-		note?: string
+		reviewer?: string
   }
 }
 

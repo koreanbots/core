@@ -17,7 +17,7 @@ const DenyBotSubmit = RequestHandler()
 		await update.denyBotSubmission(submit.id, submit.date, req.body.reason)
 		get.botSubmit.clear(JSON.stringify({ id: req.query.id, date: req.query.date }))
 		const embed = new MessageEmbed().setTitle('거부').setColor('RED').setDescription(`[${submit.id}/${submit.date}](${KoreanbotsEndPoints.URL.submittedBot(submit.id, submit.date)})`).setTimestamp()
-		if(req.body.note || req.body.reason) embed.addField('📃 정보', `${req.body.reason ? `사유: ${BotSubmissionDenyReasonPresetsName[req.body.reason] || req.body.reason}\n`: ''}${req.body.note ? `${req.body.note}` : ''}`)
+		if(req.body.reviewer || req.body.reason) embed.addField('📃 정보', `${req.body.reason ? `사유: ${BotSubmissionDenyReasonPresetsName[req.body.reason] || req.body.reason}\n`: ''}${req.body.reviewer ? `심사자: ${req.body.reviewer}` : ''}`)
 		await getBotReviewLogChannel().send(embed)
 		return ResponseWrapper(res, { code: 200 })
 	})
@@ -29,7 +29,7 @@ interface ApiRequest extends NextApiRequest {
   }
   body: {
     reason?: string
-		note?: string
+		reviewer: string
   }
 }
 

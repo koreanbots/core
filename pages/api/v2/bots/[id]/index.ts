@@ -1,6 +1,7 @@
 import { NextApiRequest } from 'next'
 import rateLimit from 'express-rate-limit'
 import { MessageEmbed } from 'discord.js'
+import tracer from 'dd-trace'
 
 import { CaptchaVerify, get, put, remove, update } from '@utils/Query'
 import ResponseWrapper from '@utils/ResponseWrapper'
@@ -83,6 +84,11 @@ const Bots = RequestHandler()
 		})
 		const userinfo = await get.user.load(user)
 		await getBotReviewLogChannel().send(new MessageEmbed().setAuthor(`${userinfo.username}#${userinfo.tag}`, KoreanbotsEndPoints.URL.root + KoreanbotsEndPoints.CDN.avatar(userinfo.id, { format: 'png', size: 256 }), KoreanbotsEndPoints.URL.user(userinfo.id)).setTitle('대기 중').setColor('GREY').setDescription(`[${result.id}/${result.date}](${KoreanbotsEndPoints.URL.submittedBot(result.id, result.date)})`).setTimestamp())
+		await tracer.trace('botSubmits.submitted', (async span => {
+			span.setTag('id', result.id)
+			span.setTag('date', result.date)
+			span.setTag('user', userinfo.id)
+		}))
 		return ResponseWrapper(res, { code: 200, data: result })
 	})
 	.delete(async (req: DeleteApiRequest, res) => {

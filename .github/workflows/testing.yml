@@ -51,6 +51,7 @@ jobs:
         run: |
           mv .env.demo.local .env.production.local
           printf 'MARIADB_ROOT_PASSWORD=YOUSHALLNOTPASS\nCOMMIT_HASH=${{ github.sha }}' > .env
+          printf 'defaults.url=https://sentry.io/\ndefaults.org=koreanbots\ndefaults.project=client' > sentry.properties
       - name: Build
         run: yarn build
         env:

@@ -60,6 +60,7 @@ export enum UserFlags {
 export enum BotFlags {
 	general = 0 << 0,
 	official = 1 << 0,
+	holding = 1 << 1,
 	trusted = 1 << 2,
 	partnered = 1 << 3,
 	verified = 1 << 4,

@@ -154,8 +154,8 @@ const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
 							className='hover:underline'
 							href={data.git}
 						>
-							<i className={`fab fa-${git?.[new URL(data.git).hostname].icon ?? 'git-alt'}`} />
-							{git?.[new URL(data.git).hostname].text ?? 'Git'}
+							<i className={`fab fa-${git[new URL(data.git).hostname]?.icon ?? 'git-alt'}`} />
+							{git[new URL(data.git).hostname]?.text ?? 'Git'}
 						</a>
 					)}
 				</div>

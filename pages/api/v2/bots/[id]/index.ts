@@ -13,7 +13,6 @@ import { checkUserFlag, diff, inspect, makeDiscordCodeblock, objectDiff, seriali
 import { discordLog, getBotReviewLogChannel, getMainGuild } from '@utils/DiscordBot'
 import { KoreanbotsEndPoints } from '@utils/Constants'
 
-tracer.init()
 const patchLimiter = rateLimit({
 	windowMs: 2 * 60 * 1000,
 	max: 2,

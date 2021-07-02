@@ -20,7 +20,7 @@ const DenyBotSubmit = RequestHandler()
 		const embed = new MessageEmbed().setTitle('거부').setColor('RED').setDescription(`[${submit.id}/${submit.date}](${KoreanbotsEndPoints.URL.submittedBot(submit.id, submit.date)})`).setTimestamp()
 		if(req.body.reviewer || req.body.reason) embed.addField('📃 정보', `${req.body.reason ? `사유: ${BotSubmissionDenyReasonPresetsName[req.body.reason] || req.body.reason}\n`: ''}${req.body.reviewer ? `심사자: ${req.body.reviewer}` : ''}`)
 		await getBotReviewLogChannel().send(embed)
-		await tracer.trace('botSubmits.deny', span => {
+		tracer.trace('botSubmits.deny', span => {
 			span.setTag('id', submit.id)
 			span.setTag('date', submit.date)
 			span.setTag('reviewer', req.body.reviewer)

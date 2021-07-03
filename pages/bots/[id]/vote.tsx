@@ -62,7 +62,7 @@ const VoteBot: NextPage<VoteBotProps> = ({ data, user, theme, csrfToken }) => {
 		<Link href={makeBotURL(data)}>
 			<a className='text-blue-500 hover:opacity-80'><i className='fas fa-arrow-left mt-3 mb-3' /> <strong>{data.name}</strong>{getJosaPicker('로')(data.name)} 돌아가기</a>
 		</Link>
-		<Segment className='mb-10 py-8'>
+		<Segment className='mb-16 py-8'>
 			<div className='text-center'>
 				<DiscordAvatar userID={data.id} className='mx-auto w-52 h-52 bg-white mb-4' />
 				<Tag text={<span><i className='fas fa-heart text-red-600' /> {data.votes}</span>} dark />

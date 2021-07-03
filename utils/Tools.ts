@@ -24,6 +24,7 @@ export function handlePWA(): boolean {
 }
 
 export function formatNumber(value: number):string  {
+	if(!value) return '0'
 	const suffixes = ['', '만', '억', '조','해']
 	const suffixNum = Math.floor((''+value).length/4)
 	let shortValue:string|number = parseFloat((suffixNum != 0 ? (value / Math.pow(10000,suffixNum)) : value).toPrecision(2))

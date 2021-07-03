@@ -30,17 +30,6 @@ const ReportBot: NextPage<ReportBotProps> = ({ data, user, csrfToken }) => {
 	if(!user) return <Login>
 		<NextSeo title='신고하기' />
 	</Login>
-	if(user?.id === data.id) return <>
-		<div className='flex items-center justify-center h-screen select-none'>
-			<div className='container mx-auto px-20 md:text-left text-center'>
-				<h1 className='text-8xl font-semibold'>저런..!</h1>
-				<h2 className='text-2xl font-semibold py-2'>
-					자기 자신은 신고할 수 없습니다.
-				</h2>
-				<p className='text-gray-400 text-sm mt-2'>안타깝지만 자기 자신은 신고할 수 없답니다!</p>
-			</div>
-		</div>
-	</>
 	return <Container paddingTop className='py-10'>
 		<NextSeo title={`${data.name} 신고하기`} />
 		<Link href={makeBotURL(data)}>

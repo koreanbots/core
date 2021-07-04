@@ -6,4 +6,4 @@
 
 ## English
 
-Please [mail](mailto:koreanbots.dev@gmail.com) us!
+Please [mail](mailto:team@koreanbots.dev) us!

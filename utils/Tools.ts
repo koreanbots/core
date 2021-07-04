@@ -51,10 +51,13 @@ export function makeImageURL(root:string, { format='png', size=256 }:ImageOption
 	return `${root}.${format}?size=${size}`
 }
 
-export function makeBotURL({id, vanity, flags=0}: { flags?: number, vanity?:string, id: string }): string {
+export function makeBotURL({ id, vanity, flags=0 }: { flags?: number, vanity?:string, id: string }): string {
 	return `/bots/${(checkBotFlag(flags, 'trusted') || checkBotFlag(flags, 'partnered')) && vanity ? vanity : id}`
 }
 
+export function makeUserURL({ id }: { id: string }): string {
+	return `/users/${id}`
+}
 export function serialize<T>(data: T): T {
 	return JSON.parse(JSON.stringify(data))
 }

@@ -204,13 +204,13 @@ export type Category =
 	| '검색'
 
 export type ReportCategory =
-	| '불법'
+	| '위법'
+	| '봇을 이용한 테러'
 	| '괴롭힘, 모욕, 명예훼손'
 	| '스팸, 도배, 의미없는 텍스트'
 	| '폭력, 자해, 테러 옹호하거나 조장하는 컨텐츠'
-	| '라이선스혹은 권리 침해'
-	| 'Discord ToS 위반'
-	| 'Koreanbots 가이드라인 위반'
+	| '오픈소스 라이선스, 저작권 위반 등 권리 침해'
+	| 'Discord ToS를 위반하거나 한국 디스코드봇 리스트 가이드라인 위반'
 	| '기타'
 
 export type ListType = 'VOTE' | 'TRUSTED' | 'NEW' | 'PARTNERED' | 'CATEGORY' | 'SEARCH'

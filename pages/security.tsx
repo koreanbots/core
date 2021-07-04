@@ -9,6 +9,8 @@ const Docs = dynamic(() => import('@components/Docs'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 const Button = dynamic(() => import('@components/Button'))
 
+const BODY = '중요도:\n설명:\n\n영향을 줄 수 있는 경우:'
+
 const Security: NextPage<SecurityProps> = ({ bugReports }) => {
 	return <Docs
 		header='버그 바운티 프로그램'
@@ -59,7 +61,7 @@ const Security: NextPage<SecurityProps> = ({ bugReports }) => {
 		</ul>
 		<div className='text-center py-36'>
 			<h1 className='text-3xl font-bold mb-6'>취약점을 발견하셨나요?</h1>
-			<Button href='mailto:koreanbots.dev@gmail.com'>제보하기</Button>
+			<Button href={`mailto:team@koreanbots.dev?subject=[Security] &body=${encodeURI(BODY)}`}>제보하기</Button>
 		</div>
 	</Docs>
 }

@@ -16,7 +16,7 @@ import { get } from '@utils/Query'
 import Day from '@utils/Day'
 import { ReportSchema } from '@utils/Yup'
 import Fetch from '@utils/Fetch'
-import { checkBotFlag, checkUserFlag, formatNumber, parseCookie, redirectTo } from '@utils/Tools'
+import { checkBotFlag, checkUserFlag, formatNumber, parseCookie } from '@utils/Tools'
 import { getToken } from '@utils/Csrf'
 
 import NotFound from '../../404'
@@ -217,15 +217,11 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 										/>
 									))}
 									<div className='list grid'>
-										<a className='text-red-600 hover:underline cursor-pointer' onClick={() => {
-											if(!user) {
-												localStorage.redirectTo = window.location.href
-												redirectTo(router, 'login')
-											}
-											else setReportModal(true)
-										}} aria-hidden='true'>
-											<i className='far fa-flag' /> 신고하기
-										</a>
+										<Link href={`/bots/${router.query.id}/report`}>
+											<a className='text-red-600 hover:underline cursor-pointer' aria-hidden='true'>
+												<i className='far fa-flag' /> 신고하기
+											</a>
+										</Link>
 										<Modal header={`${data.name}#${data.tag} 신고하기`} closeIcon isOpen={reportModal} onClose={() => {
 											setReportModal(false)
 											setReportRes(null)

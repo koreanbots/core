@@ -24,6 +24,7 @@ export function handlePWA(): boolean {
 }
 
 export function formatNumber(value: number):string  {
+	if(!value) return '0'
 	const suffixes = ['', '만', '억', '조','해']
 	const suffixNum = Math.floor((''+value).length/4)
 	let shortValue:string|number = parseFloat((suffixNum != 0 ? (value / Math.pow(10000,suffixNum)) : value).toPrecision(2))
@@ -50,10 +51,13 @@ export function makeImageURL(root:string, { format='png', size=256 }:ImageOption
 	return `${root}.${format}?size=${size}`
 }
 
-export function makeBotURL({id, vanity, flags=0}: { flags?: number, vanity?:string, id: string }): string {
+export function makeBotURL({ id, vanity, flags=0 }: { flags?: number, vanity?:string, id: string }): string {
 	return `/bots/${(checkBotFlag(flags, 'trusted') || checkBotFlag(flags, 'partnered')) && vanity ? vanity : id}`
 }
 
+export function makeUserURL({ id }: { id: string }): string {
+	return `/users/${id}`
+}
 export function serialize<T>(data: T): T {
 	return JSON.parse(JSON.stringify(data))
 }

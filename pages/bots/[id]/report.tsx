@@ -77,14 +77,19 @@ const ReportBot: NextPage<ReportBotProps> = ({ data, user, csrfToken }) => {
 								{
 									values.category && <>
 										{
-											values.category === '오픈소스 라이선스, 저작권 위반 등 권리 침해' ? <DMCA values={values} errors={errors} touched={touched} setFieldValue={setFieldValue} /> :
-												values.category === '괴롭힘, 모욕, 명예훼손' ? <>
-													<Message type='info'>
-														<h3 className='font-bold text-xl'>본인 혹은 다른 사람이 위험에 처해 있나요?</h3>
-														<p>당신은 소중한 사람입니다.</p>
-														<p className='list-disc list-item list-inside'>자살예방상담전화 1393 | 청소년전화 1388</p>
-													</Message>
-												</> : ''
+											{
+												[reportCats[2]]: <Message type='info'>
+													<h3 className='font-bold text-xl'>본인 혹은 다른 사람이 위험에 처해 있나요?</h3>
+													<p>당신은 소중한 사람입니다.</p>
+													<p className='list-disc list-item list-inside'>자살예방상담전화 1393 | 청소년전화 1388</p>
+												</Message>,
+												[reportCats[5]]: <DMCA values={values} errors={errors} touched={touched} setFieldValue={setFieldValue} />,
+												[reportCats[6]]: <Message type='warning'>
+													<h3 className='font-bold text-xl'>디스코드 약관을 위반사항을 신고하시려고요?</h3>
+													<p><a className='text-blue-400' target='_blank' rel='noreferrer' href='http://dis.gd/report'>디스코드 문의</a>를 통해 직접 디스코드에 신고하실 수도 있습니다.</p>
+												</Message>
+                        
+											}[values.category]
 										}
 										{
 											!['오픈소스 라이선스, 저작권 위반 등 권리 침해'].includes(values.category) && <>

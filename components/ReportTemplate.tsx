@@ -48,7 +48,7 @@ export const DMCA: FC<ReportTemplateProps> = ({ values, errors, touched, setFiel
 							<li>권리자 본인임을 증명 (단체 소속인 경우 어떤 자격으로 단체를 대표하여 신고하는지 설명)</li>
 							<li>본인의 권리를 입증 (원본 컨텐츠의 주소, 라이선스 등을 포함)</li>
 						</ul>
-						<p className='text-gray-400 text-sm mb-1'>컨텐츠를 추가로 첨부해야하는 경우 dmca@koreanbots.dev의 이메일로 첨부해주시고, 해당 이메일로 첨부했음을 아래 설명에 기재해주세요.</p>
+						<p className='text-gray-400 text-sm mb-1'>컨텐츠를 추가로 첨부해야하는 경우 <a className='text-blue-400' target='_blank' rel='noreferrer' href={`mailto:dmca@koreanbots.dev?subject=${encodeURI('[DMCA] 추가 컨텐츠')}&body=${encodeURI('디스코드 태그:')}`}>dmca@koreanbots.dev</a>의 이메일로 첨부해주시고, 해당 이메일로 첨부했음을 아래 설명에 기재해주세요.</p>
 						<TextField values={values} errors={errors} touched={touched} setFieldValue={setFieldValue} />
 					</div>
 						: contacted === false ? <>

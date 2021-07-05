@@ -41,7 +41,7 @@
 		"mysql": "2.18.1",
 		"next": "10.2.3",
 		"next-connect": "0.10.1",
-		"next-pwa": "5.2.21",
+		"next-pwa": "5.2.23",
 		"next-seo": "4.24.0",
 		"next-session": "3.4.0",
 		"node-emoji": "1.10.0",

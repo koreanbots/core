@@ -69,7 +69,7 @@
 	},
 	"devDependencies": {
 		"@tailwindcss/custom-forms": "0.2.1",
-		"@types/cookie": "0.4.0",
+		"@types/cookie": "0.4.1",
 		"@types/emoji-mart": "3.0.4",
 		"@types/express-rate-limit": "5.1.1",
 		"@types/jest": "26.0.23",

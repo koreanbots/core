@@ -43,8 +43,16 @@ export function checkUserFlag(base: number, required: number | keyof typeof User
 	return checkFlag(base, typeof required === 'number' ? required : UserFlags[required])
 }
 
+export function getUserFlags(flags: number) {
+	return bitToArray(flags, UserFlags)
+}
+
 export function checkBotFlag(base: number, required: number | keyof typeof BotFlags):boolean {
 	return checkFlag(base, typeof required === 'number' ? required : BotFlags[required])
+}
+
+export function bitToArray(bit: number, bits): string[] {
+	return Object.keys(bits).filter(b => (bit & bits[b]) === bits[b])
 }
 
 export function makeImageURL(root:string, { format='png', size=256 }:ImageOptions):string {

@@ -3,7 +3,7 @@ import { TLRU } from 'tlru'
 import DataLoader from 'dataloader'
 import { User as DiscordUser } from 'discord.js'
 
-import { Bot, User, ListType, BotList, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot } from '@types'
+import { Bot, User, ListType, BotList, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, UserSpec } from '@types'
 import { categories, imageSafeHost, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'
 
 import knex from './Knex'
@@ -510,6 +510,19 @@ export const put = {
 
 export const remove = {
 	bot: deleteBot
+}
+
+export const management = {
+	user: {
+		get: async (id: string): Promise<UserSpec> => {
+			const user = await get.user.load(id)
+			const userSpec = await knex('users').select(['email', 'perm']).where({ id })
+			return user && userSpec[0] ? { ...user, ...userSpec[0] } : null
+		},
+		update: async (id: string, { flags }:{ flags: number }) => {
+			await knex('users').update({ flags }).where({ id })
+		}
+	}
 }
 
 export const ratelimit = {

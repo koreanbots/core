@@ -27,7 +27,7 @@
 		"csrf": "3.1.0",
 		"dataloader": "2.0.0",
 		"dayjs": "1.10.5",
-		"dd-trace": "0.34.0",
+		"dd-trace": "0.36.1",
 		"difflib": "0.2.4",
 		"discord.js": "12.5.3",
 		"emoji-mart": "3.0.1",

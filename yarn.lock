@@ -3472,10 +3472,10 @@ dayjs@1.10.5:
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.5.tgz#5600df4548fc2453b3f163ebb2abbe965ccfb986"
   integrity sha512-BUFis41ikLz+65iH6LHQCDm4YPMj5r1YFLdupPIyM4SGcXMmtiLQ7U37i+hGS8urIuqe7I/ou3IS1jVc4nbN4g==
 
-dd-trace@0.34.0:
-  version "0.34.0"
-  resolved "https://registry.yarnpkg.com/dd-trace/-/dd-trace-0.34.0.tgz#0c93f6524c56fc4303f397db0e88b57fc916ad15"
-  integrity sha512-X5pyS88NbHTcS8BcnoC79n/xiZdXjwMSAsEtnyRGteU8iYIBkpkSdmyxQdQB+843tLKK6/7Y9kR7qAz9yfAt2g==
+dd-trace@0.36.1:
+  version "0.36.1"
+  resolved "https://registry.yarnpkg.com/dd-trace/-/dd-trace-0.36.1.tgz#3bea966ec3c67b96a298f20cd56dca6b856da822"
+  integrity sha512-4iPy6dJxaA0Yv9rZQa7ZGaTwyPI/m1adeUUhAqAgZ+mrzyz8TNSEeqEPohzECzgxNfLDjioGryJy4TblYED9ig==
   dependencies:
     "@types/node" "^10.12.18"
     form-data "^3.0.0"
@@ -3495,6 +3495,7 @@ dd-trace@0.34.0:
     path-to-regexp "^0.1.2"
     performance-now "^2.1.0"
     protobufjs "^6.9.0"
+    resolve "^1.20.0"
     semver "^5.5.0"
     shimmer "1.2.1"
     source-map "^0.7.3"

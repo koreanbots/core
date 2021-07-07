@@ -37,6 +37,11 @@ export interface User {
 	bots: Bot[] | string[]
 }
 
+export interface UserSpec extends User {
+	email: string
+	perm: string
+}
+
 export interface BotSpec {
 	id: string
 	webhook: string | null

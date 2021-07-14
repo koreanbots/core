@@ -57,14 +57,14 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 		res[0].status = discordBot.presence?.activities?.find(r => r.type === 'STREAMING') ? 'streaming' : discordBot.presence?.status || null
 		delete res[0].trusted
 		delete res[0].partnered
-		if (owners)
-		{
+		if (owners) {
 			res[0].owners = await Promise.all(
 				res[0].owners.map(async (u: string) => await get._rawUser.load(u))
 			)
 			res[0].owners = res[0].owners.filter((el: User | null) => el).map((row: User) => ({ ...row }))
 		}
-			
+
+		await knex('bots').update({ name: discordBot.username }).where({ id })
 		
 	}
 
@@ -95,28 +95,31 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 	let res: { id: string }[]
 	let count:string|number
 	if (type === 'VOTE') {
-		count = (await knex('bots').count())[0]['count(*)']
+		count = (await knex('bots').whereNot({ state: 'blocked' }).count())[0]['count(*)']
 		res = await knex('bots')
 			.orderBy('votes', 'desc')
 			.orderBy('servers', 'desc')
 			.limit(16)
 			.offset(((page ? Number(page) : 1) - 1) * 16)
 			.select(['id'])
+			.whereNot({ state: 'blocked' })
 	} else if (type === 'TRUSTED') {
 		count = (
 			await knex('bots')
 				.where({ trusted: true })
 				.count()
+				.whereNot({ state: 'blocked' })
 		)[0]['count(*)']
-		res = await knex('bots')
+		res = await knex('bots').whereNot({ state: 'blocked' })
 			.where({ trusted: true })
 			.orderByRaw('RAND()')
 			.limit(16)
 			.offset(((page ? Number(page) : 1) - 1) * 16)
 			.select(['id'])
+			.whereNot({ state: 'blocked' })
 	} else if (type === 'NEW') {
 		count = (
-			await knex('bots')
+			await knex('bots').whereNot({ state: 'blocked' })
 				.count()
 		)[0]['count(*)']
 		res = await knex('bots')
@@ -124,14 +127,15 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 			.limit(16)
 			.offset(((page ? Number(page) : 1) - 1) * 16)
 			.select(['id'])
+			.whereNot({ state: 'blocked' })
 	} else if (type === 'PARTNERED') {
 		count = (
 			await knex('bots')
-				.where({ partnered: true })
+				.where({ partnered: true }).andWhereNot({ state: 'blocked' })
 				.count()
 		)[0]['count(*)']
 		res = await knex('bots')
-			.where({ partnered: true })
+			.where({ partnered: true }).andWhereNot({ state: 'blocked' })
 			.orderByRaw('RAND()')
 			.limit(16)
 			.offset(((page ? Number(page) : 1) - 1) * 16)
@@ -141,11 +145,11 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 		if (!categories.includes(query)) throw new Error('알 수 없는 카테고리입니다.')
 		count = (
 			await knex('bots')
-				.where('category', 'like', `%${decodeURI(query)}%`)
+				.where('category', 'like', `%${decodeURI(query)}%`).andWhereNot({ state: 'blocked' })
 				.count()
 		)[0]['count(*)']
 		res = await knex('bots')
-			.where('category', 'like', `%${decodeURI(query)}%`)
+			.where('category', 'like', `%${decodeURI(query)}%`).andWhereNot({ state: 'blocked' })
 			.orderBy('votes', 'desc')
 			.orderBy('servers', 'desc')
 			.limit(16)

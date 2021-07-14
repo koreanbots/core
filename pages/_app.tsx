@@ -6,9 +6,10 @@ import { useEffect, useState } from 'react'
 import { DefaultSeo } from 'next-seo'
 import { GlobalHotKeys } from 'react-hotkeys'
 import NProgress from 'nprogress'
+import Package from '../package.json'
 
 import Logger from '@utils/Logger'
-import { handlePWA, parseCookie, systemTheme } from '@utils/Tools'
+import { handlePWA, parseCookie, parseDockerhubTag, systemTheme } from '@utils/Tools'
 import { DESCRIPTION, shortcutKeyMap, THEME_COLOR, TITLE } from '@utils/Constants'
 import { Theme } from '@types'
 
@@ -39,6 +40,7 @@ const KoreanbotsApp = ({ Component, pageProps, err, cookie }: KoreanbotsProps): 
 			'%c' + 'KOREANBOTS',
 			'color: #3366FF; -webkit-text-stroke: 2px black; font-size: 72px; font-weight: bold;'
 		)
+		Logger.debug(`[BUILD INFO] Tag: ${parseDockerhubTag(process.env.NEXT_PUBLIC_TAG)}, Version: v${Package.version}, Hash: ${process.env.NEXT_PUBLIC_SOURCE_COMMIT}`)
 		console.log(
 			'%c' + '이곳에 코드를 붙여넣으면 공격자에게 엑세스 토큰을 넘겨줄 수 있습니다!!',
 			'color: #ff0000; font-size: 20px; font-weight: bold;'

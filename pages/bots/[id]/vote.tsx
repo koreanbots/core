@@ -27,6 +27,7 @@ const Tag = dynamic(() => import('@components/Tag'))
 const Segment = dynamic(() => import('@components/Segment'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
 const Login = dynamic(() => import('@components/Login'))
+const Message = dynamic(() => import('@components/Message'))
 
 const VoteBot: NextPage<VoteBotProps> = ({ data, user, theme, csrfToken }) => {
 	const [ votingStatus, setVotingStatus ] = useState(0)
@@ -58,39 +59,46 @@ const VoteBot: NextPage<VoteBotProps> = ({ data, user, theme, csrfToken }) => {
 				}
 			]
 		}} />
-		<Advertisement />
-		<Link href={makeBotURL(data)}>
-			<a className='text-blue-500 hover:opacity-80'><i className='fas fa-arrow-left mt-3 mb-3' /> <strong>{data.name}</strong>{getJosaPicker('로')(data.name)} 돌아가기</a>
-		</Link>
-		<Segment className='mb-16 py-8'>
-			<div className='text-center'>
-				<DiscordAvatar userID={data.id} className='mx-auto w-52 h-52 bg-white mb-4' />
-				<Tag text={<span><i className='fas fa-heart text-red-600' /> {data.votes}</span>} dark />
-				<h1 className='text-3xl font-bold mt-3'>{data.name}</h1>
-				<h4 className='text-md mt-1'>12시간마다 다시 투표하실 수 있습니다.</h4>
-				<div className='inline-block mt-2'>
-					{
-						votingStatus === 0 ? <Button onClick={()=> setVotingStatus(1)}>
-							<><i className='far fa-heart text-red-600'/> 하트 추가</>
-						</Button> 
-							: votingStatus === 1 ? <Captcha dark={theme === 'dark'} onVerify={async (key) => {
-								const res = await Fetch<{ retryAfter: number }|unknown>(`/bots/${data.id}/vote`, { method: 'POST', body: JSON.stringify({ _csrf: csrfToken, _captcha: key }) })
-								setResult(res)
-								setVotingStatus(2)
-							}}
-							/>
-								: result.code === 200 ? <h2 className='text-2xl font-bold'>해당 봇에 투표했습니다!</h2>
-									: result.code === 429 ? <>
-										<h2 className='text-2xl font-bold'>이미 해당 봇에 투표하였습니다.</h2>
-										<h4 className='text-md mt-1'>{Day(+new Date() + result.data?.retryAfter).fromNow()} 다시 투표하실 수 있습니다.</h4>
-									</>
-										: <p>{result.message}</p>
-					}
-				</div>
+		{
+			data.state === 'blocked' ? <div className='pb-40'>
+				<Message type='error'>
+					<h2 className='text-lg font-black'>해당 봇은 관리자에 의해 삭제되었습니다.</h2>
+				</Message>
+			</div> : <>
+				<Advertisement />
+				<Link href={makeBotURL(data)}>
+					<a className='text-blue-500 hover:opacity-80'><i className='fas fa-arrow-left mt-3 mb-3' /> <strong>{data.name}</strong>{getJosaPicker('로')(data.name)} 돌아가기</a>
+				</Link>
+				<Segment className='mb-16 py-8'>
+					<div className='text-center'>
+						<DiscordAvatar userID={data.id} className='mx-auto w-52 h-52 bg-white mb-4' />
+						<Tag text={<span><i className='fas fa-heart text-red-600' /> {data.votes}</span>} dark />
+						<h1 className='text-3xl font-bold mt-3'>{data.name}</h1>
+						<h4 className='text-md mt-1'>12시간마다 다시 투표하실 수 있습니다.</h4>
+						<div className='inline-block mt-2'>
+							{
+								votingStatus === 0 ? <Button onClick={()=> setVotingStatus(1)}>
+									<><i className='far fa-heart text-red-600'/> 하트 추가</>
+								</Button> 
+									: votingStatus === 1 ? <Captcha dark={theme === 'dark'} onVerify={async (key) => {
+										const res = await Fetch<{ retryAfter: number }|unknown>(`/bots/${data.id}/vote`, { method: 'POST', body: JSON.stringify({ _csrf: csrfToken, _captcha: key }) })
+										setResult(res)
+										setVotingStatus(2)
+									}}
+									/>
+										: result.code === 200 ? <h2 className='text-2xl font-bold'>해당 봇에 투표했습니다!</h2>
+											: result.code === 429 ? <>
+												<h2 className='text-2xl font-bold'>이미 해당 봇에 투표하였습니다.</h2>
+												<h4 className='text-md mt-1'>{Day(+new Date() + result.data?.retryAfter).fromNow()} 다시 투표하실 수 있습니다.</h4>
+											</>
+												: <p>{result.message}</p>
+							}
+						</div>
 				
-			</div>
-		</Segment>
-		<Advertisement />
+					</div>
+				</Segment>
+				<Advertisement /></>
+		}
 	</Container>
 }
 

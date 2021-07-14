@@ -107,7 +107,7 @@ const Users: NextPage<UserProps> = ({ user, data }) => {
 			{data.bots.length === 0 ? <h2 className='text-xl'>소유한 봇이 없습니다.</h2> : 
 				<ResponsiveGrid>
 					{
-						(data.bots as Bot[]).map((bot: Bot) => (
+						(data.bots as Bot[]).filter(el => el.state !== 'blocked').map((bot: Bot) => (
 							<BotCard key={bot.id} bot={bot} />
 						))
 					}

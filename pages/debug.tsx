@@ -1,14 +1,13 @@
 import dynamic from 'next/dynamic'
 import { useFormik } from 'formik'
 
-import { checkBrowser } from '@utils/Tools'
-
 const Container = dynamic(()=> import('@components/Container'))
 const Divider = dynamic(()=> import('@components/Divider'))
 const Segment = dynamic(()=> import('@components/Segment'))
 
 import Package from '../package.json'
 import Markdown from '@components/Markdown'
+import { parseDockerhubTag } from '@utils/Tools'
 
 const ClientInfo = ():JSX.Element => {
 	const formik = useFormik({
@@ -29,44 +28,18 @@ https://github.com/koreanbots
 		},
 		onSubmit: ()=>{ alert('Pong') }
 	})
-	return <Container paddingTop className='mb-10'>
+	return <Container paddingTop className='pb-10'>
 		<h1 className='text-4xl font-bold mb-3 mt-3'>개발자모드</h1>
 		<h2 className='text-3xl font-semibold mb-4'>정보들</h2>
 		<Segment>
 			<div className='markdown-body text-black dark:text-white'>
 				<h1>빌드정보</h1>
 				<ul className='list-disc'>
-					<li>버전: <code>{Package.version}</code></li>
-				
-					<li>
-					해시: <a href={`https://github.com/koreanbots/koreanbots/commit/${process.env.NEXT_PUBLIC_COMMIT_HASH}`}><code>{process.env.NEXT_PUBLIC_COMMIT_HASH}</code></a>
-					</li>
-					<li>브랜치: <code>{process.env.NEXT_PUBLIC_BRANCH}</code></li>
-			
+					<li>Tag: <code>{parseDockerhubTag(process.env.NEXT_PUBLIC_TAG)}</code></li>
+					<li>Version: <code>v{Package.version}</code></li>
+					<li>Hash: <code>{process.env.NEXT_PUBLIC_SOURCE_COMMIT}</code></li>
 				</ul>
 
-				<h1>클라이언트 정보</h1>
-				<h2>브라우저</h2>
-				<code>{checkBrowser()}</code>
-				<h2>User-Agent</h2>
-				<pre>{navigator.userAgent}</pre>
-				{/* <h2>Darkmode</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Theme</th>
-							<th>System Cached</th>
-							<th>System</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>{theme}</td>
-							<td>{localStorage.detected}</td>
-							<td>{systemTheme}</td>
-						</tr>
-					</tbody>
-				</table> */}
 			</div>
 		</Segment>
 		<Divider />

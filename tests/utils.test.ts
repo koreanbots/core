@@ -2,6 +2,7 @@ import { DiscordEnpoints } from '../utils/Constants'
 import { checkUserFlag, formatNumber } from '../utils/Tools'
 
 test('format Number', () => {
+	expect(formatNumber(995)).toBe('1천')
 	expect(formatNumber(1000)).toBe('1천')
 	expect(formatNumber(33333)).toBe('3.3만')
 	expect(formatNumber(600)).toBe('600')

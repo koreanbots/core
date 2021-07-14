@@ -19,14 +19,13 @@ assignees: ''
 
 > 어떤 문제가 발생하나요?
 
-## 클라이언트 버전
+## 빌드 버전
 
-> 클라이언트 버전을 알려주세요!
+> 클라이언트의 빌드 버전을 알려주세요!
 
 <!--
-클라이언트 버전을 가져오실 줄 모르신다면 아래 링크를 참고해주세요
-
-https://github.com/koreanbots/docs/blob/master/version.md
+https://koreanbots.dev/debug
+에서 확인하실 수 있습니다.
 -->
 
 ## 사양

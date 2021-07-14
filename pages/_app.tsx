@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { DefaultSeo } from 'next-seo'
 import { GlobalHotKeys } from 'react-hotkeys'
 import NProgress from 'nprogress'
+import Package from '../package.json'
 
 import Logger from '@utils/Logger'
 import { handlePWA, parseCookie, systemTheme } from '@utils/Tools'
@@ -37,7 +38,8 @@ const KoreanbotsApp = ({ Component, pageProps, err, cookie }: KoreanbotsProps): 
 	useEffect(() => {
 		console.log(
 			'%c' + 'KOREANBOTS',
-			'color: #3366FF; -webkit-text-stroke: 2px black; font-size: 72px; font-weight: bold;'
+			'color: #3366FF; -webkit-text-stroke: 2px black; font-size: 72px; font-weight: bold;',
+			`\n[BUILD INFO] Tag: ${process.env.NEXT_PUBLIC_TAG}, Version: v${Package.version}, Hash: ${process.env.NEXT_PUBLIC_SOURCE_COMMIT}`
 		)
 		console.log(
 			'%c' + '이곳에 코드를 붙여넣으면 공격자에게 엑세스 토큰을 넘겨줄 수 있습니다!!',

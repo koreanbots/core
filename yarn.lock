@@ -1705,10 +1705,10 @@
   resolved "https://registry.yarnpkg.com/@types/cookie/-/cookie-0.4.0.tgz#14f854c0f93d326e39da6e3b6f34f7d37513d108"
   integrity sha512-y7mImlc/rNkvCRmg8gC3/lj87S7pTUIJ6QGjwHR9WQJcFs+ZMTOaoPrkdFA/YdbuqVEmEbb5RdhVxMkAcgOnpg==
 
-"@types/emoji-mart@3.0.4":
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/@types/emoji-mart/-/emoji-mart-3.0.4.tgz#418868330c13b510a7b4b86b1ee9904291daeec1"
-  integrity sha512-Uqegqi54lXzz1qlDnLYEbFlUXY46auTVwbeOO8mj+9maGu2WBx/lGnmLKg7WS4CC5lB8Q6ch8K5VPBR9bDjWgg==
+"@types/emoji-mart@3.0.5":
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/@types/emoji-mart/-/emoji-mart-3.0.5.tgz#0e5d6fefe28c150606a75a962bcf1c5956439001"
+  integrity sha512-bsMEXVPrasIJ03u61msIKMMiL7Hh6dGQ3Gcz3CjytTxTQKQRdf/g0owWTSSL5mvKNgu9UfgornrF6qqClPk1Jw==
   dependencies:
     "@types/react" "*"
 

@@ -39,7 +39,7 @@
 		"jsonwebtoken": "8.5.1",
 		"knex": "^0.95.7",
 		"mysql": "2.18.1",
-		"next": "10.2.3",
+		"next": "^11.0.1",
 		"next-connect": "0.10.1",
 		"next-pwa": "^5.2.23",
 		"next-seo": "^4.26.0",

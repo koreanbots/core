@@ -190,4 +190,8 @@ export function getRandom<T=unknown>(arr: T[]): T {
 	return arr[Math.floor(Math.random() * arr.length)]
 }
 
+export function parseDockerhubTag(imageTag: string) {
+	return imageTag?.split('/').pop().split(':').pop()
+}
+
 export * from './ShowdownExtensions'

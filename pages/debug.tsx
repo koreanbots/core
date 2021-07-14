@@ -7,6 +7,7 @@ const Segment = dynamic(()=> import('@components/Segment'))
 
 import Package from '../package.json'
 import Markdown from '@components/Markdown'
+import { parseDockerhubTag } from '@utils/Tools'
 
 const ClientInfo = ():JSX.Element => {
 	const formik = useFormik({
@@ -34,7 +35,7 @@ https://github.com/koreanbots
 			<div className='markdown-body text-black dark:text-white'>
 				<h1>빌드정보</h1>
 				<ul className='list-disc'>
-					<li>Tag: <code>{process.env.NEXT_PUBLIC_TAG}</code></li>
+					<li>Tag: <code>{parseDockerhubTag(process.env.NEXT_PUBLIC_TAG)}</code></li>
 					<li>Version: <code>v{Package.version}</code></li>
 					<li>Hash: <code>{process.env.NEXT_PUBLIC_SOURCE_COMMIT}</code></li>
 				</ul>

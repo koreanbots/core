@@ -16,7 +16,7 @@
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "5.15.3",
 		"@hcaptcha/react-hcaptcha": "0.3.6",
-		"@sentry/nextjs": "6.8.0",
+		"@sentry/nextjs": "6.9.0",
 		"@sentry/node": "6.8.0",
 		"@sentry/react": "6.8.0",
 		"@sentry/tracing": "6.8.0",

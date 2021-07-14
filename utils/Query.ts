@@ -57,14 +57,14 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 		res[0].status = discordBot.presence?.activities?.find(r => r.type === 'STREAMING') ? 'streaming' : discordBot.presence?.status || null
 		delete res[0].trusted
 		delete res[0].partnered
-		if (owners)
-		{
+		if (owners) {
 			res[0].owners = await Promise.all(
 				res[0].owners.map(async (u: string) => await get._rawUser.load(u))
 			)
 			res[0].owners = res[0].owners.filter((el: User | null) => el).map((row: User) => ({ ...row }))
 		}
-			
+
+		await knex('bots').update({ name: discordBot.username }).where({ id })
 		
 	}
 

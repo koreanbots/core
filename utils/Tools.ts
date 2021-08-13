@@ -5,9 +5,10 @@ import { Readable } from 'stream'
 import cookie from 'cookie'
 import * as difflib from 'difflib'
 
-import { BotFlags, ImageOptions, UserFlags } from '@types'
+import { BotFlags, ImageOptions, MetrixData, UserFlags } from '@types'
 import Logger from '@utils/Logger'
 import { BASE_URLs, KoreanbotsEndPoints, Oauth } from '@utils/Constants'
+import Day from './Day'
 
 export function handlePWA(): boolean {
 	let displayMode = 'browser'
@@ -59,6 +60,7 @@ export function makeBotURL({ id, vanity, flags=0 }: { flags?: number, vanity?:st
 export function makeUserURL({ id }: { id: string }): string {
 	return `/users/${id}`
 }
+
 export function serialize<T>(data: T): T {
 	return JSON.parse(JSON.stringify(data))
 }
@@ -192,6 +194,17 @@ export function getRandom<T=unknown>(arr: T[]): T {
 
 export function parseDockerhubTag(imageTag: string) {
 	return imageTag?.split('/').pop().split(':').pop()
+}
+
+export function getYYMMDD(): string {
+	return (new Date()).toISOString().slice(0, 10).split('-').join('')
+}
+
+export function convertMetrixToGraph(data: MetrixData[], keyname?: string) {
+	return data.map(el=> ({
+		x: Day(el.day, 'YYMMDD').toDate(),
+		y: el[keyname] || el.count
+	}))
 }
 
 export * from './ShowdownExtensions'

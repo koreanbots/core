@@ -7,9 +7,10 @@ import { Bot, User, ListType, BotList, TokenRegister, BotFlags, DiscordUserFlags
 import { categories, imageSafeHost, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'
 
 import knex from './Knex'
+import { Bots } from './Mongo'
 import { DiscordBot, getMainGuild } from './DiscordBot'
 import { sign, verify } from './Jwt'
-import { camoUrl, formData, serialize } from './Tools'
+import { camoUrl, formData, getYYMMDD, serialize } from './Tools'
 import { AddBotSubmit, ManageBot } from './Yup'
 import { markdownImage } from './Regex'
 
@@ -210,6 +211,8 @@ async function voteBot(userID: string, botID: string): Promise<number|boolean> {
 	data[botID] = date
 	await knex('bots').where({ id: botID }).increment('votes', 1)
 	await knex('users').where({ id: userID }).update({ votes: JSON.stringify(data) })
+	const record = await Bots.updateOne({ _id: botID, 'voteMetrix.day': getYYMMDD() }, { $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } })
+	if(record.n === 0) await Bots.findByIdAndUpdate(botID, { $push: { voteMetrix: { count: (await knex('bots').where({ id: botID }))[0].votes } } }, { upsert: true })
 	return true
 }
 
@@ -293,6 +296,10 @@ async function updateServer(id: string, servers: number, shards: number) {
 	else if(bot.servers < 1000000 && servers >= 1000000) return 2
 	if(bot.shards < 200 && shards >= 200) return 3
 	await knex('bots').update({ servers: servers === undefined ? bot.servers : servers, shards: shards === undefined ? bot.shards : shards }).where({ id })
+	if(servers) {
+		await Bots.findByIdAndUpdate(id, { $pull: { serverMetrix: { day: getYYMMDD() } } }, { upsert: true })
+		await Bots.findByIdAndUpdate(id, { $push: { serverMetrix: { count: servers } } })
+	}
 	return
 }
 
@@ -408,6 +415,11 @@ async function approveBotSubmission(id: string, date: number) {
 	return true
 }
 
+async function viewBot(id: string) {
+	const record = await Bots.updateOne({ _id: id, 'viewMetrix.day': getYYMMDD() }, { $inc: { 'viewMetrix.$.count': 1 } })
+	if(record.n === 0) await Bots.findByIdAndUpdate(id, { $push: { viewMetrix: { count: 0 } } }, { upsert: true })
+}
+
 export const get = {
 	discord: {
 		user: new DataLoader(
@@ -509,7 +521,8 @@ export const update = {
 
 export const put = {
 	voteBot,
-	submitBot
+	submitBot,
+	viewBot
 }
 
 export const remove = {

@@ -43,6 +43,19 @@ export interface BotSpec {
 	token: string
 }
 
+export interface BotMongoData {
+	serverMetrix: MetrixData[]
+	voteMetrix: MetrixData[]
+	inviteMetrix: MetrixData[]
+	viewMetrix: MetrixData[]
+}
+
+export interface MetrixData {
+	_id: string
+	count: number
+	day: string
+	createdAt: Date
+}
 export interface DocsData {
   name: string
   list?: DocsData[]

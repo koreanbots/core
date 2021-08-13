@@ -121,10 +121,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 									{
 										data.state === 'ok' && <LongButton
 											newTab
-											href={
-												data.url ||
-					`https://discordapp.com/oauth2/authorize?client_id=${data.id}&scope=bot&permissions=0`
-											}
+											href={`/bots/${router.query.id}/invite`}
 										>
 											<h4 className='whitespace-nowrap'>
 												<i className='fas fa-user-plus text-discord-blurple' /> 초대하기

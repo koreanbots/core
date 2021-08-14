@@ -11,7 +11,7 @@ import { getJosaPicker } from 'josa'
 import { get } from '@utils/Query'
 import { checkUserFlag, cleanObject, makeBotURL, parseCookie, redirectTo } from '@utils/Tools'
 import { ManageBot, ManageBotSchema } from '@utils/Yup'
-import { categories, library } from '@utils/Constants'
+import { botCategories, library } from '@utils/Constants'
 import { Bot, Theme, User } from '@types'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
@@ -113,7 +113,7 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 						<Select value={{ label: bot.lib, value: bot.lib }} options={library.map(el=> ({ label: el, value: el }))} handleChange={(value) => setFieldValue('library', value.value)} handleTouch={() => setFieldTouched('library', true)} />
 					</Label>
 					<Label For='category' label='카테고리' labelDesc='봇에 해당되는 카테고리를 선택해주세요' required error={errors.category && touched.category ? errors.category as string : null}>
-						<Selects options={categories.map(el=> ({ label: el, value: el }))} handleChange={(value) => {
+						<Selects options={botCategories.map(el=> ({ label: el, value: el }))} handleChange={(value) => {
 							setFieldValue('category', value.map(v=> v.value))
 						}} handleTouch={() => setFieldTouched('category', true)} values={values.category as string[]} setValues={(value) => setFieldValue('category', value)} />
 						<span className='text-gray-400 mt-1 text-sm'>봇 카드에는 앞 3개의 카테고리만 표시됩니다. 드래그하여 카테고리를 정렬하세요. <strong>반드시 해당되는 카테고리만 선택해주세요.</strong></span>

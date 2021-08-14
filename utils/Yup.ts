@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 import YupKorean from 'yup-locales-ko'
 import { ListType } from '@types'
-import { categories, library, reportCats } from '@utils/Constants'
+import { botCategories, library, reportCats } from '@utils/Constants'
 import { HTTPProtocol, ID, Prefix, Url, Vanity } from '@utils/Regex'
 
 Yup.setLocale(YupKorean)
@@ -91,7 +91,7 @@ export const OauthCallbackSchema: Yup.SchemaOf<OauthCallback> = Yup.object({
 export const botCategoryListArgumentSchema: Yup.SchemaOf<botCategoryListArgument> = Yup.object({
 	page: PageCount,
 	category: Yup.mixed()
-		.oneOf(categories)
+		.oneOf(botCategories)
 		.required(),
 })
 
@@ -158,7 +158,7 @@ export const AddBotSubmitSchema: Yup.SchemaOf<AddBotSubmit> = Yup.object({
 		.min(2, '지원 디스코드는 최소 2자여야합니다.')
 		.max(32, '지원 디스코드는 최대 32자까지만 가능합니다.')
 		.nullable(),
-	category: Yup.array(Yup.string().oneOf(categories))
+	category: Yup.array(Yup.string().oneOf(botCategories))
 		.min(1, '최소 한 개의 카테고리를 선택해주세요.')
 		.unique('카테고리는 중복될 수 없습니다.')
 		.required('카테고리는 필수 항목입니다.'),
@@ -249,7 +249,7 @@ export const ManageBotSchema: Yup.SchemaOf<ManageBot> = Yup.object({
 		.min(2, '지원 디스코드는 최소 2자여야합니다.')
 		.max(32, '지원 디스코드는 최대 32자까지만 가능합니다.')
 		.nullable(),
-	category: Yup.array(Yup.string().oneOf(categories))
+	category: Yup.array(Yup.string().oneOf(botCategories))
 		.min(1, '최소 한 개의 카테고리를 선택해주세요.')
 		.unique('카테고리는 중복될 수 없습니다.')
 		.required('카테고리는 필수 항목입니다.'),

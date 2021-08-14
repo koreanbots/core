@@ -67,7 +67,7 @@ export const library = [
 	'비공개',
 ]
 
-export const categories = [
+export const botCategories = [
 	// 상위 카테고리
 	'관리',
 	'뮤직',
@@ -95,7 +95,7 @@ export const categories = [
 	'마인크래프트'
 ]
 
-export const categoryIcon = {
+export const botCategoryIcon = {
 	'관리': 'fas fa-cogs',
 	'뮤직': 'fas fa-music',
 	'전적': 'fas fa-puzzle-piece',
@@ -119,6 +119,19 @@ export const categoryIcon = {
 	'마인크래프트': 'fas fa-cubes'
 }
 
+export const serverCategories = [
+	'커뮤니티',
+	'친목',
+	'음악',
+	'기술',
+	'교육',
+	// 게임
+	'게임',
+	'오버워치',
+	'리그 오브 레전드',
+	'배틀그라운드',
+	'마인크래프트'
+]
 export const reportCats = [
 	'위법',
 	'봇을 이용한 테러',
@@ -176,7 +189,8 @@ export const BotBadgeType = (data: Bot) => {
 
 export const DiscordEnpoints = {
 	Token: BASE_URLs.api + '/oauth2/token',
-	Me: BASE_URLs.api + '/v8/users/@me',
+	Me: BASE_URLs.api + '/v9/users/@me',
+	Guilds: BASE_URLs.api + '/v9/users/@me/guilds',
 	InviteApplication: (id: string, perms: { [perm: string]: boolean }, scope: string, redirect?: string): string => `${BASE_URLs.api}/oauth2/authorize?client_id=${id ? id.split(' ')[0] : 'CLIENT_ID'}&permissions=${Object.keys(perms).filter(el => perms[el]).map(el => Number(el)).reduce((prev, curr) => prev | curr, 0)}&scope=${scope ? encodeURI(scope) : 'bot'}${redirect ? `&redirect_uri=${encodeURIComponent(redirect)}` : ''}`,
 	CDN: class CDN {
 		static root = BASE_URLs.cdn

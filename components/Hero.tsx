@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic'
 import { NextSeo } from 'next-seo'
 
-import { categories, categoryIcon } from '@utils/Constants'
+import { botCategories, botCategoryIcon } from '@utils/Constants'
 
 const Container = dynamic(()=> import('@components/Container'))
 const Tag = dynamic(()=> import('@components/Tag'))
@@ -27,8 +27,8 @@ const Hero:React.FC<HeroProps> = ({ header, description }) => {
 					<Tag key='list' text={<>
 						<i className='fas fa-heart text-red-600'/> 하트 랭킹
 					</>} dark bigger href='/list/votes' />
-					{ categories.slice(0, 4).map(t=> <Tag key={t} text={<>
-						<i className={categoryIcon[t]} /> {t}
+					{ botCategories.slice(0, 4).map(t=> <Tag key={t} text={<>
+						<i className={botCategoryIcon[t]} /> {t}
 					</>} dark bigger href={`/categories/${t}`} />) }
 					<Tag key='tag' text={<>
 						<i className='fas fa-tag'/> 카테고리 더보기

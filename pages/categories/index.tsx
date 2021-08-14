@@ -2,7 +2,7 @@ import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import { NextSeo } from 'next-seo'
 
-import { categories, categoryIcon } from '@utils/Constants'
+import { botCategories, botCategoryIcon } from '@utils/Constants'
 
 
 const Container = dynamic(() => import('@components/Container'))
@@ -17,12 +17,12 @@ const Categories:NextPage = () => {
 		<Segment className='mb-10'>
 			<div className='text-center flex flex-wrap mt-1.5'>
 				{
-					categories.map(t => <Tag key={t} text={<>
+					botCategories.map(t => <Tag key={t} text={<>
 						{
 							{ '빗금 명령어': <span className='fa-stack' style={{ fontSize: '1em', height: '1.2em', lineHeight: '1em', width: '20px', verticalAlign: 'middle' }}>
 								<i className='fas fa-square fa-stack-1x fa-md' />
 								<i className='fas fa-slash fa-rotate-90 fa-xs fa-stack-1x fa-inverse' style={{ fontSize: '0.3rem' }} />
-							</span> }[t] ?? <i className={categoryIcon[t]} />
+							</span> }[t] ?? <i className={botCategoryIcon[t]} />
 						} {t}
 					</>} href={`/categories/${t}`} dark bigger /> )
 				}

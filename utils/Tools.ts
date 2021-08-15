@@ -5,7 +5,7 @@ import { Readable } from 'stream'
 import cookie from 'cookie'
 import * as difflib from 'difflib'
 
-import { BotFlags, ImageOptions, MetrixData, UserFlags } from '@types'
+import { BotFlags, ImageOptions, MetrixData, ServerFlags, UserFlags } from '@types'
 import Logger from '@utils/Logger'
 import { BASE_URLs, KoreanbotsEndPoints, Oauth } from '@utils/Constants'
 import Day from './Day'
@@ -49,12 +49,20 @@ export function checkBotFlag(base: number, required: number | keyof typeof BotFl
 	return checkFlag(base, typeof required === 'number' ? required : BotFlags[required])
 }
 
+export function checkServerFlag(base: number, required: number | keyof typeof ServerFlags):boolean {
+	return checkFlag(base, typeof required === 'number' ? required : ServerFlags[required])
+}
+
 export function makeImageURL(root:string, { format='png', size=256 }:ImageOptions):string {
 	return `${root}.${format}?size=${size}`
 }
 
 export function makeBotURL({ id, vanity, flags=0 }: { flags?: number, vanity?:string, id: string }): string {
 	return `/bots/${(checkBotFlag(flags, 'trusted') || checkBotFlag(flags, 'partnered')) && vanity ? vanity : id}`
+}
+
+export function makeServerURL({ id, vanity, flags=0 }: { flags?: number, vanity?:string, id: string }): string {
+	return `/servers/${(checkServerFlag(flags, 'trusted') || checkServerFlag(flags, 'partnered')) && vanity ? vanity : id}`
 }
 
 export function makeUserURL({ id }: { id: string }): string {

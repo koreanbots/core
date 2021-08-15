@@ -20,4 +20,10 @@ const botSchema = new mongoose.Schema({
 	comments: [ { author: String, date: { type: Date, defualt: Date.now }, comment: String, rating: Number, upvotes: [ String ], downvotes: [ String ] } ],
 })
 
+const serverSchema = new mongoose.Schema({
+	_id: String,
+	data: {}
+})
+
 export const Bots = mongoose.models.bots || mongoose.model('bots', botSchema)
+export const Servers = mongoose.models.servers || mongoose.model('servers', serverSchema)

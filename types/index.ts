@@ -1,5 +1,6 @@
-import { IncomingMessage } from 'http'
-import { NextPageContext } from 'next'
+import type { GuildFeatures } from 'discord.js'
+import type { IncomingMessage } from 'http'
+import type { NextPageContext } from 'next'
 
 export interface Bot {
 	id: string
@@ -16,7 +17,7 @@ export interface Bot {
 	shards: number
 	intro: string
 	desc: string
-	category: Category[]
+	category: BotCategory[]
 	web: string | null
 	git: string | null
 	url: string | null
@@ -27,6 +28,41 @@ export interface Bot {
 	owners: User[] | string[]
 }
 
+export interface RawGuild {
+	id: string
+	name: string
+	icon: string
+	owner: boolean
+	permissions: number
+	features: GuildFeatures[]
+}
+
+export interface Server {
+	id: string
+	name: string
+	flags: number
+	state: ServerState
+	icon: string | null
+	votes: number
+	members: number | null
+	boostTier: number | null
+	emojis: Emoji[]
+	intro: string
+	desc: string
+	category: ServerCategory[]
+	invite: string
+	vanity: string | null
+	bg: string | null
+	banner: string | null
+	owner: User | null
+	bots: Bot[] | string[]
+}
+
+export interface Emoji {
+	id: string
+	name: string
+	url: string
+}
 export interface User {
 	id: string
 	avatar: string
@@ -35,6 +71,7 @@ export interface User {
 	flags: number
 	github: string
 	bots: Bot[] | string[]
+	servers: Server[] | string[]
 }
 
 export interface BotSpec {
@@ -43,6 +80,27 @@ export interface BotSpec {
 	token: string
 }
 
+export interface ServerMongoData {
+	data: ServerData
+}
+
+export interface ServerData {
+	name: string
+	icon: string
+	owner: string
+	admins: string[]
+	bots: string[]
+	memberCount: number
+	boostTier: number
+	features: GuildFeatures[]
+	emojis: ServerEmojiData[]
+}
+
+export interface ServerEmojiData {
+	id: string
+	name: string
+	url: string
+}
 export interface BotMongoData {
 	serverMetrix: MetrixData[]
 	voteMetrix: MetrixData[]
@@ -73,12 +131,22 @@ export enum UserFlags {
 export enum BotFlags {
 	general = 0 << 0,
 	official = 1 << 0,
-	holding = 1 << 1,
+	reserved = 1 << 1,
 	trusted = 1 << 2,
 	partnered = 1 << 3,
 	verified = 1 << 4,
 	premium = 1 << 5,
 	hackerthon = 1 << 6,
+}
+
+export enum ServerFlags {
+	general = 0 << 0,
+	official = 1 << 0,
+	reserved = 1 << 1,
+	trusted = 1 << 2,
+	partnered = 1 << 3,
+	verified = 1 << 4,
+	discord_partnered = 1 << 5,
 }
 
 export enum DiscordUserFlags {
@@ -97,9 +165,9 @@ export enum DiscordUserFlags {
 	VERIFIED_DEVELOPER = 1 << 17,
 }
 
-export interface BotList {
+export interface List<T> {
 	type: ListType
-	data: Bot[]
+	data: T[]
 	currentPage: number
 	totalPage: number
 }
@@ -112,7 +180,7 @@ export interface SubmittedBot {
 	prefix: string
 	intro: string
 	desc: string
-	category: Category[]
+	category: BotCategory[]
 	web: string | null
 	git: string | null
 	url: string | null
@@ -174,7 +242,7 @@ export type Theme = 'dark' | 'light' | 'system'
 export type Status = 'online' | 'offline' | 'dnd' | 'idle' | 'streaming' | null
 
 export type BotState = 'ok' | 'reported' | 'blocked' | 'archived' | 'private'
-
+export type ServerState = 'ok' | 'reported' | 'blocked' | 'unreachable'
 export type Library =
 	| 'discord.js'
 	| 'Eris'
@@ -200,7 +268,7 @@ export type Library =
 	| '기타'
 	| '비공개'
 
-export type Category =
+export type BotCategory =
 	| '관리'
 	| '뮤직'
 	| '전적'
@@ -215,6 +283,19 @@ export type Category =
 	| '대화'
 	| 'NSFW'
 	| '검색'
+
+export type ServerCategory = 
+	| '커뮤니티'
+	| '친목'
+	| '음악'
+	| '기술'
+	| '교육'
+	// 게임
+	| '게임'
+	| '오버워치'
+	| '리그 오브 레전드'
+	| '배틀그라운드'
+	| '마인크래프트'
 
 export type ReportCategory =
 	| '위법'

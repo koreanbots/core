@@ -8,6 +8,7 @@ const Tag = dynamic(()=> import('@components/Tag'))
 const Search = dynamic(()=> import('@components/Search'))
 
 const Hero:React.FC<HeroProps> = ({ type, header, description }) => {
+	const link = `/${type}/categories`
 	return <>
 		<NextSeo title={header} description={description} openGraph={{
 			title: header,
@@ -29,10 +30,10 @@ const Hero:React.FC<HeroProps> = ({ type, header, description }) => {
 					</>} dark bigger href='/list/votes' />
 					{ (type === 'bots' ? botCategories : serverCategories).slice(0, 4).map(t=> <Tag key={t} text={<>
 						<i className={botCategoryIcon[t]} /> {t}
-					</>} dark bigger href={`/categories/${t}`} />) }
+					</>} dark bigger href={`${link}/${t}`} />) }
 					<Tag key='tag' text={<>
 						<i className='fas fa-tag'/> 카테고리 더보기
-					</>} dark bigger href='/categories' />
+					</>} dark bigger href={link} />
 				</div>
 			</Container>
 		</div>

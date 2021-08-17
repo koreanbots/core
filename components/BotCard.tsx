@@ -68,7 +68,7 @@ const BotCard: React.FC<BotCardProps> = ({ manage = false, bot }) => {
 								<div>
 									<div className='category flex flex-wrap px-2'>
 										{bot.category.slice(0, 3).map(el => (
-											<Tag key={el} text={el} href={`/categories/${el}`} dark />
+											<Tag key={el} text={el} href={`/bots/categories/${el}`} dark />
 										))}{' '}
 										{bot.category.length > 3 && <Tag text={`+${bot.category.length - 3}`} dark />}
 									</div>

@@ -5,7 +5,7 @@ import AbortController from 'abort-controller'
 
 import { makeBotURL, redirectTo } from '@utils/Tools'
 import Fetch from '@utils/Fetch'
-import { BotList, ResponseProps } from '@types'
+import { Bot, List, ResponseProps } from '@types'
 
 import DiscordAvatar from '@components/DiscordAvatar'
 import Day from '@utils/Day'
@@ -16,7 +16,7 @@ const Search: React.FC = () => {
 	const ref = useRef()
 	const [query, setQuery] = useState('')
 	const [recentSearch, setRecentSearch] = useState([])
-	const [data, setData] = useState<ResponseProps<BotList>>(null)
+	const [data, setData] = useState<ResponseProps<List<Bot>>>(null)
 	const [loading, setLoading] = useState(false)
 	const [abortControl, setAbortControl] = useState(new AbortController())
 	const [hidden, setHidden] = useState(true)

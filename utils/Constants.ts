@@ -6,6 +6,7 @@ import { formatNumber, makeImageURL } from './Tools'
 export const TITLE = '한국 디스코드봇 리스트'
 export const DESCRIPTION = '다양한 국내 디스코드 봇들을 확인하고, 초대해보세요!'
 export const THEME_COLOR = '#3366FF'
+export const DSKR_BOT_ID = '784618064167698472'
 
 export const VOTE_COOLDOWN = 12 * 60 * 60 * 1000
 export const BUG_REPORTERS = ['260303569591205888']
@@ -123,7 +124,8 @@ export const serverCategories = [
 	'커뮤니티',
 	'친목',
 	'음악',
-	'기술',
+	'IT & 과학',
+	'봇',
 	'교육',
 	// 게임
 	'게임',
@@ -139,7 +141,16 @@ export const reportCats = [
 	'스팸, 도배, 의미없는 텍스트',
 	'폭력, 자해, 테러 옹호하거나 조장하는 컨텐츠',
 	'오픈소스 라이선스, 저작권 위반 등 권리 침해',
-	'Discord ToS를 위반하거나 한국 디스코드봇 리스트 가이드라인 위반',
+	'Discord ToS 또는 한국 디스코드 리스트 가이드라인 위반',
+	'기타',
+]
+
+export const serverReportCats = [
+	'위법',
+	'괴롭힘, 모욕, 명예훼손',
+	'폭력, 자해, 테러 옹호하거나 조장하는 컨텐츠',
+	'저작권 위반 등 권리 침해',
+	'Discord ToS 또는 한국 디스코드 리스트 가이드라인 위반',
 	'기타',
 ]
 
@@ -158,6 +169,7 @@ export const MessageColor = {
 
 export const BASE_URLs = {
 	api: 'https://discord.com/api',
+	invite: 'https://discord.gg',
 	cdn: 'https://cdn.discordapp.com',
 	camo: 'https://camo.koreanbots.dev'
 }
@@ -191,7 +203,8 @@ export const DiscordEnpoints = {
 	Token: BASE_URLs.api + '/oauth2/token',
 	Me: BASE_URLs.api + '/v9/users/@me',
 	Guilds: BASE_URLs.api + '/v9/users/@me/guilds',
-	InviteApplication: (id: string, perms: { [perm: string]: boolean }, scope: string, redirect?: string): string => `${BASE_URLs.api}/oauth2/authorize?client_id=${id ? id.split(' ')[0] : 'CLIENT_ID'}&permissions=${Object.keys(perms).filter(el => perms[el]).map(el => Number(el)).reduce((prev, curr) => prev | curr, 0)}&scope=${scope ? encodeURI(scope) : 'bot'}${redirect ? `&redirect_uri=${encodeURIComponent(redirect)}` : ''}`,
+	InviteApplication: (id: string, perms: { [perm: string]: boolean }, scope: string, redirect?: string, guild_id?: string): string => `${BASE_URLs.api}/oauth2/authorize?client_id=${id ? id.split(' ')[0] : 'CLIENT_ID'}&permissions=${Object.keys(perms).filter(el => perms[el]).map(el => Number(el)).reduce((prev, curr) => prev | curr, 0)}&scope=${scope ? encodeURI(scope) : 'bot'}${redirect ? `&redirect_uri=${encodeURIComponent(redirect)}` : ''}${guild_id ? `&guild_id=${guild_id}` : ''}`,
+	ServerInvite: (code: string): string => `${BASE_URLs.invite}/${code}`, 
 	CDN: class CDN {
 		static root = BASE_URLs.cdn
 		static emoji (id: string, options:ImageOptions={}) { return makeImageURL(`${this.root}/emojis/${id}`, options) }
@@ -218,10 +231,12 @@ export const KoreanbotsEndPoints = {
 	CDN: class {
 		static root = '/api/image'
 		static avatar (id: string, options: KoreanbotsImageOptions) { return makeImageURL(`${this.root}/discord/avatars/${id}`, options) }
+		static icon (id: string,  options: KoreanbotsImageOptions) { return makeImageURL(`${this.root}/discord/icons/${id}`, options) }
 	},
 	URL: class {
 		static root = process.env.KOREANBOTS_URL || 'https://koreanbots.dev'
 		static bot (id: string) { return `${this.root}/bots/${id}` }
+		static server (id: string) { return `${this.root}/servers/${id}` }
 		static user (id: string) { return `${this.root}/users/${id}` }
 		static submittedBot(id: string, date: number) { return `${this.root}/pendingBots/${id}/${date}` }
 	},
@@ -303,6 +318,7 @@ export const ErrorText = {
 
 export const ErrorMessage = ['지나가던 고양이가 선을 밟았어요..', '무언가 잘못되었어요..!', '이게 아닌데...', '어쩜 이렇게 오류가 또 나는건지?']
 
+export const ServerIntroList = ['한국어를 배울 수 있는 최고의 공간입니다!', '김치의 다양한 요리법을 소개하는 서버입니다.', '좋아하는 노래를 들을 수 있는 곳 입니다.', '게임을 함께 할 사람을 찾을 수 있습니다.']
 export const BotSubmissionDenyReasonPresetsName = {
 	MISSING_VERIFY: '개발자 확인 불가',
 	OFFLINE: '봇 오프라인',

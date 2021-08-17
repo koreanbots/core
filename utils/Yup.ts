@@ -309,6 +309,35 @@ export interface ManageBot {
 	_csrf: string
 }
 
+export const ManageServerSchema = Yup.object({
+	invite: Yup.string()
+		.matches(Vanity, '디스코드 초대코드 형식을 지켜주세요.')
+		.min(2, '초대코드는 최소 2자여야합니다.')
+		.max(32, '초대코드는 최대 32자까지만 가능합니다.')
+		.required('초대코드는 필수 항목입니다.'),
+	category: Yup.array(Yup.string().oneOf(serverCategories))
+		.min(1, '최소 한 개의 카테고리를 선택해주세요.')
+		.unique('카테고리는 중복될 수 없습니다.')
+		.required('카테고리는 필수 항목입니다.'),
+	intro: Yup.string()
+		.min(2, '봇 소개는 최소 2자여야합니다.')
+		.max(60, '봇 소개는 최대 60자여야합니다.')
+		.required('봇 소개는 필수 항목입니다.'),
+	desc: Yup.string()
+		.min(100, '봇 설명은 최소 100자여야합니다.')
+		.max(1500, '봇 설명은 최대 1500자여야합니다.')
+		.required('봇 설명은 필수 항목입니다.'),
+	_csrf: Yup.string().required(),
+})
+
+export interface ManageServer {
+	invite: string
+	category: string[]
+	intro: string
+	desc: string
+	_csrf: string
+}
+
 export const CsrfCaptchaSchema: Yup.SchemaOf<CsrfCaptcha> = Yup.object({
 	_csrf: Yup.string().required(),
 	_captcha: Yup.string().required()

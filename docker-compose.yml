@@ -22,6 +22,14 @@ services:
       - .env
     volumes:
       - /home/ubuntu/mongo-beta:/data/db
+  bot:
+    container_name: bot
+    restart: always
+    image: 397554924689.dkr.ecr.ap-northeast-2.amazonaws.com/dskr
+    links:
+      - mongo
+    env_file:
+      - .env
   web:
     container_name: web
     restart: always
@@ -30,6 +38,7 @@ services:
       - 4000:3000
     links:
       - mysql
+      - mongo
     env_file:
       - .env.beta.production.local
     deploy:

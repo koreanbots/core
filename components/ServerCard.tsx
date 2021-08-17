@@ -57,6 +57,11 @@ const ServerCard: React.FC<BotCardProps> = ({ type, server }) => {
 									</div>
 								</div>
 								<div className='-mt-16 px-4'>
+									<h2 className='px-1 text-sm'>
+										{ server.state === 'unreachable' && <>
+											<i className='fas fa-ban text-red-600' />정보 갱신 불가
+										</> }
+									</h2>
 									<h1 className='mb-3 text-left text-2xl font-bold truncate'>{server.name}</h1>
 								</div>
 								<p className='mb-10 px-4 h-6 text-left text-gray-400 text-sm font-medium'>
@@ -68,7 +73,7 @@ const ServerCard: React.FC<BotCardProps> = ({ type, server }) => {
 								<div>
 									<div className='category flex flex-wrap px-2'>
 										{server.category?.slice(0, 3).map(el => (
-											<Tag key={el} text={el} href={`/categories/${el}`} dark />
+											<Tag key={el} text={el} href={`/bots/categories/${el}`} dark />
 										))}{' '}
 										{server.category?.length > 3 && <Tag text={`+${server.category.length - 3}`} dark />}
 									</div>
@@ -106,7 +111,7 @@ const ServerCard: React.FC<BotCardProps> = ({ type, server }) => {
 											관리하기
 													</a>
 												</Link>
-											) : server.state !== 'ok' ? <a
+											) : !['ok', 'unreachable'].includes(server.state) ? <a
 												className='py-3 w-full text-center text-discord-blurple text-sm font-bold rounded-br-2xl hover:shadow-lg transition duration-100 ease-in opacity-50 cursor-default select-none'
 											>
 												참가하기
@@ -119,7 +124,7 @@ const ServerCard: React.FC<BotCardProps> = ({ type, server }) => {
 													target='_blank'
 													className='py-3 w-full text-center text-discord-blurple hover:text-white text-sm font-bold hover:bg-discord-blurple rounded-br-2xl hover:shadow-lg transition duration-100 ease-in'
 												>
-													초대하기
+													참가하기
 												</a>
 											}
 										</>

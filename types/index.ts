@@ -86,6 +86,7 @@ export interface ServerMongoData {
 
 export interface ServerData {
 	name: string
+	updatedAt: Date
 	icon: string
 	owner: string
 	admins: string[]

@@ -59,7 +59,7 @@ const ServerCard: React.FC<BotCardProps> = ({ type, server }) => {
 								<div className='-mt-16 px-4'>
 									<h2 className='px-1 text-sm'>
 										{ server.state === 'unreachable' && <>
-											<i className='fas fa-ban text-red-600' />정보 갱신 불가
+											<i className='fas fa-ban text-red-600' />정보 갱신 d불가
 										</> }
 									</h2>
 									<h1 className='mb-3 text-left text-2xl font-bold truncate'>{server.name}</h1>

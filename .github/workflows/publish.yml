@@ -1,0 +1,40 @@
+name: Publish
+on:
+  push:
+    branches: [master]
+  pull_request: # debug
+    branches: '*'
+    tags: '*'
+
+jobs:
+  image-push:
+    name: Push docker image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 
+      - uses: docker/setup-buildx-action@v1
+      - name: Parse image tag
+        run: |
+          parsed=${GITHUB_REF#refs/*/}
+          echo "RELEASE_TAG=${parsed//\//-}" >> $GITHUB_ENV
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Build and push
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build --build-arg SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN --build-arg NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN --build-arg SENTRY_DSN=$SENTRY_DSN --build-arg SOURCE_COMMIT=${{ env.GITHUB_SHA }} --build-arg TAG=${{ env.RELEASE_TAG }} -t koreanlist .
+          docker tag dskr:latest ${{ secrets.AWS_IMAGE_URL }}:latest
+          docker tag dskr:latest ${{ secrets.AWS_IMAGE_URL }}:${{ env.RELEASE_TAG == 'master' && 'nightly' || env.RELEASE_TAG }}
+          docker push ${{ secrets.AWS_IMAGE_URL }} --all-tags

@@ -24,7 +24,7 @@ const Categories:NextPage = () => {
 								<i className='fas fa-slash fa-rotate-90 fa-xs fa-stack-1x fa-inverse' style={{ fontSize: '0.3rem' }} />
 							</span> }[t] ?? <i className={botCategoryIcon[t]} />
 						} {t}
-					</>} href={`/categories/${t}`} dark bigger /> )
+					</>} href={`/bots/categories/${t}`} dark bigger /> )
 				}
 			</div>
 		</Segment>

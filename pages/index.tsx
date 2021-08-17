@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 
-import { BotList } from '@types'
+import { Bot, List } from '@types'
 import * as Query from '@utils/Query'
 import LongButton from '@components/LongButton'
 
@@ -15,7 +15,7 @@ const Hero = dynamic(() => import('@components/Hero'))
 const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 	return (
 		<>
-			<Hero />
+			<Hero type='bots' />
 			<Container className='pb-10'>
 				<Advertisement />
 				<h1 className='text-3xl font-bold mt-10 mb-2'>
@@ -64,9 +64,9 @@ export const getServerSideProps = async() => {
 }
 
 interface IndexProps {
-	votes: BotList
-	newBots: BotList
-	trusted: BotList
+	votes: List<Bot>
+	newBots: List<Bot>
+	trusted: List<Bot>
 }
 
 export default Index

@@ -6,7 +6,7 @@ import { SnowflakeUtil } from 'discord.js'
 import { ParsedUrlQuery } from 'querystring'
 import { josa } from 'josa'
 
-import { Bot, User, Theme } from '@types'
+import { Bot, User, Theme, Server } from '@types'
 import { get } from '@utils/Query'
 import { checkUserFlag, parseCookie } from '@utils/Tools'
 import { getToken } from '@utils/Csrf'
@@ -20,6 +20,7 @@ const Container = dynamic(() => import('@components/Container'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 const Divider = dynamic(() => import('@components/Divider'))
 const BotCard = dynamic(() => import('@components/BotCard'))
+const ServerCard = dynamic(() => import('@components/ServerCard'))
 const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 const Tag = dynamic(() => import('@components/Tag'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
@@ -102,7 +103,7 @@ const Users: NextPage<UserProps> = ({ user, data }) => {
 				</div>
 			</div>
 			<Divider />
-			<h2 className='mt-8 text-3xl font-bold'>제작한 봇</h2>
+			<h2 className='mt-8 pb-4 text-3xl font-bold'>소유한 봇</h2>
 			
 			{data.bots.length === 0 ? <h2 className='text-xl'>소유한 봇이 없습니다.</h2> : 
 				<ResponsiveGrid>
@@ -114,6 +115,16 @@ const Users: NextPage<UserProps> = ({ user, data }) => {
 				</ResponsiveGrid>
 			}
 			
+			<h2 className='py-4 text-3xl font-bold'>소유한 서버</h2>
+			{data.servers.length === 0 ? <h2 className='text-xl'>소유한 서버가 없습니다.</h2> :
+				<ResponsiveGrid>
+					{
+						(data.servers as Server[]).map((server: Server) => (
+							<ServerCard type='list' key={server.id} server={server} />
+						))
+					}
+				</ResponsiveGrid>
+			}
 			<Advertisement />
 		</Container>
 	)

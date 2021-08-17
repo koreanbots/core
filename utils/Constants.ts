@@ -122,11 +122,12 @@ export const botCategoryIcon = {
 
 export const serverCategories = [
 	'커뮤니티',
-	'친목',
-	'음악',
 	'IT & 과학',
 	'봇',
+	'친목',
+	'음악',
 	'교육',
+	'연애',
 	// 게임
 	'게임',
 	'오버워치',
@@ -134,6 +135,22 @@ export const serverCategories = [
 	'배틀그라운드',
 	'마인크래프트'
 ]
+
+export const serverCategoryIcon = {
+	'커뮤니티': 'fas fa-comments',
+	'친목': 'fas fa-user-friends',
+	'음악': 'fas fa-music',
+	'IT & 과학': 'fas fa-flask',
+	'봇': 'fas fa-robot',
+	'교육': 'fas fa-graduation-cap',
+	'연애': 'fas fa-hand-holding-heart',
+	'게임': 'fas fa-gamepad',
+	'오버워치': 'fas fa-mask',
+	'리그 오브 레전드': 'fas fa-chess',
+	'배틀그라운드': 'fas fa-meteor',
+	'마인크래프트': 'fas fa-cubes'
+}
+
 export const reportCats = [
 	'위법',
 	'봇을 이용한 테러',

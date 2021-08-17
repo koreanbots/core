@@ -100,6 +100,18 @@ interface botCategoryListArgument {
 	category: string
 }
 
+export const serverCategoryListArgumentSchema: Yup.SchemaOf<serverCategoryListArgument> = Yup.object({
+	page: PageCount,
+	category: Yup.mixed()
+		.oneOf(serverCategories)
+		.required(),
+})
+
+interface serverCategoryListArgument {
+	page: number
+	category: string
+}
+
 interface OauthCallback {
 	code: string
 }

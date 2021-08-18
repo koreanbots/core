@@ -2,7 +2,7 @@ import { NextPage, NextPageContext } from 'next'
 import dynamic from 'next/dynamic'
 import { ParsedUrlQuery } from 'querystring'
 
-import { BotList } from '@types'
+import { List, Bot } from '@types'
 import { get } from '@utils/Query'
 import { SearchQuerySchema } from '@utils/Yup'
 
@@ -18,7 +18,7 @@ const Redirect = dynamic(() => import('@components/Redirect'))
 const Search:NextPage<SearchProps> = ({ data, query }) => {
 	if(!query?.q) return <Redirect text={false} to='/' />
 	return <>
-		<Hero header={`"${query.q}" 검색 결과`} description={`'${query.q}' 에 대한 검색 결과입니다.`} />
+		<Hero type='bots' header={`"${query.q}" 검색 결과`} description={`'${query.q}' 에 대한 검색 결과입니다.`} />
 		<section id='list'>
 			<Container>
 				<Advertisement />
@@ -45,7 +45,7 @@ export const getServerSideProps = async(ctx: Context) => {
 		ctx.res.setHeader('Location', '/')
 		return { props: {} }
 	}
-	let data: BotList
+	let data: List<Bot>
 	if(!ctx.query.page) ctx.query.page = '1'
 	const validate = await SearchQuerySchema.validate(ctx.query).then(el => el).catch(() => null)
 	if(!validate || isNaN(Number(ctx.query.page))) data = null
@@ -61,7 +61,7 @@ export const getServerSideProps = async(ctx: Context) => {
 
 
 interface SearchProps {
-  data: BotList,
+  data: List<Bot>
   query: URLQuery
 }
 

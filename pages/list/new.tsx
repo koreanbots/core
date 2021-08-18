@@ -2,7 +2,7 @@ import { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 
 import { get } from '@utils/Query'
-import { BotList } from '@types'
+import { Bot, List } from '@types'
 
 const Hero = dynamic(() => import('@components/Hero'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
@@ -35,7 +35,7 @@ export const getServerSideProps = async () => {
 }
 
 interface NewProps {
-  data: BotList
+  data: List<Bot>
 }
 
 export default New

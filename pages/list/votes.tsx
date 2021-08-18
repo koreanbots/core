@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import { ParsedUrlQuery } from 'querystring'
 
-import { BotList } from '@types'
+import { Bot, List } from '@types'
 import { get }from '@utils/Query'
 
 import NotFound from '../404'
@@ -36,7 +36,7 @@ const Votes:NextPage<VotesProps> = ({ data }) => {
 	</>
 }
 export const getServerSideProps = async (ctx:Context) => {
-	let data: BotList
+	let data: List<Bot>
 	if(!ctx.query.page) ctx.query.page = '1'
 	const validate = await PageCount.validate(ctx.query.page).then(el => el).catch(() => null)
 	if(!validate || isNaN(Number(ctx.query.page))) data = null
@@ -49,7 +49,7 @@ export const getServerSideProps = async (ctx:Context) => {
 }
 
 interface VotesProps {
-  data: BotList
+  data: List<Bot>
 }
 
 interface Context extends NextPageContext {

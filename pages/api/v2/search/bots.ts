@@ -5,7 +5,7 @@ import RequestHandler from '@utils/RequestHandler'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { SearchQuerySchema } from '@utils/Yup'
 
-import { BotList } from '@types'
+import { Bot, List } from '@types'
 
 const SearchBots = RequestHandler().get(async (req: ApiRequest, res: NextApiResponse) => {
 	const validated = await SearchQuerySchema.validate({ q: req.query.q || req.query.query, page: req.query.page })
@@ -15,7 +15,7 @@ const SearchBots = RequestHandler().get(async (req: ApiRequest, res: NextApiResp
 		})
 	if (!validated) return
 
-	let result: BotList
+	let result: List<Bot>
 	try {
 		result = await get.list.search.load(
 			JSON.stringify({ page: validated.page, query: validated.q })
@@ -25,7 +25,7 @@ const SearchBots = RequestHandler().get(async (req: ApiRequest, res: NextApiResp
 	}
 	if (result.totalPage < validated.page || result.currentPage !== validated.page)
 		return ResponseWrapper(res, { code: 404, message: '검색 결과가 없습니다.' })
-	else ResponseWrapper<BotList>(res, { code: 200, data: result })
+	else ResponseWrapper<List<Bot>>(res, { code: 200, data: result })
 })
 
 interface ApiRequest extends NextApiRequest {

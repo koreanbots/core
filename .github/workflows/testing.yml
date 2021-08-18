@@ -48,7 +48,9 @@ jobs:
       - name: yarn install
         run: yarn install
       - name: Build
-        run: yarn build
+        run: |
+        printf 'defaults.url=https://sentry.io/\ndefaults.org=koreanbots\ndefaults.project=client' > sentry.properties
+        yarn build
         env:
           CI: true
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}

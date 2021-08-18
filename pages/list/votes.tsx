@@ -20,7 +20,7 @@ const Votes:NextPage<VotesProps> = ({ data }) => {
 	const router = useRouter()
 	if(!data || data.data.length === 0 || data.totalPage < Number(router.query.page)) return <NotFound />
 	return <>
-		<Hero header='하트 랭킹' description='하트를 많이 받은 봇들의 순위입니다!'/>
+		<Hero type='bots' header='하트 랭킹' description='하트를 많이 받은 봇들의 순위입니다!'/>
 		<section id='list'>
 			<Container className='pb-10'>
 				<Advertisement />

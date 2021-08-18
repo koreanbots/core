@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import dynamic from 'next/dynamic'
 import { ParsedUrlQuery } from 'querystring'
 
-import { List, Bot, Server } from '@types'
+import { List, Bot } from '@types'
 import { get } from '@utils/Query'
 import { SearchQuerySchema } from '@utils/Yup'
 import { KoreanbotsEndPoints } from '@utils/Constants'
@@ -12,42 +12,37 @@ import { KoreanbotsEndPoints } from '@utils/Constants'
 const Hero = dynamic(() => import('@components/Hero'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
 const BotCard = dynamic(() => import('@components/BotCard'))
-const ServerCard = dynamic(() => import('@components/ServerCard'))
 const Container = dynamic(() => import('@components/Container'))
 const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
+const Paginator = dynamic(() => import('@components/Paginator'))
 const LongButton = dynamic(() => import('@components/LongButton'))
 const Redirect = dynamic(() => import('@components/Redirect'))
 
-const SearchComponent: FC<{data: List<Bot|Server>, query: URLQuery, type: 'bot' | 'server' }> = ({ data, query, type }) => {
-	return <div className='py-20'>
-		<h1 className='text-4xl font-bold'>{type === 'bot' ? '봇' : '서버'}</h1>
+const SearchComponent: FC<{data: List<Bot>, query: URLQuery }> = ({ data, query }) => {
+	return <div className='py-10'>
 		{ !data || data.data.length === 0 ? <h1 className='text-3xl font-bold text-center py-20'>검색 결과가 없습니다.</h1> :
 			<>
 				<ResponsiveGrid>
 					{
-						data.data.map(el => ( type === 'bot' ? <BotCard key={el.id} bot={el as Bot} /> : <ServerCard key={el.id} type='list' server={el as Server} /> ))
+						data.data.map(el => <BotCard key={el.id} bot={el as Bot} /> )
 					}
 				</ResponsiveGrid>
-				{
-					data.totalPage !== 1 && <LongButton center href={type === 'bot' ? KoreanbotsEndPoints.URL.searchBot(query.q) : KoreanbotsEndPoints.URL.searchServer(query.q)}>
-						더보기
-					</LongButton>
-				}
+				<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname='/search' searchParams={query} />
 			</>
 		}
 	</div>
 }
-const Search:NextPage<SearchProps> = ({ botData, serverData, priority, query }) => {
+const Search:NextPage<SearchProps> = ({ botData, query }) => {
 	if(!query?.q) return <Redirect text={false} to='/' />
-	const list: ('bot'|'server')[] = [ 'bot', 'server' ]
 	return <>
-		<Hero type={priority === 'bot' ? 'bots' : 'servers'} header={`"${query.q}" 검색 결과`} description={`'${query.q}' 에 대한 검색 결과입니다.`} />
+		<Hero type='bots' header={`"${query.q}" 검색 결과`} description={`'${query.q}' 에 대한 검색 결과입니다.`} />
 		<Container>
 			<section id='list'>
 				<Advertisement />
-				{
-					(priority === 'server' ? list.reverse() : list).map(el => <SearchComponent key={el} data={el === 'bot' ? botData : serverData} query={query} type={el} />)
-				}	
+				<h1 className='text-4xl font-bold'>봇</h1>
+				<SearchComponent data={botData} query={query} />
+				<h1 className='text-2xl font-bold py-10'>서버를 찾으시나요?</h1>
+				<LongButton center href={KoreanbotsEndPoints.URL.searchServer(query.q)}>서버 검색 결과 보기</LongButton>
 				<Advertisement />
 			</section>
 		</Container>
@@ -68,9 +63,7 @@ export const getServerSideProps = async(ctx: Context) => {
 		return {
 			props: {
 				botData: await get.list.search.load(JSON.stringify({ query: ctx.query.q || '', page: ctx.query.page })).then(el => el).catch(() => null),
-				serverData: await get.serverList.search.load(JSON.stringify({ query: ctx.query.q || '', page: ctx.query.page })).then(el => el).catch(() => null),
-				query: ctx.query,
-				priority: validate.priority || null
+				query: ctx.query
 			}
 		}
 	}
@@ -79,8 +72,6 @@ export const getServerSideProps = async(ctx: Context) => {
 
 interface SearchProps {
   botData?: List<Bot>
-	serverData?: List<Server>
-	priority?: 'bot' | 'server'
   query: URLQuery
 }
 

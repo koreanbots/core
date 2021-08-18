@@ -256,6 +256,8 @@ export const KoreanbotsEndPoints = {
 		static server (id: string) { return `${this.root}/servers/${id}` }
 		static user (id: string) { return `${this.root}/users/${id}` }
 		static submittedBot(id: string, date: number) { return `${this.root}/pendingBots/${id}/${date}` }
+		static searchBot(query: string) { return `${this.root}/bots/search?q=${encodeURIComponent(query)}` }
+		static searchServer(query: string) { return `${this.root}/servers/search?q=${encodeURIComponent(query)}` }
 	},
 	baseAPI: '/api/v2',
 	login: '/api/auth/discord',

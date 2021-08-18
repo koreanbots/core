@@ -128,11 +128,13 @@ export const SearchQuerySchema: Yup.SchemaOf<SearchQuery> = Yup.object({
 		.notRequired()
 		.default(1)
 		.label('페이지'),
+	priority: Yup.mixed().oneOf(['bot', 'server']).notRequired()
 })
 
 interface SearchQuery {
 	q: string
-	page: number
+	page: number,
+	priority?: 'bot' | 'server'
 }
 
 export const AddBotSubmitSchema: Yup.SchemaOf<AddBotSubmit> = Yup.object({

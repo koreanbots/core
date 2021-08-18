@@ -125,7 +125,7 @@ const AddServer:NextPage<AddServerProps> = ({ logged, user, csrfToken, server, s
 								<Label For='agree' error={errors.agree && touched.agree ? errors.agree : null} grid={false}>
 									<div className='flex items-center'>
 										<CheckBox name='agree' />
-										<strong className='text-sm ml-2'>해당 내용을 숙지하였으며, 등록 이후에 가이드라인을 위반하여 서버가 웹에서 삭제될 수 있다는 점을 확인했습니다.</strong>
+										<strong className='text-sm ml-2'>해당 내용을 숙지하였으며, 등록 이후에 가이드라인을 위반할시 서버가 웹에서 삭제될 수 있다는 점을 확인했습니다.</strong>
 									</div>
 								</Label>
 								<Divider />

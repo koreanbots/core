@@ -41,7 +41,7 @@ const Search: React.FC = () => {
 		const controller = new AbortController()
 		setAbortControl(controller)
 		if (value.length > 1) setLoading(true)
-		const res = await Fetch<BotList>(`/search/bots?q=${encodeURIComponent(value)}`, {
+		const res = await Fetch<List<Bot>>(`/search/bots?q=${encodeURIComponent(value)}`, {
 			signal: controller.signal,
 		}).catch((e) => {
 			if(e.name !== 'AbortError') throw e

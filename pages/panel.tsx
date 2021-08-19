@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 
 import { get } from '@utils/Query'
 import { parseCookie } from '@utils/Tools'
-import { Bot, SubmittedBot, User } from '@types'
+import { Bot, Server, SubmittedBot, User } from '@types'
 import Fetch from '@utils/Fetch'
 import { getToken } from '@utils/Csrf'
 
@@ -14,6 +14,7 @@ const Container = dynamic(() => import('@components/Container'))
 const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 const Button = dynamic(() => import('@components/Button'))
 const BotCard = dynamic(() => import('@components/BotCard'))
+const ServerCard = dynamic(() => import('@components/ServerCard'))
 const SubmittedBotCard = dynamic(() => import('@components/SubmittedBotCard'))
 const Login = dynamic(() => import('@components/Login'))
 
@@ -46,6 +47,17 @@ const Panel:NextPage<PanelProps> = ({ logged, user, submits, csrfToken }) => {
 					<ResponsiveGrid>
 						{
 							(user.bots as Bot[]).map(bot=> <BotCard key={bot.id} bot={bot} manage />)
+						}
+					</ResponsiveGrid>
+			}
+		</div>
+		<div className='mt-6'>
+			<h2 className='text-3xl font-bold'>나의 서버</h2>
+			{
+				user.servers.length === 0 ? <h2 className='text-xl'>소유한 서버가 없습니다.</h2> :
+					<ResponsiveGrid>
+						{
+							(user.servers as Server[]).map(server=> <ServerCard key={server.id} server={server} type='manage' />)
 						}
 					</ResponsiveGrid>
 			}

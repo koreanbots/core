@@ -453,6 +453,12 @@ async function getBotSpec(id: string, userID: string) {
 	return serialize(res[0])
 }
 
+async function getServerSpec(id: string, userID: string): Promise<{ id: string, token: string }> {
+	const res = await knex('servers').select(['id', 'token']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
+	if(!res[0]) return null
+	return serialize(res[0])
+}
+
 async function deleteBot(id: string): Promise<boolean> {
 	const bot = await knex('bots').where({ id }).del()
 	get.bot.clear(id)
@@ -528,6 +534,13 @@ async function resetBotToken(id: string, beforeToken: string) {
 	const token = sign({ id })
 	const bot = await knex('bots').update({ token }).where({ id, token: beforeToken })
 	if(bot !== 1) return null
+	return token
+}
+
+async function resetServerToken(id: string, beforeToken: string) {
+	const token = sign({ id })
+	const server = await knex('servers').update({ token }).where({ id, token: beforeToken })
+	if(server !== 1) return null
 	return token
 }
 
@@ -723,6 +736,7 @@ export const get = {
 			}))).map(row => serialize(row))
 		, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 60000 }) }),
 	botSpec: getBotSpec,
+	serverSpec: getServerSpec,
 	list: {
 		category: new DataLoader(
 			async (key: string[]) => 
@@ -805,6 +819,7 @@ export const update = {
 	assignToken,
 	updateBotApplication,
 	resetBotToken,
+	resetServerToken,
 	updateServer,
 	Github,
 	bot: updateBot,

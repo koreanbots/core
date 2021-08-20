@@ -5,7 +5,7 @@ import { NextSeo } from 'next-seo'
 import { get } from '@utils/Query'
 import { parseCookie } from '@utils/Tools'
 
-import { Bot, User } from '@types'
+import { Bot, Server, User } from '@types'
 
 const Application = dynamic(() => import('@components/Application'))
 const DeveloperLayout = dynamic(() => import('@components/DeveloperLayout'))
@@ -17,10 +17,17 @@ const Applications: NextPage<ApplicationsProps> = ({ user }) => {
 	</Login>
 	return <DeveloperLayout enabled='applications'>
 		<h1 className='text-3xl font-bold'>나의 봇</h1>
-		<p className='text-gray-400'>한국 디스코드봇 리스트 API를 활용하여 봇에 다양한 기능을 추가해보세요.</p>
+		<p className='text-gray-400'>한국 디스코드 리스트 API를 활용하여 봇에 다양한 기능을 추가해보세요.</p>
 		<div className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 mt-2'>
 			{
 				(user.bots as Bot[]).map(bot => <Application key={bot.id} id={bot.id} name={bot.name} type='bot' />)
+			}
+		</div>
+		<h1 className='text-3xl font-bold mt-10'>나의 서버</h1>
+		<p className='text-gray-400'>한국 디스코드 리스트 API를 활용하여 서버에 다양한 기능을 추가해보세요.</p>
+		<div className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 mt-2'>
+			{
+				(user.servers as Server[]).map(bot => <Application key={bot.id} id={bot.id} name={bot.name} type='server' />)
 			}
 		</div>
 	</DeveloperLayout>

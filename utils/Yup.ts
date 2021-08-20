@@ -376,12 +376,14 @@ export interface DeveloperBot {
 	_csrf: string
 }
 
-export const ResetBotTokenSchema: Yup.SchemaOf<ResetBotToken> = Yup.object({
+export const ResetTokenSchema: Yup.SchemaOf<ResetToken> = Yup.object({
 	token: Yup.string().required(),
 	_csrf: Yup.string().required(),
 })
 
-export interface ResetBotToken {
+export const ResetBotTokenSchema = ResetTokenSchema
+
+export interface ResetToken {
 	token: string
 	_csrf: string
 }

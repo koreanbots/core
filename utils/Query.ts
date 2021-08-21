@@ -444,6 +444,7 @@ async function submitServer(userID: string, id: string, data: AddServerSubmit): 
 		invite: data.invite,
 		token: sign({ id }),
 	})
+	get.server.clear(id)
 	return true
 }
 

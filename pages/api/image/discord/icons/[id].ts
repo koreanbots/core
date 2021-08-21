@@ -41,6 +41,7 @@ const Icon = RequestHandler()
 		let img: Buffer
 		if(!guild?.icon) img = await get.images.server.load(DiscordEnpoints.CDN.default(+id % 4))
 		else img = await get.images.server.load(DiscordEnpoints.CDN.guild(id, guild.icon, { format: validated.ext === 'gif' && !guild.icon.startsWith('a_') ? 'png' : validated.ext }))
+		console.log(DiscordEnpoints.CDN.guild(id, guild.icon, { format: validated.ext === 'gif' && !guild.icon.startsWith('a_') ? 'png' : validated.ext }))
 		if(!img) {
 			img = await get.images.server.load(DiscordEnpoints.CDN.default(+id % 4, { format: 'png', size: validated.size }))
 			ext = 'png'

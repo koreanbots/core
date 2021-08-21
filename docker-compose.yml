@@ -33,7 +33,7 @@ services:
   web:
     container_name: web
     restart: always
-    image: wonderlandpark/koreanbots:nightly
+    image: 397554924689.dkr.ecr.ap-northeast-2.amazonaws.com/koreanlist
     ports:
       - 4000:3000
     links:

@@ -2,7 +2,7 @@ import { SyntheticEvent, useEffect, useState } from 'react'
 import { supportsWebP } from '@utils/Tools'
 import Logger from '@utils/Logger'
 
-const Image: React.FC<ImageProps> = props => {
+const BaseImage: React.FC<ImageProps> = props => {
 	const fallback = '/img/default.png'
 	const [ webpUnavailable, setWebpUnavailable ] = useState<boolean>()
 	
@@ -59,4 +59,4 @@ interface ImageTarget extends EventTarget {
 	onerror: (event: SyntheticEvent<HTMLImageElement, ImageEvent>) => void
 }
 
-export default Image
+export default BaseImage

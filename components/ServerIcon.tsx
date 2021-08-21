@@ -4,7 +4,7 @@ import { DiscordEnpoints, KoreanbotsEndPoints } from '@utils/Constants'
 
 const Image = dynamic(() => import('@components/Image'))
 
-const DiscordAvatar: React.FC<DiscordAvatarProps> = ({ id, size, className, alt, hash }) => {
+const ServerIcon: React.FC<ServerIconProps> = ({ id, size, className, alt, hash }) => {
 	return <Image
 		className={className}
 		alt={alt}
@@ -14,7 +14,7 @@ const DiscordAvatar: React.FC<DiscordAvatarProps> = ({ id, size, className, alt,
 	
 }
 
-interface DiscordAvatarProps {
+interface ServerIconProps {
 	alt?: string
 	id: string
 	hash?: string
@@ -32,4 +32,4 @@ interface ImageTarget extends EventTarget {
 	onerror: (event: SyntheticEvent<HTMLImageElement, ImageEvent>) => void
 }
 
-export default DiscordAvatar
+export default ServerIcon

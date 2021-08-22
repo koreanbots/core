@@ -126,7 +126,7 @@ async function fetchServerOwners(id: string): Promise<User[]|null> {
 }
 
 async function getServerData(id: string): Promise<ServerData|null> {
-	return (await Servers.findById(id))?.data || null
+	return serialize((await Servers.findById(id))?.data || null)
 }
 
 async function getUser(id: string, topLevel = true):Promise<User> {

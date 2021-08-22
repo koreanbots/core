@@ -127,7 +127,7 @@ export const serverCategories = [
 	'친목',
 	'음악',
 	'교육',
-	'연애',
+	'연애',
 	// 게임
 	'게임',
 	'오버워치',

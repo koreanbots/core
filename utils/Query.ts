@@ -106,9 +106,9 @@ async function getServer(id: string, topLevel=true): Promise<Server> {
 		// console.log(data)
 		res[0].icon = data?.icon || null
 		res[0].members = data?.memberCount || null
-		res[0].emojis = data?.emojis || null
+		res[0].emojis = data?.emojis || []
 		res[0].category = JSON.parse(res[0].category)
-		res[0].boostTier = data?.boostTier || null
+		res[0].boostTier = data?.boostTier ?? null
 		if(topLevel) {
 			res[0].owner = await get._rawUser.load(data?.owner || '') ||  null
 			res[0].bots = (await Promise.all(data?.bots.slice(0, 3).map(el => get._rawBot.load(el)) || [])).filter(el => el) || null

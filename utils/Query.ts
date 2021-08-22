@@ -708,11 +708,11 @@ export const get = {
 	server: new DataLoader(
 		async (ids: string[]) =>
 			(await Promise.all(ids.map(async (id: string) => await getServer(id)))).map(row => serialize(row))
-		, { cacheMap: new TLRU({ maxStoreSize: 5000, maxAgeMs: 43200000 }) }),
+		, { cacheMap: new TLRU({ maxStoreSize: 5000, maxAgeMs: 60000 }) }),
 	_rawServer: new DataLoader(
 		async (ids: string[]) =>
 			(await Promise.all(ids.map(async (id: string) => await getServer(id, false)))).map(row => serialize(row))
-		, { cacheMap: new TLRU({ maxStoreSize: 5000, maxAgeMs: 43200000 }) }),
+		, { cacheMap: new TLRU({ maxStoreSize: 5000, maxAgeMs: 60000 }) }),
 	user: new DataLoader(
 		async (ids: string[]) =>
 			(await Promise.all(ids.map(async (el: string) => await getUser(el)))).map(row => serialize(row))

@@ -28,9 +28,9 @@ const ServerIndex: NextPage<ServerIndexProps> = ({ votes, trusted }) => {
 			<Paginator totalPage={votes.totalPage} currentPage={votes.currentPage} pathname='/list/votes' />
 			<Advertisement />
 			<h1 className='text-3xl font-bold mb-2'>
-				<i className='fa fa-check mr-3 mt-10 text-green-500' /> 신뢰된 봇
+				<i className='fa fa-check mr-3 mt-10 text-green-500' /> 신뢰된 서버
 			</h1>
-			<p className='text-base'>KOREANBOTS에서 인증받은 신뢰할 수 있는 봇들입니다!!</p>
+			<p className='text-base'>한국 디스코드 리스트에서 인증받은 신뢰할 수 있는 서버들입니다!!</p>
 			<ResponsiveGrid>
 				{
 					trusted.data.slice(0, 4).map(server=> <ServerCard type='list' key={server.id} server={server} />)

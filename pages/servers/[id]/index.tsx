@@ -190,10 +190,16 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 										<Tag key={el} text={el} href={`/servers/categories/${el}`} />
 									))}
 								</div>
-								<h2 className='3xl mb-2 mt-2 font-bold'>이모지</h2>
-								<div className='flex flex-wrap'>
-									{data.emojis.map(el => <Image src={el.url} key={el.name} className='w-9 h-9 m-1' />)}
-								</div>
+								{ 
+									data.emojis.length !== 0 && <>
+										<h2 className='3xl mb-2 mt-2 font-bold'>이모지</h2>
+										<div className='flex flex-wrap'>
+											{
+												data.emojis.map(el => <Image src={el.url} key={el.name} className='w-9 h-9 m-1' />)
+											}
+										</div>
+									</>
+								}
 								<h2 className='3xl mb-2 mt-2 font-bold'>소유자</h2>
 								{
 									data.owner && <Owner

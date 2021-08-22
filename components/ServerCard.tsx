@@ -73,7 +73,7 @@ const ServerCard: React.FC<BotCardProps> = ({ type, server }) => {
 								<div>
 									<div className='category flex flex-wrap px-2'>
 										{server.category?.slice(0, 3).map(el => (
-											<Tag key={el} text={el} href={`/bots/categories/${el}`} dark />
+											<Tag key={el} text={el} href={`/servers/categories/${el}`} dark />
 										))}{' '}
 										{server.category?.length > 3 && <Tag text={`+${server.category.length - 3}`} dark />}
 									</div>

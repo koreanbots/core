@@ -15,7 +15,7 @@ const BaseImage: React.FC<ImageProps> = props => {
 		loading='lazy'
 		className={props.className}
 		src={
-			webpUnavailable ? props.fallbackSrc : props.src
+			webpUnavailable && props.fallbackSrc || props.src
 		}
 		onError={(e: SyntheticEvent<HTMLImageElement, ImageEvent>)=> {
 			if(webpUnavailable) {

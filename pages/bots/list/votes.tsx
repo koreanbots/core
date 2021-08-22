@@ -6,7 +6,7 @@ import { ParsedUrlQuery } from 'querystring'
 import { Bot, List } from '@types'
 import { get }from '@utils/Query'
 
-import NotFound from '../404'
+import NotFound from '../../404'
 import { PageCount } from '@utils/Yup'
 
 const Hero = dynamic(() => import('@components/Hero'))
@@ -29,7 +29,7 @@ const Votes:NextPage<VotesProps> = ({ data }) => {
 						data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
 					}
 				</ResponsiveGrid>
-				<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname='/list/votes' />
+				<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname='/bots/list/votes' />
 				<Advertisement />
 			</Container>
 		</section>

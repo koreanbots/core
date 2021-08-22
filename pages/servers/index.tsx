@@ -25,7 +25,7 @@ const ServerIndex: NextPage<ServerIndexProps> = ({ votes, trusted }) => {
 					votes.data.map(server=> <ServerCard type='list' key={server.id} server={server} />)
 				}
 			</ResponsiveGrid>
-			<Paginator totalPage={votes.totalPage} currentPage={votes.currentPage} pathname='/list/votes' />
+			<Paginator totalPage={votes.totalPage} currentPage={votes.currentPage} pathname='/servers/list/votes' />
 			<Advertisement />
 			<h1 className='text-3xl font-bold mb-2'>
 				<i className='fa fa-check mr-3 mt-10 text-green-500' /> 신뢰된 서버

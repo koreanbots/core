@@ -47,7 +47,7 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 						newBots.data.slice(0, 4).map(bot=> <BotCard key={bot.id} bot={bot} />)
 					}
 				</ResponsiveGrid>
-				<LongButton href='/list/new' center>더보기</LongButton>
+				<LongButton href='/bots/list/new' center>더보기</LongButton>
 				<Advertisement />
 			</Container>
 		</>

@@ -160,7 +160,7 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 									<div>
 										<i className='far fa-gem' /> 부스트 티어
 									</div>
-									<div>{`${data.boostTier}레벨` || 'N/A'}</div>
+									<div>{typeof data.boostTier === 'number' ? `${data.boostTier}레벨` : 'N/A'}</div>
 									<div>
 										<i className='fas fa-calendar-day' /> 서버 생성일
 									</div>

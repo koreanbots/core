@@ -609,7 +609,7 @@ async function ServerAuthorization(token: string): Promise<string|false> {
 
 async function fetchUserDiscordToken(id: string): Promise<DiscordTokenInfo> {
 	const res = await knex('users').select(['discord']).where({ id })
-	let discord = verify(res[0].discord ?? '')
+	let discord = verify(res[0]?.discord ?? '')
 	if(!discord) return null
 	if(Date.now() > (discord.iat + discord.expires_in) * 1000) {
 		const token: DiscordTokenInfo = await fetch(DiscordEnpoints.Token, {

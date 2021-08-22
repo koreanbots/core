@@ -27,7 +27,7 @@ const Hero:React.FC<HeroProps> = ({ type, header, description }) => {
 				<div className='flex flex-wrap mt-5'>
 					<Tag key='list' text={<>
 						<i className='fas fa-heart text-red-600'/> 하트 랭킹
-					</>} dark bigger href='/list/votes' />
+					</>} dark bigger href={type === 'bots' ? '/bots/list/votes' : '/servers/list/votes'} />
 					{ (type === 'bots' ? botCategories : serverCategories).slice(0, 4).map(t=> <Tag key={t} text={<>
 						<i className={(type === 'bots' ? botCategoryIcon : serverCategoryIcon)[t]} /> {t}
 					</>} dark bigger href={`${link}/${t}`} />) }

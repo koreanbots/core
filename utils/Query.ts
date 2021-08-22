@@ -354,12 +354,13 @@ async function getVote(userID: string, targetID: string, type: 'bot' | 'server')
 
 async function voteBot(userID: string, botID: string): Promise<number|boolean> {
 	const user = await knex('users').select(['votes']).where({ id: userID })
+	const key = `bot:${botID}`
 	if(user.length === 0) return null
 	const date = +new Date()
 	const data = JSON.parse(user[0].votes)
-	const lastDate = data[botID] || 0
+	const lastDate = data[key] || 0
 	if(date - lastDate < VOTE_COOLDOWN) return VOTE_COOLDOWN - (date - lastDate)
-	data[botID] = date
+	data[key] = date
 	await knex('bots').where({ id: botID }).increment('votes', 1)
 	await knex('users').where({ id: userID }).update({ votes: JSON.stringify(data) })
 	const record = await Bots.updateOne({ _id: botID, 'voteMetrix.day': getYYMMDD() }, { $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } })
@@ -369,12 +370,13 @@ async function voteBot(userID: string, botID: string): Promise<number|boolean> {
 
 async function voteServer(userID: string, serverID: string): Promise<number|boolean> {
 	const user = await knex('users').select(['votes']).where({ id: userID })
+	const key = `server:${serverID}`
 	if(user.length === 0) return null
 	const date = +new Date()
 	const data = JSON.parse(user[0].votes)
-	const lastDate = data[serverID] || 0
+	const lastDate = data[key] || 0
 	if(date - lastDate < VOTE_COOLDOWN) return VOTE_COOLDOWN - (date - lastDate)
-	data[serverID] = date
+	data[key] = date
 	await knex('servers').where({ id: serverID }).increment('votes', 1)
 	await knex('users').where({ id: userID }).update({ votes: JSON.stringify(data) })
 	// const record = await Servers.updateOne({ _id: serverID, 'voteMetrix.day': getYYMMDD() }, { $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } })

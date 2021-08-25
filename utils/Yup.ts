@@ -205,7 +205,9 @@ export interface AddBotSubmit {
 }
 
 export const AddServerSubmitSchema: Yup.SchemaOf<AddServerSubmit> = Yup.object({
-	agree: Yup.boolean(),
+	agree: Yup.boolean()
+		.oneOf([true], '상단의 체크박스를 클릭해주세요.')
+		.required('상단의 체크박스를 클릭해주세요.'),
 	invite: Yup.string()
 		.matches(Vanity, '디스코드 초대코드 형식을 지켜주세요.')
 		.min(2, '초대코드는 최소 2자여야합니다.')

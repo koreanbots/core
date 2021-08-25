@@ -235,14 +235,20 @@ export const KoreanbotsEndPoints = {
 	OG: class {
 		static root = 'https://og.kbots.link'
 		static origin = 'https://koreanbots.dev'
-		static bot(id: string, name: string, bio: string, tags: string[], stats: string[]) {
+		static generate(id: string, name: string, bio: string, tags: string[], stats: string[], type: 'bot' | 'server') {
 			const u = new URL(this.root)
 			u.pathname = name
-			u.searchParams.append('image', this.origin + KoreanbotsEndPoints.CDN.avatar(id, { format: 'webp', size: 256 }))
+			u.searchParams.append('image', this.origin + ( type === 'bot' ? KoreanbotsEndPoints.CDN.avatar(id, { format: 'webp', size: 256 }) : KoreanbotsEndPoints.CDN.icon(id, { format: 'webp', size: 256 }) ))
 			u.searchParams.append('bio', bio)
 			tags.map(t => u.searchParams.append('tags', t))
 			stats.map(s => u.searchParams.append('stats', s))
 			return u.href
+		}
+		static bot(id: string, name: string, bio: string, tags: string[], stats: string[]) {
+			return this.generate(id, name, bio, tags, stats, 'bot')
+		}
+		static server(id: string, name: string, bio: string, tags: string[], stats: string[]) {
+			return this.generate(id, name, bio, tags, stats, 'server')
 		}
 	},
 	CDN: class {

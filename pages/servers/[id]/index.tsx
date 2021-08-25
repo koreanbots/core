@@ -54,7 +54,7 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 				openGraph={{
 					images: [
 						{
-							url: KoreanbotsEndPoints.OG.bot(data.id, data.name, data.intro, data.category, [formatNumber(data.votes), formatNumber(data.members)]),
+							url: KoreanbotsEndPoints.OG.server(data.id, data.name, data.intro, data.category, [formatNumber(data.votes), formatNumber(data.members)]),
 							width: 2048,
 							height: 1170,
 							alt: 'Server Preview Image'

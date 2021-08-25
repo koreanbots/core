@@ -240,6 +240,7 @@ export const KoreanbotsEndPoints = {
 			u.pathname = name
 			u.searchParams.append('image', this.origin + ( type === 'bot' ? KoreanbotsEndPoints.CDN.avatar(id, { format: 'webp', size: 256 }) : KoreanbotsEndPoints.CDN.icon(id, { format: 'webp', size: 256 }) ))
 			u.searchParams.append('bio', bio)
+			u.searchParams.append('type', type)
 			tags.map(t => u.searchParams.append('tags', t))
 			stats.map(s => u.searchParams.append('stats', s))
 			return u.href

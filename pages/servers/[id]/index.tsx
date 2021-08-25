@@ -195,7 +195,7 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 										<h2 className='3xl mb-2 mt-2 font-bold'>이모지</h2>
 										<div className='flex flex-wrap'>
 											{
-												data.emojis.map(el => <Image src={el.url} key={el.name} className='w-9 h-9 m-1' />)
+												data.emojis.map(el => <Image src={el.url} key={el.name} className='h-8 m-1' />)
 											}
 										</div>
 									</>

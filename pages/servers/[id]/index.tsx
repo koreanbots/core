@@ -33,6 +33,7 @@ const Message = dynamic(() => import('@components/Message'))
 const Modal = dynamic(() => import('@components/Modal'))
 
 const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
+	const [ emojisModal, setEmojisModal ] = useState(false)
 	const [ ownersModal, setOwnersModal ] = useState(false)
 	const [ owners, setOwners ] = useState<User[]>(null)
 	const bg = checkBotFlag(data?.flags, 'trusted') && data?.banner
@@ -195,9 +196,25 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 										<h2 className='3xl mb-2 mt-2 font-bold'>이모지</h2>
 										<div className='flex flex-wrap'>
 											{
-												data.emojis.map(el => <Image src={el.url} key={el.name} className='h-8 m-1' />)
+												data.emojis.slice(0, 5).map(el => <Image src={el.url} key={el.name} className='h-8 m-1' />)
+											}
+											{
+												data.emojis.length > 5 && <Tag className='cursor-pointer' onClick={() => setEmojisModal(true)} text={`+${data.emojis.length - 5}개`} />
 											}
 										</div>
+										<Modal header='이모지 전체보기' closeIcon isOpen={emojisModal} onClose={() => setEmojisModal(false)}
+											full dark={theme === 'dark'}>
+											<strong>{data.emojis.length}</strong>개의 이모지가 있습니다.
+											<div className='flex flex-wrap'>
+												{
+													data.emojis.map(el => <Tooltip zIndex={1000} key={el.name} placement='top' overlay={`:${el.name}:`} mouseLeaveDelay={0}>
+														<div>
+															<Image src={el.url} className='h-8 m-1' />
+														</div>
+													</Tooltip>)
+												}
+											</div>
+										</Modal>
 									</>
 								}
 								<h2 className='3xl mb-2 mt-2 font-bold'>소유자</h2>
@@ -211,9 +228,8 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 									/>
 								}
 								<LongButton onClick={() => setOwnersModal(true)}>관리자 전체보기</LongButton>
-								<Modal header='관리자 전체보기' closeIcon isOpen={ownersModal} onClose={() => {
-									setOwnersModal(false)
-								}} full dark={theme === 'dark'}>
+								<Modal header='관리자 전체보기' closeIcon isOpen={ownersModal} onClose={() => setOwnersModal(false)}
+									full dark={theme === 'dark'}>
 									<div className='grid gap-x-1 grid-rows-1 md:grid-cols-2'>
 										{owners ? owners.map(el => (
 											<Owner

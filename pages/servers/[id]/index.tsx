@@ -224,7 +224,6 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 										id={data.owner.id}
 										tag={data.owner.tag}
 										username={data.owner.username}
-										crown
 									/>
 								}
 								<LongButton onClick={() => setOwnersModal(true)}>관리자 전체보기</LongButton>

@@ -106,7 +106,7 @@ const ServerCard: React.FC<BotCardProps> = ({ type, server }) => {
 												</a>
 											</Link>
 											{type === 'manage' ? (
-												<Link href={`/bots/${server.id}/edit`}>
+												<Link href={`/servers/${server.id}/edit`}>
 													<a className='py-3 w-full text-center text-green-500 hover:text-white text-sm font-bold hover:bg-green-500 rounded-br-2xl hover:shadow-lg transition duration-100 ease-in'>
 											관리하기
 													</a>

@@ -40,7 +40,7 @@ export const getServerSideProps = async (ctx: NextPageContext) => {
 	const guilds = (await get.userGuilds.load(user || ''))?.filter(g=> (g.permissions & 8) || g.owner).map(async g => {
 		const server = (await get.server.load(g.id))
 		const data = await get.serverData(g.id)
-		return { ...g, ...(server || {}), data, members: data?.memberCount || null, exists: !!server }
+		return { ...g, ...(server || {}), ...((+new Date() - +new Date(data?.updatedAt)) < 2 * 60 * 1000  ? { data } : {}), members: data?.memberCount || null, exists: !!server }
 	})
 	return { props: { logged: !!user, user: await get.user.load(user || ''), guilds: (await Promise.all(guilds)).filter(g => !g?.exists) } }
 }

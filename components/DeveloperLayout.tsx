@@ -43,7 +43,7 @@ const DeveloperLayout: React.FC<DeveloperLayout> = ({ children, enabled, docs, c
 					<Divider className='lg:hidden' />
 					<Link href='/developers/applications'>
 						<li className={`cursor-pointer py-2 px-4 rounded-md ${enabled === 'applications' ? 'bg-discord-blurple text-white' : 'hover:text-gray-500 dark:hover:text-white'}`}>
-						나의 봇
+						나의 리스트
 						</li>
 					</Link>
 					<Link href='/developers/docs'>

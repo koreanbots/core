@@ -95,8 +95,6 @@ async function getServer(id: string, topLevel=true): Promise<Server> {
 		.orWhereRaw(`(flags & ${ServerFlags.partnered}) and vanity=?`, [id])
 	if (res[0]) {
 		const data = await getServerData(res[0].id)
-		console.log(typeof data.updatedAt)
-		console.log(+new Date() - +data.updatedAt)
 		if(!data || (+new Date() - +new Date(data.updatedAt)) > 3 * 60 * 1000) res[0].state = 'unreachable'
 		else {
 			res[0].flags = res[0].flags | (data.features.includes('PARTNERED') && ServerFlags.discord_partnered) | (data.features.includes('VERIFIED') && ServerFlags.verified)

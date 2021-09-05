@@ -193,7 +193,7 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 						</Link>
 					}
 					{
-						type !== 'server' && <Link href='/bots'>
+						type !== 'server' && <Link href='/servers'>
 							<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
 								<i className='fas fa-users' />
 								<span className='px-2 font-medium'>서버 리스트</span>

@@ -2,6 +2,8 @@ import type { GuildFeatures } from 'discord.js'
 import type { IncomingMessage } from 'http'
 import type { NextPageContext } from 'next'
 
+export type Nullable<T> = T | null
+
 export interface Bot {
 	id: string
 	name: string

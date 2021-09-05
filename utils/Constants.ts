@@ -1,4 +1,4 @@
-import { Bot, ImageOptions, KoreanbotsImageOptions } from '@types'
+import { Bot, ImageOptions, KoreanbotsImageOptions, Server } from '@types'
 import { KeyMap } from 'react-hotkeys'
 import { formatNumber, makeImageURL } from './Tools'
 
@@ -215,6 +215,27 @@ export const BotBadgeType = (data: Bot) => {
 		}
 	}
 }
+
+export const ServerBadgeType = (data: Server) => {
+	return {
+		members: {
+			label: '멤버수',
+			status: !data.members ? 'N/A' : formatNumber(data.members),
+			color: '7289DA'
+		},
+		votes: {
+			label: '하트',
+			status: `${formatNumber(data.votes)}`,
+			color: 'ef4444'
+		},
+		boost: {
+			label: '부스트',
+			status: `${!data.boostTier ? 0 : data.boostTier}레벨`,
+			color: 'fe73fa'
+		}
+	}
+}
+
 
 export const DiscordEnpoints = {
 	Token: BASE_URLs.api + '/oauth2/token',

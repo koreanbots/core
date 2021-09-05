@@ -79,6 +79,35 @@ interface WidgetOptions {
 type widgetType = 'votes' | 'servers' | 'status'
 type widgetExt = 'svg'
 
+export const ServerWidgetOptionsSchema: Yup.SchemaOf<ServerWidgetOptions> = Yup.object({
+	id: Yup.string().required(),
+	ext: Yup.mixed<widgetExt>()
+		.oneOf(['svg'])
+		.required(),
+	type: Yup.mixed<serverWidgetType>()
+		.oneOf(['votes', 'members', 'boost'])
+		.required(),
+	scale: Yup.number()
+		.positive()
+		.min(0.5)
+		.max(3)
+		.required(),
+	style: Yup.mixed<'flat' | 'classic'>()
+		.oneOf(['flat', 'classic'])
+		.default('flat'),
+	icon: Yup.boolean().default(true),
+})
+
+interface ServerWidgetOptions {
+	id: string
+	ext: widgetExt
+	type: serverWidgetType
+	scale: number
+	style: 'flat' | 'classic'
+	icon: boolean
+}
+
+type serverWidgetType = 'votes' | 'members' | 'boost'
 export const PageCount = Yup.number()
 	.integer()
 	.positive()

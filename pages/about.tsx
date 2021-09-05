@@ -11,11 +11,11 @@ const Container = dynamic(() => import('@components/Container'))
 
 const About:NextPage = () => {
 	return <div className='pb-10'>
-		<Docs title='소개' header={<h1 className='font-black text-4xl dark:text-koreanbots-blue'>“국내 디스코드 봇을 한 곳에서.”</h1>} subheader='한국 디스코드봇 리스트에서 자신의 서버에 딱 맞는 봇을 찾아보세요.'>
+		<Docs title='소개' header={<h1 className='font-black text-4xl dark:text-koreanbots-blue'>“국내 디스코드 봇을 한 곳에서.”</h1>} subheader='한국 디스코드 리스트에서 자신의 서버에 딱 맞는 봇을 찾아보세요.'>
 			<Container>
 				<div className='py-1'>
 					<h1 className='font-bold text-5xl my-5'>소개</h1>
-					<p className='text-lg'><span className='text-koreanbots-blue font-bold'>한국 디스코드봇 리스트</span>는 본인의 봇을 직접 등록하고, 봇이 필요한 유저는 필요한 봇을 카테고리별로 확인할 수 있는 플랫폼입니다.</p>
+					<p className='text-lg'><span className='text-koreanbots-blue font-bold'>한국 디스코드 리스트</span>는 본인의 봇을 직접 등록하고, 봇이 필요한 유저는 필요한 봇을 카테고리별로 확인할 수 있는 플랫폼입니다.</p>
 					<p className='text-lg'>자신의 봇을 등록하거나 필요한 봇을 찾아보세요!</p>
 					<Divider />
 					<h1 className='font-bold text-5xl my-5'>특징</h1>

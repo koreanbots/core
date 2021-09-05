@@ -113,7 +113,7 @@ const ServerApplication: NextPage<ServerApplicationProps> = ({ user, spec, serve
 							<Form>
 								<div className='mb-2'>
 									<h3 className='font-bold mb-1'>웹훅 URL</h3>
-									<p className='text-gray-400 text-sm mb-1'>웹훅을 이용하여 다양한 한국 디스코드봇 리스트의 봇에 발생하는 이벤트를 받아볼 수 있습니다.</p>
+									<p className='text-gray-400 text-sm mb-1'>웹훅을 이용하여 다양한 한국 디스코드 리스트의 봇에 발생하는 이벤트를 받아볼 수 있습니다.</p>
 									<Input name='webhook' placeholder='https://webhook.kbots.link' />
 									{touched.webhook && errors.webhook ? <div className='text-red-500 text-xs font-light mt-1'>{errors.webhook}</div> : null}
 								</div>

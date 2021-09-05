@@ -30,7 +30,7 @@ const Footer: React.FC<FooterProps> = ({ theme, setTheme }) => {
 					</div>
 					<div className='grid flex-grow gap-2 grid-cols-2 md:grid-cols-7'>
 						<div className='col-span-2 mb-2'>
-							<h2 className='text-koreanbots-blue text-base font-bold'>한국 디스코드봇 리스트</h2>
+							<h2 className='text-koreanbots-blue text-base font-bold'>한국 디스코드 리스트</h2>
 							<ul className='text-sm'>
 								<li>
 									<Link href='/about'>

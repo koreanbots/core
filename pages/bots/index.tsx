@@ -41,7 +41,7 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 				<h1 className='text-3xl font-bold mt-20 mb-2'>
 					<i className='far fa-star mr-3 text-yellow-500' /> 새로운 봇
 				</h1>
-				<p className='text-base'>최근에 한국 디스코드봇 리스트에 추가된 따끈따끈한 봇입니다.</p>
+				<p className='text-base'>최근에 한국 디스코드 리스트에 추가된 따끈따끈한 봇입니다.</p>
 				<ResponsiveGrid>
 					{
 						newBots.data.slice(0, 4).map(bot=> <BotCard key={bot.id} bot={bot} />)

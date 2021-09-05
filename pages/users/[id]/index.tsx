@@ -64,7 +64,7 @@ const Users: NextPage<UserProps> = ({ user, data }) => {
 						</div>
 						<div className='badges flex mb-2 justify-center lg:justify-start'>
 							{checkUserFlag(data.flags, 'staff') && (
-								<Tooltip text='한국 디스코드봇 리스트 스탭입니다.' direction='left'>
+								<Tooltip text='한국 디스코드 리스트 스탭입니다.' direction='left'>
 									<div className='pr-5 text-koreanbots-blue text-2xl'>
 										<i className='fas fa-hammer' />
 									</div>

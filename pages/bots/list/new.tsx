@@ -12,7 +12,7 @@ const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 
 const New:NextPage<NewProps> = ({ data }) => {
 	return <>
-		<Hero type='bots' header='새로운 봇' description='최근에 한국 디스코드봇 리스트에 추가된 봇들입니다!' />
+		<Hero type='bots' header='새로운 봇' description='최근에 한국 디스코드 리스트에 추가된 봇들입니다!' />
 		<Container className='pb-10'>
 			<Advertisement />
 			<ResponsiveGrid>

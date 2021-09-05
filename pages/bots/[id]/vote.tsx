@@ -35,7 +35,7 @@ const VoteBot: NextPage<VoteBotProps> = ({ data, user, theme, csrfToken }) => {
 	const router = useRouter()
 	if(!data?.id) return <NotFound />
 	if(!user) return <Login>
-		<NextSeo title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요.`} openGraph={{
+		<NextSeo title={data.name} description={`한국 디스코드 리스트에서 ${data.name}에 투표하세요.`} openGraph={{
 			images: [
 				{
 					url: KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 }),
@@ -49,7 +49,7 @@ const VoteBot: NextPage<VoteBotProps> = ({ data, user, theme, csrfToken }) => {
 	
 	if((checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== router.query.id) router.push(`/bots/${data.vanity}/vote?csrfToken=${csrfToken}`)
 	return <Container paddingTop className='py-10'>
-		<NextSeo title={data.name} description={`한국 디스코드봇 리스트에서 ${data.name}에 투표하세요.`} openGraph={{
+		<NextSeo title={data.name} description={`한국 디스코드 리스트에서 ${data.name}에 투표하세요.`} openGraph={{
 			images: [
 				{
 					url: KoreanbotsEndPoints.CDN.avatar(data.id, { format: 'png', size: 256 }),

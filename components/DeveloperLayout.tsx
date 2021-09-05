@@ -13,9 +13,9 @@ const DeveloperLayout: React.FC<DeveloperLayout> = ({ children, enabled, docs, c
 	const [ navbarEnabled, setNavbarOpen ] = useState(false)
 
 	return <div className='flex min-h-screen'>
-		<NextSeo title='한디리 개발자' description='한국 디스코드봇 리스트 API를 활용하여 봇에 다양한 기능을 추가해보세요.' openGraph={{
+		<NextSeo title='한디리 개발자' description='한국 디스코드 리스트 API를 활용하여 봇에 다양한 기능을 추가해보세요.' openGraph={{
 			title:'한디리 개발자',
-			description:'한국 디스코드봇 리스트 API를 활용하여 봇에 다양한 기능을 추가해보세요.'
+			description:'한국 디스코드 리스트 API를 활용하여 봇에 다양한 기능을 추가해보세요.'
 		}} />
 		<div className='block lg:hidden h-screen relative'>
 			<div className='w-18 pt-20 px-2 h-full text-center bg-little-white dark:bg-discord-black fixed'>

@@ -3,7 +3,7 @@ import { KeyMap } from 'react-hotkeys'
 import { formatNumber, makeImageURL } from './Tools'
 
 // Website META DATA
-export const TITLE = '한국 디스코드봇 리스트'
+export const TITLE = '한국 디스코드 리스트'
 export const DESCRIPTION = '다양한 국내 디스코드 봇들을 확인하고, 초대해보세요!'
 export const THEME_COLOR = '#3366FF'
 export const DSKR_BOT_ID = '784618064167698472'
@@ -295,10 +295,10 @@ export const git = { 'github.com': { icon: 'github', text: 'GitHub' },  'gitlab.
 export const KoreanbotsDiscord = 'https://discord.gg/JEh53MQ'
 export const ThemeColors = [{ name: '파랑', rgb: 'rgb(51, 102, 255)', hex: '#3366FF', color: 'koreanbots-blue' }, { name: '하양', rgb: 'rgb(251, 251, 251)', hex: '#FBFBFB', color: 'little-white' }, { name: '검정', rgb: 'rgb(27, 30, 35)', hex: '#1B1E23', color: 'very-black' }, { name: '보라', rgb: 'rgb(114, 137, 218)', hex: '#7289DA', color: 'discord-blurple' } ]
 export const KoreanbotsEmoji = [{
-	name: '한국 디스코드봇 리스트',
+	name: '한국 디스코드 리스트',
 	short_names: ['koreanbots', 'kbots', 'dbkr'],
 	emoticons: [],
-	keywords: ['koreanbots', '한국 디스코드봇 리스트', '한디리', 'kbots'],
+	keywords: ['koreanbots', '한국 디스코드 리스트', '한디리', 'kbots'],
 	imageUrl: '/logo.png'
 },
 {

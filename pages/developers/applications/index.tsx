@@ -13,7 +13,7 @@ const Login = dynamic(() => import('@components/Login'))
 
 const Applications: NextPage<ApplicationsProps> = ({ user }) => {
 	if(!user) return <Login>
-		<NextSeo title='한디리 개발자' description='한국 디스코드봇 리스트 API를 활용하여 봇에 다양한 기능을 추가해보세요.' />
+		<NextSeo title='한디리 개발자' description='한국 디스코드 리스트 API를 활용하여 봇에 다양한 기능을 추가해보세요.' />
 	</Login>
 	return <DeveloperLayout enabled='applications'>
 		<h1 className='text-3xl font-bold'>나의 봇</h1>

@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 
 import { redirectTo } from '@utils/Tools'
 import Fetch from '@utils/Fetch'
-import { User, UserCache } from '@types'
+import { Nullable, User, UserCache } from '@types'
 
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 
@@ -18,6 +18,7 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 	const [dropdownOpen, setDropdownOpen] = useState<boolean>(false)
 	const router = useRouter()
 	const logged = userCache?.id && userCache.version === 2
+	const type: Nullable<'bot'|'server'> = router.pathname.startsWith('/bots') ? 'bot' : router.pathname.startsWith('/servers') ? 'server' : null
 	const dev = router.pathname.startsWith('/developers')
 
 	useEffect(() => {
@@ -64,6 +65,24 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 									</a>
 								</Link>
 							</li>
+							{
+								type !== 'bot' && <li className='flex items-center'>
+									<Link href='/bots'>
+										<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
+											봇 리스트
+										</a>
+									</Link>
+								</li>
+							}
+							{
+								type !== 'server' && <li className='flex items-center'>
+									<Link href='/servers'>
+										<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
+											서버 리스트
+										</a>
+									</Link>
+								</li>
+							}
 							<li className='flex items-center'>
 								<Link href='/discord'>
 									<a target='_blank' rel='noreferrer' className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'
@@ -79,13 +98,24 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 									</a>
 								</Link>
 							</li>
-							<li className='flex items-center'>
-								<Link href='/addbot'>
-									<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
+							{
+								type === 'bot' && <li className='flex items-center'>
+									<Link href='/addbot'>
+										<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
 										봇 추가하기
-									</a>
-								</Link>
-							</li>
+										</a>
+									</Link>
+								</li>
+							}
+							{
+								type === 'server' && <li className='flex items-center'>
+									<Link href='/addserver'>
+										<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
+										서버 추가하기
+										</a>
+									</Link>
+								</li>
+							}
 						</ul>
 					</div>
 					<div className='hidden flex-grow items-center bg-white lg:flex lg:bg-transparent lg:shadow-none'>
@@ -154,6 +184,22 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 							</span>
 						</a>
 					</Link>
+					{
+						type !== 'bot' && <Link href='/bots'>
+							<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+								<i className='fas fa-robot' />
+								<span className='px-2 font-medium'>봇 리스트</span>
+							</a>
+						</Link>
+					}
+					{
+						type !== 'server' && <Link href='/bots'>
+							<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+								<i className='fas fa-users' />
+								<span className='px-2 font-medium'>서버 리스트</span>
+							</a>
+						</Link>
+					}
 					<Link href='/discord'>
 						<a target='_blank' rel='noreferrer' onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
 							<i className='fab fa-discord' />
@@ -166,12 +212,22 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 							<span className='px-2 font-medium'>소개</span>
 						</a>
 					</Link>
-					<Link href='/addbot'>
-						<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
-							<i className='fas fa-plus' />
-							<span className='px-2 font-medium'>봇 추가하기</span>
-						</a>
-					</Link>
+					{
+						type === 'bot' && <Link href='/addbot'>
+							<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+								<i className='fas fa-plus' />
+								<span className='px-2 font-medium'>봇 추가하기</span>
+							</a>
+						</Link>
+					}
+					{
+						type === 'server' && <Link href='/addserver'>
+							<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
+								<i className='fas fa-plus' />
+								<span className='px-2 font-medium'>서버 추가하기</span>
+							</a>
+						</Link>
+					}
 				</nav>
 
 				<div className='my-10'>

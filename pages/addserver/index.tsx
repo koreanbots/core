@@ -42,7 +42,7 @@ export const getServerSideProps = async (ctx: NextPageContext) => {
 		const data = await get.serverData(g.id)
 		return { ...g, ...(server || {}), ...((+new Date() - +new Date(data?.updatedAt)) < 2 * 60 * 1000  ? { data } : {}), members: data?.memberCount || null, exists: !!server }
 	})
-	return { props: { logged: !!user, user: await get.user.load(user || ''), guilds: (await Promise.all(guilds)).filter(g => !g?.exists) } }
+	return { props: { logged: !!user || !guilds, user: await get.user.load(user || ''), guilds: guilds && (await Promise.all(guilds)).filter(g => !g?.exists) } }
 }
 
 interface AddBotProps {

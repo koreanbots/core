@@ -39,6 +39,13 @@ const ServerCard: React.FC<BotCardProps> = ({ type, server }) => {
 												className='absolute -left-2 -top-8 mx-auto w-32 h-32 bg-white rounded-full'
 											/>
 										</div>
+									
+										<div className='mt-28 px-4'>
+											<h2 className={`px-1 text-sm ${server.state !== 'unreachable' ? ' invisible' : ''}`}>
+												<i className='fas fa-ban text-red-600' />정보 갱신 불가
+											</h2>
+											<h1 className='mb-3 text-left text-2xl font-bold truncate'>{server.name}</h1>
+										</div>
 									</div>
 									<div className='grid grid-cols-1 pr-5 py-5 w-2/5 h-0'>
 										<Tag
@@ -56,12 +63,7 @@ const ServerCard: React.FC<BotCardProps> = ({ type, server }) => {
 										/>
 									</div>
 								</div>
-								<div className='-mt-16 px-4'>
-									<h2 className={`px-1 text-sm ${server.state !== 'unreachable' ? ' invisible' : ''}`}>
-										<i className='fas fa-ban text-red-600' />정보 갱신 불가
-									</h2>
-									<h1 className='mb-3 text-left text-2xl font-bold truncate'>{server.name}</h1>
-								</div>
+								
 								<p className='mb-10 px-4 h-6 text-left text-gray-400 text-sm font-medium'>
 									{type === 'add' ?
 										server.data ? '지금 바로 서버를 등록할 수 있습니다.' : '봇을 초대해야 서버를 등록할 수 있습니다.'

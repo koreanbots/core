@@ -42,7 +42,7 @@ const Hero:React.FC<HeroProps> = ({ type='all', header, description }) => {
 							}
 							
 							{
-								serverCategories.slice(0, 2).map(t => <Tag key={t} text={<><i className={serverCategoryIcon[t]} /> {t} 서버</>} dark bigger href={`/bots/categories/${t}`} />)
+								serverCategories.slice(0, 2).map(t => <Tag key={t} text={<><i className={serverCategoryIcon[t]} /> {t} 서버</>} dark bigger href={`/servers/categories/${t}`} />)
 							}
 						</>: <>
 							<Tag key='list' text={<>

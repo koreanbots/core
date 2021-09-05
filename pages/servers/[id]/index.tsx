@@ -107,7 +107,7 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 							</div>
 							<div className='w-full lg:w-1/4'>
 								{
-									data.state === 'ok' && <LongButton
+									['ok', 'unreachable'].includes(data.state) && <LongButton
 										newTab
 										href={`/servers/${router.query.id}/join`}
 									>

@@ -201,7 +201,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 									<h2 className='3xl mb-2 mt-2 font-bold'>카테고리</h2>
 									<div className='flex flex-wrap'>
 										{data.category.map(el => (
-											<Tag key={el} text={el} href={`/categories/${el}`} />
+											<Tag key={el} text={el} href={`/bots/categories/${el}`} />
 										))}
 									</div>
 									<h2 className='3xl mb-2 mt-2 font-bold'>제작자</h2>

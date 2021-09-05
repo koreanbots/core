@@ -41,7 +41,7 @@ const Search:NextPage<SearchProps> = ({ botData, serverData, priority, query }) 
 	if(!query?.q) return <Redirect text={false} to='/' />
 	const list: ('bot'|'server')[] = [ 'bot', 'server' ]
 	return <>
-		<Hero type={priority === 'bot' ? 'bots' : 'servers'} header={`"${query.q}" 검색 결과`} description={`'${query.q}' 에 대한 검색 결과입니다.`} />
+		<Hero type={priority ? priority === 'bot' ? 'bots' : 'servers' : 'all'} header={`"${query.q}" 검색 결과`} description={`'${query.q}' 에 대한 검색 결과입니다.`} />
 		<Container>
 			<section id='list'>
 				<Advertisement />

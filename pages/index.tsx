@@ -16,7 +16,7 @@ const LongButton = dynamic(() => import('@components/LongButton'))
 const Index: NextPage<IndexProps> = ({ bots, servers }) => {
 	return (
 		<>
-			<Hero type='bots' />
+			<Hero />
 			<Container className='pb-10'>
 				<Advertisement />
 				<h1 className='text-3xl font-bold mt-10 mb-2'>

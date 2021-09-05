@@ -200,7 +200,7 @@ export const getServerSideProps = async (ctx: NextPageContext) => {
 		logged: !!user, user: await get.user.load(user || ''),
 		csrfToken: getToken(ctx.req, ctx.res),
 		server,
-		serverData
+		serverData: (+new Date() - +new Date(serverData?.updatedAt)) < 2 * 60 * 1000 ? serverData : null
 	} }
 }
 

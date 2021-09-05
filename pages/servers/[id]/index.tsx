@@ -236,7 +236,7 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 												id={el.id}
 												tag={el.tag}
 												username={el.username}
-												crown={el.id === data.owner.id}
+												crown={el.id === data?.owner.id}
 											/>
 										)) : <strong>불러오는 중...</strong>}
 									</div>

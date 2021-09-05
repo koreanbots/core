@@ -3,7 +3,7 @@ import { TLRU } from 'tlru'
 import DataLoader from 'dataloader'
 import { User as DiscordUser } from 'discord.js'
 
-import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild } from '@types'
+import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable } from '@types'
 import { botCategories, DiscordEnpoints, imageSafeHost, serverCategories, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'
 
 import knex from './Knex'
@@ -122,7 +122,7 @@ async function getServer(id: string, topLevel=true): Promise<Server> {
 
 async function fetchServerOwners(id: string): Promise<User[]|null> {
 	const data = await getServerData(id)
-	return data ? [ await get._rawUser.load(data.owner), ...(await Promise.all(data.admins.map(el => get._rawUser.load(el)))).filter(el => el) ] : null
+	return data ? [ await get._rawUser.load(data.owner), ...(await Promise.all(data.admins.map(el => get._rawUser.load(el)))) ].filter(el => el) : null
 }
 
 async function getServerData(id: string): Promise<ServerData|null> {
@@ -156,15 +156,15 @@ async function getUser(id: string, topLevel = true):Promise<User> {
 	return res[0] || null
 }
 
-async function getUserGuilds(id: string): Promise<RawGuild[]> {
+async function getUserGuilds(id: string): Promise<Nullable<RawGuild[]>> {
 	const token = await fetchUserDiscordToken(id)
-	if(!token) return []
+	if(!token) return null
 	const guilds = await fetch(DiscordEnpoints.Guilds, {
 		headers: {
 			Authorization: `Bearer ${token.access_token}`,
 		}
 	}).then(r=> r.json())
-
+	if(!Array.isArray(guilds)) return null
 	return guilds
 }
 

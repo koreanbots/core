@@ -258,7 +258,7 @@ export const KoreanbotsEndPoints = {
 		static origin = 'https://koreanbots.dev'
 		static generate(id: string, name: string, bio: string, tags: string[], stats: string[], type: 'bot' | 'server') {
 			const u = new URL(this.root)
-			u.pathname = name
+			u.pathname = name + '.png'
 			u.searchParams.append('image', this.origin + ( type === 'bot' ? KoreanbotsEndPoints.CDN.avatar(id, { format: 'webp', size: 256 }) : KoreanbotsEndPoints.CDN.icon(id, { format: 'webp', size: 256 }) ))
 			u.searchParams.append('bio', bio)
 			u.searchParams.append('type', type)

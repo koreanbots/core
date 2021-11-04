@@ -32,8 +32,9 @@ const Message = dynamic(() => import('@components/Message'))
 const Modal = dynamic(() => import('@components/Modal'))
 const Captcha = dynamic(() => import('@components/Captcha'))
 const Login = dynamic(() => import('@components/Login'))
+const Forbidden = dynamic(() => import('@components/Forbidden'))
 
-const ManageServerPage:NextPage<ManageServerProps> = ({ server, user, csrfToken, theme }) => {
+const ManageServerPage:NextPage<ManageServerProps> = ({ server, user, owners, csrfToken, theme }) => {
 	const [ data, setData ] = useState(null)
 	const [ deleteModal, setDeleteModal ] = useState(false)
 	const router = useRouter()
@@ -47,7 +48,7 @@ const ManageServerPage:NextPage<ManageServerProps> = ({ server, user, csrfToken,
 	if(!user) return <Login>
 		<NextSeo title='서버 정보 수정하기' description='서버의 정보를 수정합니다.'/>
 	</Login>
-	// if(!(server.owners as User[]).find(el => el.id === user.id) && !checkUserFlag(user.flags, 'staff')) return <Forbidden />
+	if(!(owners as User[]).find(el => el.id === user.id) && !checkUserFlag(user.flags, 'staff')) return <Forbidden />
 	return <Container paddingTop className='pt-5 pb-10'>
 		<NextSeo title={`${server.name} 수정하기`} description='서버의 정보를 수정합니다.'/>
 		<h1 className='text-3xl font-bold mb-8'>서버 관리하기</h1>
@@ -168,12 +169,18 @@ const ManageServerPage:NextPage<ManageServerProps> = ({ server, user, csrfToken,
 export const getServerSideProps = async (ctx: Context) => {
 	const parsed = parseCookie(ctx.req)
 	const user = await get.Authorization(parsed?.token)
-	return { props: { server: await get.server.load(ctx.query.id), user: await get.user.load(user || ''), csrfToken: getToken(ctx.req, ctx.res) } }
+	return { props: {
+		server: await get.server.load(ctx.query.id),
+		user: await get.user.load(user || ''),
+		owners: await get.serverOwners(ctx.query.id),
+		csrfToken: getToken(ctx.req, ctx.res)
+	} }
 }
 
 interface ManageServerProps {
 	server: Server
 	user: User
+	owners: User[]
 	csrfToken: string
 	theme: Theme
 }

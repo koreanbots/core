@@ -27,7 +27,7 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 						votes.data.map(bot=> <BotCard key={bot.id} bot={bot} />)
 					}
 				</ResponsiveGrid>
-				<Paginator totalPage={votes.totalPage} currentPage={votes.currentPage} pathname='/list/votes' />
+				<Paginator totalPage={votes.totalPage} currentPage={votes.currentPage} pathname='/bots/list/votes' />
 				<Advertisement />
 				<h1 className='text-3xl font-bold mb-2'>
 					<i className='fa fa-check mr-3 mt-10 text-green-500' /> 신뢰된 봇

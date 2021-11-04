@@ -10,7 +10,7 @@ import { SnowflakeUtil } from 'discord.js'
 import { ParsedUrlQuery } from 'querystring'
 import { Server, Theme, User } from '@types'
 
-import { KoreanbotsEndPoints } from '@utils/Constants'
+import { DiscordEnpoints, DSKR_BOT_ID, KoreanbotsEndPoints } from '@utils/Constants'
 import { get, safeImageHost } from '@utils/Query'
 import Day from '@utils/Day'
 import Fetch from '@utils/Fetch'
@@ -75,6 +75,12 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 								data.state === 'unreachable' ? <Message type='error'>
 									<h2 className='text-lg font-black'>서버 정보를 갱신할 수 없습니다.</h2>
 									<p>서버에서 봇이 추방되었거나, 봇이 오프라인이여서 서버 정보를 갱신할 수 없습니다.</p>
+									{
+										owners?.find(el => el.id === user?.id) && <>
+											<h3 className='text-md font-bold pt-2'>서버 괸리자시군요!</h3>
+											<p>봇을 서버에서 추방하셨다면 <a className='text-blue-600 hover:text-blue-500 cursor-pointer' href={`${DiscordEnpoints.InviteApplication(DSKR_BOT_ID, {}, 'bot', null, data.id)}&disable_guild_select=true`}>이곳</a>을 눌러 봇을 다시 초대해주세요!</p>
+										</>
+									}
 								</Message> :
 									data.state === 'reported' ?
 										<Message type='error'>

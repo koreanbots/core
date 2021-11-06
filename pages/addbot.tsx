@@ -10,7 +10,7 @@ import HCaptcha from '@hcaptcha/react-hcaptcha'
 import { get } from '@utils/Query'
 import { cleanObject, parseCookie, redirectTo } from '@utils/Tools'
 import { AddBotSubmit, AddBotSubmitSchema } from '@utils/Yup'
-import { categories, library } from '@utils/Constants'
+import { botCategories, library } from '@utils/Constants'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
 import { ResponseProps, SubmittedBot, Theme, User } from '@types'
@@ -71,13 +71,13 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 	}
 
 	if(!logged) return <Login>
-		<NextSeo title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.' openGraph={{
-			title:'새로운 봇 추가하기', description: '자신의 봇을 한국 디스코드봇 리스트에 등록하세요.'
+		<NextSeo title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드 리스트에 등록하세요.' openGraph={{
+			title:'새로운 봇 추가하기', description: '자신의 봇을 한국 디스코드 리스트에 등록하세요.'
 		}} />
 	</Login>
 	return <Container paddingTop className='py-5'>
-		<NextSeo title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드봇 리스트에 등록하세요.' openGraph={{
-			title:'새로운 봇 추가하기', description: '자신의 봇을 한국 디스코드봇 리스트에 등록하세요.'
+		<NextSeo title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드 리스트에 등록하세요.' openGraph={{
+			title:'새로운 봇 추가하기', description: '자신의 봇을 한국 디스코드 리스트에 등록하세요.'
 		}} />
 		<h1 className='text-3xl font-bold'>새로운 봇 추가하기</h1>
 		<div className='mt-1 mb-5'>
@@ -136,7 +136,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 						<Select options={library.map(el=> ({ label: el, value: el }))} handleChange={(value) => setFieldValue('library', value.value)} handleTouch={() => setFieldTouched('library', true)} />
 					</Label>
 					<Label For='category' label='카테고리' labelDesc='봇에 해당되는 카테고리를 선택해주세요' required error={errors.category && touched.category ? errors.category as string : null}>
-						<Selects options={categories.map(el=> ({ label: el, value: el }))} handleChange={(value) => {
+						<Selects options={botCategories.map(el=> ({ label: el, value: el }))} handleChange={(value) => {
 							setFieldValue('category', value.map(v=> v.value))
 						}} handleTouch={() => setFieldTouched('category', true)} values={values.category as string[]} setValues={(value) => setFieldValue('category', value)} />
 						<span className='text-gray-400 mt-1 text-sm'>봇 카드에는 앞 3개의 카테고리만 표시됩니다. 드래그하여 카테고리를 정렬하세요. <strong>반드시 해당되는 카테고리만 선택해주세요.</strong></span>

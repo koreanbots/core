@@ -3,19 +3,20 @@ import { TLRU } from 'tlru'
 import DataLoader from 'dataloader'
 import { User as DiscordUser } from 'discord.js'
 
-import { Bot, User, ListType, BotList, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot } from '@types'
-import { categories, imageSafeHost, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'
+import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable } from '@types'
+import { botCategories, DiscordEnpoints, imageSafeHost, serverCategories, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'
 
 import knex from './Knex'
+import { Bots, Servers } from './Mongo'
 import { DiscordBot, getMainGuild } from './DiscordBot'
 import { sign, verify } from './Jwt'
-import { camoUrl, formData, serialize } from './Tools'
-import { AddBotSubmit, ManageBot } from './Yup'
+import { camoUrl, formData, getYYMMDD, serialize } from './Tools'
+import { AddBotSubmit, AddServerSubmit, ManageBot, ManageServer } from './Yup'
 import { markdownImage } from './Regex'
 
 export const imageRateLimit = new TLRU<unknown, number>({ maxAgeMs: 60000 })
 
-async function getBot(id: string, owners=true):Promise<Bot> {
+async function getBot(id: string, topLevel=true):Promise<Bot> {
 	const res = await knex('bots')
 		.select([
 			'id',
@@ -57,7 +58,7 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 		res[0].status = discordBot.presence?.activities?.find(r => r.type === 'STREAMING') ? 'streaming' : discordBot.presence?.status || null
 		delete res[0].trusted
 		delete res[0].partnered
-		if (owners) {
+		if (topLevel) {
 			res[0].owners = await Promise.all(
 				res[0].owners.map(async (u: string) => await get._rawUser.load(u))
 			)
@@ -71,27 +72,103 @@ async function getBot(id: string, owners=true):Promise<Bot> {
 	return res[0] ?? null
 }
 
-async function getUser(id: string, bots = true):Promise<User> {
+async function getServer(id: string, topLevel=true): Promise<Server> {
+	const res = await knex('servers')
+		.select([
+			'id',
+			'name',
+			'flags',
+			'intro',
+			'desc',
+			'votes',
+			'owners',
+			'category',
+			'invite',
+			'state',
+			'vanity',
+			'bg',
+			'banner',
+			'flags'
+		])
+		.where({ id })
+		.orWhereRaw(`(flags & ${ServerFlags.trusted}) and vanity=?`, [id])
+		.orWhereRaw(`(flags & ${ServerFlags.partnered}) and vanity=?`, [id])
+	if (res[0]) {
+		const data = await getServerData(res[0].id)
+		if(!data || (+new Date() - +new Date(data.updatedAt)) > 3 * 60 * 1000) res[0].state = 'unreachable'
+		else {
+			res[0].flags = res[0].flags | (data.features.includes('PARTNERED') && ServerFlags.discord_partnered) | (data.features.includes('VERIFIED') && ServerFlags.verified)
+			if(res[0].owners !== JSON.stringify([data.owner, ...data.admins]) || res[0].name !== data.name)
+				await knex('servers').update({ name: data.name, owners: JSON.stringify([data.owner, ...data.admins]) })
+					.where({ id: res[0].id })
+		}
+		delete res[0].owners
+		// console.log(data)
+		res[0].icon = data?.icon || null
+		res[0].members = data?.memberCount || null
+		res[0].emojis = data?.emojis || []
+		res[0].category = JSON.parse(res[0].category)
+		res[0].boostTier = data?.boostTier ?? null
+		if(topLevel) {
+			res[0].owner = await get._rawUser.load(data?.owner || '') ||  null
+			res[0].bots = (await Promise.all(data?.bots.slice(0, 3).map(el => get._rawBot.load(el)) || [])).filter(el => el) || null
+		} else {
+			res[0].owner = data?.owner || null
+			res[0].bots = data?.bots || null
+		}
+	}
+	return res[0] ?? null
+}
+
+async function fetchServerOwners(id: string): Promise<User[]|null> {
+	const data = await getServerData(id)
+	return data ? [ await get._rawUser.load(data.owner), ...(await Promise.all(data.admins.map(el => get._rawUser.load(el)))) ].filter(el => el) : null
+}
+
+async function getServerData(id: string): Promise<ServerData|null> {
+	return serialize((await Servers.findById(id))?.data || null)
+}
+
+async function getUser(id: string, topLevel = true):Promise<User> {
 	const res = await knex('users')
 		.select(['id', 'flags', 'github'])
 		.where({ id })
 	if (res[0]) {
-		const owned = await knex('bots')
+		const ownedBots = await knex('bots')
 			.select(['id'])
 			.where('owners', 'like', `%${id}%`)
+		const ownedServer = await knex('servers')
+			.select(['id'])
+			.where('owners', 'like', `%${id}%`)
+
 		const discordUser = await get.discord.user.load(id)
 		res[0].tag = discordUser?.discriminator || '0000'
 		res[0].username = discordUser?.username || 'Unknown User'
-		if (bots) {
-			res[0].bots = await Promise.all(owned.map(async b => await get._rawBot.load(b.id)))
-			res[0].bots = res[0].bots.filter((el: Bot | null) => el).map((row: User) => ({ ...row }))
+		if (topLevel) {
+			res[0].bots = (await Promise.all(ownedBots.map(async b => await get._rawBot.load(b.id)))).filter((el: Bot | null) => el).map(row => ({ ...row }))
+			res[0].servers = (await Promise.all(ownedServer.map(async b => await get._rawServer.load(b.id)))).filter((el: Server | null) => el).map(row => ({ ...row }))
 		}
-		else res[0].bots = owned.map(el => el.id)
+		else {
+			res[0].bots = ownedBots.map(el => el.id)
+			res[0].servers = ownedServer.map(el => el.id)
+		}
 	}
 	return res[0] || null
 }
 
-async function getBotList(type: ListType, page = 1, query?: string):Promise<BotList> {
+async function getUserGuilds(id: string): Promise<Nullable<RawGuild[]>> {
+	const token = await fetchUserDiscordToken(id)
+	if(!token) return null
+	const guilds = await fetch(DiscordEnpoints.Guilds, {
+		headers: {
+			Authorization: `Bearer ${token.access_token}`,
+		}
+	}).then(r=> r.json())
+	if(!Array.isArray(guilds)) return null
+	return guilds
+}
+
+async function getBotList(type: ListType, page = 1, query?: string):Promise<List<Bot>> {
 	let res: { id: string }[]
 	let count:string|number
 	if (type === 'VOTE') {
@@ -142,7 +219,7 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 			.select(['id'])
 	} else if (type === 'CATEGORY') {
 		if (!query) throw new Error('쿼리가 누락되었습니다.')
-		if (!categories.includes(query)) throw new Error('알 수 없는 카테고리입니다.')
+		if (!botCategories.includes(query)) throw new Error('알 수 없는 카테고리입니다.')
 		count = (
 			await knex('bots')
 				.where('category', 'like', `%${decodeURI(query)}%`).andWhereNot({ state: 'blocked' })
@@ -165,6 +242,83 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<BotL
 	}
 
 	return { type, data: (await Promise.all(res.map(async el => await getBot(el.id)))).map(r=> ({...r})), currentPage: page, totalPage: Math.ceil(Number(count) / 16) }
+}
+
+async function getServerList(type: ListType, page = 1, query?: string):Promise<List<Server>> {
+	let res: { id: string }[]
+	let count:string|number
+	if (type === 'VOTE') {
+		count = (await knex('servers').whereNot({ state: 'blocked' }).count())[0]['count(*)']
+		res = await knex('servers')
+			.orderBy('votes', 'desc')
+			.limit(16)
+			.offset(((page ? Number(page) : 1) - 1) * 16)
+			.select(['id'])
+			.whereNot({ state: 'blocked' })
+	} else if (type === 'TRUSTED') {
+		count = (
+			await knex('servers')
+				.whereRaw(`flags & ${ServerFlags.trusted}`)
+				.count()
+				.whereNot({ state: 'blocked' })
+		)[0]['count(*)']
+		res = await knex('servers').whereNot({ state: 'blocked' })
+			.whereRaw(`flags & ${ServerFlags.trusted}`)
+			.orderByRaw('RAND()')
+			.limit(16)
+			.offset(((page ? Number(page) : 1) - 1) * 16)
+			.select(['id'])
+			.whereNot({ state: 'blocked' })
+	} else if (type === 'NEW') {
+		count = (
+			await knex('servers').whereNot({ state: 'blocked' })
+				.count()
+		)[0]['count(*)']
+		res = await knex('servers')
+			.orderBy('date', 'desc')
+			.limit(16)
+			.offset(((page ? Number(page) : 1) - 1) * 16)
+			.select(['id'])
+			.whereNot({ state: 'blocked' })
+	} else if (type === 'PARTNERED') {
+		count = (
+			await knex('servers')
+				.whereRaw(`flags & ${ServerFlags.partnered}`)
+				.andWhereNot({ state: 'blocked' })
+				.count()
+		)[0]['count(*)']
+		res = await knex('servers')
+			.whereRaw(`flags & ${ServerFlags.partnered}`)
+			.andWhereNot({ state: 'blocked' })
+			.orderByRaw('RAND()')
+			.limit(16)
+			.offset(((page ? Number(page) : 1) - 1) * 16)
+			.select(['id'])
+	} else if (type === 'CATEGORY') {
+		if (!query) throw new Error('쿼리가 누락되었습니다.')
+		if (!serverCategories.includes(query)) throw new Error('알 수 없는 카테고리입니다.')
+		count = (
+			await knex('servers')
+				.where('category', 'like', `%${decodeURI(query)}%`)
+				.andWhereNot({ state: 'blocked' })
+				.count()
+		)[0]['count(*)']
+		res = await knex('servers')
+			.where('category', 'like', `%${decodeURI(query)}%`)
+			.andWhereNot({ state: 'blocked' })
+			.orderBy('votes', 'desc')
+			.limit(16)
+			.offset(((page ? Number(page) : 1) - 1) * 16)
+			.select(['id'])
+	} else if (type === 'SEARCH') {
+		if (!query) throw new Error('쿼리가 누락되었습니다.')
+		count = (await knex.raw('SELECT count(*) FROM servers WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode)', [decodeURI(query)]))[0][0]['count(*)']
+		res = (await knex.raw('SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM servers WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 16 OFFSET ?', [decodeURI(query), decodeURI(query), ((page ? Number(page) : 1) - 1) * 16]))[0]
+	} else {
+		count = 1
+		res = []
+	}
+	return { type, data: (await Promise.all(res.map(async el => await getServer(el.id)))).map(r=> ({...r})), currentPage: page, totalPage: Math.ceil(Number(count) / 16) }
 }
 
 async function getBotSubmit(id: string, date: number): Promise<SubmittedBot> {
@@ -191,28 +345,44 @@ async function getBotSubmits(id: string): Promise<SubmittedBot[]> {
  * @param botID
  * @returns Timestamp
  */
-async function getBotVote(userID: string, botID: string): Promise<number|null> {
+async function getVote(userID: string, targetID: string, type: 'bot' | 'server'): Promise<number|null> {
 	const user = await knex('users').select(['votes']).where({ id: userID })
 	if(user.length === 0) return null
 	const data = JSON.parse(user[0].votes)
-	return data[botID] || 0
-	
-	
+	return data[`${type}:${targetID}`] || 0
 }
 
 async function voteBot(userID: string, botID: string): Promise<number|boolean> {
 	const user = await knex('users').select(['votes']).where({ id: userID })
+	const key = `bot:${botID}`
 	if(user.length === 0) return null
 	const date = +new Date()
 	const data = JSON.parse(user[0].votes)
-	const lastDate = data[botID] || 0
+	const lastDate = data[key] || 0
 	if(date - lastDate < VOTE_COOLDOWN) return VOTE_COOLDOWN - (date - lastDate)
-	data[botID] = date
+	data[key] = date
 	await knex('bots').where({ id: botID }).increment('votes', 1)
 	await knex('users').where({ id: userID }).update({ votes: JSON.stringify(data) })
+	const record = await Bots.updateOne({ _id: botID, 'voteMetrix.day': getYYMMDD() }, { $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } })
+	if(record.n === 0) await Bots.findByIdAndUpdate(botID, { $push: { voteMetrix: { count: (await knex('bots').where({ id: botID }))[0].votes } } }, { upsert: true })
 	return true
 }
 
+async function voteServer(userID: string, serverID: string): Promise<number|boolean> {
+	const user = await knex('users').select(['votes']).where({ id: userID })
+	const key = `server:${serverID}`
+	if(user.length === 0) return null
+	const date = +new Date()
+	const data = JSON.parse(user[0].votes)
+	const lastDate = data[key] || 0
+	if(date - lastDate < VOTE_COOLDOWN) return VOTE_COOLDOWN - (date - lastDate)
+	data[key] = date
+	await knex('servers').where({ id: serverID }).increment('votes', 1)
+	await knex('users').where({ id: userID }).update({ votes: JSON.stringify(data) })
+	// const record = await Servers.updateOne({ _id: serverID, 'voteMetrix.day': getYYMMDD() }, { $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } })
+	// if(record.n === 0) await Servers.findByIdAndUpdate(serverID, { $push: { voteMetrix: { count: (await knex('servers').where({ id: serverID }))[0].votes } } }, { upsert: true })
+	return true
+}
 /**
  * @returns 1 - Has pending Bots
  * @returns 2 - Already submitted ID
@@ -251,8 +421,43 @@ async function submitBot(id: string, data: AddBotSubmit):Promise<1|2|3|4|Submitt
 	return await getBotSubmit(botId, date)
 }
 
+/**
+ * @returns 1 - Server already exists
+ * @returns 2 - Bot not invited
+ * @returns 3 - Not owner
+ * @returns 4 - Invalid invite code
+ */
+
+async function submitServer(userID: string, id: string, data: AddServerSubmit): Promise<1|2|3|4|boolean> {
+	const server = await get.server.load(id)
+	if(server) return 1
+	const serverData = await get.serverData(id)
+	if(!serverData) return 2
+	if(serverData.owner !== userID && !serverData.admins.includes(userID)) return 3
+	const inviteData = await DiscordBot.fetchInvite(data.invite).catch(() => null)
+	if(!inviteData || inviteData.guild.id !== id) return 4
+	await knex('servers').insert({
+		id: id,
+		name: serverData.name,
+		owners: JSON.stringify([ serverData.owner, ...serverData.admins ]),
+		intro: data.intro,
+		desc: data.desc,
+		category: JSON.stringify(data.category),
+		invite: data.invite,
+		token: sign({ id }),
+	})
+	get.server.clear(id)
+	return true
+}
+
 async function getBotSpec(id: string, userID: string) {
 	const res = await knex('bots').select(['id', 'token', 'webhook']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
+	if(!res[0]) return null
+	return serialize(res[0])
+}
+
+async function getServerSpec(id: string, userID: string): Promise<{ id: string, token: string }> {
+	const res = await knex('servers').select(['id', 'token']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
 	if(!res[0]) return null
 	return serialize(res[0])
 }
@@ -263,17 +468,34 @@ async function deleteBot(id: string): Promise<boolean> {
 	return !!bot
 }
 
-async function updateBot(id: string, data: ManageBot) {
+async function deleteServer(id: string): Promise<boolean> {
+	const server = await knex('servers').where({ id }).del()
+	return !!server
+}
+
+async function updateBot(id: string, data: ManageBot): Promise<number> {
 	const res = await knex('bots').where({ id })
-	if(res.length === 0 || res[0].state !== 'ok') return 0
+	if(res.length === 0) return 0
 	await knex('bots').update({
-		id,
 		prefix: data.prefix,
 		lib: data.library,
 		web: data.website,
 		git: data.git,
 		url: data.url,
 		discord: data.discord,
+		category: JSON.stringify(data.category),
+		intro: data.intro,
+		desc: data.desc
+	}).where({ id })
+
+	return 1
+}
+
+async function updatedServer(id: string, data: ManageServer) {
+	const res = await knex('servers').where({ id })
+	if(res.length === 0) return 0
+	await knex('servers').update({
+		invite: data.invite,
 		category: JSON.stringify(data.category),
 		intro: data.intro,
 		desc: data.desc
@@ -293,6 +515,10 @@ async function updateServer(id: string, servers: number, shards: number) {
 	else if(bot.servers < 1000000 && servers >= 1000000) return 2
 	if(bot.shards < 200 && shards >= 200) return 3
 	await knex('bots').update({ servers: servers === undefined ? bot.servers : servers, shards: shards === undefined ? bot.shards : shards }).where({ id })
+	if(servers) {
+		await Bots.findByIdAndUpdate(id, { $pull: { serverMetrix: { day: getYYMMDD() } } }, { upsert: true })
+		await Bots.findByIdAndUpdate(id, { $push: { serverMetrix: { count: servers } } })
+	}
 	return
 }
 
@@ -311,6 +537,13 @@ async function resetBotToken(id: string, beforeToken: string) {
 	const token = sign({ id })
 	const bot = await knex('bots').update({ token }).where({ id, token: beforeToken })
 	if(bot !== 1) return null
+	return token
+}
+
+async function resetServerToken(id: string, beforeToken: string) {
+	const token = sign({ id })
+	const server = await knex('servers').update({ token }).where({ id, token: beforeToken })
+	if(server !== 1) return null
 	return token
 }
 
@@ -369,6 +602,37 @@ async function BotAuthorization(token: string):Promise<string|false> {
 	else return bot[0].id
 }
 
+async function ServerAuthorization(token: string): Promise<string|false> {
+	const tokenInfo = verify(token ?? '')
+	const server = await knex('servers').select(['id']).where({ id: tokenInfo?.id ?? '', token: token ?? '' })
+	if(server.length === 0) return false
+	else return server[0].id
+}
+
+async function fetchUserDiscordToken(id: string): Promise<DiscordTokenInfo> {
+	const res = await knex('users').select(['discord']).where({ id })
+	let discord = verify(res[0]?.discord ?? '')
+	if(!discord) return null
+	if(Date.now() > (discord.iat + discord.expires_in) * 1000) {
+		const token: DiscordTokenInfo = await fetch(DiscordEnpoints.Token, {
+			method: 'POST',
+			body: formData({
+				client_id: process.env.DISCORD_CLIENT_ID,
+				client_secret: process.env.DISCORD_CLIENT_SECRET,
+				refresh_token: discord.refresh_token,
+				grant_type: 'refresh_token'
+			}),
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+		}).then(r=> r.json())
+		if (token.error) return null
+		await knex('users').update({ discord: sign({ access_token: token.access_token, expires_in: token.expires_in, refresh_token: token.refresh_token }) }).where({ id })
+		discord = token
+	}
+	return discord
+}
+
 async function addRequest(ip: string, map: TLRU<unknown, number>) {
 	if(!map.has(ip)) map.set(ip, 0)
 	map.set(ip, map.get(ip) + 1)
@@ -408,6 +672,22 @@ async function approveBotSubmission(id: string, date: number) {
 	return true
 }
 
+export function safeImageHost(text: string) {
+	return text?.replace(markdownImage, (matches: string, alt: string|undefined, link: string|undefined, description: string|undefined): string => {
+		try {
+			const url = new URL(link)
+			return `![${alt || description || ''}](${imageSafeHost.find(el => url.host.endsWith(el)) ? link : camoUrl(link) })`
+		} catch {
+			return matches
+		}
+	}) || null
+}
+
+async function viewBot(id: string) {
+	const record = await Bots.updateOne({ _id: id, 'viewMetrix.day': getYYMMDD() }, { $inc: { 'viewMetrix.$.count': 1 } })
+	if(record.n === 0) await Bots.findByIdAndUpdate(id, { $push: { viewMetrix: { count: 0 } } }, { upsert: true })
+}
+
 export const get = {
 	discord: {
 		user: new DataLoader(
@@ -425,15 +705,16 @@ export const get = {
 		, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 60000 }) }),
 	botDescSafe: async (id: string) => {
 		const bot = await get.bot.load(id)
-		return bot?.desc.replace(markdownImage, (matches: string, alt: string|undefined, link: string|undefined, description: string|undefined): string => {
-			try {
-				const url = new URL(link)
-				return `![${alt || description || ''}](${imageSafeHost.find(el => url.host.endsWith(el)) ? link : camoUrl(link) })`
-			} catch {
-				return matches
-			}
-		}) || null
+		return safeImageHost(bot?.desc)
 	},
+	server: new DataLoader(
+		async (ids: string[]) =>
+			(await Promise.all(ids.map(async (id: string) => await getServer(id)))).map(row => serialize(row))
+		, { cacheMap: new TLRU({ maxStoreSize: 5000, maxAgeMs: 60000 }) }),
+	_rawServer: new DataLoader(
+		async (ids: string[]) =>
+			(await Promise.all(ids.map(async (id: string) => await getServer(id, false)))).map(row => serialize(row))
+		, { cacheMap: new TLRU({ maxStoreSize: 5000, maxAgeMs: 60000 }) }),
 	user: new DataLoader(
 		async (ids: string[]) =>
 			(await Promise.all(ids.map(async (el: string) => await getUser(el)))).map(row => serialize(row))
@@ -441,6 +722,10 @@ export const get = {
 	_rawUser: new DataLoader(
 		async (ids: string[]) =>
 			(await Promise.all(ids.map(async (el: string) => await getUser(el, false)))).map(row => serialize(row))
+		, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 60000 }) }),
+	userGuilds: new DataLoader(
+		async (ids: string[]) =>
+			(await Promise.all(ids.map(async (el: string) => await getUserGuilds(el)))).map(row => serialize(row))
 		, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 60000 }) }),
 	botSubmits: new DataLoader(
 		async (ids: string[]) =>
@@ -454,6 +739,7 @@ export const get = {
 			}))).map(row => serialize(row))
 		, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 60000 }) }),
 	botSpec: getBotSpec,
+	serverSpec: getServerSpec,
 	list: {
 		category: new DataLoader(
 			async (key: string[]) => 
@@ -483,37 +769,81 @@ export const get = {
 				(await Promise.all(pages.map(async (page: number) => await getBotList('TRUSTED', page)))).map(row => serialize(row))
 			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 3600000 }) }),
 	},
+	serverList: {
+		category: new DataLoader(
+			async (key: string[]) => 
+				(await Promise.all(key.map(async (k: string) => {
+					const json = JSON.parse(k)
+					return await getServerList('CATEGORY', json.page, json.category)
+				}))).map(row => serialize(row))
+			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 500000 }) }),
+		search: new DataLoader(
+			async (key: string[]) => 
+				(await Promise.all(key.map(async (k: string) => {
+					const json = JSON.parse(k)
+					const res = await getServerList('SEARCH', json.page, json.query)
+					return { ...res, totalPage: Number(res.totalPage), currentPage: Number(res.currentPage) }
+				}))).map(row => serialize(row))
+			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 500000 }) }),
+		votes: new DataLoader(
+			async (pages: number[]) =>
+				(await Promise.all(pages.map(async (page: number) => await getServerList('VOTE', page)))).map(row => serialize(row))
+			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 500000 }) }),
+		new: new DataLoader(
+			async (pages: number[]) =>
+				(await Promise.all(pages.map(async (page: number) => await getServerList('NEW', page)))).map(row => serialize(row))
+			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 1800000 }) }),
+		trusted: new DataLoader(
+			async (pages: number[]) =>
+				(await Promise.all(pages.map(async (page: number) => await getServerList('TRUSTED', page)))).map(row => serialize(row))
+			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 3600000 }) }),
+	},
 	images: {
 		user: new DataLoader(
 			async (urls: string[]) =>
 				(await Promise.all(urls.map(async (url: string) => await getImage(url))))
 			, { cacheMap: new TLRU({ maxStoreSize: 500, maxAgeMs: 3600000 }) }),
+		server: new DataLoader(
+			async (urls: string[]) =>
+				(await Promise.all(urls.map(async (url: string) => await getImage(url))))
+			, { cacheMap: new TLRU({ maxStoreSize: 500, maxAgeMs: 3600000 }) }),
 	},
-	botVote: getBotVote,
+	serverData: getServerData,
+	botVote: async (botID: string, targetID: string) => await getVote(botID, targetID, 'bot'),
+	vote: getVote,
 	Authorization,
 	BotAuthorization,
-	botSubmitList: getBotSubmitList
+	ServerAuthorization,
+	botSubmitList: getBotSubmitList,
+	serverOwners: fetchServerOwners
 }
 
 export const update = {
 	assignToken,
 	updateBotApplication,
 	resetBotToken,
+	resetServerToken,
 	updateServer,
 	Github,
 	bot: updateBot,
+	server: updatedServer,
 	botOwners: updateOwner,
 	denyBotSubmission,
-	approveBotSubmission
+	approveBotSubmission,
+	fetchUserDiscordToken
 }
 
 export const put = {
 	voteBot,
-	submitBot
+	voteServer,
+	submitBot,
+	submitServer,
+	viewBot
 }
 
 export const remove = {
-	bot: deleteBot
+	bot: deleteBot,
+	server: deleteServer
 }
 
 export const ratelimit = {

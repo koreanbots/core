@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 import { ParsedUrlQuery } from 'querystring'
 
 import { get } from '@utils/Query'
-import { BotList } from '@types'
+import { Bot, List } from '@types'
 import { botCategoryListArgumentSchema } from '@utils/Yup'
 import NotFound from 'pages/404'
 import { useEffect, useState } from 'react'
@@ -27,7 +27,7 @@ const Category: NextPage<CategoryProps> = ({ data, query }) => {
 	}, [])
 	if(!data || data.data.length === 0 || data.totalPage < Number(query.page)) return <NotFound message={data?.data.length === 0 ? '해당 카테고리에 해당되는 봇이 존재하지 않습니다.' : null} />
 	return <>
-		<Hero header={`${query.category} 카테고리 봇들`} description={`다양한 "${query.category}" 카테고리의 봇들을 만나보세요.`} />
+		<Hero type='bots' header={`${query.category} 카테고리 봇들`} description={`다양한 "${query.category}" 카테고리의 봇들을 만나보세요.`} />
 		{
 			query.category === 'NSFW' && !nsfw ? <NSFW onClick={() => setNSFW(true)} onDisableClick={() => localStorage.nsfw = true} />
 				: <Container>
@@ -43,7 +43,7 @@ const Category: NextPage<CategoryProps> = ({ data, query }) => {
 							data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
 						}
 					</ResponsiveGrid>
-					<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname={`/categories/${query.category}`} />
+					<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname={`/bots/categories/${query.category}`} />
 					<Advertisement />
 				</Container>
 		}
@@ -51,7 +51,7 @@ const Category: NextPage<CategoryProps> = ({ data, query }) => {
 }
 
 export const getServerSideProps = async (ctx: Context) => {
-	let data: BotList
+	let data: List<Bot>
 	if(!ctx.query.page) ctx.query.page = '1'
 	const validate = await botCategoryListArgumentSchema.validate(ctx.query).then(el => el).catch(() => null)
 	if(!validate || isNaN(Number(ctx.query.page))) data = null
@@ -65,7 +65,7 @@ export const getServerSideProps = async (ctx: Context) => {
 }
 
 interface CategoryProps {
-  data: BotList
+  data: List<Bot>
   query: URLQuery
 }
 

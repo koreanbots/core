@@ -5,9 +5,10 @@ import { Readable } from 'stream'
 import cookie from 'cookie'
 import * as difflib from 'difflib'
 
-import { BotFlags, ImageOptions, UserFlags } from '@types'
+import { BotFlags, ImageOptions, MetrixData, ServerFlags, UserFlags } from '@types'
 import Logger from '@utils/Logger'
 import { BASE_URLs, KoreanbotsEndPoints, Oauth } from '@utils/Constants'
+import Day from './Day'
 
 export function handlePWA(): boolean {
 	let displayMode = 'browser'
@@ -48,6 +49,10 @@ export function checkBotFlag(base: number, required: number | keyof typeof BotFl
 	return checkFlag(base, typeof required === 'number' ? required : BotFlags[required])
 }
 
+export function checkServerFlag(base: number, required: number | keyof typeof ServerFlags):boolean {
+	return checkFlag(base, typeof required === 'number' ? required : ServerFlags[required])
+}
+
 export function makeImageURL(root:string, { format='png', size=256 }:ImageOptions):string {
 	return `${root}.${format}?size=${size}`
 }
@@ -56,9 +61,14 @@ export function makeBotURL({ id, vanity, flags=0 }: { flags?: number, vanity?:st
 	return `/bots/${(checkBotFlag(flags, 'trusted') || checkBotFlag(flags, 'partnered')) && vanity ? vanity : id}`
 }
 
+export function makeServerURL({ id, vanity, flags=0 }: { flags?: number, vanity?:string, id: string }): string {
+	return `/servers/${(checkServerFlag(flags, 'trusted') || checkServerFlag(flags, 'partnered')) && vanity ? vanity : id}`
+}
+
 export function makeUserURL({ id }: { id: string }): string {
 	return `/users/${id}`
 }
+
 export function serialize<T>(data: T): T {
 	return JSON.parse(JSON.stringify(data))
 }
@@ -192,6 +202,17 @@ export function getRandom<T=unknown>(arr: T[]): T {
 
 export function parseDockerhubTag(imageTag: string) {
 	return imageTag?.split('/').pop().split(':').pop()
+}
+
+export function getYYMMDD(): string {
+	return (new Date()).toISOString().slice(0, 10).split('-').join('')
+}
+
+export function convertMetrixToGraph(data: MetrixData[], keyname?: string) {
+	return data.map(el=> ({
+		x: Day(el.day, 'YYMMDD').toDate(),
+		y: el[keyname] || el.count
+	}))
 }
 
 export * from './ShowdownExtensions'

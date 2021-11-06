@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 import YupKorean from 'yup-locales-ko'
 import { ListType } from '@types'
-import { categories, library, reportCats } from '@utils/Constants'
+import { botCategories, library, reportCats, serverCategories } from '@utils/Constants'
 import { HTTPProtocol, ID, Prefix, Url, Vanity } from '@utils/Regex'
 
 Yup.setLocale(YupKorean)
@@ -79,6 +79,35 @@ interface WidgetOptions {
 type widgetType = 'votes' | 'servers' | 'status'
 type widgetExt = 'svg'
 
+export const ServerWidgetOptionsSchema: Yup.SchemaOf<ServerWidgetOptions> = Yup.object({
+	id: Yup.string().required(),
+	ext: Yup.mixed<widgetExt>()
+		.oneOf(['svg'])
+		.required(),
+	type: Yup.mixed<serverWidgetType>()
+		.oneOf(['votes', 'members', 'boost'])
+		.required(),
+	scale: Yup.number()
+		.positive()
+		.min(0.5)
+		.max(3)
+		.required(),
+	style: Yup.mixed<'flat' | 'classic'>()
+		.oneOf(['flat', 'classic'])
+		.default('flat'),
+	icon: Yup.boolean().default(true),
+})
+
+interface ServerWidgetOptions {
+	id: string
+	ext: widgetExt
+	type: serverWidgetType
+	scale: number
+	style: 'flat' | 'classic'
+	icon: boolean
+}
+
+type serverWidgetType = 'votes' | 'members' | 'boost'
 export const PageCount = Yup.number()
 	.integer()
 	.positive()
@@ -91,11 +120,23 @@ export const OauthCallbackSchema: Yup.SchemaOf<OauthCallback> = Yup.object({
 export const botCategoryListArgumentSchema: Yup.SchemaOf<botCategoryListArgument> = Yup.object({
 	page: PageCount,
 	category: Yup.mixed()
-		.oneOf(categories)
+		.oneOf(botCategories)
 		.required(),
 })
 
 interface botCategoryListArgument {
+	page: number
+	category: string
+}
+
+export const serverCategoryListArgumentSchema: Yup.SchemaOf<serverCategoryListArgument> = Yup.object({
+	page: PageCount,
+	category: Yup.mixed()
+		.oneOf(serverCategories)
+		.required(),
+})
+
+interface serverCategoryListArgument {
 	page: number
 	category: string
 }
@@ -116,11 +157,13 @@ export const SearchQuerySchema: Yup.SchemaOf<SearchQuery> = Yup.object({
 		.notRequired()
 		.default(1)
 		.label('페이지'),
+	priority: Yup.mixed().oneOf(['bot', 'server']).notRequired()
 })
 
 interface SearchQuery {
 	q: string
-	page: number
+	page: number,
+	priority?: 'bot' | 'server'
 }
 
 export const AddBotSubmitSchema: Yup.SchemaOf<AddBotSubmit> = Yup.object({
@@ -158,7 +201,7 @@ export const AddBotSubmitSchema: Yup.SchemaOf<AddBotSubmit> = Yup.object({
 		.min(2, '지원 디스코드는 최소 2자여야합니다.')
 		.max(32, '지원 디스코드는 최대 32자까지만 가능합니다.')
 		.nullable(),
-	category: Yup.array(Yup.string().oneOf(categories))
+	category: Yup.array(Yup.string().oneOf(botCategories))
 		.min(1, '최소 한 개의 카테고리를 선택해주세요.')
 		.unique('카테고리는 중복될 수 없습니다.')
 		.required('카테고리는 필수 항목입니다.'),
@@ -187,7 +230,41 @@ export interface AddBotSubmit {
 	intro: string
 	desc: string
 	_csrf: string
-	_captcha?: string
+	_captcha: string
+}
+
+export const AddServerSubmitSchema: Yup.SchemaOf<AddServerSubmit> = Yup.object({
+	agree: Yup.boolean()
+		.oneOf([true], '상단의 체크박스를 클릭해주세요.')
+		.required('상단의 체크박스를 클릭해주세요.'),
+	invite: Yup.string()
+		.matches(Vanity, '디스코드 초대코드 형식을 지켜주세요.')
+		.min(2, '초대코드는 최소 2자여야합니다.')
+		.max(32, '초대코드는 최대 32자까지만 가능합니다.')
+		.required('초대코드는 필수 항목입니다.'),
+	category: Yup.array(Yup.string().oneOf(serverCategories))
+		.min(1, '최소 한 개의 카테고리를 선택해주세요.')
+		.unique('카테고리는 중복될 수 없습니다.')
+		.required('카테고리는 필수 항목입니다.'),
+	intro: Yup.string()
+		.min(2, '서버 소개는 최소 2자여야합니다.')
+		.max(60, '서버 소개는 최대 60자여야합니다.')
+		.required('서버 소개는 필수 항목입니다.'),
+	desc: Yup.string()
+		.min(100, '서버 설명은 최소 100자여야합니다.')
+		.max(1500, '서버 설명은 최대 1500자여야합니다.')
+		.required('서버 설명은 필수 항목입니다.'),
+	_csrf: Yup.string().required(),
+	_captcha: Yup.string().required()
+})
+export interface AddServerSubmit {
+	agree: boolean
+	invite: string
+	category: string[]
+	intro: string
+	desc: string
+	_csrf: string
+	_captcha: string
 }
 
 export const BotStatUpdateSchema: Yup.SchemaOf<BotStatUpdate> = Yup.object({
@@ -249,7 +326,7 @@ export const ManageBotSchema: Yup.SchemaOf<ManageBot> = Yup.object({
 		.min(2, '지원 디스코드는 최소 2자여야합니다.')
 		.max(32, '지원 디스코드는 최대 32자까지만 가능합니다.')
 		.nullable(),
-	category: Yup.array(Yup.string().oneOf(categories))
+	category: Yup.array(Yup.string().oneOf(botCategories))
 		.min(1, '최소 한 개의 카테고리를 선택해주세요.')
 		.unique('카테고리는 중복될 수 없습니다.')
 		.required('카테고리는 필수 항목입니다.'),
@@ -271,6 +348,35 @@ export interface ManageBot {
 	url: string
 	git: string
 	discord: string
+	category: string[]
+	intro: string
+	desc: string
+	_csrf: string
+}
+
+export const ManageServerSchema = Yup.object({
+	invite: Yup.string()
+		.matches(Vanity, '디스코드 초대코드 형식을 지켜주세요.')
+		.min(2, '초대코드는 최소 2자여야합니다.')
+		.max(32, '초대코드는 최대 32자까지만 가능합니다.')
+		.required('초대코드는 필수 항목입니다.'),
+	category: Yup.array(Yup.string().oneOf(serverCategories))
+		.min(1, '최소 한 개의 카테고리를 선택해주세요.')
+		.unique('카테고리는 중복될 수 없습니다.')
+		.required('카테고리는 필수 항목입니다.'),
+	intro: Yup.string()
+		.min(2, '서버 소개는 최소 2자여야합니다.')
+		.max(60, '서버 소개는 최대 60자여야합니다.')
+		.required('서버 소개는 필수 항목입니다.'),
+	desc: Yup.string()
+		.min(100, '서버 설명은 최소 100자여야합니다.')
+		.max(1500, '서버 설명은 최대 1500자여야합니다.')
+		.required('서버 설명은 필수 항목입니다.'),
+	_csrf: Yup.string().required(),
+})
+
+export interface ManageServer {
+	invite: string
 	category: string[]
 	intro: string
 	desc: string
@@ -301,12 +407,14 @@ export interface DeveloperBot {
 	_csrf: string
 }
 
-export const ResetBotTokenSchema: Yup.SchemaOf<ResetBotToken> = Yup.object({
+export const ResetTokenSchema: Yup.SchemaOf<ResetToken> = Yup.object({
 	token: Yup.string().required(),
 	_csrf: Yup.string().required(),
 })
 
-export interface ResetBotToken {
+export const ResetBotTokenSchema = ResetTokenSchema
+
+export interface ResetToken {
 	token: string
 	_csrf: string
 }

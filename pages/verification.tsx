@@ -9,13 +9,13 @@ const Verification: NextPage = () => {
 	return (
 		<Docs
 			header='인증'
-			description='한국 디스코드봇 리스트의 신뢰된 봇은 디스코드 인증보다 더 자세한 기준으로 신뢰성을 주기 위한 제도입니다.'
+			description='한국 디스코드 리스트의 신뢰된 봇은 디스코드 인증보다 더 자세한 기준으로 신뢰성을 주기 위한 제도입니다.'
 		>
 			<h1 className='mb-3 text-4xl font-bold'>
 				<span className='text-koreanbots-blue mr-5'>
 					<i className='fas fa-award' />
 				</span>신뢰된 봇</h1>
-			<p>한국 디스코드봇 리스트의 신뢰된 봇은 디스코드 인증보다 더 자세한 기준으로 신뢰성을 주기 위한 제도입니다.</p>
+			<p>한국 디스코드 리스트의 신뢰된 봇은 디스코드 인증보다 더 자세한 기준으로 신뢰성을 주기 위한 제도입니다.</p>
 			<h2 className='mt-10 text-3xl font-semibold' id='기준'>
 				기준
 			</h2>

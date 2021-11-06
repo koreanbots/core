@@ -60,7 +60,7 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 			</a>
 		</Link>
 		<h1 className='text-3xl font-bold'>봇 설정</h1>
-		<p className='text-gray-400'>한국 디스코드봇 리스트 API에 사용할 정보를 이곳에서 설정하실 수 있습니다.</p>
+		<p className='text-gray-400'>한국 디스코드 리스트 API에 사용할 정보를 이곳에서 설정하실 수 있습니다.</p>
 		<div className='lg:flex pt-6'>
 			<div className='lg:w-1/5'>
 				<DiscordAvatar userID={bot.id} />
@@ -111,7 +111,7 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 							<Form>
 								<div className='mb-2'>
 									<h3 className='font-bold mb-1'>웹훅 URL</h3>
-									<p className='text-gray-400 text-sm mb-1'>웹훅을 이용하여 다양한 한국 디스코드봇 리스트의 봇에 발생하는 이벤트를 받아볼 수 있습니다.</p>
+									<p className='text-gray-400 text-sm mb-1'>웹훅을 이용하여 다양한 한국 디스코드 리스트의 봇에 발생하는 이벤트를 받아볼 수 있습니다.</p>
 									<Input name='webhook' placeholder='https://webhook.kbots.link' />
 									{touched.webhook && errors.webhook ? <div className='text-red-500 text-xs font-light mt-1'>{errors.webhook}</div> : null}
 								</div>

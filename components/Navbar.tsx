@@ -46,7 +46,7 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 						<Link href={dev ? '/developers' : '/'}>
 							<a className={`${dev ? 'dark:text-koreanbots-blue ' : ''}logofont text-large whitespace-no-wrap inline-block mr-4 py-2 hover:text-gray-300 font-semibold leading-relaxed uppercase sm:text-2xl`}
 							>
-								{ dev ? <><i className='fas fa-tools mr-1'/> DEVELOPERS</> : 'KOREANBOTS'}
+								{ dev ? <><i className='fas fa-tools mr-1'/> DEVELOPERS</> : 'KOREANLIST'}
 							</a>
 						</Link>
 						<button

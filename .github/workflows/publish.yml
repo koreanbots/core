@@ -2,9 +2,6 @@ name: Publish
 on:
   push:
     branches: [master]
-  pull_request: # debug
-    branches: '*'
-    tags: '*'
 
 jobs:
   image-push:

@@ -88,7 +88,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 								}
 							</div>
 							<div className='lg:flex w-full'>
-								<div className='w-full text-center lg:w-1/4'>
+								<div className='w-full text-center lg:w-2/12'>
 									<DiscordAvatar
 										userID={data.id}
 										size={256}
@@ -108,7 +108,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 									<h1 className='mb-2 mt-3 text-4xl font-bold' style={bg ? { color: 'white' } : {}}>
 										{data.name}{' '}
 										{checkBotFlag(data.flags, 'trusted') ? (
-											<Tooltip placement='bottom' overlay='해당 봇은 한국 디스코드봇 리스트에서 엄격한 기준을 통과한 봇입니다!'>
+											<Tooltip placement='bottom' overlay='해당 봇은 한국 디스코드 리스트에서 엄격한 기준을 통과한 봇입니다!'>
 												<span className='text-koreanbots-blue text-3xl'>
 													<i className='fas fa-award' />
 												</span>
@@ -121,10 +121,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 									{
 										data.state === 'ok' && <LongButton
 											newTab
-											href={
-												data.url ||
-					`https://discordapp.com/oauth2/authorize?client_id=${data.id}&scope=bot&permissions=0`
-											}
+											href={`/bots/${router.query.id}/invite`}
 										>
 											<h4 className='whitespace-nowrap'>
 												<i className='fas fa-user-plus text-discord-blurple' /> 초대하기
@@ -204,7 +201,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 									<h2 className='3xl mb-2 mt-2 font-bold'>카테고리</h2>
 									<div className='flex flex-wrap'>
 										{data.category.map(el => (
-											<Tag key={el} text={el} href={`/categories/${el}`} />
+											<Tag key={el} text={el} href={`/bots/categories/${el}`} />
 										))}
 									</div>
 									<h2 className='3xl mb-2 mt-2 font-bold'>제작자</h2>
@@ -320,9 +317,9 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 									{
 										checkBotFlag(data.flags, 'hackerthon') ? <Segment className='mt-10'>
 											<h1 className='text-3xl font-semibold'>
-												<i className='fas fa-trophy mr-4 my-2 text-yellow-300' /> 해당 봇은 한국 디스코드봇 리스트 해커톤 수상작품입니다!
+												<i className='fas fa-trophy mr-4 my-2 text-yellow-300' /> 해당 봇은 한국 디스코드 리스트 해커톤 수상작품입니다!
 											</h1>
-											<p>해당 봇은 한국 디스코드봇 리스트 주최로 진행되었던 "한국 디스코드봇 리스트 제1회 해커톤"에서 우수한 성적을 거둔 봇입니다.</p>
+											<p>해당 봇은 한국 디스코드 리스트 주최로 진행되었던 "한국 디스코드 리스트 제1회 해커톤"에서 우수한 성적을 거둔 봇입니다.</p>
 											<p>자세한 내용은 <a className='text-blue-500 hover:text-blue-400' href='https://blog.koreanbots.dev/first-hackathon-results/'>해당 글</a>을 확인해주세요.</p>
 										</Segment> : ''
 									}

@@ -2,7 +2,7 @@ import { get } from '@utils/Query'
 import RequestHandler from '@utils/RequestHandler'
 import ResponseWrapper from '@utils/ResponseWrapper'
 
-import { BotList } from '@types'
+import { Bot, List } from '@types'
 import Yup from '@utils/Yup'
 
 const VotesList = RequestHandler().get(async (req, res) => {
@@ -13,7 +13,7 @@ const VotesList = RequestHandler().get(async (req, res) => {
 		})
 	if(!page) return
 	const result = await get.list.votes.load(page)
-	return ResponseWrapper<BotList>(res, { code: 200, data: result })
+	return ResponseWrapper<List<Bot>>(res, { code: 200, data: result })
 })
 
 export default VotesList

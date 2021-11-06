@@ -1,11 +1,12 @@
-import { Bot, ImageOptions, KoreanbotsImageOptions } from '@types'
+import { Bot, ImageOptions, KoreanbotsImageOptions, Server } from '@types'
 import { KeyMap } from 'react-hotkeys'
 import { formatNumber, makeImageURL } from './Tools'
 
 // Website META DATA
-export const TITLE = '한국 디스코드봇 리스트'
+export const TITLE = '한국 디스코드 리스트'
 export const DESCRIPTION = '다양한 국내 디스코드 봇들을 확인하고, 초대해보세요!'
 export const THEME_COLOR = '#3366FF'
+export const DSKR_BOT_ID = '784618064167698472'
 
 export const VOTE_COOLDOWN = 12 * 60 * 60 * 1000
 export const BUG_REPORTERS = ['260303569591205888']
@@ -67,7 +68,7 @@ export const library = [
 	'비공개',
 ]
 
-export const categories = [
+export const botCategories = [
 	// 상위 카테고리
 	'관리',
 	'뮤직',
@@ -95,7 +96,7 @@ export const categories = [
 	'마인크래프트'
 ]
 
-export const categoryIcon = {
+export const botCategoryIcon = {
 	'관리': 'fas fa-cogs',
 	'뮤직': 'fas fa-music',
 	'전적': 'fas fa-puzzle-piece',
@@ -119,6 +120,37 @@ export const categoryIcon = {
 	'마인크래프트': 'fas fa-cubes'
 }
 
+export const serverCategories = [
+	'커뮤니티',
+	'IT & 과학',
+	'봇',
+	'친목',
+	'음악',
+	'교육',
+	'연애',
+	// 게임
+	'게임',
+	'오버워치',
+	'리그 오브 레전드',
+	'배틀그라운드',
+	'마인크래프트'
+]
+
+export const serverCategoryIcon = {
+	'커뮤니티': 'fas fa-comments',
+	'친목': 'fas fa-user-friends',
+	'음악': 'fas fa-music',
+	'IT & 과학': 'fas fa-flask',
+	'봇': 'fas fa-robot',
+	'교육': 'fas fa-graduation-cap',
+	'연애': 'fas fa-hand-holding-heart',
+	'게임': 'fas fa-gamepad',
+	'오버워치': 'fas fa-mask',
+	'리그 오브 레전드': 'fas fa-chess',
+	'배틀그라운드': 'fas fa-meteor',
+	'마인크래프트': 'fas fa-cubes'
+}
+
 export const reportCats = [
 	'위법',
 	'봇을 이용한 테러',
@@ -126,7 +158,16 @@ export const reportCats = [
 	'스팸, 도배, 의미없는 텍스트',
 	'폭력, 자해, 테러 옹호하거나 조장하는 컨텐츠',
 	'오픈소스 라이선스, 저작권 위반 등 권리 침해',
-	'Discord ToS를 위반하거나 한국 디스코드봇 리스트 가이드라인 위반',
+	'Discord ToS 또는 한국 디스코드 리스트 가이드라인 위반',
+	'기타',
+]
+
+export const serverReportCats = [
+	'위법',
+	'괴롭힘, 모욕, 명예훼손',
+	'폭력, 자해, 테러 옹호하거나 조장하는 컨텐츠',
+	'저작권 위반 등 권리 침해',
+	'Discord ToS 또는 한국 디스코드 리스트 가이드라인 위반',
 	'기타',
 ]
 
@@ -145,6 +186,7 @@ export const MessageColor = {
 
 export const BASE_URLs = {
 	api: 'https://discord.com/api',
+	invite: 'https://discord.gg',
 	cdn: 'https://cdn.discordapp.com',
 	camo: 'https://camo.koreanbots.dev'
 }
@@ -174,10 +216,33 @@ export const BotBadgeType = (data: Bot) => {
 	}
 }
 
+export const ServerBadgeType = (data: Server) => {
+	return {
+		members: {
+			label: '멤버수',
+			status: !data.members ? 'N/A' : formatNumber(data.members),
+			color: '7289DA'
+		},
+		votes: {
+			label: '하트',
+			status: `${formatNumber(data.votes)}`,
+			color: 'ef4444'
+		},
+		boost: {
+			label: '부스트',
+			status: `${!data.boostTier ? 0 : data.boostTier}레벨`,
+			color: 'fe73fa'
+		}
+	}
+}
+
+
 export const DiscordEnpoints = {
 	Token: BASE_URLs.api + '/oauth2/token',
-	Me: BASE_URLs.api + '/v8/users/@me',
-	InviteApplication: (id: string, perms: { [perm: string]: boolean }, scope: string, redirect?: string): string => `${BASE_URLs.api}/oauth2/authorize?client_id=${id ? id.split(' ')[0] : 'CLIENT_ID'}&permissions=${Object.keys(perms).filter(el => perms[el]).map(el => Number(el)).reduce((prev, curr) => prev | curr, 0)}&scope=${scope ? encodeURI(scope) : 'bot'}${redirect ? `&redirect_uri=${encodeURIComponent(redirect)}` : ''}`,
+	Me: BASE_URLs.api + '/v9/users/@me',
+	Guilds: BASE_URLs.api + '/v9/users/@me/guilds',
+	InviteApplication: (id: string, perms: { [perm: string]: boolean }, scope: string, redirect?: string, guild_id?: string): string => `${BASE_URLs.api}/oauth2/authorize?client_id=${id ? id.split(' ')[0] : 'CLIENT_ID'}&permissions=${Object.keys(perms).filter(el => perms[el]).map(el => Number(el)).reduce((prev, curr) => prev | curr, 0)}&scope=${scope ? encodeURI(scope) : 'bot'}${redirect ? `&redirect_uri=${encodeURIComponent(redirect)}` : ''}${guild_id ? `&guild_id=${guild_id}` : ''}`,
+	ServerInvite: (code: string): string => `${BASE_URLs.invite}/${code}`, 
 	CDN: class CDN {
 		static root = BASE_URLs.cdn
 		static emoji (id: string, options:ImageOptions={}) { return makeImageURL(`${this.root}/emojis/${id}`, options) }
@@ -191,25 +256,36 @@ export const KoreanbotsEndPoints = {
 	OG: class {
 		static root = 'https://og.kbots.link'
 		static origin = 'https://koreanbots.dev'
-		static bot(id: string, name: string, bio: string, tags: string[], stats: string[]) {
+		static generate(id: string, name: string, bio: string, tags: string[], stats: string[], type: 'bot' | 'server') {
 			const u = new URL(this.root)
-			u.pathname = name
-			u.searchParams.append('image', this.origin + KoreanbotsEndPoints.CDN.avatar(id, { format: 'webp', size: 256 }))
+			u.pathname = name + '.png'
+			u.searchParams.append('image', this.origin + ( type === 'bot' ? KoreanbotsEndPoints.CDN.avatar(id, { format: 'webp', size: 256 }) : KoreanbotsEndPoints.CDN.icon(id, { format: 'webp', size: 256 }) ))
 			u.searchParams.append('bio', bio)
+			u.searchParams.append('type', type)
 			tags.map(t => u.searchParams.append('tags', t))
 			stats.map(s => u.searchParams.append('stats', s))
 			return u.href
+		}
+		static bot(id: string, name: string, bio: string, tags: string[], stats: string[]) {
+			return this.generate(id, name, bio, tags, stats, 'bot')
+		}
+		static server(id: string, name: string, bio: string, tags: string[], stats: string[]) {
+			return this.generate(id, name, bio, tags, stats, 'server')
 		}
 	},
 	CDN: class {
 		static root = '/api/image'
 		static avatar (id: string, options: KoreanbotsImageOptions) { return makeImageURL(`${this.root}/discord/avatars/${id}`, options) }
+		static icon (id: string,  options: KoreanbotsImageOptions) { return makeImageURL(`${this.root}/discord/icons/${id}`, options) }
 	},
 	URL: class {
 		static root = process.env.KOREANBOTS_URL || 'https://koreanbots.dev'
 		static bot (id: string) { return `${this.root}/bots/${id}` }
+		static server (id: string) { return `${this.root}/servers/${id}` }
 		static user (id: string) { return `${this.root}/users/${id}` }
 		static submittedBot(id: string, date: number) { return `${this.root}/pendingBots/${id}/${date}` }
+		static searchBot(query: string) { return `${this.root}/bots/search?q=${encodeURIComponent(query)}` }
+		static searchServer(query: string) { return `${this.root}/servers/search?q=${encodeURIComponent(query)}` }
 	},
 	baseAPI: '/api/v2',
 	login: '/api/auth/discord',
@@ -240,10 +316,10 @@ export const git = { 'github.com': { icon: 'github', text: 'GitHub' },  'gitlab.
 export const KoreanbotsDiscord = 'https://discord.gg/JEh53MQ'
 export const ThemeColors = [{ name: '파랑', rgb: 'rgb(51, 102, 255)', hex: '#3366FF', color: 'koreanbots-blue' }, { name: '하양', rgb: 'rgb(251, 251, 251)', hex: '#FBFBFB', color: 'little-white' }, { name: '검정', rgb: 'rgb(27, 30, 35)', hex: '#1B1E23', color: 'very-black' }, { name: '보라', rgb: 'rgb(114, 137, 218)', hex: '#7289DA', color: 'discord-blurple' } ]
 export const KoreanbotsEmoji = [{
-	name: '한국 디스코드봇 리스트',
+	name: '한국 디스코드 리스트',
 	short_names: ['koreanbots', 'kbots', 'dbkr'],
 	emoticons: [],
-	keywords: ['koreanbots', '한국 디스코드봇 리스트', '한디리', 'kbots'],
+	keywords: ['koreanbots', '한국 디스코드 리스트', '한디리', 'kbots'],
 	imageUrl: '/logo.png'
 },
 {
@@ -289,6 +365,7 @@ export const ErrorText = {
 
 export const ErrorMessage = ['지나가던 고양이가 선을 밟았어요..', '무언가 잘못되었어요..!', '이게 아닌데...', '어쩜 이렇게 오류가 또 나는건지?']
 
+export const ServerIntroList = ['한국어를 배울 수 있는 최고의 공간입니다!', '김치의 다양한 요리법을 소개하는 서버입니다.', '좋아하는 노래를 들을 수 있는 곳 입니다.', '게임을 함께 할 사람을 찾을 수 있습니다.']
 export const BotSubmissionDenyReasonPresetsName = {
 	MISSING_VERIFY: '개발자 확인 불가',
 	OFFLINE: '봇 오프라인',

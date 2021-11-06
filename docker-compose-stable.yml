@@ -2,9 +2,10 @@ version: '3'
 
 services:
   mysql:
+    container_name: mysql-stable
+    restart: always
     image: wonderlandpark/mariadb-mroonga:latest
     hostname: mysql
-    container_name: mysql-stable
     env_file:
       - .env
     command:
@@ -12,12 +13,26 @@ services:
       - --collation-server=utf8mb4_unicode_ci
     volumes:
       - /home/ubuntu/mysql:/var/lib/mysql
+  mongo:
+    container_name: mongo-stable
+    restart: always
+    image: mongo:5.0
+    hostname: mongo
+    env_file:
+      - .env
+    volumes:
+      - /home/ubuntu/mongo:/data/db
   web:
     container_name: web-stable
+    restart: always
+    image: wonderlandpark/koreanbots:nightly
     ports:
-      - 5000:3000
+      - 3000:3000
     links:
       - mysql
     env_file:
       - .env.production.local
-    image: wonderlandpark/koreanbots:stable
+    deploy:
+      resources:
+        limits:
+          memory: 500M

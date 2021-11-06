@@ -1,6 +1,6 @@
 import { NextApiRequest } from 'next'
 
-import { ResetBotToken, ResetBotTokenSchema } from '@utils/Yup'
+import { ResetToken, ResetTokenSchema } from '@utils/Yup'
 import { get, update } from '@utils/Query'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { checkToken } from '@utils/Csrf'
@@ -13,7 +13,7 @@ const ResetApplication = RequestHandler().post(async (req: ApiRequest, res) => {
 	if (!user) return ResponseWrapper(res, { code: 401 })
 	const csrfValidated = checkToken(req, res, req.body._csrf)
 	if (!csrfValidated) return
-	const validated = await ResetBotTokenSchema.validate(req.body, { abortEarly: false })
+	const validated = await ResetTokenSchema.validate(req.body, { abortEarly: false })
 		.then(el => el)
 		.catch(e => {
 			ResponseWrapper(res, { code: 400, errors: e.errors })
@@ -30,7 +30,7 @@ const ResetApplication = RequestHandler().post(async (req: ApiRequest, res) => {
 })
 
 interface ApiRequest extends NextApiRequest {
-	body: ResetBotToken
+	body: ResetToken
 	query: {
 		id: string
 	}

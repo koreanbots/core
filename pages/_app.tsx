@@ -59,7 +59,7 @@ const KoreanbotsApp = ({ Component, pageProps, err, cookie }: KoreanbotsProps): 
 
 	return <div className={theme}>
 		<DefaultSeo
-			titleTemplate='%s - 한국 디스코드봇 리스트'
+			titleTemplate='%s - 한국 디스코드 리스트'
 			defaultTitle={TITLE}
 			description={DESCRIPTION}
 			openGraph={{

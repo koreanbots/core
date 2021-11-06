@@ -38,6 +38,7 @@
 		"josa": "3.0.1",
 		"jsonwebtoken": "8.5.1",
 		"knex": "^0.95.8",
+		"mongoose": "^5.13.4",
 		"mysql": "2.18.1",
 		"next": "^11.1.0",
 		"next-connect": "0.10.1",

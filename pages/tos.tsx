@@ -12,7 +12,7 @@ const ToS: NextPage<ToSProps> = ({ content }) => {
 	return (
 		<Docs
 			header='서비스 이용약관'
-			description='한국 디스코드봇 리스트의 서비스를 이용하실 때 지켜야하는 약관입니다.'
+			description='한국 디스코드 리스트의 서비스를 이용하실 때 지켜야하는 약관입니다.'
 		>
 			<Markdown text={content} />
 		</Docs>

@@ -4,7 +4,7 @@ import { formatNumber, makeImageURL } from './Tools'
 
 // Website META DATA
 export const TITLE = '한국 디스코드 리스트'
-export const DESCRIPTION = '다양한 국내 디스코드 봇들을 확인하고, 초대해보세요!'
+export const DESCRIPTION = '국내 디스코드의 모든 것을 한 곳에서 확인하세요!'
 export const THEME_COLOR = '#3366FF'
 export const DSKR_BOT_ID = '784618064167698472'
 

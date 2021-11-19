@@ -77,7 +77,7 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 									<p>서버에서 봇이 추방되었거나, 봇이 오프라인이여서 서버 정보를 갱신할 수 없습니다.</p>
 									{
 										owners?.find(el => el.id === user?.id) && <>
-											<h3 className='text-md font-bold pt-2'>서버 괸리자시군요!</h3>
+											<h3 className='text-md font-bold pt-2'>서버 관리자시군요!</h3>
 											<p>봇을 서버에서 추방하셨다면 <a className='text-blue-600 hover:text-blue-500 cursor-pointer' href={`${DiscordEnpoints.InviteApplication(DSKR_BOT_ID, {}, 'bot', null, data.id)}&disable_guild_select=true`}>이곳</a>을 눌러 봇을 다시 초대해주세요!</p>
 										</>
 									}

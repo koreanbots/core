@@ -660,6 +660,11 @@ async function getBotSubmitList() {
 	return await Promise.all(res.map(b => get.botSubmit.load(JSON.stringify({ id: b.id, date: b.date }))))
 }
 
+async function getBotSubmitHistory(id: string): Promise<SubmittedBot[]> {
+	const res = await knex('submitted').select(['id', 'date']).where({ id })
+	return await Promise.all(res.map(b => get.botSubmit.load(JSON.stringify({ id: b.id, date: b.date }))))
+}
+
 async function denyBotSubmission(id: string, date: number, reason?: string) {
 	await knex('submitted').update({ state: 2, reason: reason || null }).where({ state: 0, id, date })
 }
@@ -815,6 +820,7 @@ export const get = {
 	BotAuthorization,
 	ServerAuthorization,
 	botSubmitList: getBotSubmitList,
+	botSubmitHistory: getBotSubmitHistory,
 	serverOwners: fetchServerOwners
 }
 

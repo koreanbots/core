@@ -29,7 +29,7 @@ const Calculator:NextPage<CalculatorProps> = ({ query }) => {
 			description: '디스코드 봇 초대링크를 간편하게 생성하세요'
 		}} />
 		<h1 className='text-4xl font-bold mt-2 mb-4'>봇 초대링크 생성기</h1>
-		<div className='text-2xl font-bold inline-flex items-center'>권한: {Object.keys(value).filter(el => value[el]).map(el => Number(el)).reduce((prev, curr) => prev | curr, 0)} 
+		<div className='text-2xl font-bold inline-flex items-center'>권한: {Object.keys(value).filter(el => value[el]).map(el => Number(el)).reduce((prev, curr) => BigInt(prev) | BigInt(curr), BigInt(0))} 
 			<span className='ml-2 text-lg font-semibold'>= { Object.keys(value).filter(el => value[el]).map(el => `0x${Number(el).toString(16)}`).join(' | ') }</span>
 		</div>
 		<div className='grid gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mt-2'>

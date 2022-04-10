@@ -107,14 +107,6 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 								<li><Link href='/discord'><a rel='noreferrer' target='_blank' className='text-blue-500 hover:text-blue-600'>디스코드 서버</a></Link>에 참가하셨나요?</li>
 								<li>봇이 <Link href='/guidelines'><a rel='noreferrer' target='_blank' className='text-blue-500 hover:text-blue-600'>가이드라인</a></Link>을 지키고 있나요?</li>
 								<li>봇 소유자가 두 명 이상인가요? 봇 소유자는 봇이 승인된 뒤, 더 추가하실 수 있습니다.</li>
-								<li>본인이 봇의 소유자라는 것을 증명할 수 있나요? 본인이 봇 소유자임을 증명하려면, 태그가 포함되어야 합니다.</li>
-								다음 명령어(접두사로 시작하는) 중 하나 이상에 소유자를 표시하셔야 합니다. <br/>
-								<strong>빗금 명령어(Slash Command) 봇인 경우에도 적용됩니다.</strong> 빗금 명령어가 아닌 다음 일반 명령어가 작동해야합니다. (심사시에 빗금 명령어 권한이 따로 부여되지 않습니다.)
-								<ul>
-									<li>- 도움 명령어: 도움, 도움말, 명령어, help, commands</li>
-									<li>- 도움 명령어에 소유자임을 나타내고 싶지 않으시다면, 아래 명령어를 만들어주세요<br/>
-						명령어: [접두사]hellothisisverification 응답: 유저#태그(아이디)</li>
-								</ul>
 								<li>또한, 봇을 등록하게 되면 작성하신 모든 정보는 웹과 API에 공개됩니다.</li>
 							</ul>
 						</Message>

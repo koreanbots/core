@@ -224,7 +224,7 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 						<i className='fas fa-plus' />
 						<span className='px-2 font-medium'>추가하기</span>
 					</a>
-					<div className={mobileAddDropdownOpen ? `px-4 flex flex-col` : `px-4 hidden`}>
+					<div className={mobileAddDropdownOpen ? 'px-4 flex flex-col' : 'px-4 hidden'}>
 						<Link href='/addbot'>
 							<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
 								<i className='fas fa-robot' />

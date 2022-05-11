@@ -16,6 +16,8 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 	const [userCache, setUserCache] = useState<UserCache>()
 	const [navbarOpen, setNavbarOpen] = useState<boolean>(false)
 	const [dropdownOpen, setDropdownOpen] = useState<boolean>(false)
+	const [addDropdownOpen, setAddDropdownOpen] = useState<boolean>(false)
+	const [mobileAddDropdownOpen, setMobileAddDropdownOpen] = useState<boolean>(false)
 	const router = useRouter()
 	const logged = userCache?.id && userCache.version === 2
 	const type: Nullable<'bot'|'server'> = router.pathname.startsWith('/bots') ? 'bot' : router.pathname.startsWith('/servers') ? 'server' : null
@@ -98,24 +100,25 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 									</a>
 								</Link>
 							</li>
-							{
-								type === 'bot' && <li className='flex items-center'>
-									<Link href='/addbot'>
-										<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
-										봇 추가하기
-										</a>
-									</Link>
-								</li>
-							}
-							{
-								type === 'server' && <li className='flex items-center'>
-									<Link href='/addserver'>
-										<a className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100'>
-										서버 추가하기
-										</a>
-									</Link>
-								</li>
-							}
+							<li className='flex items-center' onFocus={() => setAddDropdownOpen(true)} onMouseOver={() => setAddDropdownOpen(true)} onMouseOut={() => setAddDropdownOpen(false)} onBlur={() => setAddDropdownOpen(false)}>
+								<span className='lg:hover:text-gray-300 flex items-center px-3 py-4 w-full hover:text-gray-500 text-gray-700 text-sm font-semibold sm:w-auto lg:py-2 lg:text-gray-100 cursor-pointer'>
+									추가하기
+								</span>
+								<div className={`rounded shadow-md absolute mt-11 top-0 w-40 bg-white text-black dark:bg-very-black dark:text-gray-300 text-sm ${addDropdownOpen ? 'block' : 'hidden'}`}>
+									<ul className='relative'>
+										<li>
+											<Link href='/addbot'>
+												<a className='px-4 py-2 block hover:bg-gray-100 dark:hover:bg-discord-dark-hover rounded-t'><i className='fas fa-robot' /> 봇 추가하기</a>
+											</Link>
+										</li>
+										<li>
+											<Link href='/addserver'>
+												<a className='px-4 py-2 block hover:bg-gray-100 dark:hover:bg-discord-dark-hover rounded-b'><i className='fas fa-users' /> 서버 추가하기</a>
+											</Link>
+										</li>
+									</ul>
+								</div>
+							</li>
 						</ul>
 					</div>
 					<div className='hidden flex-grow items-center bg-white lg:flex lg:bg-transparent lg:shadow-none'>
@@ -212,22 +215,29 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 							<span className='px-2 font-medium'>소개</span>
 						</a>
 					</Link>
-					{
-						type === 'bot' && <Link href='/addbot'>
+					<a
+						onClick={()=> {
+							setMobileAddDropdownOpen(!mobileAddDropdownOpen)
+						}}
+						className='flex items-center px-8 py-2 text-gray-100'
+					>
+						<i className='fas fa-plus' />
+						<span className='px-2 font-medium'>추가하기</span>
+					</a>
+					<div className={mobileAddDropdownOpen ? `px-4 flex flex-col` : `px-4 hidden`}>
+						<Link href='/addbot'>
 							<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
-								<i className='fas fa-plus' />
+								<i className='fas fa-robot' />
 								<span className='px-2 font-medium'>봇 추가하기</span>
 							</a>
 						</Link>
-					}
-					{
-						type === 'server' && <Link href='/addserver'>
+						<Link href='/addserver'>
 							<a onClick={()=> setNavbarOpen(false)} className='flex items-center px-8 py-2 text-gray-100 hover:text-gray-300'>
-								<i className='fas fa-plus' />
+								<i className='fas fa-users' />
 								<span className='px-2 font-medium'>서버 추가하기</span>
 							</a>
 						</Link>
-					}
+					</div>
 				</nav>
 
 				<div className='my-10'>

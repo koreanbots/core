@@ -13,7 +13,7 @@ const Footer: React.FC<FooterProps> = ({ theme, setTheme }) => {
 				<Container className='w-11/12 lg:flex lg:pt-0 lg:w-4/5' ignoreColor>
 					<div className='w-full lg:w-2/5'>
 						<h1 className='text-koreanbots-blue text-2xl font-bold'>국내 디스코드의 모든 것을 한 곳에서.</h1>
-						<span className='text-base'>2020-2021 한국 디스코드 리스트, All rights reserved.</span>
+						<span className='text-base'>2020-2022 한국 디스코드 리스트, All rights reserved.</span>
 						<div className='text-2xl'>
 							<Link href='/discord'>
 								<a className='mr-2'>

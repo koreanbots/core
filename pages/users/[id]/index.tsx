@@ -53,7 +53,7 @@ const Users: NextPage<UserProps> = ({ user, data }) => {
 					<DiscordAvatar
 						size={512}
 						userID={data.id}
-						className='w-full'
+						className='w-full rounded-full'
 					/>
 				</div>
 				<div className='flex-grow px-5 py-10 w-full text-center lg:w-5/12 lg:text-left'>

@@ -20,7 +20,7 @@ const Verification: NextPage<VerificationProps> = ({ content }) => {
 			<Divider />
 			<div className='text-center pt-10'>
 				<h2 className='text-2xl font-bold mb-6'>지금 바로 신청하세요</h2>
-				<Button href='https://github.com/koreanbots/verification/issues/new/choose'><i className='fab fa-github' /> 신청하기</Button>
+				<Button href='https://github.com/koreanbots/verification'><i className='fab fa-github' /> 신청하기</Button>
 			</div>
 		</Docs>
 	)

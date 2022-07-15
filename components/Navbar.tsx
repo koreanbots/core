@@ -217,7 +217,7 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 					</Link>
 					<a
 						onClick={()=> {
-							setMobileAddDropdownOpen(false)
+							setMobileAddDropdownOpen(!mobileAddDropdownOpen)
 						}}
 						className='flex items-center px-8 py-2 text-gray-100'
 					>

@@ -250,7 +250,7 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 								<div className='list grid'>
 									<Link href={`/servers/${router.query.id}/report`}>
 										<a className='text-red-600 hover:underline cursor-pointer' aria-hidden='true'>
-											<i className='far fa-flag' /> 신고하기
+											<i className='far fa-flag' />신고하기
 										</a>
 									</Link>
 										

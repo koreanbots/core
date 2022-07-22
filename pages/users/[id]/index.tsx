@@ -94,7 +94,7 @@ const Users: NextPage<UserProps> = ({ user, data }) => {
 							user?.id !== data.id && <div className='list-none mt-2'>
 								<Link href={`/users/${router.query.id}/report`}>
 									<a className='text-red-600 hover:underline cursor-pointer' aria-hidden='true'>
-										<i className='far fa-flag' /> 신고하기
+										<i className='far fa-flag' />신고하기
 									</a>
 								</Link>
 							</div>

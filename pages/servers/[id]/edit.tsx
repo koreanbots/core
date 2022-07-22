@@ -64,7 +64,7 @@ const ManageServerPage:NextPage<ManageServerProps> = ({ server, user, owners, cs
 			{({ errors, touched, values, setFieldTouched, setFieldValue }) => (
 				<Form>
 					<div className='md:flex text-center md:text-left'>
-						<ServerIcon id={server.id} className='md:mx-1 mx-auto'/>
+						<ServerIcon id={server.id} className='md:mx-1 mx-auto rounded-full'/>
 						<div className='md:w-2/3 px-8 py-6'>
 							<h1 className='text-3xl font-bold'>{server.name}</h1>
 							<h2>ID: {server.id}</h2>

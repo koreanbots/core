@@ -216,7 +216,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 									<div className='list grid'>
 										<Link href={`/bots/${router.query.id}/report`}>
 											<a className='text-red-600 hover:underline cursor-pointer' aria-hidden='true'>
-												<i className='far fa-flag' /> 신고하기
+												<i className='far fa-flag' />신고하기
 											</a>
 										</Link>
 										<Modal header={`${data.name}#${data.tag} 신고하기`} closeIcon isOpen={reportModal} onClose={() => {

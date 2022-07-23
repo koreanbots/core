@@ -71,7 +71,7 @@ const VoteServer: NextPage<VoteServerProps> = ({ data, user, theme, csrfToken })
 				</Link>
 				<Segment className='mb-16 py-8'>
 					<div className='text-center'>
-						<ServerIcon id={data.id} className='mx-auto w-52 h-52 bg-white mb-4' />
+						<ServerIcon id={data.id} className='mx-auto w-52 h-52 bg-white mb-4 rounded-full' />
 						<Tag text={<span><i className='fas fa-heart text-red-600' /> {data.votes}</span>} dark />
 						<h1 className='text-3xl font-bold mt-3'>{data.name}</h1>
 						<h4 className='text-md mt-1'>12시간마다 다시 투표하실 수 있습니다.</h4>

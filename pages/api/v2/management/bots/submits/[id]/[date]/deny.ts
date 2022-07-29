@@ -1,5 +1,5 @@
 import { NextApiRequest } from 'next'
-import { MessageEmbed } from 'discord.js'
+import {Colors, EmbedBuilder} from 'discord.js'
 import tracer from 'dd-trace'
 
 import RequestHandler from '@utils/RequestHandler'
@@ -17,9 +17,10 @@ const DenyBotSubmit = RequestHandler()
 		if(submit.state !== 0) return ResponseWrapper(res, { code: 400, message: '대기 중이지 않은 아이디입니다.' })
 		await update.denyBotSubmission(submit.id, submit.date, req.body.reason)
 		get.botSubmit.clear(JSON.stringify({ id: req.query.id, date: req.query.date }))
-		const embed = new MessageEmbed().setTitle('거부').setColor('RED').setDescription(`[${submit.id}/${submit.date}](${KoreanbotsEndPoints.URL.submittedBot(submit.id, submit.date)})`).setTimestamp()
-		if(req.body.reviewer || req.body.reason) embed.addField('📃 정보', `${req.body.reason ? `사유: ${BotSubmissionDenyReasonPresetsName[req.body.reason] || req.body.reason}\n`: ''}${req.body.reviewer ? `심사자: ${req.body.reviewer}` : ''}`)
-		await getBotReviewLogChannel().send(embed)
+		const embed = new EmbedBuilder().setTitle('거부').setColor(Colors.Red).setDescription(`[${submit.id}/${submit.date}](${KoreanbotsEndPoints.URL.submittedBot(submit.id, submit.date)})`).setTimestamp()
+		if(req.body.reviewer || req.body.reason) embed.addFields({name: '📃 정보', value: `${req.body.reason ? `사유: ${BotSubmissionDenyReasonPresetsName[req.body.reason] || req.body.reason}\n` : ''}${req.body.reviewer ? `심사자: ${req.body.reviewer}` : ''}`
+		})
+		await getBotReviewLogChannel().send({embeds: [embed]})
 		tracer.trace('botSubmits.deny', span => {
 			span.setTag('id', submit.id)
 			span.setTag('date', submit.date)

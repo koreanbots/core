@@ -1,15 +1,17 @@
 import * as Discord from 'discord.js'
 
-export const DiscordBot = new Discord.Client()
+export const DiscordBot = new Discord.Client({
+	intents: 32767
+})
 
-const guildID = '653083797763522580'
+const guildID = '973239459799789618'
 
-const reportChannelID = '813255797823766568'
-const loggingChannelID = '844006379823955978'
-const statsLoggingChannelID = '653227346962153472'
+const reportChannelID = '1001512740109684739'
+const loggingChannelID = '1001512807776387244'
+const statsLoggingChannelID = '1001512883349360680'
 
-const reviewGuildID = '906537041326637086'
-const botReviewLogChannelID = '906551334063439902'
+const reviewGuildID = '973239459799789618'
+const botReviewLogChannelID = '1001513025695645707'
 
 DiscordBot.on('ready', async () => {
 	console.log('I\'m Ready')
@@ -26,13 +28,12 @@ export const getLoggingChannel = (): Discord.TextChannel => getMainGuild().chann
 export const getBotReviewLogChannel = (): Discord.TextChannel => getReviewGuild().channels.cache.get(botReviewLogChannelID) as Discord.TextChannel
 export const getStatsLoggingChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(statsLoggingChannelID) as Discord.TextChannel
 
-export const discordLog = async (type: string, issuerID: string, embed?: Discord.MessageEmbed, attachment?: { content: string, format: string}, content?: string): Promise<void> => {
+export const discordLog = async (type: string, issuerID: string, embed?: Discord.EmbedBuilder, attachment?: { content: string, format: string}, content?: string): Promise<void> => {
 	getLoggingChannel().send({ 
 		content: `[${type}] <@${issuerID}> (${issuerID})\n${content || ''}`,
-		embed: embed && embed.setTitle(type).setTimestamp(new Date()),
+		embeds: [embed && embed.setTitle(type).setTimestamp(new Date())],
 		...(attachment && { files: [
-			new Discord.MessageAttachment(Buffer.from(attachment.content), `${type.toLowerCase().replace(/\//g, '-')}-${issuerID}-${Date.now()}.${attachment.format}`)
-		]
-		})
+			new Discord.AttachmentBuilder(Buffer.from(attachment.content), {name: `${type.toLowerCase().replace(/\//g, '-')}-${issuerID}-${Date.now()}.${attachment.format}`
+			})]})
 	})
 }

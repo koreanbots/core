@@ -291,7 +291,7 @@ export const getServerSideProps = async (ctx: Context) => {
 		props: {
 			data,
 			desc,
-			date: SnowflakeUtil.deconstruct(data.id ?? '0').date.toJSON(),
+			date: Number(SnowflakeUtil.deconstruct(data.id ?? '0').timestamp),
 			user: await get.user.load(user || ''),
 			csrfToken: getToken(ctx.req, ctx.res)
 		},

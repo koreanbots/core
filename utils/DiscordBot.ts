@@ -4,14 +4,14 @@ export const DiscordBot = new Discord.Client({
 	intents: 32767
 })
 
-const guildID = '973239459799789618'
+const guildID = '653083797763522580'
 
-const reportChannelID = '1001512740109684739'
-const loggingChannelID = '1001512807776387244'
-const statsLoggingChannelID = '1001512883349360680'
+const reportChannelID = '813255797823766568'
+const loggingChannelID = '844006379823955978'
+const statsLoggingChannelID = '653227346962153472'
 
-const reviewGuildID = '973239459799789618'
-const botReviewLogChannelID = '1001513025695645707'
+const reviewGuildID = '906537041326637086'
+const botReviewLogChannelID = '906551334063439902'
 
 DiscordBot.on('ready', async () => {
 	console.log('I\'m Ready')

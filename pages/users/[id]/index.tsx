@@ -135,7 +135,7 @@ export const getServerSideProps = async (ctx: Context) => {
 	
 	const user = await get.Authorization(parsed?.token) || ''
 	const data = await get.user.load(ctx.query.id)
-	return { props: { user: await get.user.load(user) || {}, data, date: SnowflakeUtil.deconstruct(data?.id ?? '0')?.date?.toJSON(), csrfToken: getToken(ctx.req, ctx.res) } }
+	return { props: { user: await get.user.load(user) || {}, data, date: Number(SnowflakeUtil.deconstruct(data?.id ?? '0')?.timestamp), csrfToken: getToken(ctx.req, ctx.res) } }
 }
 
 interface UserProps {

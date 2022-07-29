@@ -1,5 +1,5 @@
 import { NextApiRequest } from 'next'
-import { MessageEmbed } from 'discord.js'
+import {Colors, EmbedBuilder} from 'discord.js'
 import tracer from 'dd-trace'
 
 import RequestHandler from '@utils/RequestHandler'
@@ -19,9 +19,10 @@ const ApproveBotSubmit = RequestHandler()
 		if(!result) return ResponseWrapper(res, { code: 400 })
 		get.botSubmit.clear(JSON.stringify({ id: req.query.id, date: req.query.date }))
 		get.bot.clear(req.query.id)
-		const embed = new MessageEmbed().setTitle('승인').setColor('GREEN').setDescription(`[${submit.id}/${submit.date}](${KoreanbotsEndPoints.URL.submittedBot(submit.id, submit.date)})`).setTimestamp()
-		if(req.body.reviewer) embed.addField('📃 정보', `심사자: ${req.body.reviewer}`)
-		await getBotReviewLogChannel().send(embed)
+		const embed = new EmbedBuilder().setTitle('승인').setColor(Colors.Green).setDescription(`[${submit.id}/${submit.date}](${KoreanbotsEndPoints.URL.submittedBot(submit.id, submit.date)})`).setTimestamp()
+		if(req.body.reviewer) embed.addFields({name: '📃 정보', value:`심사자: ${req.body.reviewer}`
+		})
+		await getBotReviewLogChannel().send({embeds: [embed]})
 		tracer.trace('botSubmits.approve', span => {
 			span.setTag('id', submit.id)
 			span.setTag('date', submit.date)

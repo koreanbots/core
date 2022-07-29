@@ -1,6 +1,6 @@
 import { NextApiRequest } from 'next'
 import rateLimit from 'express-rate-limit'
-import { MessageEmbed } from 'discord.js'
+import { EmbedBuilder } from 'discord.js'
 
 import { CaptchaVerify, get, put, remove, update } from '@utils/Query'
 import ResponseWrapper from '@utils/ResponseWrapper'
@@ -76,7 +76,7 @@ const Servers = RequestHandler()
 				],
 			})
 		get.user.clear(user)
-		await discordLog('SERVER/SUBMIT', user, new MessageEmbed().setDescription(`[${req.query.id}](${KoreanbotsEndPoints.URL.server(req.query.id)})`), {
+		await discordLog('SERVER/SUBMIT', user, new EmbedBuilder().setDescription(`[${req.query.id}](${KoreanbotsEndPoints.URL.server(req.query.id)})`), {
 			content: inspect(serialize(validated)),
 			format: 'js'
 		})
@@ -100,7 +100,7 @@ const Servers = RequestHandler()
 		if(req.body.name !== server.name) return ResponseWrapper(res, { code: 400, message: '봇 이름을 입력해주세요.' })
 		await remove.server(server.id)
 		get.user.clear(user)
-		await discordLog('SERVER/DELETE', user, (new MessageEmbed().setDescription(`${server.name} - [${server.id}](${KoreanbotsEndPoints.URL.bot(server.id)}))`)),
+		await discordLog('SERVER/DELETE', user, (new EmbedBuilder().setDescription(`${server.name} - [${server.id}](${KoreanbotsEndPoints.URL.bot(server.id)}))`)),
 			{
 				content: inspect(server),
 				format: 'js'
@@ -135,13 +135,14 @@ const Servers = RequestHandler()
 		if(result === 0) return ResponseWrapper(res, { code: 400 })
 		else {
 			get.server.clear(req.query.id)
-			const embed = new MessageEmbed().setDescription(`${server.name} - ([${server.id}](${KoreanbotsEndPoints.URL.server(server.id)}))`)
+			const embed = new EmbedBuilder().setDescription(`${server.name} - ([${server.id}](${KoreanbotsEndPoints.URL.server(server.id)}))`)
 			const diffData = objectDiff(
 				{ intro: server.intro, invite: server.invite, category: JSON.stringify(server.category) },
 				{ intro: validated.intro, invite: validated.invite, category: JSON.stringify(validated.category) },
 			)
 			diffData.forEach(d => {
-				embed.addField(d[0], makeDiscordCodeblock(diff(d[1][0] || '', d[1][1] || ''), 'diff'))
+				embed.addFields({name: d[0], value: makeDiscordCodeblock(diff(d[1][0] || '', d[1][1] || ''), 'diff')
+				})
 			})
 			await discordLog('SERVER/EDIT', user, embed,
 				{

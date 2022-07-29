@@ -1,6 +1,6 @@
 import { NextApiRequest } from 'next'
 import rateLimit from 'express-rate-limit'
-import { MessageEmbed } from 'discord.js'
+import {Colors, EmbedBuilder} from 'discord.js'
 import tracer from 'dd-trace'
 
 import { CaptchaVerify, get, put, remove, update } from '@utils/Query'
@@ -84,12 +84,12 @@ const Bots = RequestHandler()
 			})
 		get.botSubmits.clear(user)
 
-		await discordLog('BOT/SUBMIT', user, new MessageEmbed().setDescription(`[${result.id}/${result.date}](${KoreanbotsEndPoints.URL.submittedBot(result.id, result.date)})`), {
+		await discordLog('BOT/SUBMIT', user, new EmbedBuilder().setDescription(`[${result.id}/${result.date}](${KoreanbotsEndPoints.URL.submittedBot(result.id, result.date)})`), {
 			content: inspect(serialize(result)),
 			format: 'js'
 		})
 		const userinfo = await get.user.load(user)
-		await getBotReviewLogChannel().send(new MessageEmbed().setAuthor(`${userinfo.username}#${userinfo.tag}`, KoreanbotsEndPoints.URL.root + KoreanbotsEndPoints.CDN.avatar(userinfo.id, { format: 'png', size: 256 }), KoreanbotsEndPoints.URL.user(userinfo.id)).setTitle('대기 중').setColor('GREY').setDescription(`[${result.id}/${result.date}](${KoreanbotsEndPoints.URL.submittedBot(result.id, result.date)})`).setTimestamp())
+		await getBotReviewLogChannel().send({embeds: [new EmbedBuilder().setAuthor({name: `${userinfo.username}#${userinfo.tag}`, iconURL: KoreanbotsEndPoints.URL.root + KoreanbotsEndPoints.CDN.avatar(userinfo.id, { format: 'png', size: 256 }), url: KoreanbotsEndPoints.URL.user(userinfo.id)}).setTitle('대기 중').setColor(Colors.Grey).setDescription(`[${result.id}/${result.date}](${KoreanbotsEndPoints.URL.submittedBot(result.id, result.date)})`).setTimestamp()]})
 		tracer.trace('botSubmits.submitted', span => {
 			span.setTag('id', result.id)
 			span.setTag('date', result.date)
@@ -113,7 +113,7 @@ const Bots = RequestHandler()
 		await remove.bot(bot.id)
 		await getMainGuild().members.cache.get(bot.id)?.kick('봇 삭제됨.')
 		get.user.clear(user)
-		await discordLog('BOT/DELETE', user, (new MessageEmbed().setDescription(`${bot.name} - <@${bot.id}> ([${bot.id}](${KoreanbotsEndPoints.URL.bot(bot.id)}))`)),
+		await discordLog('BOT/DELETE', user, (new EmbedBuilder().setDescription(`${bot.name} - <@${bot.id}> ([${bot.id}](${KoreanbotsEndPoints.URL.bot(bot.id)}))`)),
 			{
 				content: inspect(bot),
 				format: 'js'
@@ -144,13 +144,14 @@ const Bots = RequestHandler()
 		if(result === 0) return ResponseWrapper(res, { code: 400 })
 		else {
 			get.bot.clear(req.query.id)
-			const embed = new MessageEmbed().setDescription(`${bot.name} - <@${bot.id}> ([${bot.id}](${KoreanbotsEndPoints.URL.bot(bot.id)}))`)
+			const embed = new EmbedBuilder().setDescription(`${bot.name} - <@${bot.id}> ([${bot.id}](${KoreanbotsEndPoints.URL.bot(bot.id)}))`)
 			const diffData = objectDiff(
 				{ prefix: bot.prefix, library: bot.lib, web: bot.web, git: bot.git, url: bot.url, discord: bot.discord, intro: bot.intro, category: JSON.stringify(bot.category) },
 				{ prefix: validated.prefix, library: validated.library, web: validated.website, git: validated.git, url: validated.url, discord: validated.discord, intro: validated.intro, category: JSON.stringify(validated.category)  }
 			)
 			diffData.forEach(d => {
-				embed.addField(d[0], makeDiscordCodeblock(diff(d[1][0] || '', d[1][1] || ''), 'diff'))
+				embed.addFields({name: d[0], value: makeDiscordCodeblock(diff(d[1][0] || '', d[1][1] || ''), 'diff')
+				})
 			})
 			await discordLog('BOT/EDIT', user, embed,
 				{

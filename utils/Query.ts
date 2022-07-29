@@ -55,7 +55,15 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 		res[0].name = discordBot.username
 		res[0].category = JSON.parse(res[0].category)
 		res[0].owners = JSON.parse(res[0].owners)
-		res[0].status = botMember?.presence?.activities.find(r => r.type === ActivityType.Streaming) ? 'streaming' : botMember?.presence?.status || null
+		if(botMember) {
+			if(botMember.presence === null) {
+				res[0].status = 'offline'
+			} else {
+				res[0].status = botMember?.presence?.activities.find(r => r.type === ActivityType.Streaming) ? 'streaming' : botMember?.presence?.status || null
+			}
+		} else {
+			res[0].status = null;
+		}
 		delete res[0].trusted
 		delete res[0].partnered
 		if (topLevel) {

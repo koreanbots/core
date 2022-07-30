@@ -62,7 +62,7 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 				res[0].status = botMember?.presence?.activities.find(r => r.type === ActivityType.Streaming) ? 'streaming' : botMember?.presence?.status || null
 			}
 		} else {
-			res[0].status = null;
+			res[0].status = null
 		}
 		delete res[0].trusted
 		delete res[0].partnered

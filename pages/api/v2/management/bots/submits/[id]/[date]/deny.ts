@@ -1,5 +1,5 @@
 import { NextApiRequest } from 'next'
-import {Colors, EmbedBuilder} from 'discord.js'
+import { Colors, EmbedBuilder } from 'discord.js'
 import tracer from 'dd-trace'
 
 import RequestHandler from '@utils/RequestHandler'

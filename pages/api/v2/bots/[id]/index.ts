@@ -1,6 +1,6 @@
 import { NextApiRequest } from 'next'
 import rateLimit from 'express-rate-limit'
-import {Colors, EmbedBuilder} from 'discord.js'
+import { Colors, EmbedBuilder } from 'discord.js'
 import tracer from 'dd-trace'
 
 import { CaptchaVerify, get, put, remove, update } from '@utils/Query'

@@ -189,7 +189,7 @@ export const AddBotSubmitSchema: Yup.SchemaOf<AddBotSubmit> = Yup.object({
 	url: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')
 		.matches(Url, '올바른 초대링크 URL을 입력해주세요.')
-		.max(128, 'URL은 최대 128자까지만 가능합니다.')
+		.max(129, 'URL은 최대 129자까지만 가능합니다.')
 		.nullable(),
 	git: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')
@@ -314,7 +314,7 @@ export const ManageBotSchema: Yup.SchemaOf<ManageBot> = Yup.object({
 	url: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')
 		.matches(Url, '올바른 초대링크 URL을 입력해주세요.')
-		.max(128, 'URL은 최대 128자까지만 가능합니다.')
+		.max(129, 'URL은 최대 129자까지만 가능합니다.')
 		.nullable(),
 	git: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')

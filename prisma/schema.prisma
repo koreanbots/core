@@ -1,0 +1,114 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model bots {
+  id        String  @id @db.VarChar(50)
+  date      Int
+  owners    String  @db.MediumText
+  lib       String  @db.MediumText
+  prefix    String  @db.MediumText
+  votes     Int     @default(0)
+  servers   Int?
+  shards    Int?
+  intro     String  @db.MediumText
+  desc      String  @db.LongText
+  web       String? @db.MediumText
+  git       String? @db.MediumText
+  url       String? @db.MediumText
+  category  String  @default("[]") @db.MediumText
+  status    String? @db.Text
+  name      String? @db.Text
+  avatar    String? @db.Text
+  tag       String? @db.Text
+  verified  Boolean @default(false)
+  trusted   Boolean @default(false)
+  discord   String? @db.MediumText
+  token     String? @db.Text
+  state     String  @default("ok") @db.Text
+  boosted   Boolean @default(false)
+  vanity    String? @db.Text
+  bg        String? @db.Text
+  banner    String? @db.Text
+  partnered Boolean @default(false)
+  webhook   String? @db.Text
+  flags     Boolean @default(false)
+
+  @@fulltext([name, intro, desc], map: "search")
+  @@fulltext([name, desc, intro], map: "name")
+  @@fulltext([name, desc, intro], map: "name_2")
+  @@fulltext([name, desc, intro], map: "name_3")
+}
+
+model reports {
+  id       Int      @id @default(autoincrement())
+  Date     DateTime @default(now()) @db.Timestamp
+  issuer   String   @db.Text
+  type     String   @db.Text
+  reported String   @db.Text
+  state    Int      @default(0)
+  category String   @db.Text
+  desc     String   @db.Text
+}
+
+model servers {
+  id       String   @id
+  name     String?  @db.Text
+  date     DateTime @default(now()) @db.DateTime
+  votes    Int      @default(0)
+  intro    String   @db.MediumText
+  desc     String   @db.LongText
+  owners   String   @default("[]") @db.Text
+  category String   @default("[]") @db.MediumText
+  invite   String?  @db.TinyText
+  token    String?  @db.Text
+  state    String   @default("ok") @db.Text
+  vanity   String?  @db.Text
+  bg       String?  @db.Text
+  banner   String?  @db.Text
+  flags    Int      @default(0)
+
+  @@fulltext([name, intro, desc], map: "search")
+}
+
+model submitted {
+  id       String  @id
+  date     Int
+  owners   String  @db.MediumText
+  lib      String  @db.MediumText
+  prefix   String  @db.MediumText
+  intro    String  @db.MediumText
+  desc     String  @db.LongText
+  web      String? @db.MediumText
+  git      String? @db.MediumText
+  url      String? @db.MediumText
+  category String? @default("[]") @db.MediumText
+  discord  String? @db.MediumText
+  state    Boolean @default(false)
+}
+
+model users {
+  id       String  @id @db.Char(19)
+  email    String?
+  perm     String  @default("user")
+  date     Int
+  bots     String  @default("[]") @db.MediumText
+  token    String  @db.MediumText
+  discord  String  @db.Text
+  avatar   String? @db.MediumText
+  username String  @db.MediumText
+  tag      String  @db.MediumText
+  votes    String  @default("{}") @db.LongText
+  github   String? @db.TinyText
+  flags    Int     @default(0)
+  starred  String  @default("[]") @db.Text
+
+  @@unique([id], name: "id_3")
+  @@fulltext([id], map: "id_2")
+}

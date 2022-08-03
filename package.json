@@ -16,6 +16,7 @@
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "5.15.3",
 		"@hcaptcha/react-hcaptcha": "0.3.6",
+		"@prisma/client": "4.1.1",
 		"@sentry/nextjs": "6.10.0",
 		"@sentry/node": "6.10.0",
 		"@sentry/react": "^6.10.0",
@@ -98,6 +99,7 @@
 		"jest": "27.0.6",
 		"prettier": "^2.3.2",
 		"prettier-plugin-tailwind": "^2.2.12",
+		"prisma": "^4.1.1",
 		"ts-jest": "27.0.4",
 		"typescript": "^4.3.5"
 	},

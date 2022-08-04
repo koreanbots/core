@@ -1,7 +1,9 @@
 import * as Discord from 'discord.js'
 
+console.log(process.env.DISCORD_CLIENT_INTENTS)
+
 export const DiscordBot = new Discord.Client({
-	intents: Number(process.env.DISCORD_CLIENT_INTENTS) ?? 32767
+	intents: Number(process.env.DISCORD_CLIENT_INTENTS ?? 32767)
 })
 
 const guildID = '653083797763522580'

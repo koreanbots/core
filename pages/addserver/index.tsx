@@ -6,6 +6,7 @@ import { get } from '@utils/Query'
 import { parseCookie} from '@utils/Tools'
 import { RawGuild, ServerData, Theme, User } from '@types'
 
+const Advertisement = dynamic(() => import('@components/Advertisement'))
 const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
 const ServerCard = dynamic(() => import('@components/ServerCard'))
 const Login = dynamic(() => import('@components/Login'))
@@ -24,6 +25,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, guilds }) => {
 		<h1 className='text-3xl font-bold'>새로운 서버 추가하기</h1>
 		<p className='text-gray-400'>관리자이신 서버 목록입니다.</p>
 		<p className='text-gray-400 pb-5'>봇을 초대한 뒤 새로고침 해주세요. 또한, 반영까지 최대 1분이 소요될 수 있습니다.</p>
+		<Advertisement />
 		<ResponsiveGrid>
 			{
 				guilds.sort((a ,b) => (+!!b.data || 0) - (+!!a.data || 0)).map(g => (
@@ -31,6 +33,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, guilds }) => {
 				))
 			}
 		</ResponsiveGrid>
+		<Advertisement />
 	</Container>
 }
 

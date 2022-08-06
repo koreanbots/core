@@ -9,33 +9,33 @@ datasource db {
 }
 
 model bots {
-  id        String  @id @db.VarChar(50)
-  date      Int
-  owners    String  @db.MediumText
-  lib       String  @db.MediumText
-  prefix    String  @db.MediumText
-  votes     Int     @default(0)
-  servers   Int?
-  shards    Int?
-  intro     String  @db.MediumText
-  desc      String  @db.LongText
-  web       String? @db.MediumText
-  git       String? @db.MediumText
-  url       String? @db.MediumText
-  category  String  @default("[]") @db.MediumText
-  name      String? @db.Text
-  avatar    String? @db.Text
-  tag       String? @db.Text
-  trusted   Boolean @default(false)
-  discord   String? @db.MediumText
-  token     String? @db.Text
-  state     String  @default("ok") @db.Text
-  boosted   Boolean @default(false)
-  vanity    String? @db.Text
-  bg        String? @db.Text
-  banner    String? @db.Text
-  webhook   String? @db.Text
-  flags     Boolean @default(false)
+  id       String  @id @db.VarChar(50)
+  date     Int
+  owners   String  @db.MediumText
+  lib      String  @db.MediumText
+  prefix   String  @db.MediumText
+  votes    Int     @default(0)
+  servers  Int?
+  shards   Int?
+  intro    String  @db.MediumText
+  desc     String  @db.LongText
+  web      String? @db.MediumText
+  git      String? @db.MediumText
+  url      String? @db.MediumText
+  category String  @default("[]") @db.MediumText
+  name     String? @db.Text
+  avatar   String? @db.Text
+  tag      String? @db.Text
+  trusted  Boolean @default(false)
+  discord  String? @db.MediumText
+  token    String? @db.Text
+  state    String  @default("ok") @db.Text
+  boosted  Boolean @default(false)
+  vanity   String? @db.Text
+  bg       String? @db.Text
+  banner   String? @db.Text
+  webhook  String? @db.Text
+  flags    Int     @default(0)
 
   @@fulltext([name, intro, desc], map: "search")
   @@fulltext([name, desc, intro], map: "name")

@@ -23,11 +23,9 @@ model bots {
   git       String? @db.MediumText
   url       String? @db.MediumText
   category  String  @default("[]") @db.MediumText
-  status    String? @db.Text
   name      String? @db.Text
   avatar    String? @db.Text
   tag       String? @db.Text
-  verified  Boolean @default(false)
   trusted   Boolean @default(false)
   discord   String? @db.MediumText
   token     String? @db.Text
@@ -36,7 +34,6 @@ model bots {
   vanity    String? @db.Text
   bg        String? @db.Text
   banner    String? @db.Text
-  partnered Boolean @default(false)
   webhook   String? @db.Text
   flags     Boolean @default(false)
 

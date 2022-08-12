@@ -15,6 +15,7 @@ import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
 import { ResponseProps, SubmittedBot, Theme, User } from '@types'
 
+const Advertisement = dynamic(() => import('@components/Advertisement'))
 const CheckBox = dynamic(() => import('@components/Form/CheckBox'))
 const Label = dynamic(() => import('@components/Form/Label'))
 const Login = dynamic(() => import('@components/Login'))
@@ -118,6 +119,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 						</div>
 					</Label>
 					<Divider />
+					<Advertisement />
 					<Label For='id' label='봇 ID' labelDesc='봇의 클라이언트 ID를 의미합니다.' error={errors.id && touched.id ? errors.id : null} short required>
 						<Input name='id' placeholder='653534001742741552' />
 					</Label>
@@ -199,6 +201,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 				</Form>
 			)}
 		</Formik>
+		<Advertisement />
 	</Container>
 }
 

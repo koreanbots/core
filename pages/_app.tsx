@@ -5,8 +5,10 @@ import { Router, useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { DefaultSeo } from 'next-seo'
 import { GlobalHotKeys } from 'react-hotkeys'
+import { isMobile } from 'react-device-detect'
 import NProgress from 'nprogress'
 import Package from '../package.json'
+import ReactGA from 'react-ga'
 
 import Logger from '@utils/Logger'
 import { handlePWA, parseCookie, parseDockerhubTag, systemTheme } from '@utils/Tools'
@@ -28,6 +30,9 @@ NProgress.configure({ showSpinner: false })
 Router.events.on('routeChangeStart', NProgress.start)
 Router.events.on('routeChangeComplete', NProgress.done)
 Router.events.on('routeChangeError', NProgress.done)
+
+// Google Analytics
+ReactGA.initialize('UA-165454387-1')
 
 const KoreanbotsApp = ({ Component, pageProps, err, cookie }: KoreanbotsProps): JSX.Element => {
 	const [ shortcutModal, setShortcutModal ] = useState(false)
@@ -51,6 +56,10 @@ const KoreanbotsApp = ({ Component, pageProps, err, cookie }: KoreanbotsProps): 
 		}
 		else setTheme(localStorage.theme)
 		setStandalone(handlePWA())
+
+		const script = document.querySelector('script[src*=googlesyndication]')
+
+		if (script) script.addEventListener('error', () => {ReactGA.ga('send', 'event', 'adblock', 'adblock_' + (isMobile ? 'mobile' : 'pc'))})
 	}, [])
 
 	return <div className={theme}>

@@ -5,7 +5,6 @@ import { Router, useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { DefaultSeo } from 'next-seo'
 import { GlobalHotKeys } from 'react-hotkeys'
-import { isMobile } from 'react-device-detect'
 import NProgress from 'nprogress'
 import Package from '../package.json'
 import ReactGA from 'react-ga'
@@ -59,7 +58,7 @@ const KoreanbotsApp = ({ Component, pageProps, err, cookie }: KoreanbotsProps): 
 
 		const script = document.querySelector('script[src*=googlesyndication]')
 
-		if (script) script.addEventListener('error', () => {ReactGA.ga('send', 'event', 'adblock', 'adblock_' + (isMobile ? 'mobile' : 'pc'))})
+		if (script) script.addEventListener('error', () => {ReactGA.ga('send', 'event', 'adblock', 'adblock_' + (navigator.userAgent.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i) ? 'mobile' : 'pc'))})
 	}, [])
 
 	return <div className={theme}>

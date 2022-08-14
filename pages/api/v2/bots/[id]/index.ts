@@ -76,6 +76,12 @@ const Bots = RequestHandler()
 				message: '디스코드 서버에 참가해주세요.',
 				errors: ['봇 신청하시기 위해서는 공식 디스코드 서버에 참가해주셔야합니다.'],
 			})
+		else if (result === 5)
+			return ResponseWrapper(res, {
+				code: 403,
+				message: '더이상 해당 봇에 대한 심사 요청을 하실 수 없습니다.',
+				errors: ['해당 봇은 심사에서 3번 거부되었습니다. 더 이상의 심사를 요청하실 수 없습니다.'],
+			})
 		get.botSubmits.clear(user)
 
 		await discordLog('BOT/SUBMIT', user, new MessageEmbed().setDescription(`[${result.id}/${result.date}](${KoreanbotsEndPoints.URL.submittedBot(result.id, result.date)})`), {
@@ -154,7 +160,7 @@ const Bots = RequestHandler()
 			)
 			return ResponseWrapper(res, { code: 200 })
 		}
-		
+
 	})
 
 interface GetApiRequest extends NextApiRequest {

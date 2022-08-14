@@ -66,7 +66,7 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 		}
 
 		await knex('bots').update({ name: discordBot.username }).where({ id })
-		
+
 	}
 
 	return res[0] ?? null
@@ -388,12 +388,15 @@ async function voteServer(userID: string, serverID: string): Promise<number|bool
  * @returns 2 - Already submitted ID
  * @returns 3 - Bot User does not exists
  * @returns 4 - Discord not Joined
+ * @returns 5 - 3 or more denies
  * @returns obj - Success
  */
-async function submitBot(id: string, data: AddBotSubmit):Promise<1|2|3|4|SubmittedBot> {
+async function submitBot(id: string, data: AddBotSubmit):Promise<1|2|3|4|5|SubmittedBot> {
 	const submits = await knex('submitted').select(['id']).where({ state: 0 }).andWhere('owners', 'LIKE', `%${id}%`)
 	if(submits.length > 1) return 1
 	const botId = data.id
+	const identicalSubmits = await knex('submitted').select(['id']).where({ id: botId, state: 2 })
+	if(identicalSubmits.length >= 3) return 5
 	const date =  Math.round(+new Date()/1000)
 	const sameID = await knex('submitted').select(['id']).where({ id: botId, state: 0 })
 	const bot = await get.bot.load(data.id)
@@ -417,7 +420,7 @@ async function submitBot(id: string, data: AddBotSubmit):Promise<1|2|3|4|Submitt
 		discord: data.discord,
 		state: 0
 	})
-	
+
 	return await getBotSubmit(botId, date)
 }
 
@@ -565,8 +568,8 @@ async function getDiscordUser(id: string):Promise<DiscordUser> {
 }
 
 /**
- * 
- * @param info 
+ *
+ * @param info
  * @returns 1 - UnVerified
  * @returns 2 - Blocked
  */
@@ -747,14 +750,14 @@ export const get = {
 	serverSpec: getServerSpec,
 	list: {
 		category: new DataLoader(
-			async (key: string[]) => 
+			async (key: string[]) =>
 				(await Promise.all(key.map(async (k: string) => {
 					const json = JSON.parse(k)
 					return await getBotList('CATEGORY', json.page, json.category)
 				}))).map(row => serialize(row))
 			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 500000 }) }),
 		search: new DataLoader(
-			async (key: string[]) => 
+			async (key: string[]) =>
 				(await Promise.all(key.map(async (k: string) => {
 					const json = JSON.parse(k)
 					const res = await getBotList('SEARCH', json.page, json.query)
@@ -776,14 +779,14 @@ export const get = {
 	},
 	serverList: {
 		category: new DataLoader(
-			async (key: string[]) => 
+			async (key: string[]) =>
 				(await Promise.all(key.map(async (k: string) => {
 					const json = JSON.parse(k)
 					return await getServerList('CATEGORY', json.page, json.category)
 				}))).map(row => serialize(row))
 			, { cacheMap: new TLRU({ maxStoreSize: 50, maxAgeMs: 500000 }) }),
 		search: new DataLoader(
-			async (key: string[]) => 
+			async (key: string[]) =>
 				(await Promise.all(key.map(async (k: string) => {
 					const json = JSON.parse(k)
 					const res = await getServerList('SEARCH', json.page, json.query)

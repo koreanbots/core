@@ -10,6 +10,7 @@ const statsLoggingChannelID = '653227346962153472'
 
 const reviewGuildID = '906537041326637086'
 const botReviewLogChannelID = '906551334063439902'
+const openBotReviewLogChannelID = '1008376563731013643'
 
 DiscordBot.on('ready', async () => {
 	console.log('I\'m Ready')
@@ -25,9 +26,10 @@ export const getReportChannel = (): Discord.TextChannel => getMainGuild().channe
 export const getLoggingChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(loggingChannelID) as Discord.TextChannel
 export const getBotReviewLogChannel = (): Discord.TextChannel => getReviewGuild().channels.cache.get(botReviewLogChannelID) as Discord.TextChannel
 export const getStatsLoggingChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(statsLoggingChannelID) as Discord.TextChannel
+export const getOpenBotReviewLogChannel = (): Discord.TextChannel => getReviewGuild().channels.cache.get(openBotReviewLogChannelID) as Discord.TextChannel
 
 export const discordLog = async (type: string, issuerID: string, embed?: Discord.MessageEmbed, attachment?: { content: string, format: string}, content?: string): Promise<void> => {
-	getLoggingChannel().send({ 
+	getLoggingChannel().send({
 		content: `[${type}] <@${issuerID}> (${issuerID})\n${content || ''}`,
 		embed: embed && embed.setTitle(type).setTimestamp(new Date()),
 		...(attachment && { files: [

@@ -398,7 +398,7 @@ async function submitBot(id: string, data: AddBotSubmit):Promise<1|2|3|4|5|Submi
 	const identicalSubmits = await knex('submitted').select(['id']).where({ id: botId, state: 2 })
 	if(identicalSubmits.length >= 3) return 5
 	const date =  Math.round(+new Date()/1000)
-	const sameID = await knex('submitted').select(['id']).where({ id: botId, state: 0 }).andWhereNot('reason', 'IN', ['PRIVATE', 'OFFLINE', 'ABSENT_AT_DISCORD'])
+	const sameID = await knex('submitted').select(['id']).where({ id: botId, state: 0 })
 	const bot = await get.bot.load(data.id)
 	if(sameID.length !== 0 || bot) return 2
 	const user = await DiscordBot.users.fetch(data.id)

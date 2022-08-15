@@ -22,7 +22,7 @@ const DenyBotSubmit = RequestHandler()
 		await getBotReviewLogChannel().send(embed)
 		const openEmbed = new MessageEmbed().setTitle('거부').setColor('RED').setDescription(`<@${submit.id}> (${submit.id})`).setTimestamp()
 		if(req.body.reason) openEmbed.addField('📃 정보', `${req.body.reason ? `사유: ${BotSubmissionDenyReasonPresetsName[req.body.reason] || req.body.reason}\n`: ''}`)
-		await getOpenBotReviewLogChannel().send(embed)
+		await getOpenBotReviewLogChannel().send(openEmbed)
 		tracer.trace('botSubmits.deny', span => {
 			span.setTag('id', submit.id)
 			span.setTag('date', submit.date)

@@ -80,7 +80,7 @@ const Bots = RequestHandler()
 			return ResponseWrapper(res, {
 				code: 403,
 				message: '더 이상 해당 봇에 대한 심사 요청을 하실 수 없습니다.',
-				errors: ['해당 봇은 심사에서 3번 거부되었습니다. 더 이상의 심사를 요청하실 수 없습니다.'],
+				errors: ['해당 봇은 심사에서 3회 이상 거부되었습니다. 더 이상의 심사를 요청하실 수 없습니다.', '이의 제기를 원하시는 경우 디스코드 서버를 통해 문의해주세요.'],
 			})
 		get.botSubmits.clear(user)
 

@@ -395,7 +395,7 @@ async function submitBot(id: string, data: AddBotSubmit):Promise<1|2|3|4|5|Submi
 	const submits = await knex('submitted').select(['id']).where({ state: 0 }).andWhere('owners', 'LIKE', `%${id}%`)
 	if(submits.length > 1) return 1
 	const botId = data.id
-	const identicalSubmits = await knex('submitted').select(['id']).where({ id: botId, state: 2 }).andWhereNot('reason', 'IN', ['PRIVATE', 'OFFLINE', 'ABSENT_AT_DISCORD'])
+	const identicalSubmits = await knex('submitted').select(['id']).where({ id: botId, state: 2 }).whereNotIn('reason', ['PRIVATE', 'OFFLINE', 'ABSENT_AT_DISCORD']) // 다음 사유를 제외한 다른 사유의 3회 이상 거부 존재시 봇 등록 제한.
 	if(identicalSubmits.length >= 3) return 5
 	const date =  Math.round(+new Date()/1000)
 	const sameID = await knex('submitted').select(['id']).where({ id: botId, state: 0 })

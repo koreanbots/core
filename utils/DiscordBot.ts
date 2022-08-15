@@ -26,7 +26,7 @@ export const getReportChannel = (): Discord.TextChannel => getMainGuild().channe
 export const getLoggingChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(loggingChannelID) as Discord.TextChannel
 export const getBotReviewLogChannel = (): Discord.TextChannel => getReviewGuild().channels.cache.get(botReviewLogChannelID) as Discord.TextChannel
 export const getStatsLoggingChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(statsLoggingChannelID) as Discord.TextChannel
-export const getOpenBotReviewLogChannel = (): Discord.TextChannel => getReviewGuild().channels.cache.get(openBotReviewLogChannelID) as Discord.TextChannel
+export const getOpenBotReviewLogChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(openBotReviewLogChannelID) as Discord.TextChannel
 
 export const discordLog = async (type: string, issuerID: string, embed?: Discord.MessageEmbed, attachment?: { content: string, format: string}, content?: string): Promise<void> => {
 	getLoggingChannel().send({

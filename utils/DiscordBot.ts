@@ -2,7 +2,11 @@ import * as Discord from 'discord.js'
 
 console.log(process.env.DISCORD_CLIENT_INTENTS)
 
+console.log(process.env.DISCORD_CLIENT_INTENTS)
+
 export const DiscordBot = new Discord.Client({
+	intents: Number(process.env.DISCORD_CLIENT_INTENTS ?? 32767)
+}{
 	intents: Number(process.env.DISCORD_CLIENT_INTENTS ?? 32767)
 })
 
@@ -32,8 +36,8 @@ export const getBotReviewLogChannel = (): Discord.TextChannel => getReviewGuild(
 export const getStatsLoggingChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(statsLoggingChannelID) as Discord.TextChannel
 export const getOpenBotReviewLogChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(openBotReviewLogChannelID) as Discord.TextChannel
 
-export const discordLog = async (type: string, issuerID: string, embed?: Discord.MessageEmbed, attachment?: { content: string, format: string}, content?: string): Promise<void> => {
-	getLoggingChannel().send({
+export const discordLog = async (type: string, issuerID: string, embed?: Discord.EmbedBuilder, attachment?: { content: string, format: string}, content?: string): Promise<void> => {
+	getLoggingChannel().send({ 
 		content: `[${type}] <@${issuerID}> (${issuerID})\n${content || ''}`,
 		embeds: [embed && embed.setTitle(type).setTimestamp(new Date())],
 		...(attachment && { files: [

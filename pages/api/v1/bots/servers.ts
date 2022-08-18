@@ -42,7 +42,10 @@ const BotStats = RequestHandler()
 		const d = await update.updateServer(botInfo.id, validated.servers, undefined)
 		if(d===1 || d===2) return ResponseWrapper(res, { code: 403, message: `서버 수를 ${[null, '1만', '100만'][d]} 이상으로 설정하실 수 없습니다. 문의해주세요.`, version: 1 })
 		get.bot.clear(bot)
-		await getStatsLoggingChannel().send({content: `[BOT/STATS] <@${botInfo.id}> (${botInfo.id})\n${makeDiscordCodeblock(`${botInfo.servers > validated.servers ? '-' : '+'} ${botInfo.servers} -> ${validated.servers} (${botInfo.servers > validated.servers ? '▼' : '▲'}${Math.abs(validated.servers - botInfo.servers)})`, 'diff')}`, embeds: [new EmbedBuilder().setDescription(`${botInfo.name} - <@${botInfo.id}> ([${botInfo.id}](${KoreanbotsEndPoints.URL.bot(botInfo.id)}`)]})
+		await getStatsLoggingChannel().send({
+			content: `[BOT/STATS] <@${botInfo.id}> (${botInfo.id})\n${makeDiscordCodeblock(`${botInfo.servers > validated.servers ? '-' : '+'} ${botInfo.servers} -> ${validated.servers} (${botInfo.servers > validated.servers ? '▼' : '▲'}${Math.abs(validated.servers - botInfo.servers)})`, 'diff')}`,
+			embeds: [new EmbedBuilder().setDescription(`${botInfo.name} - <@${botInfo.id}> ([${botInfo.id}](${KoreanbotsEndPoints.URL.bot(botInfo.id)}`)]
+		})
 		return ResponseWrapper(res, { code: 200, message: '성공적으로 업데이트 했습니다.', version: 1 })
 	})
 

@@ -3951,13 +3951,13 @@ env-paths@^2.2.0:
   resolved "https://registry.yarnpkg.com/env-paths/-/env-paths-2.2.1.tgz#420399d416ce1fbe9bc0a07c62fa68d67fd0f8f2"
   integrity sha512-+h1lkLKhZMTYjog1VEpJNG7NZJWcuc2DDk/qsqSTRRCOXiLjeQ1d1/udrUGhqMxUgAlwKNZ0cf2uqan5GLuS2A==
 
-erlpack@0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/erlpack/-/erlpack-0.1.3.tgz#f6cd2a0d5b2f9d054b310c1dda98f60744b9f857"
-  integrity sha512-QeG9v8CVsY/a/IoQi8zjn23aYKcziOihAxwjUl3tI/KB4R1FjTtctDAAMovgtpC16S+WiOauers2oWwIOQtKBQ==
+erlpack@0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/erlpack/-/erlpack-0.1.4.tgz#018758a53206b8e9ba1f6c58a6766e3ba261a113"
+  integrity sha512-CJYbkEvsB5FqCCu2tLxF1eYKi28PvemC12oqzJ9oO6mDFrFO9G9G7nNJUHhiAyyL9zfXTOJx/tOcrQk+ncD65w==
   dependencies:
     bindings "^1.5.0"
-    nan "^2.14.0"
+    nan "^2.15.0"
 
 err-code@^2.0.2:
   version "2.0.3"
@@ -6586,6 +6586,11 @@ nan@^2.12.1, nan@^2.14.0, nan@^2.14.2:
   version "2.14.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.2.tgz#f5376400695168f4cc694ac9393d0c9585eeea19"
   integrity sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ==
+
+nan@^2.15.0:
+  version "2.16.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.16.0.tgz#664f43e45460fb98faf00edca0bb0d7b8dce7916"
+  integrity sha512-UdAqHyFngu7TfQKsCBgAA6pWDkT8MAO7d0jyOecVhN5354xbLqdn8mV9Tat9gepAupm0bt2DbeaSC8vS52MuFA==
 
 nanoclone@^0.2.1:
   version "0.2.1"

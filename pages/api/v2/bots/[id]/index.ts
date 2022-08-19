@@ -89,7 +89,20 @@ const Bots = RequestHandler()
 			format: 'js'
 		})
 		const userinfo = await get.user.load(user)
-		await getBotReviewLogChannel().send({embeds: [new EmbedBuilder().setAuthor({name: `${userinfo.username}#${userinfo.tag}`, iconURL: KoreanbotsEndPoints.URL.root + KoreanbotsEndPoints.CDN.avatar(userinfo.id, { format: 'png', size: 256 }), url: KoreanbotsEndPoints.URL.user(userinfo.id)}).setTitle('대기 중').setColor(Colors.Grey).setDescription(`[${result.id}/${result.date}](${KoreanbotsEndPoints.URL.submittedBot(result.id, result.date)})`).setTimestamp()]})
+		await getBotReviewLogChannel().send({
+			embeds: [
+				new EmbedBuilder()
+					.setAuthor({
+						name: `${userinfo.username}#${userinfo.tag}`, 
+						iconURL: KoreanbotsEndPoints.URL.root + KoreanbotsEndPoints.CDN.avatar(userinfo.id, { format: 'png', size: 256 }), 
+						url: KoreanbotsEndPoints.URL.user(userinfo.id)
+					})
+					.setTitle('대기 중')
+					.setColor(Colors.Grey)
+					.setDescription(`[${result.id}/${result.date}](${KoreanbotsEndPoints.URL.submittedBot(result.id, result.date)})`)
+					.setTimestamp()
+			]
+		})
 		tracer.trace('botSubmits.submitted', span => {
 			span.setTag('id', result.id)
 			span.setTag('date', result.date)

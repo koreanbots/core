@@ -21,7 +21,7 @@ const Calculator:NextPage<CalculatorProps> = ({ query }) => {
 				<span className={`ml-2.5 text-lg ${yellow ? 'text-yellow-500' : ''}`}>{name}</span>
 			</label>
 		</li>
-	
+
 	}
 	return <Container paddingTop className='pb-10'>
 		<NextSeo title='봇 초대링크 생성기' description='디스코드 봇 초대링크를 간편하게 생성하세요' openGraph={{
@@ -29,8 +29,8 @@ const Calculator:NextPage<CalculatorProps> = ({ query }) => {
 			description: '디스코드 봇 초대링크를 간편하게 생성하세요'
 		}} />
 		<h1 className='text-4xl font-bold mt-2 mb-4'>봇 초대링크 생성기</h1>
-		<div className='text-2xl font-bold inline-flex items-center'>권한: {Object.keys(value).filter(el => value[el]).map(el => Number(el)).reduce((prev, curr) => prev | curr, 0)} 
-			<span className='ml-2 text-lg font-semibold'>= { Object.keys(value).filter(el => value[el]).map(el => `0x${Number(el).toString(16)}`).join(' | ') }</span>
+		<div className='text-2xl font-bold inline-flex items-center'>권한: {Object.keys(value).filter(el => value[el]).map(el => Number(el)).reduce((prev, curr) => prev + curr, 0)}
+			<span className='ml-2 text-lg font-semibold'>= { Object.keys(value).filter(el => value[el]).map(el => `0x${Number(el).toString(16)}`).join(' + ') }</span>
 		</div>
 		<div className='grid gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mt-2'>
 			<div>
@@ -40,7 +40,7 @@ const Calculator:NextPage<CalculatorProps> = ({ query }) => {
 						GuildPermissions.general.map(el => <Perm key={el.name} name={el.name} perm={el.flag} yellow={el.twofactor} />)
 					}
 				</ul>
-				
+
 			</div>
 			<div>
 				<h2 className='text-2xl font-bold'>멤버쉽 권한</h2>

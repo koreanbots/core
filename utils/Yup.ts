@@ -326,6 +326,11 @@ export const ManageBotSchema: Yup.SchemaOf<ManageBot> = Yup.object({
 		.min(2, '지원 디스코드는 최소 2자여야합니다.')
 		.max(32, '지원 디스코드는 최대 32자까지만 가능합니다.')
 		.nullable(),
+	webhook: Yup.string()
+		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')
+		.matches(Url, '올바른 웹훅 URL을 입력해주세요.')
+		.max(256, '웹훅 링크는 최대 256자까지만 가능합니다.')
+		.nullable(),
 	category: Yup.array(Yup.string().oneOf(botCategories))
 		.min(1, '최소 한 개의 카테고리를 선택해주세요.')
 		.unique('카테고리는 중복될 수 없습니다.')
@@ -348,6 +353,7 @@ export interface ManageBot {
 	url: string
 	git: string
 	discord: string
+	webhook: string
 	category: string[]
 	intro: string
 	desc: string

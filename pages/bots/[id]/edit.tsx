@@ -75,6 +75,7 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 			url: bot.url,
 			git: bot.git,
 			discord: bot.discord,
+			webhook: bot.webhook,
 			_csrf: csrfToken
 		})}
 		validationSchema={ManageBotSchema}
@@ -144,6 +145,9 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 						<div className='flex items-center'>
 						discord.gg/<Input name='discord' placeholder='JEh53MQ' />
 						</div>
+					</Label>
+					<Label For='webhook' label='웹훅 링크' labelDesc='봇의 업데이트 알림을 받을 웹훅 링크를 입력해주세요. (디스코드 웹훅의 경우 임베드의 형태로 채널에 전송되며 그 외의 경우 JSON의 형태로 전송됩니다.)' error={errors.webhook && touched.webhook ? errors.webhook : null}>
+						<Input name='webhook' placeholder='https://discord.com/api/webhooks/...' />
 					</Label>
 					<Divider />
 					<Label For='intro' label='봇 소개' labelDesc='봇을 소개할 수 있는 간단한 설명을 적어주세요. (최대 60자)' error={errors.intro && touched.intro ? errors.intro : null} required>

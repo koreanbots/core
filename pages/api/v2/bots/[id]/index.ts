@@ -146,8 +146,8 @@ const Bots = RequestHandler()
 			get.bot.clear(req.query.id)
 			const embed = new MessageEmbed().setDescription(`${bot.name} - <@${bot.id}> ([${bot.id}](${KoreanbotsEndPoints.URL.bot(bot.id)}))`)
 			const diffData = objectDiff(
-				{ prefix: bot.prefix, library: bot.lib, web: bot.web, git: bot.git, url: bot.url, discord: bot.discord, intro: bot.intro, category: JSON.stringify(bot.category) },
-				{ prefix: validated.prefix, library: validated.library, web: validated.website, git: validated.git, url: validated.url, discord: validated.discord, intro: validated.intro, category: JSON.stringify(validated.category)  }
+				{ prefix: bot.prefix, library: bot.lib, web: bot.web, git: bot.git, url: bot.url, discord: bot.discord, webhook: bot.webhook, intro: bot.intro, category: JSON.stringify(bot.category) },
+				{ prefix: validated.prefix, library: validated.library, web: validated.website, git: validated.git, url: validated.url, discord: validated.discord, webhook: validated.webhook, intro: validated.intro, category: JSON.stringify(validated.category)  }
 			)
 			diffData.forEach(d => {
 				embed.addField(d[0], makeDiscordCodeblock(diff(d[1][0] || '', d[1][1] || ''), 'diff'))

@@ -24,6 +24,7 @@ export interface Bot {
 	git: string | null
 	url: string | null
 	discord: string | null
+	webhook: string | null
 	vanity: string | null
 	bg: string
 	banner: string

@@ -37,6 +37,7 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 			'trusted',
 			'partnered',
 			'discord',
+			'webhook',
 			'state',
 			'vanity',
 			'bg',
@@ -352,6 +353,12 @@ async function getVote(userID: string, targetID: string, type: 'bot' | 'server')
 	return data[`${type}:${targetID}`] || 0
 }
 
+async function getWebhook(botId: string): Promise<string|null> {
+	const res = await knex('bots').select(['webhook']).where({ id: botId })
+	if(res.length === 0) return null
+	return res[0].webhook
+}
+
 async function voteBot(userID: string, botID: string): Promise<number|boolean> {
 	const user = await knex('users').select(['votes']).where({ id: userID })
 	const key = `bot:${botID}`
@@ -486,6 +493,7 @@ async function updateBot(id: string, data: ManageBot): Promise<number> {
 		git: data.git,
 		url: data.url,
 		discord: data.discord,
+		webhook: data.webhook,
 		category: JSON.stringify(data.category),
 		intro: data.intro,
 		desc: data.desc
@@ -817,6 +825,7 @@ export const get = {
 			, { cacheMap: new TLRU({ maxStoreSize: 500, maxAgeMs: 3600000 }) }),
 	},
 	serverData: getServerData,
+	webhook: getWebhook,
 	botVote: async (botID: string, targetID: string) => await getVote(botID, targetID, 'bot'),
 	vote: getVote,
 	Authorization,

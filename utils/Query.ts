@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 import { TLRU } from 'tlru'
 import DataLoader from 'dataloader'
-import { User as DiscordUser } from 'discord.js'
+import { ActivityType, GuildFeature, GuildMember, User as DiscordUser } from 'discord.js'
 
 import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable } from '@types'
 import { botCategories, DiscordEnpoints, imageSafeHost, serverCategories, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'
@@ -46,16 +46,24 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 		.orWhere({ vanity: id, trusted: true })
 		.orWhere({ vanity: id, partnered: true })
 	if (res[0]) {
-		const discordBot = await DiscordBot.users.fetch(res[0].id).then(r=> r).catch(() => null)
+		const discordBot = await DiscordBot.users.fetch(res[0].id).then(r=> r).catch(() => null) as DiscordUser
 		if(!discordBot) return null
-		await getMainGuild()?.members?.fetch(res[0].id).catch(e=> e)
+		const botMember = await getMainGuild()?.members?.fetch(res[0].id).catch(e=> e) as GuildMember
 		res[0].flags = res[0].flags | (discordBot.flags?.bitfield && DiscordUserFlags.VERIFIED_BOT ? BotFlags.verified : 0) | (res[0].trusted ? BotFlags.trusted : 0) | (res[0].partnered ? BotFlags.partnered : 0)
 		res[0].tag = discordBot.discriminator
 		res[0].avatar = discordBot.avatar
 		res[0].name = discordBot.username
 		res[0].category = JSON.parse(res[0].category)
 		res[0].owners = JSON.parse(res[0].owners)
-		res[0].status = discordBot.presence?.activities?.find(r => r.type === 'STREAMING') ? 'streaming' : discordBot.presence?.status || null
+		if(botMember) {
+			if(botMember.presence === null) {
+				res[0].status = 'offline'
+			} else {
+				res[0].status = botMember?.presence?.activities.find(r => r.type === ActivityType.Streaming) ? 'streaming' : botMember?.presence?.status || null
+			}
+		} else {
+			res[0].status = null
+		}
 		delete res[0].trusted
 		delete res[0].partnered
 		if (topLevel) {
@@ -97,7 +105,7 @@ async function getServer(id: string, topLevel=true): Promise<Server> {
 		const data = await getServerData(res[0].id)
 		if(!data || (+new Date() - +new Date(data.updatedAt)) > 3 * 60 * 1000) res[0].state = 'unreachable'
 		else {
-			res[0].flags = res[0].flags | (data.features.includes('PARTNERED') && ServerFlags.discord_partnered) | (data.features.includes('VERIFIED') && ServerFlags.verified)
+			res[0].flags = res[0].flags | (data.features.includes(GuildFeature.Partnered) && ServerFlags.discord_partnered) | (data.features.includes(GuildFeature.Verified) && ServerFlags.verified)
 			if(res[0].owners !== JSON.stringify([data.owner, ...data.admins]) || res[0].name !== data.name)
 				await knex('servers').update({ name: data.name, owners: JSON.stringify([data.owner, ...data.admins]) })
 					.where({ id: res[0].id })
@@ -564,7 +572,7 @@ async function getImage(url: string) {
 }
 
 async function getDiscordUser(id: string):Promise<DiscordUser> {
-	return DiscordBot.users.cache.get(id) ?? await DiscordBot.users.fetch(id, false, true).then(u => u.toJSON()).catch(()=>null)
+	return await DiscordBot.users.fetch(id, {cache: true}).then(u => u).catch(()=>null)
 }
 
 /**

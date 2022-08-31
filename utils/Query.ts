@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 import { TLRU } from 'tlru'
 import DataLoader from 'dataloader'
-import { ActivityType, GuildFeature, GuildMember, User as DiscordUser } from 'discord.js'
+import { ActivityType, GuildFeature, GuildMember, User as DiscordUser, UserFlags } from 'discord.js'
 
 import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable } from '@types'
 import { botCategories, DiscordEnpoints, imageSafeHost, serverCategories, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'
@@ -56,7 +56,9 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 		res[0].category = JSON.parse(res[0].category)
 		res[0].owners = JSON.parse(res[0].owners)
 		if(botMember) {
-			if(botMember.presence === null) {
+			if(discordBot.flags.has(UserFlags.BotHTTPInteractions)) {
+				res[0].status = 'online'
+			} else if(botMember.presence === null) {
 				res[0].status = 'offline'
 			} else {
 				res[0].status = botMember?.presence?.activities.find(r => r.type === ActivityType.Streaming) ? 'streaming' : botMember?.presence?.status || null

@@ -1,4 +1,4 @@
-import type { GuildFeatures } from 'discord.js'
+import type { GuildFeature } from 'discord.js'
 import type { IncomingMessage } from 'http'
 import type { NextPageContext } from 'next'
 
@@ -37,7 +37,7 @@ export interface RawGuild {
 	icon: string
 	owner: boolean
 	permissions: number
-	features: GuildFeatures[]
+	features: GuildFeature[]
 }
 
 export interface Server {
@@ -96,7 +96,7 @@ export interface ServerData {
 	bots: string[]
 	memberCount: number
 	boostTier: number
-	features: GuildFeatures[]
+	features: GuildFeature[]
 	emojis: ServerEmojiData[]
 }
 

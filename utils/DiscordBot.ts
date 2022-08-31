@@ -1,6 +1,8 @@
 import * as Discord from 'discord.js'
 
-export const DiscordBot = new Discord.Client()
+export const DiscordBot = new Discord.Client({
+	intents: Number(process.env.DISCORD_CLIENT_INTENTS ?? 32767)
+})
 
 const guildID = '653083797763522580'
 
@@ -28,13 +30,12 @@ export const getBotReviewLogChannel = (): Discord.TextChannel => getReviewGuild(
 export const getStatsLoggingChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(statsLoggingChannelID) as Discord.TextChannel
 export const getOpenBotReviewLogChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(openBotReviewLogChannelID) as Discord.TextChannel
 
-export const discordLog = async (type: string, issuerID: string, embed?: Discord.MessageEmbed, attachment?: { content: string, format: string}, content?: string): Promise<void> => {
-	getLoggingChannel().send({
+export const discordLog = async (type: string, issuerID: string, embed?: Discord.EmbedBuilder, attachment?: { content: string, format: string}, content?: string): Promise<void> => {
+	getLoggingChannel().send({ 
 		content: `[${type}] <@${issuerID}> (${issuerID})\n${content || ''}`,
-		embed: embed && embed.setTitle(type).setTimestamp(new Date()),
+		embeds: [embed && embed.setTitle(type).setTimestamp(new Date())],
 		...(attachment && { files: [
-			new Discord.MessageAttachment(Buffer.from(attachment.content), `${type.toLowerCase().replace(/\//g, '-')}-${issuerID}-${Date.now()}.${attachment.format}`)
-		]
-		})
+			new Discord.AttachmentBuilder(Buffer.from(attachment.content), {name: `${type.toLowerCase().replace(/\//g, '-')}-${issuerID}-${Date.now()}.${attachment.format}`
+			})]})
 	})
 }

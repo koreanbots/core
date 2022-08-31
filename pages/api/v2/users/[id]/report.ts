@@ -37,7 +37,7 @@ const UserReport = RequestHandler().post(limiter)
 			})
       
 		if(!validated) return
-		await getReportChannel().send(`Reported by <@${user}> (${user})\nReported **${userInfo.username}**#${userInfo.tag} <@${userInfo.id}> (${userInfo.id})\nCategory ${req.body.category}\nDesc\n\`\`\`${req.body.description}\`\`\``, { allowedMentions: { parse: ['users'] }})
+		await getReportChannel().send({ content: `Reported by <@${user}> (${user})\nReported **${userInfo.username}**#${userInfo.tag} <@${userInfo.id}> (${userInfo.id})\nCategory ${req.body.category}\nDesc\n\`\`\`${req.body.description}\`\`\``, allowedMentions: { parse: ['users'] }})
 		return ResponseWrapper(res, { code: 200, message: '성공적으로 처리되었습니다.' })
 	})
 

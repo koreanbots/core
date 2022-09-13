@@ -314,7 +314,7 @@ export const Oauth = {
 export const git = { 'github.com': { icon: 'github', text: 'GitHub' },  'gitlab.com':  { icon: 'gitlab', text: 'GitLab' }}
 
 export const KoreanbotsDiscord = 'https://discord.gg/JEh53MQ'
-export const ThemeColors = [{ name: '파랑', rgb: 'rgb(51, 102, 255)', hex: '#3366FF', color: 'koreanbots-blue' }, { name: '하양', rgb: 'rgb(251, 251, 251)', hex: '#FBFBFB', color: 'little-white' }, { name: '검정', rgb: 'rgb(27, 30, 35)', hex: '#1B1E23', color: 'very-black' }, { name: '보라', rgb: 'rgb(114, 137, 218)', hex: '#7289DA', color: 'discord-blurple' } ]
+export const ThemeColors = [{ name: '파랑', rgb: 'rgb(51, 102, 255)', hex: '#3366FF', color: 'koreanbots-blue' }, { name: '하양', rgb: 'rgb(251, 251, 251)', hex: '#FBFBFB', color: 'little-white' }, { name: '검정', rgb: 'rgb(27, 30, 35)', hex: '#1B1E23', color: 'very-black' }, { name: '보라', rgb: 'rgb(88, 101, 242)', hex: '#5865f2', color: 'discord-blurple' } ]
 export const KoreanbotsEmoji = [{
 	name: '한국 디스코드 리스트',
 	short_names: ['koreanbots', 'kbots', 'dbkr'],

@@ -38,6 +38,7 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 			'partnered',
 			'discord',
 			'webhook',
+			'webhook_status',
 			'state',
 			'vanity',
 			'bg',
@@ -93,6 +94,8 @@ async function getServer(id: string, topLevel=true): Promise<Server> {
 			'owners',
 			'category',
 			'invite',
+			'webhook',
+			'webhook_status',
 			'state',
 			'vanity',
 			'bg',
@@ -361,10 +364,11 @@ async function getVote(userID: string, targetID: string, type: 'bot' | 'server')
 	return data[`${type}:${targetID}`] || 0
 }
 
-async function getWebhook(botId: string): Promise<string|null> {
-	const res = await knex('bots').select(['webhook']).where({ id: botId })
+async function getWebhook(id: string, type: 'bots' | 'servers'): Promise<string[]|null> {
+	const res = await knex(type).select(['webhook', 'webhook_status']).where({ id })
 	if(res.length === 0) return null
-	return res[0].webhook
+	const data = [res[0].webhook, res[0].webhook_status]
+	return data
 }
 
 async function voteBot(userID: string, botID: string): Promise<number|boolean> {
@@ -502,6 +506,7 @@ async function updateBot(id: string, data: ManageBot): Promise<number> {
 		url: data.url,
 		discord: data.discord,
 		webhook: data.webhook,
+		webhook_status: 1,
 		category: JSON.stringify(data.category),
 		intro: data.intro,
 		desc: data.desc
@@ -539,6 +544,12 @@ async function updateServer(id: string, servers: number, shards: number) {
 		await Bots.findByIdAndUpdate(id, { $push: { serverMetrix: { count: servers } } })
 	}
 	return
+}
+
+async function updateWebhookStatus(id: string, type: 'bots' | 'servers') {
+	const res = await knex(type).update({ webhook_status: 0 }).where({ id })
+	if(res !== 1) return false
+	return true
 }
 
 async function updateBotApplication(id: string, value: { webhook: string }) {
@@ -854,6 +865,7 @@ export const update = {
 	bot: updateBot,
 	server: updatedServer,
 	botOwners: updateOwner,
+	webhookStatus: updateWebhookStatus,
 	denyBotSubmission,
 	approveBotSubmission,
 	fetchUserDiscordToken

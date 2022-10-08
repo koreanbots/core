@@ -6,6 +6,7 @@ import ResponseWrapper from '@utils/ResponseWrapper'
 import { checkToken } from '@utils/Csrf'
 import Yup from '@utils/Yup'
 import { VOTE_COOLDOWN } from '@utils/Constants'
+import sendWebhook from '@utils/Webhook'
 
 const BotVote = RequestHandler()
 	.get(async (req: GetApiRequest, res) => {
@@ -32,7 +33,18 @@ const BotVote = RequestHandler()
 
 		const vote = await put.voteBot(user, bot.id)
 		if(vote === null) return ResponseWrapper(res, { code: 401 })
-		else if(vote === true) return ResponseWrapper(res, { code: 200 })
+		else if(vote === true) {
+			await sendWebhook(bot.id, 'bot', {
+				title: '하트 수 증가',
+				content: `${bot.votes}❤️ -> ${bot.votes + 1}❤️ (▲1)`,
+				data: {
+					before: bot.votes,
+					after: bot.votes + 1,
+					type: 'votes'
+				}
+			})
+			return ResponseWrapper(res, { code: 200 })
+		}
 		else return ResponseWrapper(res, { code: 429, data: { retryAfter: vote } })
 	})
 

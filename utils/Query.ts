@@ -61,7 +61,7 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 			} else if(!botMember.presence) {
 				res[0].status = 'offline'
 			} else {
-				res[0].status = botMember.presence.activities.some(r => r.type === ActivityType.Streaming) ? 'streaming' : botMember.presence.status || null
+				res[0].status = botMember.presence.activities.some(r => r.type === ActivityType.Streaming) ? 'streaming' : botMember.presence.status
 			}
 		} else {
 			res[0].status = null

@@ -58,7 +58,7 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 		if(botMember) {
 			if(discordBot.flags.has(UserFlags.BotHTTPInteractions)) {
 				res[0].status = 'online'
-			} else if(botMember.presence === null) {
+			} else if(!botMember.presence) {
 				res[0].status = 'offline'
 			} else {
 				res[0].status = botMember.presence.activities.some(r => r.type === ActivityType.Streaming) ? 'streaming' : botMember.presence.status || null

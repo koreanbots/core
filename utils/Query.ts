@@ -49,7 +49,7 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 		const discordBot = await DiscordBot.users.fetch(res[0].id).then(r=> r).catch(() => null) as DiscordUser
 		if(!discordBot) return null
 		const botMember = await getMainGuild()?.members?.fetch(res[0].id).catch(e=> e) as GuildMember
-		res[0].flags = res[0].flags | (discordBot.flags?.bitfield && DiscordUserFlags.VERIFIED_BOT ? BotFlags.verified : 0) | (res[0].trusted ? BotFlags.trusted : 0) | (res[0].partnered ? BotFlags.partnered : 0)
+		res[0].flags = res[0].flags | (discordBot.flags?.bitfield & DiscordUserFlags.VERIFIED_BOT ? BotFlags.verified : 0) | (res[0].trusted ? BotFlags.trusted : 0) | (res[0].partnered ? BotFlags.partnered : 0)
 		res[0].tag = discordBot.discriminator
 		res[0].avatar = discordBot.avatar
 		res[0].name = discordBot.username

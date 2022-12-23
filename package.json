@@ -6,7 +6,7 @@
 		"dev": "next dev",
 		"pre-build": "git init && git submodule init && git submodule update --remote",
 		"build": "npm run pre-build && next build",
-		"start": "NODE_OPTIONS='--require ./dd-trace-init.js' next start | (sleep 2; wget http://localhost:3000/api/v2/management/load -O /dev/null)",
+		"start": "(sleep 2; wget http://localhost:3000/api/v2/management/load -O /dev/null) & NODE_OPTIONS='--require ./dd-trace-init.js' next start",
 		"lint": "eslint --ext ts,tsx .",
 		"prettier": "prettier --write **/*",
 		"lint:fix": "eslint --ext ts,tsx . --fix",

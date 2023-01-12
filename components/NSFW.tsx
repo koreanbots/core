@@ -8,7 +8,7 @@ const NSFW: React.FC<NSFWProps> = ({ onClick, onDisableClick }) => {
 		<div className='flex items-center h-screen select-none'>
 			<div className='px-10'>
 				<h1 className='text-2xl font-bold flex'>
-					<img draggable='false' alt='⚠' src='https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2//svg/26a0.svg' className='emoji mr-2 w-8' />
+					<img draggable='false' alt='⚠' src='https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/26a0.svg' className='emoji mr-2 w-8' />
           해당 컨텐츠는 만19세 이상의 성인만 열람할 수 있습니다.</h1>
 				<p className='text-lg mb-3'>계속하시겠습니까?</p>
 				<Button onClick={onClick}>

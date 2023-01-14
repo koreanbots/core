@@ -242,8 +242,8 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<List
 			.select(['id'])
 	} else if (type === 'SEARCH') {
 		if (!query) throw new Error('쿼리가 누락되었습니다.')
-		count = (await knex.raw('SELECT count(*) FROM bots WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode)', [decodeURI(query) + "*"]))[0][0]['count(*)']
-		res = (await knex.raw('SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM bots WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 16 OFFSET ?', [decodeURI(query) + "*", decodeURI(query) + "*", ((page ? Number(page) : 1) - 1) * 16]))[0]
+		count = (await knex.raw('SELECT count(*) FROM bots WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode)', [decodeURI(query) + '*']))[0][0]['count(*)']
+		res = (await knex.raw('SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM bots WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 16 OFFSET ?', [decodeURI(query) + '*', decodeURI(query) + '*', ((page ? Number(page) : 1) - 1) * 16]))[0]
 	} else {
 		count = 1
 		res = []
@@ -320,8 +320,8 @@ async function getServerList(type: ListType, page = 1, query?: string):Promise<L
 			.select(['id'])
 	} else if (type === 'SEARCH') {
 		if (!query) throw new Error('쿼리가 누락되었습니다.')
-		count = (await knex.raw('SELECT count(*) FROM servers WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode)', [decodeURI(query) + "*"]))[0][0]['count(*)']
-		res = (await knex.raw('SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM servers WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 16 OFFSET ?', [decodeURI(query)  + "*", decodeURI(query)  + "*", ((page ? Number(page) : 1) - 1) * 16]))[0]
+		count = (await knex.raw('SELECT count(*) FROM servers WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode)', [decodeURI(query) + '*']))[0][0]['count(*)']
+		res = (await knex.raw('SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM servers WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 16 OFFSET ?', [decodeURI(query)  + '*', decodeURI(query)  + '*', ((page ? Number(page) : 1) - 1) * 16]))[0]
 	} else {
 		count = 1
 		res = []

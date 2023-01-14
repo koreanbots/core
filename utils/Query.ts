@@ -145,16 +145,18 @@ async function getUser(id: string, topLevel = true):Promise<User> {
 		const ownedBots = await knex('bots')
 			.select(['id'])
 			.where('owners', 'like', `%${id}%`)
+			.orderBy('date', 'asc')
 		const ownedServer = await knex('servers')
 			.select(['id'])
 			.where('owners', 'like', `%${id}%`)
+			.orderBy('date', 'asc')
 
 		const discordUser = await get.discord.user.load(id)
 		res[0].tag = discordUser?.discriminator || '0000'
 		res[0].username = discordUser?.username || 'Unknown User'
 		if (topLevel) {
-			res[0].bots = (await Promise.all(ownedBots.map(async b => await get._rawBot.load(b.id)))).filter((el: Bot | null) => el).map(row => ({ ...row }))
-			res[0].servers = (await Promise.all(ownedServer.map(async b => await get._rawServer.load(b.id)))).filter((el: Server | null) => el).map(row => ({ ...row }))
+			res[0].bots = (await Promise.all(ownedBots.map(async b => await get._rawBot.load(b.id)))).filter((el: Bot | null) => el)
+			res[0].servers = (await Promise.all(ownedServer.map(async b => await get._rawServer.load(b.id)))).filter((el: Server | null) => el)
 		}
 		else {
 			res[0].bots = ownedBots.map(el => el.id)

@@ -22,6 +22,6 @@ const NextConfig = {
 	experimental: { 
 		scrollRestoration: true
 	},
-	SwcMinify: true
+	swcMinify: true
 }
 module.exports = withSentryConfig(withPWA(NextConfig))

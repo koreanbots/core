@@ -5,7 +5,7 @@ const privateKey = process.env.PRIVATE_KEY?.replace(/\\n/g, '\n')
 
 export function sign(payload: string | Record<string, unknown>, options?: JWTSignOption): string | null {
 	try {
-		return jwt.sign(payload, privateKey, options ? { ...options, algorithm: 'RS256' } : { algorithm: 'RS256' })
+		return jwt.sign(payload, privateKey, options ? { ...options, algorithm: 'RS256', allowInsecureKeySizes: true } : { algorithm: 'RS256', allowInsecureKeySizes: true })
 	} catch {
 		return null
 	}

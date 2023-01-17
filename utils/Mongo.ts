@@ -25,5 +25,5 @@ const serverSchema = new mongoose.Schema({
 	data: {}
 })
 
-export const Bots = mongoose.models.bots || mongoose.model('bots', botSchema)
-export const Servers = mongoose.models.servers || mongoose.model('servers', serverSchema)
+export const Bots = mongoose.model('bots', botSchema)
+export const Servers = mongoose.model('servers', serverSchema)

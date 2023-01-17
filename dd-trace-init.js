@@ -2,7 +2,7 @@
 const tracer = require('dd-trace')
 
 tracer.init({
-	debug: true
+	debug: process.env.DD_DEBUG==='true' || false,
 })
 
 module.exports = tracer

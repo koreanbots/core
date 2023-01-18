@@ -12,7 +12,8 @@ export function sign(payload: string | Record<string, unknown>, options?: JWTSig
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function verify(token: string): any | null {
+export function verify(token?: string): any | null {
+	if(!token) return null
 	try {
 		return jwt.verify(token, publicPem)
 	} catch(e) {

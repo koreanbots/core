@@ -4,10 +4,12 @@ const Docs: NextPage = () => {
 	return <></>
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-	ctx.res.statusCode = 301
-	ctx.res.setHeader('Location', encodeURI('/developers/docs/시작하기'))
+export const getServerSideProps: GetServerSideProps = async () => {
 	return {
+		redirect: {
+			destination: '/developers/docs/시작하기',
+			permanent: true
+		},
 		props: {}
 	}
 }

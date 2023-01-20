@@ -4,10 +4,12 @@ const Developers: NextPage = () => {
 	return <></>
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-	ctx.res.statusCode = 301
-	ctx.res.setHeader('Location', '/developers/applications')
+export const getServerSideProps: GetServerSideProps = async () => {
 	return {
+		redirect: {
+			destination: '/developers/applications',
+			permanent: true
+		},
 		props: {}
 	}
 }

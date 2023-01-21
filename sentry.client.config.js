@@ -8,7 +8,7 @@ const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN
 
 Sentry.init({
 	dsn: SENTRY_DSN,
-	debug: process.env.SENTRY_DEBUG==='true' || false,
+	debug: process.env.SENTRY_DEBUG === 'true',
 	enabled: process.env.NODE_ENV === 'production'
 	// Note: if you want to override the automatic release value, do not set a
 	// `release` value here - use the environment variable `SENTRY_RELEASE`, so

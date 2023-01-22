@@ -6,6 +6,9 @@ const withPWA = require('next-pwa')({
 })
 const VERSION = require('./package.json').version
 
+/**
+ * @type {import('next').NextConfig}
+ */
 const NextConfig = {
 	webpack: (config, { isServer }) => {
 		if (!isServer) {
@@ -21,6 +24,20 @@ const NextConfig = {
 	experimental: { 
 		scrollRestoration: true
 	},
-	swcMinify: true
+	swcMinify: true,
+	redirects: async () => {
+		return [
+			{
+				source: '/developers',
+				destination: '/developers/applications',
+				permanent: true
+			},
+			{
+				source: '/developers/docs',
+				destination: '/developers/docs/시작하기',
+				permanent: true
+			}
+		]
+	}
 }
 module.exports = withSentryConfig(withPWA(NextConfig))

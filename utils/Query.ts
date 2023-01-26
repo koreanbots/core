@@ -407,8 +407,8 @@ async function submitBot(id: string, data: AddBotSubmit):Promise<1|2|3|4|5|Submi
 	const submits = await knex('submitted').select(['id']).where({ state: 0 }).andWhere('owners', 'LIKE', `%${id}%`)
 	if(submits.length > 1) return 1
 	const botId = data.id
-	const identicalSubmits = await knex('submitted').select(['id']).where({ id: botId, state: 2 }).whereNotIn('reason', ['PRIVATE', 'OFFLINE', 'ABSENT_AT_DISCORD']) // 다음 사유를 제외한 다른 사유의 3회 이상 거부 존재시 봇 등록 제한.
-	if(identicalSubmits.length >= 3) return 5
+	const strikes = await get.botSubmitStrikes(id)
+	if(strikes >= 3) return 5
 	const date =  Math.round(+new Date()/1000)
 	const sameID = await knex('submitted').select(['id']).where({ id: botId, state: 0 })
 	const bot = await get.bot.load(data.id)
@@ -684,6 +684,14 @@ async function denyBotSubmission(id: string, date: number, reason?: string) {
 	await knex('submitted').update({ state: 2, reason: reason || null }).where({ state: 0, id, date })
 }
 
+async function getBotSubmitStrikes(id: string) {
+	const identicalSubmits = await knex('submitted')
+		.select(['id'])
+		.where({ id, state: 2 })
+		.whereNotIn('reason', ['PRIVATE', 'OFFLINE', 'ABSENT_AT_DISCORD']) // 다음 사유를 제외한 다른 사유의 3회 이상 거부 존재시 봇 등록 제한.
+	return identicalSubmits.length
+}
+
 async function approveBotSubmission(id: string, date: number) {
 	const data = await knex('submitted').select(['id', 'date', 'category', 'lib', 'prefix', 'intro', 'desc', 'url', 'web', 'git', 'discord', 'state', 'owners', 'reason']).where({ state: 0, id, date })
 	if(!data[0]) return false
@@ -836,6 +844,7 @@ export const get = {
 	ServerAuthorization,
 	botSubmitList: getBotSubmitList,
 	botSubmitHistory: getBotSubmitHistory,
+	botSubmitStrikes: getBotSubmitStrikes,
 	serverOwners: fetchServerOwners
 }
 

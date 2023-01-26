@@ -7180,7 +7180,7 @@ next-session@3.4.0:
     cookie "^0.4.1"
     nanoid "^3.1.18"
 
-next@12:
+next@^12.3.2:
   version "12.3.4"
   resolved "https://registry.yarnpkg.com/next/-/next-12.3.4.tgz#f2780a6ebbf367e071ce67e24bd8a6e05de2fcb1"
   integrity sha512-VcyMJUtLZBGzLKo3oMxrEF0stxh8HwuW976pAzlHhI3t8qJ4SROjCrSh1T24bhrbjw55wfZXAbXPGwPt5FLRfQ==

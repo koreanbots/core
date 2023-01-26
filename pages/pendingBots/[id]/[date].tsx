@@ -195,7 +195,7 @@ const DenyPresetsArticle = {
 		<p><strong>봇 오프라인</strong>으로 거부되셨다면 심사 당시에 봇이 오프라인으로 명령어가 응답하지 않았다는 뜻입니다.</p>
 		<p>봇이 24시간 호스팅 되지 않는다면, 아쉽게도 저희가 심사 시간을 맞춰드릴 수 없기에 심사 시간과 봇의 온라인 시간이 맞지 않는다면 심사를 진행할 수 없습니다.</p>
 	</>,
-	INVALID_CATEGORY:	<p>한 개 이상의 올바르지 않은 카테고리가 포함되어 있습니다. 반드시 <strong>봇에 해당되는</strong> 카테고리만 선택해주세요. 카테고리에 대한 자세한 설명은 <a className='text-blue-500 hover:text-blue-400' href='https://contents.koreanbots.dev/categories'>여기</a>에서 확인하실 수 있습니다.</p>,
+	INVALID_CATEGORY:	<p>한 개 이상의 올바르지 않은 카테고리가 포함되어 있습니다. 반드시 <strong>봇에 해당되는</strong> 카테고리만 선택해주세요. <br/>카테고리에 대한 자세한 설명은 <a className='text-blue-500 hover:text-blue-400' href='https://contents.koreanbots.dev/categories'>여기</a>에서 확인하실 수 있습니다.</p>,
 	PRIVATE: <p>봇을 초대할 수 없어, 심사를 진행할 수 없습니다. 다음 항목을 확인해주세요.
 		<ul className='list-inside list-disc'>
 			<li>봇이 공개 봇인가요?</li>

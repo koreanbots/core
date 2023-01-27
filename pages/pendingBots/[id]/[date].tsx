@@ -60,7 +60,7 @@ const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
 										앞으로 {3 - data.strikes}번의 심사 기회가 남았습니다. 심사 기회를 모두 소진하면 동일한 봇으로의 심사가 제한됩니다.
 									</p>
 								) : (
-									<p>더 이상 이 봇으로 심사를 신정하실 수 없습니다.</p>
+									<p>더 이상 이 봇으로 심사를 신청하실 수 없습니다.</p>
 								)}
 							</div>
 						</Message>

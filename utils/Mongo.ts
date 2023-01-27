@@ -27,12 +27,12 @@ const serverSchema = new mongoose.Schema({
 
 type ModelType<TSchema extends Schema = any> = Model<
   InferSchemaType<TSchema>,
-  ObtainSchemaGeneric<TSchema, "TQueryHelpers">,
-  ObtainSchemaGeneric<TSchema, "TInstanceMethods">,
-  ObtainSchemaGeneric<TSchema, "TVirtuals">,
+  ObtainSchemaGeneric<TSchema, 'TQueryHelpers'>,
+  ObtainSchemaGeneric<TSchema, 'TInstanceMethods'>,
+  ObtainSchemaGeneric<TSchema, 'TVirtuals'>,
   TSchema
 > &
-  ObtainSchemaGeneric<TSchema, "TStaticMethods">
+  ObtainSchemaGeneric<TSchema, 'TStaticMethods'>
 
 export const Bots = (mongoose.models.bots as ModelType<typeof botSchema>) || mongoose.model('bots', botSchema)
 export const Servers = (mongoose.models.servers as ModelType<typeof serverSchema>) || mongoose.model('servers', serverSchema)

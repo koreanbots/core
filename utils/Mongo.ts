@@ -25,7 +25,7 @@ const serverSchema = new mongoose.Schema({
 	data: {}
 })
 
-type ModelType<TSchema extends Schema = any> = Model<
+type ModelType<TSchema extends Schema> = Model<
   InferSchemaType<TSchema>,
   ObtainSchemaGeneric<TSchema, 'TQueryHelpers'>,
   ObtainSchemaGeneric<TSchema, 'TInstanceMethods'>,

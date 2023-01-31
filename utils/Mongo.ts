@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, { InferSchemaType, Model, ObtainSchemaGeneric, Schema } from 'mongoose'
 import { getYYMMDD } from './Tools'
 
 mongoose.connect(`mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST || 'localhost'}/${process.env.MONGO_DATABASE}`)
@@ -25,5 +25,14 @@ const serverSchema = new mongoose.Schema({
 	data: {}
 })
 
-export const Bots = mongoose.models.bots || mongoose.model('bots', botSchema)
-export const Servers = mongoose.models.servers || mongoose.model('servers', serverSchema)
+type ModelType<TSchema extends Schema> = Model<
+  InferSchemaType<TSchema>,
+  ObtainSchemaGeneric<TSchema, 'TQueryHelpers'>,
+  ObtainSchemaGeneric<TSchema, 'TInstanceMethods'>,
+  ObtainSchemaGeneric<TSchema, 'TVirtuals'>,
+  TSchema
+> &
+  ObtainSchemaGeneric<TSchema, 'TStaticMethods'>
+
+export const Bots = (mongoose.models.bots as ModelType<typeof botSchema>) || mongoose.model('bots', botSchema)
+export const Servers = (mongoose.models.servers as ModelType<typeof serverSchema>) || mongoose.model('servers', serverSchema)

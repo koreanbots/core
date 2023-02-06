@@ -43,7 +43,7 @@ const BotCard: React.FC<BotCardProps> = ({ manage = false, bot }) => {
 												<i className={`fas fa-circle text-${Status[bot.status]?.color}`} />
 												{Status[bot.status]?.text}
 											</h2>
-											<h1 className='mb-3 text-left text-2xl font-bold truncate'>{bot.name}</h1>
+											<h1 className='mb-3 text-left text-xl sm:text-2xl font-bold truncate'>{bot.name}</h1>
 										</div>
 									</div>
 									<div className='grid grid-cols-1 pr-5 py-5 w-2/5 h-0'>

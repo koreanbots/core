@@ -10,7 +10,7 @@ const Tag = dynamic(() => import('@components/Tag'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 
 const BotCard: React.FC<BotCardProps> = ({ manage = false, bot }) => {
-	return	<div className='container mb-16 transform hover:-translate-y-1 transition duration-100 ease-in cursor-pointer'>
+	return	<div className='min-w-0 container mb-16 transform hover:-translate-y-1 transition duration-100 ease-in cursor-pointer'>
 		<div className='relative'>
 			<div className='container mx-auto'>
 				<div className='h-full'>
@@ -43,7 +43,7 @@ const BotCard: React.FC<BotCardProps> = ({ manage = false, bot }) => {
 												<i className={`fas fa-circle text-${Status[bot.status]?.color}`} />
 												{Status[bot.status]?.text}
 											</h2>
-											<h1 className='absolute w-3/5 mb-3 text-left text-2xl font-bold truncate'>{bot.name}</h1>
+											<h1 className='mb-3 text-left text-2xl font-bold truncate'>{bot.name}</h1>
 										</div>
 									</div>
 									<div className='grid grid-cols-1 pr-5 py-5 w-2/5 h-0'>

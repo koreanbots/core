@@ -27,9 +27,9 @@ const BotCard: React.FC<BotCardProps> = ({ manage = false, bot }) => {
 					>
 						<Link href={makeBotURL(bot)}>
 							<div>
-								<div className='flex h-44'>
-									<div className='w-3/5'>
-										<div className='flex justify-start'>
+								<div className='flex flex-col'>
+									<div className='flex'>
+										<div className='w-3/5 flex justify-start'>
 											<DiscordAvatar
 												size={128}
 												userID={bot.id}
@@ -37,30 +37,29 @@ const BotCard: React.FC<BotCardProps> = ({ manage = false, bot }) => {
 												className='absolute -left-2 -top-8 mx-auto w-32 h-32 bg-white rounded-full'
 											/>
 										</div>
-
-										<div className='mt-28 px-4'>
-											<h2 className='px-1 text-sm'>
-												<i className={`fas fa-circle text-${Status[bot.status]?.color}`} />
-												{Status[bot.status]?.text}
-											</h2>
-											<h1 className='mb-3 text-left text-xl sm:text-2xl font-bold truncate'>{bot.name}</h1>
+										<div className='grid grid-cols-1 pr-5 pt-5 w-2/5'>
+											<Tag
+												text={
+													<>
+														<i className='fas fa-heart text-red-600' /> {formatNumber(bot.votes)}
+													</>
+												}
+												dark
+											/>
+											<Tag
+												blurple
+												text={bot.servers ? <>{formatNumber(bot.servers)} 서버</> : 'N/A'}
+												dark
+											/>
 										</div>
 									</div>
-									<div className='grid grid-cols-1 pr-5 py-5 w-2/5 h-0'>
-										<Tag
-											text={
-												<>
-													<i className='fas fa-heart text-red-600' /> {formatNumber(bot.votes)}
-												</>
-											}
-											dark
-										/>
-										<Tag
-											blurple
-											text={bot.servers ? <>{formatNumber(bot.servers)} 서버</> : 'N/A'}
-											dark
-										/>
-									</div>
+								</div>
+								<div className='mt-3 px-4 h-16'>
+									<h2 className='px-1 text-sm'>
+										<i className={`fas fa-circle text-${Status[bot.status]?.color}`} />
+										{Status[bot.status]?.text}
+									</h2>
+									<h1 className='mb-3 text-left text-xl sm:text-2xl font-bold truncate'>{bot.name}</h1>
 								</div>
 								<p className='mb-10 px-4 h-6 text-left text-gray-400 text-sm font-medium'>
 									{bot.intro}

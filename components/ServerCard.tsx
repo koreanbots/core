@@ -29,17 +29,15 @@ const ServerCard: React.FC<BotCardProps> = ({ type, server }) => {
 						<Link href={type !== 'add' ? makeServerURL(server) : newServerLink}>
 							<div>
 								<div className='flex flex-col'>
-									<div className='flex h-auto'>
-										<div className='w-3/5 h-auto'>
-											<div className='flex justify-start'>
-												<ServerIcon
-													size={128}
-													id={server.id}
-													hash={type === 'add' && server.icon}
-													alt='Icon'
-													className='absolute -left-2 -top-8 mx-auto w-32 h-32 bg-white rounded-full'
-												/>
-											</div>
+									<div className='flex'>
+										<div className='w-3/5 flex justify-start'>
+											<ServerIcon
+												size={128}
+												id={server.id}
+												hash={type === 'add' && server.icon}
+												alt='Icon'
+												className='absolute -left-2 -top-8 mx-auto w-32 h-32 bg-white rounded-full'
+											/>
 										</div>
 										<div className='grid grid-cols-1 pr-5 pt-5 w-2/5'>
 											<Tag

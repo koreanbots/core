@@ -550,8 +550,8 @@ async function updateServer(id: string, servers: number, shards: number) {
 	return
 }
 
-async function updateWebhookStatus(id: string, type: 'bots' | 'servers') {
-	const res = await knex(type).update({ webhook_status: 0 }).where({ id })
+async function updateWebhookStatus(id: string, type: 'bots' | 'servers', value: WebhookStatus) {
+	const res = await knex(type).update({ webhook_status: value }).where({ id })
 	if(res !== 1) return false
 	return true
 }

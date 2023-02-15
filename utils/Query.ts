@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 import { TLRU } from 'tlru'
 import DataLoader from 'dataloader'
-import { ActivityType, GuildFeature, GuildMember, User as DiscordUser } from 'discord.js'
+import { ActivityType, GuildFeature, GuildMember, User as DiscordUser, UserFlags } from 'discord.js'
 
 import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable } from '@types'
 import { botCategories, DiscordEnpoints, imageSafeHost, serverCategories, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'
@@ -51,17 +51,19 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 		const discordBot = await DiscordBot.users.fetch(res[0].id).then(r=> r).catch(() => null) as DiscordUser
 		if(!discordBot) return null
 		const botMember = await getMainGuild()?.members?.fetch(res[0].id).catch(e=> e) as GuildMember
-		res[0].flags = res[0].flags | (discordBot.flags?.bitfield && DiscordUserFlags.VERIFIED_BOT ? BotFlags.verified : 0) | (res[0].trusted ? BotFlags.trusted : 0) | (res[0].partnered ? BotFlags.partnered : 0)
+		res[0].flags = res[0].flags | (discordBot.flags?.bitfield & DiscordUserFlags.VERIFIED_BOT ? BotFlags.verified : 0) | (res[0].trusted ? BotFlags.trusted : 0) | (res[0].partnered ? BotFlags.partnered : 0)
 		res[0].tag = discordBot.discriminator
 		res[0].avatar = discordBot.avatar
 		res[0].name = discordBot.username
 		res[0].category = JSON.parse(res[0].category)
 		res[0].owners = JSON.parse(res[0].owners)
 		if(botMember) {
-			if(botMember.presence === null) {
+			if(discordBot.flags.has(UserFlags.BotHTTPInteractions)) {
+				res[0].status = 'online'
+			} else if(!botMember.presence) {
 				res[0].status = 'offline'
 			} else {
-				res[0].status = botMember?.presence?.activities.find(r => r.type === ActivityType.Streaming) ? 'streaming' : botMember?.presence?.status || null
+				res[0].status = botMember.presence.activities.some(r => r.type === ActivityType.Streaming) ? 'streaming' : botMember.presence.status
 			}
 		} else {
 			res[0].status = null
@@ -149,16 +151,18 @@ async function getUser(id: string, topLevel = true):Promise<User> {
 		const ownedBots = await knex('bots')
 			.select(['id'])
 			.where('owners', 'like', `%${id}%`)
+			.orderBy('date', 'asc')
 		const ownedServer = await knex('servers')
 			.select(['id'])
 			.where('owners', 'like', `%${id}%`)
+			.orderBy('date', 'asc')
 
 		const discordUser = await get.discord.user.load(id)
 		res[0].tag = discordUser?.discriminator || '0000'
 		res[0].username = discordUser?.username || 'Unknown User'
 		if (topLevel) {
-			res[0].bots = (await Promise.all(ownedBots.map(async b => await get._rawBot.load(b.id)))).filter((el: Bot | null) => el).map(row => ({ ...row }))
-			res[0].servers = (await Promise.all(ownedServer.map(async b => await get._rawServer.load(b.id)))).filter((el: Server | null) => el).map(row => ({ ...row }))
+			res[0].bots = (await Promise.all(ownedBots.map(async b => await get._rawBot.load(b.id)))).filter((el: Bot | null) => el)
+			res[0].servers = (await Promise.all(ownedServer.map(async b => await get._rawServer.load(b.id)))).filter((el: Server | null) => el)
 		}
 		else {
 			res[0].bots = ownedBots.map(el => el.id)
@@ -246,8 +250,8 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<List
 			.select(['id'])
 	} else if (type === 'SEARCH') {
 		if (!query) throw new Error('쿼리가 누락되었습니다.')
-		count = (await knex.raw('SELECT count(*) FROM bots WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode)', [decodeURI(query)]))[0][0]['count(*)']
-		res = (await knex.raw('SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM bots WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 16 OFFSET ?', [decodeURI(query), decodeURI(query), ((page ? Number(page) : 1) - 1) * 16]))[0]
+		count = (await knex.raw('SELECT count(*) FROM bots WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode)', [decodeURI(query) + '*']))[0][0]['count(*)']
+		res = (await knex.raw('SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM bots WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 16 OFFSET ?', [decodeURI(query) + '*', decodeURI(query) + '*', ((page ? Number(page) : 1) - 1) * 16]))[0]
 	} else {
 		count = 1
 		res = []
@@ -324,8 +328,8 @@ async function getServerList(type: ListType, page = 1, query?: string):Promise<L
 			.select(['id'])
 	} else if (type === 'SEARCH') {
 		if (!query) throw new Error('쿼리가 누락되었습니다.')
-		count = (await knex.raw('SELECT count(*) FROM servers WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode)', [decodeURI(query)]))[0][0]['count(*)']
-		res = (await knex.raw('SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM servers WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 16 OFFSET ?', [decodeURI(query), decodeURI(query), ((page ? Number(page) : 1) - 1) * 16]))[0]
+		count = (await knex.raw('SELECT count(*) FROM servers WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode)', [decodeURI(query) + '*']))[0][0]['count(*)']
+		res = (await knex.raw('SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM servers WHERE MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 16 OFFSET ?', [decodeURI(query)  + '*', decodeURI(query)  + '*', ((page ? Number(page) : 1) - 1) * 16]))[0]
 	} else {
 		count = 1
 		res = []
@@ -383,7 +387,7 @@ async function voteBot(userID: string, botID: string): Promise<number|boolean> {
 	await knex('bots').where({ id: botID }).increment('votes', 1)
 	await knex('users').where({ id: userID }).update({ votes: JSON.stringify(data) })
 	const record = await Bots.updateOne({ _id: botID, 'voteMetrix.day': getYYMMDD() }, { $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } })
-	if(record.n === 0) await Bots.findByIdAndUpdate(botID, { $push: { voteMetrix: { count: (await knex('bots').where({ id: botID }))[0].votes } } }, { upsert: true })
+	if(record.matchedCount === 0) await Bots.findByIdAndUpdate(botID, { $push: { voteMetrix: { count: (await knex('bots').where({ id: botID }))[0].votes } } }, { upsert: true })
 	return true
 }
 
@@ -414,8 +418,8 @@ async function submitBot(id: string, data: AddBotSubmit):Promise<1|2|3|4|5|Submi
 	const submits = await knex('submitted').select(['id']).where({ state: 0 }).andWhere('owners', 'LIKE', `%${id}%`)
 	if(submits.length > 1) return 1
 	const botId = data.id
-	const identicalSubmits = await knex('submitted').select(['id']).where({ id: botId, state: 2 }).whereNotIn('reason', ['PRIVATE', 'OFFLINE', 'ABSENT_AT_DISCORD']) // 다음 사유를 제외한 다른 사유의 3회 이상 거부 존재시 봇 등록 제한.
-	if(identicalSubmits.length >= 3) return 5
+	const strikes = await get.botSubmitStrikes(botId)
+	if(strikes >= 3) return 5
 	const date =  Math.round(+new Date()/1000)
 	const sameID = await knex('submitted').select(['id']).where({ id: botId, state: 0 })
 	const bot = await get.bot.load(data.id)
@@ -699,6 +703,14 @@ async function denyBotSubmission(id: string, date: number, reason?: string) {
 	await knex('submitted').update({ state: 2, reason: reason || null }).where({ state: 0, id, date })
 }
 
+async function getBotSubmitStrikes(id: string) {
+	const identicalSubmits = await knex('submitted')
+		.select(['id'])
+		.where({ id, state: 2 })
+		.whereNotIn('reason', ['PRIVATE', 'OFFLINE', 'ABSENT_AT_DISCORD']) // 다음 사유를 제외한 다른 사유의 3회 이상 거부 존재시 봇 등록 제한.
+	return identicalSubmits.length
+}
+
 async function approveBotSubmission(id: string, date: number) {
 	const data = await knex('submitted').select(['id', 'date', 'category', 'lib', 'prefix', 'intro', 'desc', 'url', 'web', 'git', 'discord', 'state', 'owners', 'reason']).where({ state: 0, id, date })
 	if(!data[0]) return false
@@ -720,7 +732,7 @@ export function safeImageHost(text: string) {
 
 async function viewBot(id: string) {
 	const record = await Bots.updateOne({ _id: id, 'viewMetrix.day': getYYMMDD() }, { $inc: { 'viewMetrix.$.count': 1 } })
-	if(record.n === 0) await Bots.findByIdAndUpdate(id, { $push: { viewMetrix: { count: 0 } } }, { upsert: true })
+	if(record.matchedCount === 0) await Bots.findByIdAndUpdate(id, { $push: { viewMetrix: { count: 0 } } }, { upsert: true })
 }
 
 export const get = {
@@ -852,6 +864,7 @@ export const get = {
 	ServerAuthorization,
 	botSubmitList: getBotSubmitList,
 	botSubmitHistory: getBotSubmitHistory,
+	botSubmitStrikes: getBotSubmitStrikes,
 	serverOwners: fetchServerOwners
 }
 

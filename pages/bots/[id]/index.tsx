@@ -346,9 +346,11 @@ export const getServerSideProps = async (ctx: Context) => {
 	const desc = await get.botDescSafe(data.id)
 	const user = await get.Authorization(parsed?.token)
 	if((checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== ctx.query.id) {
-		ctx.res.statusCode = 301
-		ctx.res.setHeader('Location', `/bots/${data.vanity}`)
 		return {
+			redirect: {
+				destination: `/bots/${data.vanity}`,
+				permanent: true
+			},
 			props: {}
 		}
 	}

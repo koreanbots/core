@@ -57,9 +57,13 @@ const Search:NextPage<SearchProps> = ({ botData, serverData, priority, query }) 
 export const getServerSideProps = async(ctx: Context) => {
 	if(ctx.query.query && !ctx.query.q) ctx.query.q = ctx.query.query
 	if(!ctx.query?.q) {
-		ctx.res.statusCode = 301
-		ctx.res.setHeader('Location', '/')
-		return { props: {} }
+		return {
+			redirect: {
+				destination: '/',
+				permanent: true
+			},
+			props: {}
+		}
 	}
 	if(!ctx.query.page) ctx.query.page = '1'
 	const validate = await SearchQuerySchema.validate(ctx.query).then(el => el).catch(() => null)

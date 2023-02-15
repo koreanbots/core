@@ -133,7 +133,8 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 						<Selects options={botCategories.map(el=> ({ label: el, value: el }))} handleChange={(value) => {
 							setFieldValue('category', value.map(v=> v.value))
 						}} handleTouch={() => setFieldTouched('category', true)} values={values.category as string[]} setValues={(value) => setFieldValue('category', value)} />
-						<span className='text-gray-400 mt-1 text-sm'>봇 카드에는 앞 3개의 카테고리만 표시됩니다. 드래그하여 카테고리를 정렬하세요. <strong>반드시 해당되는 카테고리만 선택해주세요.</strong></span>
+						<p className='text-gray-400 mt-1 text-sm'>봇 카드에는 앞 3개의 카테고리만 표시됩니다. 드래그하여 카테고리를 정렬하세요. <strong>반드시 해당되는 카테고리만 선택해주세요.</strong><br/>
+							<a className='text-blue-500 hover:text-blue-400' href='https://contents.koreanbots.dev/categories'>이곳</a>에서 카테고리에 관한 자세한 설명을 확인하실 수 있습니다!</p>					
 					</Label>
 					<Divider />
 					<Label For='website' label='웹사이트' labelDesc='봇의 웹사이트를 작성해주세요.' error={errors.website && touched.website ? errors.website : null}>

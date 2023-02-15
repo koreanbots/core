@@ -281,9 +281,11 @@ export const getServerSideProps = async (ctx: Context) => {
 	const desc = safeImageHost(data.desc)
 	const user = await get.Authorization(parsed?.token)
 	if((checkServerFlag(data.flags, 'trusted') || checkServerFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== ctx.query.id) {
-		ctx.res.statusCode = 301
-		ctx.res.setHeader('Location', `/servers/${data.vanity}`)
 		return {
+			redirect: {
+				destination: `/servers/${data.vanity}`,
+				permanent: true
+			},
 			props: {}
 		}
 	}

@@ -3,7 +3,7 @@ import HCaptcha from '@hcaptcha/react-hcaptcha'
 
 
 const Captcha: React.FC<CaptchaProps> = ({ dark, onVerify }) => {
-	return <HCaptcha sitekey={process.env.HCATPCHA_SITEKEY} theme={dark ? 'dark' : 'light'} onVerify={onVerify}/>
+	return <HCaptcha sitekey={process.env.HCAPTCHA_SITEKEY} theme={dark ? 'dark' : 'light'} onVerify={onVerify}/>
 }
 
 interface CaptchaProps {

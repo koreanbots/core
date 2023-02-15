@@ -368,11 +368,10 @@ async function getVote(userID: string, targetID: string, type: 'bot' | 'server')
 	return data[`${type}:${targetID}`] || 0
 }
 
-async function getWebhook(id: string, type: 'bots' | 'servers'): Promise<string[]|null> {
+async function getWebhook(id: string, type: 'bots' | 'servers'): Promise<[string, number]> {
 	const res = await knex(type).select(['webhook', 'webhook_status']).where({ id })
 	if(res.length === 0) return null
-	const data = [res[0].webhook, res[0].webhook_status]
-	return data
+	return [res[0].webhook, res[0].webhook_status]
 }
 
 async function voteBot(userID: string, botID: string): Promise<number|boolean> {

@@ -7,6 +7,7 @@ import { checkToken } from '@utils/Csrf'
 import Yup from '@utils/Yup'
 import { VOTE_COOLDOWN } from '@utils/Constants'
 import sendWebhook from '@utils/Webhook'
+import { WebhookType } from '@types'
 
 const BotVote = RequestHandler()
 	.get(async (req: GetApiRequest, res) => {
@@ -34,13 +35,14 @@ const BotVote = RequestHandler()
 		const vote = await put.voteBot(user, bot.id)
 		if(vote === null) return ResponseWrapper(res, { code: 401 })
 		else if(vote === true) {
-			await sendWebhook(bot.id, 'bot', {
-				title: '하트 수 증가',
-				content: `${bot.votes}❤️ -> ${bot.votes + 1}❤️ (▲1)`,
+			await sendWebhook({
+				type: 'bot',
+				botId: bot.id,
 				data: {
+					type: WebhookType.HeartChange,
 					before: bot.votes,
 					after: bot.votes + 1,
-					type: 'votes'
+					userId: user
 				}
 			})
 			return ResponseWrapper(res, { code: 200 })

@@ -1,9 +1,9 @@
 import fetch from 'node-fetch'
 import { TLRU } from 'tlru'
 import DataLoader from 'dataloader'
-import { ActivityType, GuildFeature, GuildMember, User as DiscordUser, UserFlags } from 'discord.js'
+import { ActivityType, GuildFeature, GuildMember, parseWebhookURL, User as DiscordUser, UserFlags } from 'discord.js'
 
-import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable } from '@types'
+import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable, WebhookStatus } from '@types'
 import { botCategories, DiscordEnpoints, imageSafeHost, serverCategories, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'
 
 import knex from './Knex'
@@ -509,7 +509,7 @@ async function updateBot(id: string, data: ManageBot): Promise<number> {
 		url: data.url,
 		discord: data.discord,
 		webhook: data.webhook,
-		webhook_status: 1,
+		webhook_status: parseWebhookURL(data.webhook) ? WebhookStatus.Discord : WebhookStatus.HTTP,
 		category: JSON.stringify(data.category),
 		intro: data.intro,
 		desc: data.desc

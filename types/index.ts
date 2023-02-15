@@ -172,6 +172,18 @@ export enum DiscordUserFlags {
 	VERIFIED_DEVELOPER = 1 << 17,
 }
 
+export enum WebhookStatus {
+	None = 0,
+	Discord = 1, 
+	HTTP = 2,
+	Paused = 3
+}
+
+export enum WebhookType {
+	HeartChange = 0,
+	ServerCountChange = 1
+}
+
 export interface List<T> {
 	type: ListType
 	data: T[]

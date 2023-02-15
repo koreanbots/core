@@ -12,7 +12,7 @@ import { get } from '@utils/Query'
 import { checkUserFlag, cleanObject, makeBotURL, parseCookie, redirectTo } from '@utils/Tools'
 import { ManageBot, ManageBotSchema } from '@utils/Yup'
 import { botCategories, library } from '@utils/Constants'
-import { Bot, Theme, User } from '@types'
+import { Bot, Theme, User, WebhookStatus } from '@types'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
 
@@ -76,7 +76,7 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 			git: bot.git,
 			discord: bot.discord,
 			webhook: bot.webhook,
-			webhook_status: 1,
+			webhook_status: bot.webhook_status,
 			_csrf: csrfToken
 		})}
 		validationSchema={ManageBotSchema}

@@ -9,7 +9,7 @@ import { BotStatUpdate, BotStatUpdateSchema } from '@utils/Yup'
 import { getStatsLoggingChannel } from '@utils/DiscordBot'
 import { checkUserFlag, makeDiscordCodeblock } from '@utils/Tools'
 import { KoreanbotsEndPoints } from '@utils/Constants'
-import type { User } from '@types'
+import { User, WebhookType } from '@types'
 import sendWebhook from '@utils/Webhook'
 
 const limiter = rateLimit({
@@ -58,15 +58,17 @@ const BotStats = RequestHandler().post(limiter)
 		const d = await update.updateServer(botInfo.id, validated.servers, validated.shards)
 		if(d===1 || d===2) return ResponseWrapper(res, { code: 403, message: `서버 수를 ${[null, '1만', '100만'][d]} 이상으로 설정하실 수 없습니다. 문의해주세요.` })
 		get.bot.clear(req.query.id)
-		if (botInfo.servers !== validated.servers) await sendWebhook(botInfo.id, 'bot', {
-			title: `서버 수 ${botInfo.servers > validated.servers ? '감소' : '증가'}`,
-			content: `${botInfo.servers} -> ${validated.servers} (${botInfo.servers > validated.servers ? '▼' : '▲'}${Math.abs(validated.servers - botInfo.servers)})`,
-			data: {
-				before: botInfo.servers,
-				after: validated.servers,
-				type: 'servers'
-			}
-		})
+		if (botInfo.servers !== validated.servers) {
+			await sendWebhook({
+				type: 'bot',
+				botId: botInfo.id,
+				data: {
+					type: WebhookType.ServerCountChange,
+					before: botInfo.servers,
+					after: validated.servers,
+				}
+			})
+		}
 		await getStatsLoggingChannel().send({
 			content: `[BOT/STATS] <@${botInfo.id}> (${botInfo.id})\n${makeDiscordCodeblock(`${botInfo.servers > validated.servers ? '-' : '+'} ${botInfo.servers} -> ${validated.servers} (${botInfo.servers > validated.servers ? '▼' : '▲'}${Math.abs(validated.servers - botInfo.servers)})`, 'diff')}`, 
 			embeds: [new EmbedBuilder().setDescription(`${botInfo.name} - <@${botInfo.id}> ([${botInfo.id}](${KoreanbotsEndPoints.URL.bot(botInfo.id)}))`)]

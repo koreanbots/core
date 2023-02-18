@@ -14,8 +14,10 @@ const reviewGuildID = '906537041326637086'
 const botReviewLogChannelID = '906551334063439902'
 const openBotReviewLogChannelID = '1008376563731013643'
 
-export const botWebhookClients = new Discord.Collection<string, Discord.WebhookClient>()
-export const serverWebhookClients = new Discord.Collection<string, Discord.WebhookClient>()
+export const webhookClients = {
+	bot: new Discord.Collection<string, Discord.WebhookClient>(),
+	server: new Discord.Collection<string, Discord.WebhookClient>()
+}
 
 DiscordBot.on('ready', async () => {
 	console.log('I\'m Ready')

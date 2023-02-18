@@ -176,7 +176,7 @@ export enum WebhookStatus {
 	None = 0,
 	Discord = 1, 
 	HTTP = 2,
-	Paused = 3
+	Disabled = 3
 }
 
 export enum WebhookType {

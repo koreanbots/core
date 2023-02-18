@@ -1,35 +1,57 @@
 import { APIEmbed, Colors, Snowflake, WebhookClient } from 'discord.js'
 
 import { get, update } from './Query'
-import { botWebhookClients } from './DiscordBot'
+import { webhookClients } from './DiscordBot'
 import { DiscordEnpoints } from './Constants'
 import { Bot, Server, WebhookStatus, WebhookType } from '@types'
 import { makeDiscordCodeblock } from './Tools'
+import Fetch from './Fetch'
 
 const sendWebhook = async (payload: WebhookPayload): Promise<boolean> => {
+	let id: Snowflake, target: Bot | Server
 	if(payload.type === 'bot') {
-		const id = payload.botId
-		const bot = await get.bot.load(id)
-		const [webhook, status] = await get.webhook(id, 'bots')
-		if(status === 0) return
+		id = payload.botId
+		target = await get.bot.load(id)
+	} else {
+		id = payload.guildId
+		target = await get.server.load(id)
+	}
+	const [webhook, status] = await get.webhook(id, payload.type === 'bot' ? 'bots' : 'servers')
+	if(status === 0) return
 
-		if(status === WebhookStatus.Discord){
-			if(!botWebhookClients.has(id)) {
-				botWebhookClients.set(id, new WebhookClient({
-					url: webhook
-				}))
-			}
-			const client = botWebhookClients.get(id)
-			const url = new URL(webhook)
-			const result = await client.send({
-				embeds: [buildEmbed({payload, target: bot})],
-				threadId: url.searchParams.get('thread_id') || undefined
-			}).catch(r => {
-				console.error(r)
-			})
-			if(!result) {
-				await update.webhookStatus(id, 'bots', WebhookStatus.Paused)
-			}
+	if(status === WebhookStatus.Discord) {
+		if(!webhookClients[payload.type].has(id)) {
+			webhookClients[payload.type].set(id, new WebhookClient({
+				url: webhook
+			}))
+		}
+		const client = webhookClients[payload.type].get(id)
+
+		const url = new URL(webhook)
+		const result = await client.send({
+			embeds: [buildEmbed({payload, target})],
+			threadId: url.searchParams.get('thread_id') || undefined
+		}).catch(r => {
+			console.error(r)
+		})
+		if(!result) {
+			await update.webhookStatus(id, payload.type === 'bot' ? 'bots' : 'servers', WebhookStatus.Disabled)
+		}
+	} else if(status === WebhookStatus.HTTP) {
+		const result = await Fetch(
+			webhook, {
+				method: 'POST',
+				body: JSON.stringify(payload),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			},
+			true
+		).catch(r => {
+			console.error(r)
+		})
+		if(!result) {
+			await update.webhookStatus(id, payload.type === 'bot' ? 'bots' : 'servers', WebhookStatus.Disabled)
 		}
 	}
 }

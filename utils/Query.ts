@@ -525,7 +525,9 @@ async function updatedServer(id: string, data: ManageServer) {
 		invite: data.invite,
 		category: JSON.stringify(data.category),
 		intro: data.intro,
-		desc: data.desc
+		desc: data.desc,
+		webhook: data.webhook,
+		webhook_status: parseWebhookURL(data.webhook) ? WebhookStatus.Discord : WebhookStatus.HTTP,
 	}).where({ id })
 
 	return 1

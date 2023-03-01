@@ -378,6 +378,11 @@ export const ManageServerSchema = Yup.object({
 		.min(100, '서버 설명은 최소 100자여야합니다.')
 		.max(1500, '서버 설명은 최대 1500자여야합니다.')
 		.required('서버 설명은 필수 항목입니다.'),
+	webhook: Yup.string()
+		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')
+		.matches(Url, '올바른 웹훅 URL을 입력해주세요.')
+		.max(256, '웹훅 링크는 최대 256자까지만 가능합니다.')
+		.nullable(),
 	_csrf: Yup.string().required(),
 })
 
@@ -386,6 +391,7 @@ export interface ManageServer {
 	category: string[]
 	intro: string
 	desc: string
+	webhook: string
 	_csrf: string
 }
 

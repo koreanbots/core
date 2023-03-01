@@ -67,8 +67,13 @@ const sendWebhook = async (target: Bot | Server, payload: WebhookPayload): Promi
 					'Content-Type': 'application/json'
 				}
 			}
-		).catch(() => null)
-		if(!result?.ok) {
+		).then(async r => {
+			if(!r.ok) return false
+			const text = await r.text()
+			if(text.length > 0) return false
+			return true
+		}).catch(() => false)
+		if(!result) {
 			await update.webhookStatus(id, payload.type === 'bot' ? 'bots' : 'servers', WebhookStatus.Disabled)
 			sendFailedMessage(target)
 			return false

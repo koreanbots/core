@@ -1,7 +1,7 @@
-import { APIEmbed, Colors, DiscordAPIError, Snowflake, WebhookClient } from 'discord.js'
+import { APIEmbed, ButtonStyle, Colors, ComponentType, DiscordAPIError, Snowflake, WebhookClient } from 'discord.js'
 
 import { get, update } from './Query'
-import { DiscordBot, webhookClients } from './DiscordBot'
+import { DiscordBot, ServerListDiscordBot, webhookClients } from './DiscordBot'
 import { DiscordEnpoints } from './Constants'
 import { Bot, Server, WebhookStatus, WebhookType } from '@types'
 import { makeDiscordCodeblock } from './Tools'
@@ -11,15 +11,28 @@ const sendFailedMessage = async (target: Bot | Server): Promise<void> => {
 	const users = isBot ? target.owners : [target.owner]
 
 	for(const user of users) {
-		const r = await DiscordBot.users.send(typeof user === 'string' ? user : user.id, {
+		const r = await (isBot ? DiscordBot : ServerListDiscordBot).users.send(typeof user === 'string' ? user : user.id, {
 			embeds: [
 				{
 					title: '웹훅 전송 실패',
 					description: `\`\`${target.name}\`\`에 등록된 웹후크 주소가 올바르지 않거나, 제대로 동작하지 않아 비활성화되었습니다.\n` +
 					'설정된 웹후크의 주소가 올바른지 확인해주세요.\n' +
 					`[관리 패널](https://koreanbots.dev/${isBot ? 'bots' : 'servers'}/${target.id}/edit)에서 설정된 내용을 다시 저장하면 웹후크가 활성화됩니다.\n` +
-					'문제가 지속될 경우 본 DM을 통해 문의해주세요.',
+					isBot ? '문제가 지속될 경우 본 DM을 통해 문의해주세요.' : '문제가 지속될 경우 한디리 공식 디스코드 서버에서 문의해주세요.',
 					color: Colors.Red
+				}
+			],
+			components: isBot ? [] : [
+				{
+					type: ComponentType.ActionRow,
+					components: [
+						{
+							type: ComponentType.Button,
+							label: '공식 디스코드 서버 참가하기',
+							style: ButtonStyle.Link,
+							url: 'https://discord.gg/koreanlist'
+						}
+					]
 				}
 			]
 		}).catch(() => null)

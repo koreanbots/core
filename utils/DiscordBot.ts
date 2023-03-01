@@ -4,7 +4,9 @@ export const DiscordBot = new Discord.Client({
 	intents: Number(process.env.DISCORD_CLIENT_INTENTS ?? 32767)
 })
 
-const guildID = '653083797763522580'
+export const ServerListDiscordBot = new Discord.Client({
+	intents: []
+})
 
 const reportChannelID = '813255797823766568'
 const loggingChannelID = '844006379823955978'
@@ -26,6 +28,7 @@ DiscordBot.on('ready', async () => {
 })
 
 DiscordBot.login(process.env.DISCORD_TOKEN)
+ServerListDiscordBot.login(process.env.DISCORD_SERVERLIST_TOKEN)
 
 export const getMainGuild = () => DiscordBot.guilds.cache.get(guildID)
 export const getReviewGuild = () => DiscordBot.guilds.cache.get(reviewGuildID)

@@ -1,14 +1,35 @@
 import { APIEmbed, Colors, DiscordAPIError, Snowflake, WebhookClient } from 'discord.js'
 
 import { get, update } from './Query'
-import { webhookClients } from './DiscordBot'
+import { DiscordBot, webhookClients } from './DiscordBot'
 import { DiscordEnpoints } from './Constants'
 import { Bot, Server, WebhookStatus, WebhookType } from '@types'
 import { makeDiscordCodeblock } from './Tools'
 
+const sendFailedMessage = async (target: Bot | Server): Promise<void> => {
+	const isBot = 'owners' in target
+	const users = isBot ? target.owners : [target.owner]
+
+	for(const user of users) {
+		const r = await DiscordBot.users.send(typeof user === 'string' ? user : user.id, {
+			embeds: [
+				{
+					title: '웹훅 전송 실패',
+					description: `\`\`${target.name}\`\`에 등록된 웹후크 주소가 올바르지 않거나, 제대로 동작하지 않아 비활성화되었습니다.\n` +
+					'설정된 웹후크의 주소가 올바른지 확인해주세요.\n' +
+					`[관리 패널](https://koreanbots.dev/${isBot ? 'bots' : 'servers'}/${target.id}/edit)에서 설정된 내용을 다시 저장하면 웹후크가 활성화됩니다.\n` +
+					'문제가 지속될 경우 본 DM을 통해 문의해주세요.',
+					color: Colors.Red
+				}
+			]
+		}).catch(() => null)
+		if(r) return
+	}
+}
+
 const sendWebhook = async (target: Bot | Server, payload: WebhookPayload): Promise<boolean> => {
 	let id: Snowflake
-	
+
 	const [webhook, status] = await get.webhook(id, payload.type === 'bot' ? 'bots' : 'servers')
 	if(status === 0) return
 
@@ -34,6 +55,7 @@ const sendWebhook = async (target: Bot | Server, payload: WebhookPayload): Promi
 		})
 		if(!result) {
 			await update.webhookStatus(id, payload.type === 'bot' ? 'bots' : 'servers', WebhookStatus.Disabled)
+			sendFailedMessage(target)
 			return false
 		}
 	} else if(status === WebhookStatus.HTTP) {
@@ -48,6 +70,7 @@ const sendWebhook = async (target: Bot | Server, payload: WebhookPayload): Promi
 		).catch(() => null)
 		if(!result?.ok) {
 			await update.webhookStatus(id, payload.type === 'bot' ? 'bots' : 'servers', WebhookStatus.Disabled)
+			sendFailedMessage(target)
 			return false
 		}
 	}

@@ -24,7 +24,7 @@ const ServerVote = RequestHandler()
 		const user = await get.Authorization(req.cookies.token)
 		if(!user) return ResponseWrapper(res, { code: 401 })
 		const server = await get.server.load(req.query.id)
-		if (!server) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })
+		if (!server) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 서버입니다.' })
 		const csrfValidated = checkToken(req, res, req.body._csrf)
 		if (!csrfValidated) return
 		const captcha = await CaptchaVerify(req.body._captcha)

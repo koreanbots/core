@@ -1,11 +1,10 @@
-import { APIEmbed, Colors, Snowflake, WebhookClient } from 'discord.js'
+import { APIEmbed, Colors, DiscordAPIError, Snowflake, WebhookClient } from 'discord.js'
 
 import { get, update } from './Query'
 import { webhookClients } from './DiscordBot'
 import { DiscordEnpoints } from './Constants'
 import { Bot, Server, WebhookStatus, WebhookType } from '@types'
 import { makeDiscordCodeblock } from './Tools'
-import Fetch from './Fetch'
 
 const sendWebhook = async (payload: WebhookPayload): Promise<boolean> => {
 	let id: Snowflake, target: Bot | Server
@@ -31,29 +30,34 @@ const sendWebhook = async (payload: WebhookPayload): Promise<boolean> => {
 		const result = await client.send({
 			embeds: [buildEmbed({payload, target})],
 			threadId: url.searchParams.get('thread_id') || undefined
-		}).catch(r => {
-			console.error(r)
+		}).catch((r: DiscordAPIError | unknown)=> {
+			if(r instanceof DiscordAPIError) {
+				if(400 <= r.status && r.status < 500) {
+					return false
+				}
+			}
+			return true
 		})
 		if(!result) {
 			await update.webhookStatus(id, payload.type === 'bot' ? 'bots' : 'servers', WebhookStatus.Disabled)
+			return false
 		}
 	} else if(status === WebhookStatus.HTTP) {
-		const result = await Fetch(
+		const result = await fetch(
 			webhook, {
 				method: 'POST',
 				body: JSON.stringify(payload),
 				headers: {
 					'Content-Type': 'application/json'
 				}
-			},
-			true
-		).catch(r => {
-			console.error(r)
-		})
-		if(!result) {
+			}
+		).catch(() => null)
+		if(!result?.ok) {
 			await update.webhookStatus(id, payload.type === 'bot' ? 'bots' : 'servers', WebhookStatus.Disabled)
+			return false
 		}
 	}
+	return true
 }
 
 function compare(before, after) {

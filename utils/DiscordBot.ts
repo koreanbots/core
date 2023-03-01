@@ -8,16 +8,6 @@ export const ServerListDiscordBot = new Discord.Client({
 	intents: []
 })
 
-const guildID = '973239459799789618'
-
-const reportChannelID = '1001512740109684739'
-const loggingChannelID = '1001512740109684739'
-const statsLoggingChannelID = '1001512740109684739'
-
-const reviewGuildID = '973239459799789618'
-const botReviewLogChannelID = '1001512740109684739'
-const openBotReviewLogChannelID = '1001512740109684739'
-
 export const webhookClients = {
 	bot: new Discord.Collection<string, Discord.WebhookClient>(),
 	server: new Discord.Collection<string, Discord.WebhookClient>()

@@ -58,7 +58,7 @@ const BotStats = RequestHandler().post(limiter)
 		const d = await update.updateServer(botInfo.id, validated.servers, validated.shards)
 		if(d===1 || d===2) return ResponseWrapper(res, { code: 403, message: `서버 수를 ${[null, '1만', '100만'][d]} 이상으로 설정하실 수 없습니다. 문의해주세요.` })
 		get.bot.clear(req.query.id)
-		if (botInfo.servers !== validated.servers) {
+		if (validated.servers && botInfo.servers !== validated.servers) {
 			await sendWebhook({
 				type: 'bot',
 				botId: botInfo.id,

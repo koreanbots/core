@@ -6,15 +6,9 @@ import { DiscordEnpoints } from './Constants'
 import { Bot, Server, WebhookStatus, WebhookType } from '@types'
 import { makeDiscordCodeblock } from './Tools'
 
-const sendWebhook = async (payload: WebhookPayload): Promise<boolean> => {
-	let id: Snowflake, target: Bot | Server
-	if(payload.type === 'bot') {
-		id = payload.botId
-		target = await get.bot.load(id)
-	} else {
-		id = payload.guildId
-		target = await get.server.load(id)
-	}
+const sendWebhook = async (target: Bot | Server, payload: WebhookPayload): Promise<boolean> => {
+	let id: Snowflake
+	
 	const [webhook, status] = await get.webhook(id, payload.type === 'bot' ? 'bots' : 'servers')
 	if(status === 0) return
 

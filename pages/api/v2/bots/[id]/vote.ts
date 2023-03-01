@@ -35,7 +35,7 @@ const BotVote = RequestHandler()
 		const vote = await put.voteBot(user, bot.id)
 		if(vote === null) return ResponseWrapper(res, { code: 401 })
 		else if(vote === true) {
-			await sendWebhook({
+			await sendWebhook(bot, {
 				type: 'bot',
 				botId: bot.id,
 				data: {

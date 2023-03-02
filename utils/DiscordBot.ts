@@ -31,7 +31,6 @@ export const getBotReviewLogChannel = (): Discord.TextChannel => getReviewGuild(
 export const getOpenBotReviewLogChannel = (): Discord.TextChannel => getMainGuild().channels.cache.get(process.env.OPEN_REVIEW_LOG_CHANNEL_ID) as Discord.TextChannel
 
 export const discordLog = async (type: string, issuerID: string, embed?: Discord.EmbedBuilder, attachment?: { content: string, format: string}, content?: string): Promise<void> => {
-	return
 	getLoggingChannel().send({ 
 		content: `[${type}] <@${issuerID}> (${issuerID})\n${content || ''}`,
 		embeds: [embed && embed.setTitle(type).setTimestamp(new Date())],

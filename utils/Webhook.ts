@@ -117,6 +117,10 @@ function buildEmbed({payload, target}: {payload: WebhookPayload, target: Bot | S
 			DiscordEnpoints.CDN.guild(target.id, target.icon, {format: 'png'}),
 		url: `https://koreanbots/dev/servers/${target.id}`
 	}
+	const footer = {
+		text: '한국 디스코드 리스트',
+		icon_url: DiscordBot.user.avatarURL(),
+	}
 	switch(payload.data.type) {
 	case WebhookType.HeartChange:
 		return {
@@ -135,6 +139,7 @@ function buildEmbed({payload, target}: {payload: WebhookPayload, target: Bot | S
 				}
 			],
 			color: 0xCD3E45,
+			footer,
 			timestamp: new Date().toISOString()
 		}
 	case WebhookType.ServerCountChange: 
@@ -143,6 +148,7 @@ function buildEmbed({payload, target}: {payload: WebhookPayload, target: Bot | S
 			title: '서버 수 변동',
 			description: `${payload.data.before} -> ${payload.data.after} (${compare(payload.data.before, payload.data.after)})`,
 			color: Colors.Aqua,
+			footer,
 			timestamp: new Date().toISOString()
 		}
 	}

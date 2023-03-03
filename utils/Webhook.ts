@@ -115,7 +115,7 @@ function buildEmbed({payload, target}: {payload: WebhookPayload, target: Bot | S
 		name: target.name,
 		icon_url:
 			DiscordEnpoints.CDN.guild(target.id, target.icon, {format: 'png'}),
-		url: `https://koreanbots/dev/servers/${target.id}`
+		url: `https://koreanbots.dev/servers/${target.id}`
 	}
 	const footer = {
 		text: '한국 디스코드 리스트',

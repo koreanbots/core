@@ -68,7 +68,7 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 		} else {
 			res[0].status = null
 		}
-		res[0].webhook = res[0].webhook_url
+		res[0].webhookURL = res[0].webhook_url
 		res[0].webhookStatus = res[0].webhook_status	
 		delete res[0].trusted
 		delete res[0].partnered

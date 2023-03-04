@@ -520,7 +520,7 @@ async function updateBot(id: string, data: ManageBot, webhookSecret: string | nu
 		git: data.git,
 		url: data.url,
 		discord: data.discord,
-		webhook: data.webhookURL,
+		webhook_url: data.webhookURL,
 		webhook_status: parseWebhookURL(data.webhookURL) ? WebhookStatus.Discord : WebhookStatus.HTTP,
 		webhook_failed_since: null,
 		webhook_secret: webhookSecret,

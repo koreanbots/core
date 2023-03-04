@@ -10,7 +10,7 @@ import { getStatsLoggingChannel } from '@utils/DiscordBot'
 import { checkUserFlag, makeDiscordCodeblock } from '@utils/Tools'
 import { KoreanbotsEndPoints } from '@utils/Constants'
 import { User, WebhookType } from '@types'
-import sendWebhook from '@utils/Webhook'
+import { sendWebhook } from '@utils/Webhook'
 
 const limiter = rateLimit({
 	windowMs: 3 * 60 * 1000,

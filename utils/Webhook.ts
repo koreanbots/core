@@ -40,7 +40,7 @@ const sendFailedMessage = async (target: Bot | Server): Promise<void> => {
 	}
 }
 
-const sendWebhook = async (target: Bot | Server, payload: WebhookPayload): Promise<boolean> => {
+export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload): Promise<boolean> => {
 	const id = target.id
 
 	const [webhook, status] = await get.webhook(id, payload.type === 'bot' ? 'bots' : 'servers')
@@ -184,5 +184,3 @@ type ServerCountChange = {
 	before: number,
 	after: number
 }
-
-export default sendWebhook

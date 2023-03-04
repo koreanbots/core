@@ -6,7 +6,7 @@ import ResponseWrapper from '@utils/ResponseWrapper'
 import { checkToken } from '@utils/Csrf'
 import Yup from '@utils/Yup'
 import { VOTE_COOLDOWN } from '@utils/Constants'
-import sendWebhook from '@utils/Webhook'
+import { sendWebhook } from '@utils/Webhook'
 import { WebhookType } from '@types'
 
 const ServerVote = RequestHandler()

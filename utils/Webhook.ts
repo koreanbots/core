@@ -42,12 +42,12 @@ const sendFailedMessage = async (target: Bot | Server): Promise<void> => {
 
 export const verifyWebhook = async(webhookURL: string): Promise<string | false | null> => {
 	if(parseWebhookURL(webhookURL)) return null
-	const key = crypto.randomUUID()
+	const secret = crypto.randomUUID()
 	const url = new URL(webhookURL)
-	url.searchParams.set('key', key)
+	url.searchParams.set('secret', secret)
 	const result = await fetch(url).then(r => r.json())
 		.catch(() => null)
-	if(result?.key === key) return key
+	if(result?.secret === secret) return secret
 	return false
 }
 

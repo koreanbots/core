@@ -119,6 +119,7 @@ export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload)
 			return false
 		}
 	}
+	await update.webhook(id, isBot ? 'bots' : 'servers', { failedSince: null })
 	return true
 }
 

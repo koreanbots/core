@@ -40,6 +40,16 @@ const sendFailedMessage = async (target: Bot | Server): Promise<void> => {
 	}
 }
 
+export const verifyWebhook = async(webhookURL: string): Promise<boolean> => {
+	const key = crypto.randomUUID()
+	const url = new URL(webhookURL)
+	url.searchParams.set('key', key)
+	const result = await fetch(url).then(r => r.json())
+		.catch(() => null)
+	if(result?.key === key) return true
+	return false
+}
+
 export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload): Promise<boolean> => {
 	const id = target.id
 

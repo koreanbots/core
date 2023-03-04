@@ -376,7 +376,7 @@ async function getVote(userID: string, targetID: string, type: 'bot' | 'server')
 }
 
 async function getWebhook(id: string, type: 'bots' | 'servers'): Promise<Webhook | null> {
-	const res = await knex(type).select(['webhook_url', 'webhook_status', 'webhook_failed_since', 'webhook_secret']).where({ id })[0]
+	const res = (await knex(type).select(['webhook_url', 'webhook_status', 'webhook_failed_since', 'webhook_secret']).where({ id }))[0]
 	if(!res) return null
 	return {
 		url: res.webhook_url,

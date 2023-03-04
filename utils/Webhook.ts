@@ -5,6 +5,7 @@ import { DiscordBot, ServerListDiscordBot, webhookClients } from './DiscordBot'
 import { DiscordEnpoints } from './Constants'
 import { Bot, Server, WebhookStatus, WebhookType } from '@types'
 import { makeBotURL, makeDiscordCodeblock, makeServerURL } from './Tools'
+import crypto from 'crypto'
 
 const sendFailedMessage = async (target: Bot | Server): Promise<void> => {
 	const isBot = 'owners' in target

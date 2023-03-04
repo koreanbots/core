@@ -53,8 +53,9 @@ export const verifyWebhook = async(webhookURL: string): Promise<string | false |
 
 export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload): Promise<boolean> => {
 	const id = target.id
+	const isBot = payload.type === 'bot'
 
-	const webhook = await get.webhook(id, payload.type === 'bot' ? 'bots' : 'servers')
+	const webhook = await get.webhook(id, isBot ? 'bots' : 'servers')
 	if(!webhook) return
 	if(webhook.status === 0) return
 
@@ -79,7 +80,7 @@ export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload)
 			return true
 		})
 		if(!result) {
-			await update.webhookStatus(id, payload.type === 'bot' ? 'bots' : 'servers', WebhookStatus.Disabled)
+			await update.webhook(id, isBot ? 'bots' : 'servers', { status: WebhookStatus.Disabled })
 			sendFailedMessage(target)
 			return false
 		}
@@ -94,14 +95,27 @@ export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload)
 				}
 			}
 		).then(async r => {
-			if(!r.ok) return false
-			const text = await r.text()
-			if(text.length > 0) return false
-			return true
-		}).catch(() => false)
+			if(r.ok) {
+				const text = await r.text()
+				if(text.length > 0) return false
+				return true
+			}
+			if(400 <= r.status && r.status < 500) return false
+			return null
+		}).catch(() => null)
 		if(!result) {
-			await update.webhookStatus(id, payload.type === 'bot' ? 'bots' : 'servers', WebhookStatus.Disabled)
-			sendFailedMessage(target)
+			if(result === false || Date.now() - webhook.failedSince > 1000 * 60 * 60 * 24) {
+				await update.webhook(id, isBot ? 'bots' : 'servers', {
+					status: WebhookStatus.Disabled,
+					failedSince: null,
+					secret: null
+				})
+				sendFailedMessage(target)
+			} else if(!webhook.failedSince) {
+				await update.webhook(id, isBot ? 'bots' : 'servers', {
+					failedSince: Date.now()
+				})
+			}
 			return false
 		}
 	}

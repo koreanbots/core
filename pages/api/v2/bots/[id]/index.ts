@@ -1,6 +1,6 @@
 import { NextApiRequest } from 'next'
 import rateLimit from 'express-rate-limit'
-import { Colors, EmbedBuilder, parseWebhookURL } from 'discord.js'
+import { Colors, EmbedBuilder } from 'discord.js'
 import tracer from 'dd-trace'
 
 import { CaptchaVerify, get, put, remove, update } from '@utils/Query'
@@ -28,7 +28,11 @@ const Bots = RequestHandler()
 	.get(async (req: GetApiRequest, res) => {
 		const bot = await get.bot.load(req.query.id)
 		if (!bot) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })
-		else return ResponseWrapper(res, { code: 200, data: bot })
+		else {
+			delete bot.webhookURL
+			delete bot.webhookStatus
+			return ResponseWrapper(res, { code: 200, data: bot })
+		}
 	})
 	.post(async (req: PostApiRequest, res) => {
 		const user = await get.Authorization(req.cookies.token)
@@ -154,7 +158,7 @@ const Bots = RequestHandler()
 			})
 
 		if (!validated) return
-		const key = await verifyWebhook(validated.webhook)
+		const key = await verifyWebhook(validated.webhookURL)
 		if(key === false) {
 			return ResponseWrapper(res, { code: 400, message: '웹후크 주소를 검증할 수 없습니다.', errors: ['웹후크 주소가 올바른지 확인해주세요.\n웹후크 주소 검증에 대한 자세한 내용은 API 문서를 참고해주세요.'] })
 		}
@@ -164,8 +168,8 @@ const Bots = RequestHandler()
 			get.bot.clear(req.query.id)
 			const embed = new EmbedBuilder().setDescription(`${bot.name} - <@${bot.id}> ([${bot.id}](${KoreanbotsEndPoints.URL.bot(bot.id)}))`)
 			const diffData = objectDiff(
-				{ prefix: bot.prefix, library: bot.lib, web: bot.web, git: bot.git, url: bot.url, discord: bot.discord, webhook: bot.webhook, intro: bot.intro, category: JSON.stringify(bot.category) },
-				{ prefix: validated.prefix, library: validated.library, web: validated.website, git: validated.git, url: validated.url, discord: validated.discord, webhook: validated.webhook, intro: validated.intro, category: JSON.stringify(validated.category)  }
+				{ prefix: bot.prefix, library: bot.lib, web: bot.web, git: bot.git, url: bot.url, discord: bot.discord, webhook: bot.webhookURL, intro: bot.intro, category: JSON.stringify(bot.category) },
+				{ prefix: validated.prefix, library: validated.library, web: validated.website, git: validated.git, url: validated.url, discord: validated.discord, webhook: validated.webhookURL, intro: validated.intro, category: JSON.stringify(validated.category)  }
 			)
 			diffData.forEach(d => {
 				embed.addFields({name: d[0], value: makeDiscordCodeblock(diff(d[1][0] || '', d[1][1] || ''), 'diff')

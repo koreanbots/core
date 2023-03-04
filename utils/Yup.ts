@@ -326,7 +326,7 @@ export const ManageBotSchema: Yup.SchemaOf<ManageBot> = Yup.object({
 		.min(2, '지원 디스코드는 최소 2자여야합니다.')
 		.max(32, '지원 디스코드는 최대 32자까지만 가능합니다.')
 		.nullable(),
-	webhook: Yup.string()
+	webhookURL: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')
 		.matches(Url, '올바른 웹훅 URL을 입력해주세요.')
 		.max(256, '웹훅 링크는 최대 256자까지만 가능합니다.')
@@ -353,14 +353,14 @@ export interface ManageBot {
 	url: string
 	git: string
 	discord: string
-	webhook: string
+	webhookURL: string
 	category: string[]
 	intro: string
 	desc: string
 	_csrf: string
 }
 
-export const ManageServerSchema = Yup.object({
+export const ManageServerSchema: Yup.SchemaOf<ManageServer> = Yup.object({
 	invite: Yup.string()
 		.matches(Vanity, '디스코드 초대코드 형식을 지켜주세요.')
 		.min(2, '초대코드는 최소 2자여야합니다.')
@@ -378,7 +378,7 @@ export const ManageServerSchema = Yup.object({
 		.min(100, '서버 설명은 최소 100자여야합니다.')
 		.max(1500, '서버 설명은 최대 1500자여야합니다.')
 		.required('서버 설명은 필수 항목입니다.'),
-	webhook: Yup.string()
+	webhookURL: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')
 		.matches(Url, '올바른 웹훅 URL을 입력해주세요.')
 		.max(256, '웹훅 링크는 최대 256자까지만 가능합니다.')
@@ -391,7 +391,7 @@ export interface ManageServer {
 	category: string[]
 	intro: string
 	desc: string
-	webhook: string
+	webhookURL: string
 	_csrf: string
 }
 

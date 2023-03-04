@@ -75,7 +75,7 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 			url: bot.url,
 			git: bot.git,
 			discord: bot.discord,
-			webhook: bot.webhook,
+			webhookURL: bot.webhookURL,
 			_csrf: csrfToken
 		})}
 		validationSchema={ManageBotSchema}
@@ -146,8 +146,8 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 						discord.gg/<Input name='discord' placeholder='JEh53MQ' />
 						</div>
 					</Label>
-					<Label For='webhook' label='웹훅 링크' labelDesc='봇의 업데이트 알림을 받을 웹훅 링크를 입력해주세요. (웹훅 링크가 유효하지 않을 경우 웹훅이 중지되며, 다시 저장할 경우 작동합니다.)' error={errors.webhook && touched.webhook ? errors.webhook : null} warning={bot.webhookStatus === WebhookStatus.Disabled} warningText='웹훅 링크가 유효하지 않아 웹훅이 중지되었습니다.'>
-						<Input name='webhook' placeholder='https://discord.com/api/webhooks/ID/TOKEN' warning={bot.webhookStatus === WebhookStatus.Disabled}/>
+					<Label For='webhookURL' label='웹훅 링크' labelDesc='봇의 업데이트 알림을 받을 웹훅 링크를 입력해주세요. (웹훅 링크가 유효하지 않을 경우 웹훅이 중지되며, 다시 저장할 경우 작동합니다.)' error={errors.webhookURL && touched.webhookURL ? errors.webhookURL : null} warning={bot.webhookStatus === WebhookStatus.Disabled} warningText='웹훅 링크가 유효하지 않아 웹훅이 중지되었습니다.'>
+						<Input name='webhookURL' placeholder='https://discord.com/api/webhooks/ID/TOKEN' warning={bot.webhookStatus === WebhookStatus.Disabled}/>
 					</Label>
 					<Divider />
 					<Label For='intro' label='봇 소개' labelDesc='봇을 소개할 수 있는 간단한 설명을 적어주세요. (최대 60자)' error={errors.intro && touched.intro ? errors.intro : null} required>

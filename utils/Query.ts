@@ -488,7 +488,7 @@ async function submitServer(userID: string, id: string, data: AddServerSubmit): 
 }
 
 async function getBotSpec(id: string, userID: string) {
-	const res = await knex('bots').select(['id', 'token', 'webhook']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
+	const res = await knex('bots').select(['id', 'token']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
 	if(!res[0]) return null
 	return serialize(res[0])
 }

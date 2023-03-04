@@ -562,8 +562,13 @@ async function updateServer(id: string, servers: number, shards: number) {
 	return
 }
 
-async function updateWebhookStatus(id: string, type: 'bots' | 'servers', value: WebhookStatus) {
-	const res = await knex(type).update({ webhook_status: value }).where({ id })
+async function updateWebhook(id: string, type: 'bots' | 'servers', value: Webhook) {
+	const res = await knex(type).update({ 
+		webhook_url: value.url, 
+		webhook_status: value.status, 
+		webhook_failed_since: value.failedSince, 
+		webhook_secret: value.secret
+	}).where({ id })
 	if(res !== 1) return false
 	return true
 }
@@ -890,7 +895,7 @@ export const update = {
 	bot: updateBot,
 	server: updatedServer,
 	botOwners: updateOwner,
-	webhookStatus: updateWebhookStatus,
+	webhook: updateWebhook,
 	denyBotSubmission,
 	approveBotSubmission,
 	fetchUserDiscordToken

@@ -562,7 +562,7 @@ async function updateServer(id: string, servers: number, shards: number) {
 	return
 }
 
-async function updateWebhook(id: string, type: 'bots' | 'servers', value: Webhook) {
+async function updateWebhook(id: string, type: 'bots' | 'servers', value: Partial<Webhook>) {
 	const res = await knex(type).update({ 
 		webhook_url: value.url, 
 		webhook_status: value.status, 

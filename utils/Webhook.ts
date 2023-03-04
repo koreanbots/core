@@ -4,7 +4,7 @@ import { get, update } from './Query'
 import { DiscordBot, ServerListDiscordBot, webhookClients } from './DiscordBot'
 import { DiscordEnpoints } from './Constants'
 import { Bot, Server, WebhookStatus, WebhookType } from '@types'
-import { makeDiscordCodeblock } from './Tools'
+import { makeBotURL, makeDiscordCodeblock, makeServerURL } from './Tools'
 
 const sendFailedMessage = async (target: Bot | Server): Promise<void> => {
 	const isBot = 'owners' in target
@@ -123,12 +123,12 @@ function buildEmbed({payload, target}: {payload: WebhookPayload, target: Bot | S
 		name: target.name,
 		icon_url: 
 			DiscordEnpoints.CDN.user(target.id, target.avatar, {format: 'png'}),
-		url: `https://koreanbots.dev/bots/${target.id}`
+		url: makeBotURL({id: target.id, vanity: target.vanity})
 	} : {
 		name: target.name,
 		icon_url:
 			DiscordEnpoints.CDN.guild(target.id, target.icon, {format: 'png'}),
-		url: `https://koreanbots.dev/servers/${target.id}`
+		url: makeServerURL({id: target.id, vanity: target.vanity})
 	}
 	const footer = {
 		text: '한국 디스코드 리스트',

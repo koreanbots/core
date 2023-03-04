@@ -498,7 +498,7 @@ async function deleteServer(id: string): Promise<boolean> {
 	return !!server
 }
 
-async function updateBot(id: string, data: ManageBot): Promise<number> {
+async function updateBot(id: string, data: ManageBot, webhookSecret: string | null): Promise<number> {
 	const res = await knex('bots').where({ id })
 	if(res.length === 0) return 0
 	await knex('bots').update({
@@ -510,6 +510,8 @@ async function updateBot(id: string, data: ManageBot): Promise<number> {
 		discord: data.discord,
 		webhook: data.webhook,
 		webhook_status: parseWebhookURL(data.webhook) ? WebhookStatus.Discord : WebhookStatus.HTTP,
+		webhook_failed_since: null,
+		webhook_secret: webhookSecret,
 		category: JSON.stringify(data.category),
 		intro: data.intro,
 		desc: data.desc
@@ -518,7 +520,7 @@ async function updateBot(id: string, data: ManageBot): Promise<number> {
 	return 1
 }
 
-async function updatedServer(id: string, data: ManageServer) {
+async function updatedServer(id: string, data: ManageServer, webhookSecret: string | null) {
 	const res = await knex('servers').where({ id })
 	if(res.length === 0) return 0
 	await knex('servers').update({
@@ -528,6 +530,8 @@ async function updatedServer(id: string, data: ManageServer) {
 		desc: data.desc,
 		webhook: data.webhook,
 		webhook_status: parseWebhookURL(data.webhook) ? WebhookStatus.Discord : WebhookStatus.HTTP,
+		webhook_failed_since: null,
+		webhook_secret: webhookSecret,
 	}).where({ id })
 
 	return 1

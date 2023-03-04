@@ -3,7 +3,7 @@ import { TLRU } from 'tlru'
 import DataLoader from 'dataloader'
 import { ActivityType, GuildFeature, GuildMember, parseWebhookURL, User as DiscordUser, UserFlags } from 'discord.js'
 
-import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable, WebhookStatus } from '@types'
+import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable, WebhookStatus, Webhook } from '@types'
 import { botCategories, DiscordEnpoints, imageSafeHost, serverCategories, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'
 
 import knex from './Knex'
@@ -364,10 +364,15 @@ async function getVote(userID: string, targetID: string, type: 'bot' | 'server')
 	return data[`${type}:${targetID}`] || 0
 }
 
-async function getWebhook(id: string, type: 'bots' | 'servers'): Promise<[string, number]> {
-	const res = await knex(type).select(['webhook', 'webhook_status']).where({ id })
-	if(res.length === 0) return null
-	return [res[0].webhook, res[0].webhook_status]
+async function getWebhook(id: string, type: 'bots' | 'servers'): Promise<Webhook | null> {
+	const res = await knex(type).select(['webhook_url', 'webhook_status', 'webhook_failed_since', 'webhook_secret']).where({ id })[0]
+	if(!res) return null
+	return {
+		url: res.webhook_url,
+		status: res.webhook_status,
+		failedSince: res.webhook_failed_since,
+		secret: res.webhook_secret
+	}
 }
 
 async function voteBot(userID: string, botID: string): Promise<number|boolean> {

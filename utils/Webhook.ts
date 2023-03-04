@@ -54,18 +54,19 @@ export const verifyWebhook = async(webhookURL: string): Promise<string | false |
 export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload): Promise<boolean> => {
 	const id = target.id
 
-	const [webhook, status] = await get.webhook(id, payload.type === 'bot' ? 'bots' : 'servers')
-	if(status === 0) return
+	const webhook = await get.webhook(id, payload.type === 'bot' ? 'bots' : 'servers')
+	if(!webhook) return
+	if(webhook.status === 0) return
 
-	if(status === WebhookStatus.Discord) {
+	if(webhook.status === WebhookStatus.Discord) {
 		if(!webhookClients[payload.type].has(id)) {
 			webhookClients[payload.type].set(id, new WebhookClient({
-				url: webhook
+				url: webhook.url
 			}))
 		}
 		const client = webhookClients[payload.type].get(id)
 
-		const url = new URL(webhook)
+		const url = new URL(webhook.url)
 		const result = await client.send({
 			embeds: [buildEmbed({payload, target})],
 			threadId: url.searchParams.get('thread_id') || undefined
@@ -82,13 +83,14 @@ export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload)
 			sendFailedMessage(target)
 			return false
 		}
-	} else if(status === WebhookStatus.HTTP) {
+	} else if(webhook.status === WebhookStatus.HTTP) {
 		const result = await fetch(
-			webhook, {
+			webhook.url, {
 				method: 'POST',
 				body: JSON.stringify(payload),
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					'Secret': `${webhook.secret}`
 				}
 			}
 		).then(async r => {

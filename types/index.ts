@@ -24,8 +24,6 @@ export interface Bot {
 	git: string | null
 	url: string | null
 	discord: string | null
-	webhook: string | null
-	webhook_status: number | null
 	vanity: string | null
 	bg: string
 	banner: string
@@ -55,13 +53,18 @@ export interface Server {
 	desc: string
 	category: ServerCategory[]
 	invite: string
-	webhook: string | null
-	webhook_status: number | null
 	vanity: string | null
 	bg: string | null
 	banner: string | null
 	owner: User | null
 	bots: Bot[] | string[]
+}
+
+export interface Webhook {
+	url: string | null
+	status: WebhookStatus
+	failedSince: string | null
+	secret: string | null
 }
 
 export interface Emoji {

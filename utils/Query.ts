@@ -37,6 +37,8 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 			'trusted',
 			'partnered',
 			'discord',
+			'webhook_url',
+			'webhook_status',
 			'state',
 			'vanity',
 			'bg',
@@ -66,8 +68,12 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 		} else {
 			res[0].status = null
 		}
+		res[0].webhook = res[0].webhook_url
+		res[0].webhookStatus = res[0].webhook_status	
 		delete res[0].trusted
 		delete res[0].partnered
+		delete res[0].webhook_url
+		delete res[0].webhook_status
 		if (topLevel) {
 			res[0].owners = await Promise.all(
 				res[0].owners.map(async (u: string) => await get._rawUser.load(u))
@@ -509,8 +515,8 @@ async function updateBot(id: string, data: ManageBot, webhookSecret: string | nu
 		git: data.git,
 		url: data.url,
 		discord: data.discord,
-		webhook: data.webhook,
-		webhook_status: parseWebhookURL(data.webhook) ? WebhookStatus.Discord : WebhookStatus.HTTP,
+		webhook: data.webhookURL,
+		webhook_status: parseWebhookURL(data.webhookURL) ? WebhookStatus.Discord : WebhookStatus.HTTP,
 		webhook_failed_since: null,
 		webhook_secret: webhookSecret,
 		category: JSON.stringify(data.category),
@@ -529,8 +535,8 @@ async function updatedServer(id: string, data: ManageServer, webhookSecret: stri
 		category: JSON.stringify(data.category),
 		intro: data.intro,
 		desc: data.desc,
-		webhook: data.webhook,
-		webhook_status: parseWebhookURL(data.webhook) ? WebhookStatus.Discord : WebhookStatus.HTTP,
+		webhook_url: data.webhookURL,
+		webhook_status: parseWebhookURL(data.webhookURL) ? WebhookStatus.Discord : WebhookStatus.HTTP,
 		webhook_failed_since: null,
 		webhook_secret: webhookSecret,
 	}).where({ id })

@@ -67,7 +67,7 @@ export interface Server {
 export interface Webhook {
 	url: string | null
 	status: WebhookStatus
-	failedSince: string | null
+	failedSince: number | null
 	secret: string | null
 }
 

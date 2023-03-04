@@ -45,7 +45,7 @@ export const verifyWebhook = async(webhookURL: string): Promise<string | false |
 	const secret = crypto.randomUUID()
 	const url = new URL(webhookURL)
 	url.searchParams.set('secret', secret)
-	const result = await fetch(url).then(r => r.json())
+	const result = await fetch(url.toString()).then(r => r.json())
 		.catch(() => null)
 	if(result?.secret === secret) return secret
 	return false

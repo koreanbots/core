@@ -1,4 +1,4 @@
-import { APIEmbed, ButtonStyle, Colors, ComponentType, DiscordAPIError, Snowflake, WebhookClient } from 'discord.js'
+import { APIEmbed, ButtonStyle, Colors, ComponentType, DiscordAPIError, parseWebhookURL, Snowflake, WebhookClient } from 'discord.js'
 
 import { get, update } from './Query'
 import { DiscordBot, ServerListDiscordBot, webhookClients } from './DiscordBot'
@@ -40,13 +40,14 @@ const sendFailedMessage = async (target: Bot | Server): Promise<void> => {
 	}
 }
 
-export const verifyWebhook = async(webhookURL: string): Promise<boolean> => {
+export const verifyWebhook = async(webhookURL: string): Promise<string | false | null> => {
+	if(parseWebhookURL(webhookURL)) return null
 	const key = crypto.randomUUID()
 	const url = new URL(webhookURL)
 	url.searchParams.set('key', key)
 	const result = await fetch(url).then(r => r.json())
 		.catch(() => null)
-	if(result?.key === key) return true
+	if(result?.key === key) return key
 	return false
 }
 

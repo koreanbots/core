@@ -10,6 +10,7 @@ import RequestHandler from '@utils/RequestHandler'
 import { checkUserFlag, diff, inspect, makeDiscordCodeblock, objectDiff, serialize } from '@utils/Tools'
 import { DiscordBot, discordLog } from '@utils/DiscordBot'
 import { KoreanbotsEndPoints } from '@utils/Constants'
+import { verifyWebhook } from '@utils/Webhook'
 
 const patchLimiter = rateLimit({
 	windowMs: 2 * 60 * 1000,
@@ -131,7 +132,12 @@ const Servers = RequestHandler()
 		if (!validated) return
 		const invite = await DiscordBot.fetchInvite(validated.invite).catch(() => null)
 		if(invite?.guild.id !== server.id) return ResponseWrapper(res, { code: 400, message: '올바르지 않은 초대코드입니다.', errors: ['입력하신 초대코드가 올바르지 않습니다. 올바른 초대코드를 입력했는지 다시 한 번 확인해주세요.'] })
-		const result = await update.server(req.query.id, validated)
+		
+		const key = await verifyWebhook(validated.webhook)
+		if(key === false) {
+			return ResponseWrapper(res, { code: 400, message: '웹후크 주소를 검증할 수 없습니다.', errors: ['웹후크 주소가 올바른지 확인해주세요.\n웹후크 주소 검증에 대한 자세한 내용은 API 문서를 참고해주세요.'] })
+		}
+		const result = await update.server(req.query.id, validated, key)
 		if(result === 0) return ResponseWrapper(res, { code: 400 })
 		else {
 			get.server.clear(req.query.id)

@@ -26,7 +26,11 @@ const Servers = RequestHandler()
 	.get(async (req: GetApiRequest, res) => {
 		const server = await get.server.load(req.query.id)
 		if (!server) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 서버 입니다.' })
-		else return ResponseWrapper(res, { code: 200, data: server })
+		else {
+			delete server.webhookURL
+			delete server.webhookStatus
+			return ResponseWrapper(res, { code: 200, data: server })	
+		}
 	})
 	.post(async (req: PostApiRequest, res) => {
 		const user = await get.Authorization(req.cookies.token)

@@ -45,7 +45,7 @@ export async function getStaticPaths () {
 }
 
 export async function getStaticProps () {
-	const docs = await Promise.all((await readdir(docsDir)).map(async el => {
+	const docs = (await Promise.all((await readdir(docsDir)).map(async el => {
 		const isDir = (await lstat(join(docsDir, el))).isDirectory()
 		if(!isDir) {
 			return {
@@ -64,8 +64,10 @@ export async function getStaticProps () {
 				}))
 			}
 		}
-		
-	}))
+	}))).sort((a, b) => {
+		if('list' in b && 'text' in a) return -1
+		return a.name.localeCompare(b.name)
+	}) 
 
 	return {
 		props: { docs }

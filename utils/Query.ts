@@ -101,6 +101,8 @@ async function getServer(id: string, topLevel=true): Promise<Server> {
 			'category',
 			'invite',
 			'state',
+			'webhook_url',
+			'webhook_status',
 			'vanity',
 			'bg',
 			'banner',
@@ -118,8 +120,11 @@ async function getServer(id: string, topLevel=true): Promise<Server> {
 				await knex('servers').update({ name: data.name, owners: JSON.stringify([data.owner, ...data.admins]) })
 					.where({ id: res[0].id })
 		}
+		res[0].webhookURL = res[0].webhook_url
+		res[0].webhookStatus = res[0].webhook_status
+		delete res[0].webhook_url
+		delete res[0].webhook_status
 		delete res[0].owners
-		// console.log(data)
 		res[0].icon = data?.icon || null
 		res[0].members = data?.memberCount || null
 		res[0].emojis = data?.emojis || []

@@ -72,7 +72,8 @@ const Servers = RequestHandler()
 				code: 400,
 				message: '올바르지 않은 초대 코드 입니다.',
 				errors: [
-					'올바른 초대코드를 입력하셨는지 확인해주세요'
+					'올바른 초대코드를 입력하셨는지 확인해주세요.',
+					'만료되지 않는 초대코드인지 확인해주세요.'
 				],
 			})
 		get.user.clear(user)
@@ -130,7 +131,7 @@ const Servers = RequestHandler()
 
 		if (!validated) return
 		const invite = await DiscordBot.fetchInvite(validated.invite).catch(() => null)
-		if(invite?.guild.id !== server.id) return ResponseWrapper(res, { code: 400, message: '올바르지 않은 초대코드입니다.', errors: ['입력하신 초대코드가 올바르지 않습니다. 올바른 초대코드를 입력했는지 다시 한 번 확인해주세요.'] })
+		if(invite?.guild.id !== server.id || invite.expiresAt) return ResponseWrapper(res, { code: 400, message: '올바르지 않은 초대코드입니다.', errors: ['입력하신 초대코드가 올바르지 않습니다. 올바른 초대코드를 입력했는지 다시 한 번 확인해주세요.', '만료되지 않는 초대코드인지 확인해주세요.'] })
 		const result = await update.server(req.query.id, validated)
 		if(result === 0) return ResponseWrapper(res, { code: 400 })
 		else {

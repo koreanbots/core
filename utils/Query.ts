@@ -450,7 +450,7 @@ async function submitServer(userID: string, id: string, data: AddServerSubmit): 
 	if(!serverData) return 2
 	if(serverData.owner !== userID && !serverData.admins.includes(userID)) return 3
 	const inviteData = await DiscordBot.fetchInvite(data.invite).catch(() => null)
-	if(!inviteData || inviteData.guild.id !== id) return 4
+	if(!inviteData || inviteData.guild.id !== id || inviteData.expiresAt) return 4
 	await knex('servers').insert({
 		id: id,
 		name: serverData.name,

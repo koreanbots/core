@@ -1,6 +1,6 @@
 import { NextApiRequest } from 'next'
 import rateLimit from 'express-rate-limit'
-import { EmbedBuilder } from 'discord.js'
+import { EmbedBuilder, RESTJSONErrorCodes } from 'discord.js'
 
 import { CaptchaVerify, get, put, remove, update } from '@utils/Query'
 import ResponseWrapper from '@utils/ResponseWrapper'
@@ -72,7 +72,8 @@ const Servers = RequestHandler()
 				code: 400,
 				message: '올바르지 않은 초대 코드 입니다.',
 				errors: [
-					'올바른 초대코드를 입력하셨는지 확인해주세요'
+					'올바른 초대코드를 입력하셨는지 확인해주세요.',
+					'만료되지 않는 초대코드인지 확인해주세요.'
 				],
 			})
 		get.user.clear(user)
@@ -89,7 +90,7 @@ const Servers = RequestHandler()
 		const server = await get.server.load(req.query.id)
 		if(!server) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 서버 입니다.' })
 		const data = await get.serverData(req.query.id)
-		if(!data || server.state === 'unreachable') return ResponseWrapper(res, { code: 400, message: '해당 서버의 정보를 불러올 수 없습니다.', errors: ['봇이 추방되었거나, 오프라인이 아닌지 확인하시고 다시 시도해주세요.'] })
+		if((!data || server.state === 'unreachable') && (await DiscordBot.fetchInvite(server.invite).catch((e) => e.code !== RESTJSONErrorCodes.UnknownInvite))) return ResponseWrapper(res, { code: 400, message: '해당 서버의 정보를 불러올 수 없습니다.', errors: ['봇이 추방되었거나, 오프라인이 아닌지 확인하시고 다시 시도해주세요.'] })
 		if(![data.owner, ...data.admins].includes(user)) return ResponseWrapper(res, { code: 403 })
 		const userInfo = await get.user.load(user)
 		if(['reported', 'blocked'].includes(server.state) && !checkUserFlag(userInfo?.flags, 'staff')) return ResponseWrapper(res, { code: 403, message: '해당 서버는 수정할 수 없습니다.', errors: ['오류라고 생각되면 문의해주세요.'] })
@@ -130,7 +131,7 @@ const Servers = RequestHandler()
 
 		if (!validated) return
 		const invite = await DiscordBot.fetchInvite(validated.invite).catch(() => null)
-		if(invite?.guild.id !== server.id) return ResponseWrapper(res, { code: 400, message: '올바르지 않은 초대코드입니다.', errors: ['입력하신 초대코드가 올바르지 않습니다. 올바른 초대코드를 입력했는지 다시 한 번 확인해주세요.'] })
+		if(invite?.guild.id !== server.id || invite.expiresAt) return ResponseWrapper(res, { code: 400, message: '올바르지 않은 초대코드입니다.', errors: ['입력하신 초대코드가 올바르지 않습니다. 올바른 초대코드를 입력했는지 다시 한 번 확인해주세요.', '만료되지 않는 초대코드인지 확인해주세요.'] })
 		const result = await update.server(req.query.id, validated)
 		if(result === 0) return ResponseWrapper(res, { code: 400 })
 		else {

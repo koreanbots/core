@@ -3,9 +3,29 @@ import { APIEmbed, ButtonStyle, Colors, ComponentType, DiscordAPIError, parseWeb
 import { get, update } from './Query'
 import { DiscordBot, ServerListDiscordBot, webhookClients } from './DiscordBot'
 import { DiscordEnpoints } from './Constants'
+import fetch, { Response } from 'node-fetch'
 import { Bot, Server, WebhookStatus, WebhookType } from '@types'
 import { makeBotURL, makeDiscordCodeblock, makeServerURL } from './Tools'
 import crypto from 'crypto'
+
+type RelayOptions = {
+	dest: string,
+	method: 'GET' | 'POST',
+	data?: string
+	secret: string,
+}
+
+function relayedFetch(options: RelayOptions): Promise<Response> {
+	console.log(options)
+	return fetch(process.env.WEBHOOK_RELAY_URL, {
+		method: 'POST',
+		body: JSON.stringify(options),
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': process.env.WEBHOOK_RELAY_SECRET,
+		}
+	})
+}
 
 const sendFailedMessage = async (target: Bot | Server): Promise<void> => {
 	const isBot = 'owners' in target
@@ -46,10 +66,14 @@ export const verifyWebhook = async(webhookURL: string): Promise<string | false |
 	const secret = crypto.randomUUID()
 	const url = new URL(webhookURL)
 	url.searchParams.set('secret', secret)
-	const result = await fetch(url.toString()).then(r => r.json())
-		.catch(() => null)
-	if(result?.secret === secret) return secret
-	return false
+	const result = await relayedFetch({
+		dest: url.toString(),
+		method: 'GET',
+		secret
+	}).then(r => {return r.json()})
+	const data = result.data ? JSON.parse(result.data) : null
+	if(!result.success || data?.secret !== secret) return false
+	return secret
 }
 
 export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload): Promise<boolean> => {
@@ -86,42 +110,41 @@ export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload)
 			return false
 		}
 	} else if(webhook.status === WebhookStatus.HTTP) {
-		const result = await fetch(
-			webhook.url, {
-				method: 'POST',
-				body: JSON.stringify(payload),
-				headers: {
-					'Content-Type': 'application/json',
-					'Secret': `${webhook.secret}`
-				}
+		const result = await relayedFetch({
+			dest: webhook.url,
+			method: 'POST',
+			data: JSON.stringify(payload),
+			secret: webhook.secret
+		}).then(async r => {
+			if(!r.ok) {
+				return null
 			}
-		).then(async r => {
-			if(r.ok) {
-				const text = await r.text()
-				if(text.length > 0) return false
+			return r.json()
+		}).catch(() => null)
+		if(result === null) return
+
+		if(result.success) {
+			const data = result.data
+			if((200 <= data.status && data.status < 300) && data.length === 0) {
+				await update.webhook(id, isBot ? 'bots' : 'servers', { failedSince: null })
 				return true
 			}
-			if(400 <= r.status && r.status < 500) return false
-			return null
-		}).catch(() => null)
-		if(!result) {
-			if(result === false || Date.now() - webhook.failedSince > 1000 * 60 * 60 * 24) {
-				await update.webhook(id, isBot ? 'bots' : 'servers', {
-					status: WebhookStatus.Disabled,
-					failedSince: null,
-					secret: null
-				})
-				sendFailedMessage(target)
-			} else if(!webhook.failedSince) {
-				await update.webhook(id, isBot ? 'bots' : 'servers', {
-					failedSince: Date.now()
-				})
-			}
-			return false
 		}
+
+		if(Date.now() - webhook.failedSince > 1000 * 60 * 60 * 24) {
+			await update.webhook(id, isBot ? 'bots' : 'servers', {
+				status: WebhookStatus.Disabled,
+				failedSince: null,
+				secret: null
+			})
+			sendFailedMessage(target)
+		} else if(!webhook.failedSince) {
+			await update.webhook(id, isBot ? 'bots' : 'servers', {
+				failedSince: Date.now()
+			})
+		}
+		return false
 	}
-	await update.webhook(id, isBot ? 'bots' : 'servers', { failedSince: null })
-	return true
 }
 
 function compare(before, after) {

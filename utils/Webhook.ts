@@ -88,7 +88,6 @@ export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload)
 	if(webhook.status === 0) return
 
 	if(webhook.status === WebhookStatus.Discord) {
-		console.log('dd')
 		if(!webhookClients[payload.type].has(id)) {
 			webhookClients[payload.type].set(id, new WebhookClient({
 				url: webhook.url
@@ -101,7 +100,6 @@ export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload)
 			embeds: [buildEmbed({payload, target})],
 			threadId: url.searchParams.get('thread_id') || undefined
 		}).catch((r: DiscordAPIError | unknown)=> {
-			console.error(r)
 			if(r instanceof DiscordAPIError) {
 				if(400 <= r.status && r.status < 500) {
 					return false
@@ -167,12 +165,12 @@ function buildEmbed({payload, target}: {payload: WebhookPayload, target: Bot | S
 		name: target.name,
 		icon_url: 
 			DiscordEnpoints.CDN.user(target.id, target.avatar, {format: 'png'}),
-		url: process.env.BASE_URL + makeBotURL({id: target.id, vanity: target.vanity})
+		url: process.env.KOREANBOTS_URL + makeBotURL({id: target.id, vanity: target.vanity})
 	} : {
 		name: target.name,
 		icon_url:
 			DiscordEnpoints.CDN.guild(target.id, target.icon, {format: 'png'}),
-		url: process.env.BASE_URL + makeServerURL({id: target.id, vanity: target.vanity})
+		url: process.env.KOREANBOTS_URL + makeServerURL({id: target.id, vanity: target.vanity})
 	}
 	const footer = {
 		text: '한국 디스코드 리스트',

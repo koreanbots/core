@@ -16,7 +16,6 @@ type RelayOptions = {
 }
 
 function relayedFetch(options: RelayOptions): Promise<Response> {
-	console.log(options)
 	return fetch(process.env.WEBHOOK_RELAY_URL, {
 		method: 'POST',
 		body: JSON.stringify(options),
@@ -70,10 +69,14 @@ export const verifyWebhook = async(webhookURL: string): Promise<string | false |
 		dest: url.toString(),
 		method: 'GET',
 		secret
-	}).then(r => {return r.json()})
-	const data = result.data ? JSON.parse(result.data) : null
-	if(!result.success || data?.secret !== secret) return false
-	return secret
+	}).then(r => r.json()).catch(() => null)
+
+	if(result) {
+		const data = result.data ? JSON.parse(result.data) : null
+		if(data?.secret === secret) return secret 
+	}
+	
+	return false
 }
 
 export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload): Promise<boolean> => {

@@ -152,11 +152,11 @@ export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload)
 
 function compare(before, after) {
 	if(before < after) {
-		return '<:skinfuckup:929579848358318130>'
+		return '🔺'
 	} else if(before === after) {
 		return '➖'
 	} else {
-		return '<:skinfuckdown1:929579821435080744>'
+		return '🔻'
 	}
 }
 

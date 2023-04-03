@@ -15,7 +15,7 @@ export interface Bot {
 	lib: Library
 	prefix: string
 	votes: number
-	servers: number
+	servers: number | null;
 	shards: number
 	intro: string
 	desc: string

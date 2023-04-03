@@ -1,3 +1,5 @@
+import Tooltip from '@components/Tooltip'
+
 const Label: React.FC<LabelProps> = ({
 	For,
 	children,
@@ -7,6 +9,8 @@ const Label: React.FC<LabelProps> = ({
 	grid = true,
 	short = false,
 	required = false,
+	warning = false,
+	warningText
 }) => {
 	return <label
 		className={grid ? 'grid grid-cols-1 xl:grid-cols-4 gap-2 my-4' : 'inline-flex items-center'}
@@ -18,6 +22,11 @@ const Label: React.FC<LabelProps> = ({
 					{label}
 					{required && (
 						<span className='align-text-top text-red-500 text-base font-semibold'> *</span>
+					)}
+					{warning && (
+						<Tooltip direction='left' text={warningText}>
+							<span className='text-red-500 text-base font-semibold pl-1' role='img' aria-label='warning'>⚠️</span>
+						</Tooltip>
 					)}
 				</h3>
 				{labelDesc}
@@ -39,6 +48,8 @@ interface LabelProps {
 	grid?: boolean
 	short?: boolean
 	required?: boolean
+	warning?: boolean
+	warningText?: string | null
 }
 
 export default Label

@@ -1,9 +1,9 @@
 import fetch from 'node-fetch'
 import { TLRU } from 'tlru'
 import DataLoader from 'dataloader'
-import { ActivityType, GuildFeature, GuildMember, User as DiscordUser, UserFlags } from 'discord.js'
+import { ActivityType, GuildFeature, GuildMember, parseWebhookURL, User as DiscordUser, UserFlags } from 'discord.js'
 
-import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable } from '@types'
+import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable, WebhookStatus, Webhook } from '@types'
 import { botCategories, DiscordEnpoints, imageSafeHost, serverCategories, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'
 
 import knex from './Knex'
@@ -37,6 +37,8 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 			'trusted',
 			'partnered',
 			'discord',
+			'webhook_url',
+			'webhook_status',
 			'state',
 			'vanity',
 			'bg',
@@ -66,8 +68,12 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 		} else {
 			res[0].status = null
 		}
+		res[0].webhookURL = res[0].webhook_url
+		res[0].webhookStatus = res[0].webhook_status	
 		delete res[0].trusted
 		delete res[0].partnered
+		delete res[0].webhook_url
+		delete res[0].webhook_status
 		if (topLevel) {
 			res[0].owners = await Promise.all(
 				res[0].owners.map(async (u: string) => await get._rawUser.load(u))
@@ -95,6 +101,8 @@ async function getServer(id: string, topLevel=true): Promise<Server> {
 			'category',
 			'invite',
 			'state',
+			'webhook_url',
+			'webhook_status',
 			'vanity',
 			'bg',
 			'banner',
@@ -112,8 +120,11 @@ async function getServer(id: string, topLevel=true): Promise<Server> {
 				await knex('servers').update({ name: data.name, owners: JSON.stringify([data.owner, ...data.admins]) })
 					.where({ id: res[0].id })
 		}
+		res[0].webhookURL = res[0].webhook_url
+		res[0].webhookStatus = res[0].webhook_status
+		delete res[0].webhook_url
+		delete res[0].webhook_status
 		delete res[0].owners
-		// console.log(data)
 		res[0].icon = data?.icon || null
 		res[0].members = data?.memberCount || null
 		res[0].emojis = data?.emojis || []
@@ -364,6 +375,17 @@ async function getVote(userID: string, targetID: string, type: 'bot' | 'server')
 	return data[`${type}:${targetID}`] || 0
 }
 
+async function getWebhook(id: string, type: 'bots' | 'servers'): Promise<Webhook | null> {
+	const res = (await knex(type).select(['webhook_url', 'webhook_status', 'webhook_failed_since', 'webhook_secret']).where({ id }))[0]
+	if(!res) return null
+	return {
+		url: res.webhook_url,
+		status: res.webhook_status,
+		failedSince: res.webhook_failed_since,
+		secret: res.webhook_secret
+	}
+}
+
 async function voteBot(userID: string, botID: string): Promise<number|boolean> {
 	const user = await knex('users').select(['votes']).where({ id: userID })
 	const key = `bot:${botID}`
@@ -466,7 +488,7 @@ async function submitServer(userID: string, id: string, data: AddServerSubmit): 
 }
 
 async function getBotSpec(id: string, userID: string) {
-	const res = await knex('bots').select(['id', 'token', 'webhook']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
+	const res = await knex('bots').select(['id', 'token']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
 	if(!res[0]) return null
 	return serialize(res[0])
 }
@@ -488,7 +510,7 @@ async function deleteServer(id: string): Promise<boolean> {
 	return !!server
 }
 
-async function updateBot(id: string, data: ManageBot): Promise<number> {
+async function updateBot(id: string, data: ManageBot, webhookSecret: string | null): Promise<number> {
 	const res = await knex('bots').where({ id })
 	if(res.length === 0) return 0
 	await knex('bots').update({
@@ -498,6 +520,10 @@ async function updateBot(id: string, data: ManageBot): Promise<number> {
 		git: data.git,
 		url: data.url,
 		discord: data.discord,
+		webhook_url: data.webhookURL,
+		webhook_status: parseWebhookURL(data.webhookURL) ? WebhookStatus.Discord : WebhookStatus.HTTP,
+		webhook_failed_since: null,
+		webhook_secret: webhookSecret,
 		category: JSON.stringify(data.category),
 		intro: data.intro,
 		desc: data.desc
@@ -506,14 +532,18 @@ async function updateBot(id: string, data: ManageBot): Promise<number> {
 	return 1
 }
 
-async function updatedServer(id: string, data: ManageServer) {
+async function updatedServer(id: string, data: ManageServer, webhookSecret: string | null) {
 	const res = await knex('servers').where({ id })
 	if(res.length === 0) return 0
 	await knex('servers').update({
 		invite: data.invite,
 		category: JSON.stringify(data.category),
 		intro: data.intro,
-		desc: data.desc
+		desc: data.desc,
+		webhook_url: data.webhookURL,
+		webhook_status: parseWebhookURL(data.webhookURL) ? WebhookStatus.Discord : WebhookStatus.HTTP,
+		webhook_failed_since: null,
+		webhook_secret: webhookSecret,
 	}).where({ id })
 
 	return 1
@@ -535,6 +565,17 @@ async function updateServer(id: string, servers: number, shards: number) {
 		await Bots.findByIdAndUpdate(id, { $push: { serverMetrix: { count: servers } } })
 	}
 	return
+}
+
+async function updateWebhook(id: string, type: 'bots' | 'servers', value: Partial<Webhook>) {
+	const res = await knex(type).update({ 
+		webhook_url: value.url, 
+		webhook_status: value.status, 
+		webhook_failed_since: value.failedSince, 
+		webhook_secret: value.secret
+	}).where({ id })
+	if(res !== 1) return false
+	return true
 }
 
 async function updateBotApplication(id: string, value: { webhook: string }) {
@@ -837,6 +878,7 @@ export const get = {
 			, { cacheMap: new TLRU({ maxStoreSize: 500, maxAgeMs: 3600000 }) }),
 	},
 	serverData: getServerData,
+	webhook: getWebhook,
 	botVote: async (botID: string, targetID: string) => await getVote(botID, targetID, 'bot'),
 	vote: getVote,
 	Authorization,
@@ -858,6 +900,7 @@ export const update = {
 	bot: updateBot,
 	server: updatedServer,
 	botOwners: updateOwner,
+	webhook: updateWebhook,
 	denyBotSubmission,
 	approveBotSubmission,
 	fetchUserDiscordToken

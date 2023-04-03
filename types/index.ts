@@ -24,6 +24,8 @@ export interface Bot {
 	git: string | null
 	url: string | null
 	discord: string | null
+	webhookURL: string | null
+	webhookStatus: WebhookStatus
 	vanity: string | null
 	bg: string
 	banner: string
@@ -53,11 +55,20 @@ export interface Server {
 	desc: string
 	category: ServerCategory[]
 	invite: string
+	webhookURL: string | null
+	webhookStatus: WebhookStatus
 	vanity: string | null
 	bg: string | null
 	banner: string | null
 	owner: User | null
 	bots: Bot[] | string[]
+}
+
+export interface Webhook {
+	url: string | null
+	status: WebhookStatus
+	failedSince: number | null
+	secret: string | null
 }
 
 export interface Emoji {
@@ -166,6 +177,18 @@ export enum DiscordUserFlags {
 	BUGHUNTER_LEVEL_2 = 1 << 14,
 	VERIFIED_BOT = 1 << 16,
 	VERIFIED_DEVELOPER = 1 << 17,
+}
+
+export enum WebhookStatus {
+	None = 0,
+	Discord = 1, 
+	HTTP = 2,
+	Disabled = 3
+}
+
+export enum WebhookType {
+	HeartChange = 0,
+	ServerCountChange = 1
 }
 
 export interface List<T> {

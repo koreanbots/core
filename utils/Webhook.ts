@@ -201,7 +201,8 @@ function buildEmbed({payload, target}: {payload: WebhookPayload, target: Bot | S
 		return {
 			author,
 			title: '서버 수 변동',
-			description: `${payload.data.before} -> ${payload.data.after} (${compare(payload.data.before, payload.data.after)})`,
+			description: payload.data.before ? `${payload.data.before} -> ${payload.data.after} (${compare(payload.data.before, payload.data.after)})` :
+				`+ ${payload.data.after}`,
 			color: Colors.Aqua,
 			footer,
 			timestamp: new Date().toISOString()
@@ -236,6 +237,6 @@ type HeartChange = {
 
 type ServerCountChange = {
 	type: WebhookType.ServerCountChange,
-	before: number,
+	before: number | null,
 	after: number
 }

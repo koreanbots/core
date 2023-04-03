@@ -236,6 +236,6 @@ type HeartChange = {
 
 type ServerCountChange = {
 	type: WebhookType.ServerCountChange,
-	before: number,
+	before: number | number,
 	after: number
 }

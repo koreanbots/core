@@ -134,17 +134,17 @@ export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload)
 			}
 		}
 
-		if(Date.now() - webhook.failedSince > 1000 * 60 * 60 * 24) {
+		if(!webhook.failedSince) {
+			await update.webhook(id, isBot ? 'bots' : 'servers', {
+				failedSince: Math.floor(Date.now() / 1000)
+			})
+		} else if(Date.now() - webhook.failedSince * 1000 > 60 * 60 * 24) {
 			await update.webhook(id, isBot ? 'bots' : 'servers', {
 				status: WebhookStatus.Disabled,
 				failedSince: null,
 				secret: null
 			})
 			sendFailedMessage(target)
-		} else if(!webhook.failedSince) {
-			await update.webhook(id, isBot ? 'bots' : 'servers', {
-				failedSince: Date.now()
-			})
 		}
 		return false
 	}

@@ -138,7 +138,7 @@ export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload)
 			await update.webhook(id, isBot ? 'bots' : 'servers', {
 				failedSince: Math.floor(Date.now() / 1000)
 			})
-		} else if(Date.now() - webhook.failedSince * 1000 > 60 * 60 * 24) {
+		} else if(Date.now() - webhook.failedSince * 1000 > 1000 * 60 * 60 * 24) {
 			await update.webhook(id, isBot ? 'bots' : 'servers', {
 				status: WebhookStatus.Disabled,
 				failedSince: null,

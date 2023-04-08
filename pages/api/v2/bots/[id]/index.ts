@@ -158,7 +158,7 @@ const Bots = RequestHandler()
 			})
 
 		if (!validated) return
-		const key = validated.webhookURL ? await verifyWebhook(validated.webhookURL) : true
+		const key = validated.webhookURL ? await verifyWebhook(validated.webhookURL) : null
 		if(key === false) {
 			return ResponseWrapper(res, { code: 400, message: '웹후크 주소를 검증할 수 없습니다.', errors: ['웹후크 주소가 올바른지 확인해주세요.\n웹후크 주소 검증에 대한 자세한 내용은 API 문서를 참고해주세요.'] })
 		}

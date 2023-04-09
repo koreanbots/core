@@ -114,7 +114,14 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 						{({ errors, touched }) => (
 							<Form>
 								<div className='mb-2'>
-									<h3 className='font-bold mb-1'>웹훅 URL</h3>
+									<h3 className='font-bold mb-1'>
+										웹훅 URL
+										{spec.webhookStatus === WebhookStatus.Disabled && (
+											<Tooltip direction='left' text='웹훅 링크가 유효하지 않아 웹훅이 중지되었습니다.'>
+												<span className='text-red-500 text-base font-semibold pl-1' role='img' aria-label='warning'>⚠️</span>
+											</Tooltip>
+										)}
+									</h3>
 									<p className='text-gray-400 text-sm mb-1'>웹훅을 이용하여 다양한 한국 디스코드 리스트의 봇에 발생하는 이벤트를 받아볼 수 있습니다.</p>
 									<Input name='webhookURL' placeholder='https://webhook.kbots.link' />
 									{touched.webhookURL && errors.webhookURL ? <div className='text-red-500 text-xs font-light mt-1'>{errors.webhookURL}</div> : null}

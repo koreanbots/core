@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 import { TLRU } from 'tlru'
 import DataLoader from 'dataloader'
-import { ActivityType, GuildFeature, GuildMember, parseWebhookURL, User as DiscordUser, UserFlags } from 'discord.js'
+import { ActivityType, GuildFeature, GuildMember, User as DiscordUser, UserFlags } from 'discord.js'
 
 import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable, WebhookStatus, Webhook } from '@types'
 import { botCategories, DiscordEnpoints, imageSafeHost, serverCategories, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'

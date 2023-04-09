@@ -90,6 +90,7 @@ export interface User {
 export interface BotSpec {
 	id: string
 	webhookURL: string | null
+	webhookStatus: WebhookStatus
 	token: string
 }
 

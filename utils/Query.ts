@@ -488,12 +488,13 @@ async function submitServer(userID: string, id: string, data: AddServerSubmit): 
 }
 
 async function getBotSpec(id: string, userID: string) {
-	const res = await knex('bots').select(['id', 'token', 'webhook_url']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
+	const res = await knex('bots').select(['id', 'token', 'webhook_url', 'webhook_status']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
 	if(!res[0]) return null
 	return {
 		id: res[0].id,
 		token: res[0].token,
-		webhookURL: res[0].webhook_url
+		webhookURL: res[0].webhook_url,
+		webhookStatus: res[0].webhook_status
 	}
 }
 
@@ -532,18 +533,14 @@ async function updateBot(id: string, data: ManageBot): Promise<number> {
 	return 1
 }
 
-async function updatedServer(id: string, data: ManageServer, webhookSecret: string | null) {
+async function updatedServer(id: string, data: ManageServer) {
 	const res = await knex('servers').where({ id })
 	if(res.length === 0) return 0
 	await knex('servers').update({
 		invite: data.invite,
 		category: JSON.stringify(data.category),
 		intro: data.intro,
-		desc: data.desc,
-		webhook_url: data.webhookURL,
-		webhook_status: parseWebhookURL(data.webhookURL) ? WebhookStatus.Discord : WebhookStatus.HTTP,
-		webhook_failed_since: null,
-		webhook_secret: webhookSecret,
+		desc: data.desc
 	}).where({ id })
 
 	return 1

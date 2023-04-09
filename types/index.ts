@@ -89,7 +89,7 @@ export interface User {
 
 export interface BotSpec {
 	id: string
-	webhook: string | null
+	webhookURL: string | null
 	token: string
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { NextPage, NextPageContext } from 'next'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
@@ -5,7 +6,7 @@ import { useState } from 'react'
 import useCopyClipboard from 'react-use-clipboard'
 
 import { get } from '@utils/Query'
-import { parseCookie, redirectTo } from '@utils/Tools'
+import { cleanObject, parseCookie, redirectTo } from '@utils/Tools'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
 
@@ -14,6 +15,9 @@ import { Bot, BotSpec, ResponseProps, Theme } from '@types'
 
 import NotFound from 'pages/404'
 import Link from 'next/link'
+import { Form, Formik } from 'formik'
+import { DeveloperBot, DeveloperBotSchema } from '@utils/Yup'
+import Input from '@components/Form/Input'
 
 const Button = dynamic(() => import('@components/Button'))
 const DeveloperLayout = dynamic(() => import('@components/DeveloperLayout'))
@@ -29,13 +33,13 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 	const [ tokenCopied, setTokenCopied ] = useCopyClipboard(spec?.token, {
 		successDuration: 1000
 	})
-	// async function updateApplication(d: DeveloperBot) {
-	// 	const res = await Fetch(`/applications/bots/${bot.id}`, {
-	// 		method: 'PATCH',
-	// 		body: JSON.stringify(cleanObject(d))
-	// 	})
-	// 	setData(res)
-	// }
+	async function updateApplication(d: DeveloperBot) {
+		const res = await Fetch(`/applications/bots/${bot.id}`, {
+	 		method: 'PATCH',
+	 		body: JSON.stringify(cleanObject(d))
+	 	})
+	 	setData(res)
+	 }
 
 	async function resetToken() {
 		const res = await Fetch<{ token: string }>(`/applications/bots/${bot.id}/reset`, {
@@ -102,23 +106,23 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 							</div>
 						</Modal>
 					</div>
-					{/* <Formik validationSchema={DeveloperBotSchema} initialValues={{
-						webhook: spec.webhook || '',
+					<Formik validationSchema={DeveloperBotSchema} initialValues={{
+						webhookURL: spec.webhookURL || '',
 						_csrf: csrfToken
 					}}
-					onSubmit={(data) => updateApplication(data)}>
+					onSubmit={updateApplication}>
 						{({ errors, touched }) => (
 							<Form>
 								<div className='mb-2'>
 									<h3 className='font-bold mb-1'>웹훅 URL</h3>
 									<p className='text-gray-400 text-sm mb-1'>웹훅을 이용하여 다양한 한국 디스코드 리스트의 봇에 발생하는 이벤트를 받아볼 수 있습니다.</p>
-									<Input name='webhook' placeholder='https://webhook.kbots.link' />
-									{touched.webhook && errors.webhook ? <div className='text-red-500 text-xs font-light mt-1'>{errors.webhook}</div> : null}
+									<Input name='webhookURL' placeholder='https://webhook.kbots.link' />
+									{touched.webhookURL && errors.webhookURL ? <div className='text-red-500 text-xs font-light mt-1'>{errors.webhookURL}</div> : null}
 								</div>
 								<Button type='submit'><i className='far fa-save'/> 저장</Button>
 							</Form>
 						)}
-					</Formik> */}
+					</Formik>
 				</div>
 			</div>
 		</div>

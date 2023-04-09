@@ -488,9 +488,13 @@ async function submitServer(userID: string, id: string, data: AddServerSubmit): 
 }
 
 async function getBotSpec(id: string, userID: string) {
-	const res = await knex('bots').select(['id', 'token']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
+	const res = await knex('bots').select(['id', 'token', 'webhook_url']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
 	if(!res[0]) return null
-	return serialize(res[0])
+	return {
+		id: res[0].id,
+		token: res[0].token,
+		webhookURL: res[0].webhook_url
+	}
 }
 
 async function getServerSpec(id: string, userID: string): Promise<{ id: string, token: string }> {
@@ -510,7 +514,7 @@ async function deleteServer(id: string): Promise<boolean> {
 	return !!server
 }
 
-async function updateBot(id: string, data: ManageBot, webhookSecret: string | null): Promise<number> {
+async function updateBot(id: string, data: ManageBot): Promise<number> {
 	const res = await knex('bots').where({ id })
 	if(res.length === 0) return 0
 	await knex('bots').update({
@@ -520,10 +524,6 @@ async function updateBot(id: string, data: ManageBot, webhookSecret: string | nu
 		git: data.git,
 		url: data.url,
 		discord: data.discord,
-		webhook_url: data.webhookURL,
-		webhook_status: parseWebhookURL(data.webhookURL) ? WebhookStatus.Discord : WebhookStatus.HTTP,
-		webhook_failed_since: null,
-		webhook_secret: webhookSecret,
 		category: JSON.stringify(data.category),
 		intro: data.intro,
 		desc: data.desc
@@ -575,12 +575,6 @@ async function updateWebhook(id: string, type: 'bots' | 'servers', value: Partia
 		webhook_secret: value.secret
 	}).where({ id })
 	if(res !== 1) return false
-	return true
-}
-
-async function updateBotApplication(id: string, value: { webhook: string }) {
-	const bot = await knex('bots').update({ webhook: value.webhook }).where({ id })
-	if(bot !== 1) return false
 	return true
 }
 
@@ -892,7 +886,6 @@ export const get = {
 
 export const update = {
 	assignToken,
-	updateBotApplication,
 	resetBotToken,
 	resetServerToken,
 	updateServer,

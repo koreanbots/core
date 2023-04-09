@@ -12,7 +12,6 @@ import { User } from '@types'
 import { checkUserFlag, diff, inspect, makeDiscordCodeblock, objectDiff, serialize } from '@utils/Tools'
 import { discordLog, getBotReviewLogChannel, getMainGuild } from '@utils/DiscordBot'
 import { KoreanbotsEndPoints } from '@utils/Constants'
-import { verifyWebhook } from '@utils/Webhook'
 
 const patchLimiter = rateLimit({
 	windowMs: 2 * 60 * 1000,

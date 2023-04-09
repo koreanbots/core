@@ -8,9 +8,7 @@ const Label: React.FC<LabelProps> = ({
 	error = null,
 	grid = true,
 	short = false,
-	required = false,
-	warning = false,
-	warningText
+	required = false
 }) => {
 	return <label
 		className={grid ? 'grid grid-cols-1 xl:grid-cols-4 gap-2 my-4' : 'inline-flex items-center'}
@@ -22,11 +20,6 @@ const Label: React.FC<LabelProps> = ({
 					{label}
 					{required && (
 						<span className='align-text-top text-red-500 text-base font-semibold'> *</span>
-					)}
-					{warning && (
-						<Tooltip direction='left' text={warningText}>
-							<span className='text-red-500 text-base font-semibold pl-1' role='img' aria-label='warning'>⚠️</span>
-						</Tooltip>
 					)}
 				</h3>
 				{labelDesc}

@@ -117,7 +117,7 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 								<div className='mb-2'>
 									<h3 className='font-bold mb-1'>
 										웹훅 URL
-										{spec.webhookStatus === WebhookStatus.Disabled && (
+										{(!data || data.code !== 200) && spec.webhookStatus === WebhookStatus.Disabled && (
 											<Tooltip direction='left' text='웹훅 링크가 유효하지 않아 웹훅이 중지되었습니다.'>
 												<span className='text-red-500 text-base font-semibold pl-1' role='img' aria-label='warning'>⚠️</span>
 											</Tooltip>

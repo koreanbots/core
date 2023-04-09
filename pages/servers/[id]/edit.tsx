@@ -57,7 +57,6 @@ const ManageServerPage:NextPage<ManageServerProps> = ({ server, user, owners, cs
 			intro: server.intro,
 			desc: server.desc,
 			category: server.category,
-			webhookURL: server.webhookURL,
 			_csrf: csrfToken
 		})}
 		validationSchema={ManageServerSchema}

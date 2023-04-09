@@ -28,8 +28,6 @@ const Bots = RequestHandler()
 		const bot = await get.bot.load(req.query.id)
 		if (!bot) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })
 		else {
-			delete bot.webhookURL
-			delete bot.webhookStatus
 			return ResponseWrapper(res, { code: 200, data: bot })
 		}
 	})

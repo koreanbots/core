@@ -10,7 +10,6 @@ import RequestHandler from '@utils/RequestHandler'
 import { checkUserFlag, diff, inspect, makeDiscordCodeblock, objectDiff, serialize } from '@utils/Tools'
 import { DiscordBot, discordLog } from '@utils/DiscordBot'
 import { KoreanbotsEndPoints } from '@utils/Constants'
-import { verifyWebhook } from '@utils/Webhook'
 
 const patchLimiter = rateLimit({
 	windowMs: 2 * 60 * 1000,
@@ -27,8 +26,6 @@ const Servers = RequestHandler()
 		const server = await get.server.load(req.query.id)
 		if (!server) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 서버 입니다.' })
 		else {
-			delete server.webhookURL
-			delete server.webhookStatus
 			return ResponseWrapper(res, { code: 200, data: server })	
 		}
 	})

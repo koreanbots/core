@@ -24,8 +24,6 @@ export interface Bot {
 	git: string | null
 	url: string | null
 	discord: string | null
-	webhookURL: string | null
-	webhookStatus: WebhookStatus
 	vanity: string | null
 	bg: string
 	banner: string
@@ -55,8 +53,6 @@ export interface Server {
 	desc: string
 	category: ServerCategory[]
 	invite: string
-	webhookURL: string | null
-	webhookStatus: WebhookStatus
 	vanity: string | null
 	bg: string | null
 	banner: string | null

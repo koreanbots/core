@@ -1,5 +1,3 @@
-import Tooltip from '@components/Tooltip'
-
 const Label: React.FC<LabelProps> = ({
 	For,
 	children,

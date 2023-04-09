@@ -34,7 +34,7 @@ const ServerApplication: NextPage<ServerApplicationProps> = ({ user, spec, serve
 		successDuration: 1000
 	})
 	async function updateApplication(d: DeveloperServer) {
-		const res = await Fetch(`/applications/bots/${server.id}`, {
+		const res = await Fetch(`/applications/servers/${server.id}`, {
 			method: 'PATCH',
 			body: JSON.stringify(cleanObject(d))
 		})

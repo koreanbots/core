@@ -94,6 +94,13 @@ export interface BotSpec {
 	token: string
 }
 
+export interface ServerSpec {
+	id: string
+	webhookURL: string | null
+	webhookStatus: WebhookStatus
+	token: string
+}
+
 export interface ServerMongoData {
 	data: ServerData
 }

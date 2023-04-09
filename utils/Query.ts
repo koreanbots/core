@@ -3,7 +3,7 @@ import { TLRU } from 'tlru'
 import DataLoader from 'dataloader'
 import { ActivityType, GuildFeature, GuildMember, User as DiscordUser, UserFlags } from 'discord.js'
 
-import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable, Webhook } from '@types'
+import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable, Webhook, BotSpec, ServerSpec } from '@types'
 import { botCategories, DiscordEnpoints, imageSafeHost, serverCategories, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'
 
 import knex from './Knex'
@@ -487,7 +487,7 @@ async function submitServer(userID: string, id: string, data: AddServerSubmit): 
 	return true
 }
 
-async function getBotSpec(id: string, userID: string) {
+async function getBotSpec(id: string, userID: string): Promise<BotSpec | null> {
 	const res = await knex('bots').select(['id', 'token', 'webhook_url', 'webhook_status']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
 	if(!res[0]) return null
 	return {
@@ -498,10 +498,15 @@ async function getBotSpec(id: string, userID: string) {
 	}
 }
 
-async function getServerSpec(id: string, userID: string): Promise<{ id: string, token: string }> {
-	const res = await knex('servers').select(['id', 'token']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
+async function getServerSpec(id: string, userID: string): Promise<ServerSpec | null> {
+	const res = await knex('servers').select(['id', 'token', 'webhook_url', 'webhook_status']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
 	if(!res[0]) return null
-	return serialize(res[0])
+	return {
+		id: res[0].id,
+		token: res[0].token,
+		webhookURL: res[0].webhook_url,
+		webhookStatus: res[0].webhook_status
+	}
 }
 
 async function deleteBot(id: string): Promise<boolean> {

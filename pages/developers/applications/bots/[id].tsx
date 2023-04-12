@@ -124,7 +124,7 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 										)}
 									</h3>
 									<p className='text-gray-400 text-sm mb-1'>웹훅을 이용하여 다양한 한국 디스코드 리스트의 봇에 발생하는 이벤트를 받아볼 수 있습니다.<br/>웹훅 링크가 유효하지 않을 경우 웹훅이 중지되며, 다시 저장할 경우 다시 활성화됩니다.</p>
-									<Input name='webhookURL' placeholder='https://webhook.kbots.link' />
+									<Input name='webhookURL' placeholder='https://discord.com/api/webhooks/ID/TOKEN' />
 									{touched.webhookURL && errors.webhookURL ? <div className='text-red-500 text-xs font-light mt-1'>{errors.webhookURL}</div> : null}
 								</div>
 								<Button type='submit'><i className='far fa-save'/> 저장</Button>

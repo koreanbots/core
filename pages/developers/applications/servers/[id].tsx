@@ -124,8 +124,11 @@ const ServerApplication: NextPage<ServerApplicationProps> = ({ user, spec, serve
 													</Tooltip>
 												)}
 											</h3>
-											<p className='text-gray-400 text-sm mb-1'>웹훅을 이용하여 한국 디스코드 리스트의 서버에 발생하는 이벤트를 받아볼 수 있습니다.<br/>웹훅 링크가 유효하지 않을 경우 웹훅이 중지되며, 다시 저장할 경우 다시 활성화됩니다.</p>
-											<Input name='webhookURL' placeholder='https://discord.com/api/webhooks/ID/TOKEN' />
+											<p className='text-gray-400 text-sm mb-1'>웹훅을 이용하여 한국 디스코드 리스트의 서버에 발생하는 이벤트를 받아볼 수 있습니다.<br/>
+											웹훅 링크가 유효하지 않을 경우 웹훅이 중지되며, 다시 저장할 경우 다시 활성화됩니다.<br/>
+											웹훅에 대한 자세한 내용은 <Link href={'/developers/docs/%EC%9B%B9%ED%9B%84%ED%81%AC'}><a className='text-blue-500 hover:text-blue-400 font-semibold'>개발자 문서</a></Link>에서 확인하실 수 있습니다.
+											</p>											
+											<Input name='webhookURL' placeholder='https://webhook.koreanbots.dev' />
 											{touched.webhookURL && errors.webhookURL ? <div className='text-red-500 text-xs font-light mt-1'>{errors.webhookURL}</div> : null}
 										</div>
 										<Button type='submit'><i className='far fa-save'/> 저장</Button>

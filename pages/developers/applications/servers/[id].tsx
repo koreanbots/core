@@ -5,15 +5,19 @@ import { useState } from 'react'
 import useCopyClipboard from 'react-use-clipboard'
 
 import { get } from '@utils/Query'
-import { parseCookie, redirectTo } from '@utils/Tools'
+import { cleanObject, parseCookie, redirectTo } from '@utils/Tools'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
 
 import { ParsedUrlQuery } from 'querystring'
-import { Server, BotSpec, ResponseProps, Theme } from '@types'
+import { Server, BotSpec, ResponseProps, Theme, WebhookStatus } from '@types'
 
 import NotFound from 'pages/404'
 import Link from 'next/link'
+import { DeveloperServer, DeveloperServerSchema } from '@utils/Yup'
+import { Form, Formik } from 'formik'
+import Tooltip from '@components/Tooltip'
+import Input from '@components/Form/Input'
 
 const Button = dynamic(() => import('@components/Button'))
 const DeveloperLayout = dynamic(() => import('@components/DeveloperLayout'))
@@ -29,13 +33,13 @@ const ServerApplication: NextPage<ServerApplicationProps> = ({ user, spec, serve
 	const [ tokenCopied, setTokenCopied ] = useCopyClipboard(spec?.token, {
 		successDuration: 1000
 	})
-	// async function updateApplication(d: DeveloperBot) {
-	// 	const res = await Fetch(`/applications/bots/${bot.id}`, {
-	// 		method: 'PATCH',
-	// 		body: JSON.stringify(cleanObject(d))
-	// 	})
-	// 	setData(res)
-	// }
+	async function updateApplication(d: DeveloperServer) {
+		const res = await Fetch(`/applications/servers/${server.id}`, {
+			method: 'PATCH',
+			body: JSON.stringify(cleanObject(d))
+		})
+		setData(res)
+	}
 
 	async function resetToken() {
 		const res = await Fetch<{ token: string }>(`/applications/servers/${server.id}/reset`, {
@@ -104,23 +108,33 @@ const ServerApplication: NextPage<ServerApplicationProps> = ({ user, spec, serve
 									</div>
 								</Modal>
 							</div>
-							{/* <Formik validationSchema={DeveloperBotSchema} initialValues={{
-						webhook: spec.webhook || '',
-						_csrf: csrfToken
-					}}
-					onSubmit={(data) => updateApplication(data)}>
-						{({ errors, touched }) => (
-							<Form>
-								<div className='mb-2'>
-									<h3 className='font-bold mb-1'>웹훅 URL</h3>
-									<p className='text-gray-400 text-sm mb-1'>웹훅을 이용하여 다양한 한국 디스코드 리스트의 봇에 발생하는 이벤트를 받아볼 수 있습니다.</p>
-									<Input name='webhook' placeholder='https://webhook.kbots.link' />
-									{touched.webhook && errors.webhook ? <div className='text-red-500 text-xs font-light mt-1'>{errors.webhook}</div> : null}
-								</div>
-								<Button type='submit'><i className='far fa-save'/> 저장</Button>
-							</Form>
-						)}
-					</Formik> */}
+							<Formik validationSchema={DeveloperServerSchema} initialValues={{
+								webhookURL: spec.webhookURL || '',
+								_csrf: csrfToken
+							}}
+							onSubmit={updateApplication}>
+								{({ errors, touched }) => (
+									<Form>
+										<div className='mb-2'>
+											<h3 className='font-bold mb-1'>
+												웹훅 URL
+												{(!data || data.code !== 200) && spec.webhookStatus === WebhookStatus.Disabled && (
+													<Tooltip direction='left' text='웹훅 링크가 유효하지 않아 웹훅이 중지되었습니다.'>
+														<span className='text-red-500 text-base font-semibold pl-1' role='img' aria-label='warning'>⚠️</span>
+													</Tooltip>
+												)}
+											</h3>
+											<p className='text-gray-400 text-sm mb-1'>웹훅을 이용하여 한국 디스코드 리스트의 서버에 발생하는 이벤트를 받아볼 수 있습니다.<br/>
+											웹훅 링크가 유효하지 않을 경우 웹훅이 중지되며, 다시 저장할 경우 다시 활성화됩니다.<br/>
+											웹훅에 대한 자세한 내용은 <Link href={'/developers/docs/%EC%9B%B9%ED%9B%84%ED%81%AC'}><a className='text-blue-500 hover:text-blue-400 font-semibold'>개발자 문서</a></Link>에서 확인하실 수 있습니다.
+											</p>
+											<Input name='webhookURL' placeholder='https://webhook.koreanbots.dev' />
+											{touched.webhookURL && errors.webhookURL ? <div className='text-red-500 text-xs font-light mt-1'>{errors.webhookURL}</div> : null}
+										</div>
+										<Button type='submit'><i className='far fa-save'/> 저장</Button>
+									</Form>
+								)}
+							</Formik>
 						</div>
 					</div>
 				</div>

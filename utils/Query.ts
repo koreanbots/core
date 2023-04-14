@@ -1,9 +1,9 @@
 import fetch from 'node-fetch'
 import { TLRU } from 'tlru'
 import DataLoader from 'dataloader'
-import { ActivityType, GuildFeature, GuildMember, parseWebhookURL, User as DiscordUser, UserFlags } from 'discord.js'
+import { ActivityType, GuildFeature, GuildMember, User as DiscordUser, UserFlags } from 'discord.js'
 
-import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable, WebhookStatus, Webhook } from '@types'
+import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable, Webhook, BotSpec, ServerSpec } from '@types'
 import { botCategories, DiscordEnpoints, imageSafeHost, serverCategories, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'
 
 import knex from './Knex'
@@ -37,8 +37,6 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 			'trusted',
 			'partnered',
 			'discord',
-			'webhook_url',
-			'webhook_status',
 			'state',
 			'vanity',
 			'bg',
@@ -68,12 +66,8 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 		} else {
 			res[0].status = null
 		}
-		res[0].webhookURL = res[0].webhook_url
-		res[0].webhookStatus = res[0].webhook_status	
 		delete res[0].trusted
 		delete res[0].partnered
-		delete res[0].webhook_url
-		delete res[0].webhook_status
 		if (topLevel) {
 			res[0].owners = await Promise.all(
 				res[0].owners.map(async (u: string) => await get._rawUser.load(u))
@@ -101,8 +95,6 @@ async function getServer(id: string, topLevel=true): Promise<Server> {
 			'category',
 			'invite',
 			'state',
-			'webhook_url',
-			'webhook_status',
 			'vanity',
 			'bg',
 			'banner',
@@ -120,10 +112,6 @@ async function getServer(id: string, topLevel=true): Promise<Server> {
 				await knex('servers').update({ name: data.name, owners: JSON.stringify([data.owner, ...data.admins]) })
 					.where({ id: res[0].id })
 		}
-		res[0].webhookURL = res[0].webhook_url
-		res[0].webhookStatus = res[0].webhook_status
-		delete res[0].webhook_url
-		delete res[0].webhook_status
 		delete res[0].owners
 		res[0].icon = data?.icon || null
 		res[0].members = data?.memberCount || null
@@ -487,16 +475,26 @@ async function submitServer(userID: string, id: string, data: AddServerSubmit): 
 	return true
 }
 
-async function getBotSpec(id: string, userID: string) {
-	const res = await knex('bots').select(['id', 'token']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
+async function getBotSpec(id: string, userID: string): Promise<BotSpec | null> {
+	const res = await knex('bots').select(['id', 'token', 'webhook_url', 'webhook_status']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
 	if(!res[0]) return null
-	return serialize(res[0])
+	return {
+		id: res[0].id,
+		token: res[0].token,
+		webhookURL: res[0].webhook_url,
+		webhookStatus: res[0].webhook_status
+	}
 }
 
-async function getServerSpec(id: string, userID: string): Promise<{ id: string, token: string }> {
-	const res = await knex('servers').select(['id', 'token']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
+async function getServerSpec(id: string, userID: string): Promise<ServerSpec | null> {
+	const res = await knex('servers').select(['id', 'token', 'webhook_url', 'webhook_status']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
 	if(!res[0]) return null
-	return serialize(res[0])
+	return {
+		id: res[0].id,
+		token: res[0].token,
+		webhookURL: res[0].webhook_url,
+		webhookStatus: res[0].webhook_status
+	}
 }
 
 async function deleteBot(id: string): Promise<boolean> {
@@ -510,7 +508,7 @@ async function deleteServer(id: string): Promise<boolean> {
 	return !!server
 }
 
-async function updateBot(id: string, data: ManageBot, webhookSecret: string | null): Promise<number> {
+async function updateBot(id: string, data: ManageBot): Promise<number> {
 	const res = await knex('bots').where({ id })
 	if(res.length === 0) return 0
 	await knex('bots').update({
@@ -520,10 +518,6 @@ async function updateBot(id: string, data: ManageBot, webhookSecret: string | nu
 		git: data.git,
 		url: data.url,
 		discord: data.discord,
-		webhook_url: data.webhookURL,
-		webhook_status: parseWebhookURL(data.webhookURL) ? WebhookStatus.Discord : WebhookStatus.HTTP,
-		webhook_failed_since: null,
-		webhook_secret: webhookSecret,
 		category: JSON.stringify(data.category),
 		intro: data.intro,
 		desc: data.desc
@@ -532,18 +526,14 @@ async function updateBot(id: string, data: ManageBot, webhookSecret: string | nu
 	return 1
 }
 
-async function updatedServer(id: string, data: ManageServer, webhookSecret: string | null) {
+async function updatedServer(id: string, data: ManageServer) {
 	const res = await knex('servers').where({ id })
 	if(res.length === 0) return 0
 	await knex('servers').update({
 		invite: data.invite,
 		category: JSON.stringify(data.category),
 		intro: data.intro,
-		desc: data.desc,
-		webhook_url: data.webhookURL,
-		webhook_status: parseWebhookURL(data.webhookURL) ? WebhookStatus.Discord : WebhookStatus.HTTP,
-		webhook_failed_since: null,
-		webhook_secret: webhookSecret,
+		desc: data.desc
 	}).where({ id })
 
 	return 1
@@ -575,12 +565,6 @@ async function updateWebhook(id: string, type: 'bots' | 'servers', value: Partia
 		webhook_secret: value.secret
 	}).where({ id })
 	if(res !== 1) return false
-	return true
-}
-
-async function updateBotApplication(id: string, value: { webhook: string }) {
-	const bot = await knex('bots').update({ webhook: value.webhook }).where({ id })
-	if(bot !== 1) return false
 	return true
 }
 
@@ -892,7 +876,6 @@ export const get = {
 
 export const update = {
 	assignToken,
-	updateBotApplication,
 	resetBotToken,
 	resetServerToken,
 	updateServer,

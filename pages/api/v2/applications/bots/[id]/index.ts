@@ -8,7 +8,7 @@ import RequestHandler from '@utils/RequestHandler'
 
 import { User, WebhookStatus } from '@types'
 import { parseWebhookURL } from 'discord.js'
-import { verifyWebhook } from '@utils/Webhook'
+import { destroyWebhookClient, verifyWebhook } from '@utils/Webhook'
 import { webhookClients } from '@utils/DiscordBot'
 
 const BotApplications = RequestHandler().patch(async (req: ApiRequest, res) => {
@@ -34,7 +34,7 @@ const BotApplications = RequestHandler().patch(async (req: ApiRequest, res) => {
 		}
 		const client = webhookClients.bot.get(req.query.id)
 		if(client && validated.webhookURL !== client.url) {
-			webhookClients.bot.delete(req.query.id)
+			destroyWebhookClient(req.query.id, 'bot')
 		}
 		await update.webhook(req.query.id, 'bots', { 
 			url: validated.webhookURL,
@@ -43,7 +43,7 @@ const BotApplications = RequestHandler().patch(async (req: ApiRequest, res) => {
 			secret: key,
 		})
 	} else {
-		webhookClients.bot.delete(req.query.id)
+		destroyWebhookClient(req.query.id, 'bot')
 		await update.webhook(req.query.id, 'bots', { 
 			url: null,
 			status: WebhookStatus.None,

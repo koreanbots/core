@@ -43,7 +43,8 @@ const ServerVote = RequestHandler()
 					before: server.votes,
 					after: server.votes + 1,
 					userId: user
-				}
+				},
+				timestamp: Date.now()
 			})
 			return ResponseWrapper(res, { code: 200 })
 		}

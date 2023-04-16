@@ -66,7 +66,8 @@ const BotStats = RequestHandler().post(limiter)
 					type: WebhookType.ServerCountChange,
 					before: botInfo.servers,
 					after: validated.servers,
-				}
+				},
+				timestamp: Date.now()
 			})
 		}
 		await getStatsLoggingChannel().send({

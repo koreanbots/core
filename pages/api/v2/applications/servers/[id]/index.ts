@@ -8,7 +8,8 @@ import RequestHandler from '@utils/RequestHandler'
 
 import { WebhookStatus } from '@types'
 import { parseWebhookURL } from 'discord.js'
-import { verifyWebhook } from '@utils/Webhook'
+import { destroyWebhookClient, verifyWebhook } from '@utils/Webhook'
+import { webhookClients } from '@utils/DiscordBot'
 
 const ServerApplications = RequestHandler().patch(async (req: ApiRequest, res) => {
 	const user = await get.Authorization(req.cookies.token)
@@ -31,6 +32,10 @@ const ServerApplications = RequestHandler().patch(async (req: ApiRequest, res) =
 		if(key === false) {
 			return ResponseWrapper(res, { code: 400, message: '웹후크 주소를 검증할 수 없습니다.', errors: ['웹후크 주소가 올바른지 확인해주세요.\n웹후크 주소 검증에 대한 자세한 내용은 API 문서를 참고해주세요.'] })
 		}
+		const client = webhookClients.server.get(req.query.id)
+		if(client && validated.webhookURL !== client.url) {
+			destroyWebhookClient(req.query.id, 'server')
+		}
 		await update.webhook(req.query.id, 'servers', { 
 			url: validated.webhookURL,
 			status: parseWebhookURL(validated.webhookURL) ? WebhookStatus.Discord : WebhookStatus.HTTP,
@@ -38,6 +43,7 @@ const ServerApplications = RequestHandler().patch(async (req: ApiRequest, res) =
 			secret: key,
 		})
 	} else {
+		destroyWebhookClient(req.query.id, 'server')
 		await update.webhook(req.query.id, 'servers', { 
 			url: null,
 			status: WebhookStatus.None,

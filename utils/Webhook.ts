@@ -15,6 +15,14 @@ type RelayOptions = {
 	secret: string,
 }
 
+export function destroyWebhookClient(id: string, type: 'bot' | 'server') {
+	const client = webhookClients[type].get(id)
+	if(client) {
+		client.destroy()
+		webhookClients[type].delete(id)
+	}
+}
+
 function relayedFetch(options: RelayOptions): Promise<Response> {
 	return fetch(process.env.WEBHOOK_RELAY_URL, {
 		method: 'POST',

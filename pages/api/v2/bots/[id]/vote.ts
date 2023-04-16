@@ -37,13 +37,14 @@ const BotVote = RequestHandler()
 		else if(vote === true) {
 			sendWebhook(bot, {
 				type: 'bot',
-				botId: bot.id,
 				data: {
+					botId: bot.id,
 					type: WebhookType.HeartChange,
 					before: bot.votes,
 					after: bot.votes + 1,
 					userId: user
-				}
+				},
+				timestamp: Date.now()
 			})
 			return ResponseWrapper(res, { code: 200 })
 		}

@@ -219,20 +219,25 @@ function buildEmbed({payload, target}: {payload: WebhookPayload, target: Bot | S
 }
 
 
-type WebhookPayload = BotWebhookPayload | ServerWebhookPayload
+type WebhookPayload = (BotWebhookPayload | ServerWebhookPayload) & {
+	timestamp: number
+}
 
-type ServerWebhookData = HeartChange
-type BotWebhookData = HeartChange | ServerCountChange
+type ServerWebhookData = HeartChange & {
+	guildId: Snowflake
+}
+
+type BotWebhookData = (HeartChange | ServerCountChange) & {
+	botId: Snowflake
+}
 
 type ServerWebhookPayload = {
 	type: 'server',
-	guildId: Snowflake,
 	data: ServerWebhookData
 }
 
 type BotWebhookPayload = {
 	type: 'bot',
-	botId: Snowflake,
 	data: BotWebhookData
 }
 

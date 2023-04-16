@@ -36,14 +36,15 @@ const ServerVote = RequestHandler()
 		if(vote === null) return ResponseWrapper(res, { code: 401 })
 		else if(vote === true) {
 			sendWebhook(server, {
-				type: 'server',
-				guildId: server.id,
+				type: 'server',				
 				data: {
+					guildId: server.id,
 					type: WebhookType.HeartChange,
 					before: server.votes,
 					after: server.votes + 1,
 					userId: user
-				}
+				},
+				timestamp: Date.now()
 			})
 			return ResponseWrapper(res, { code: 200 })
 		}

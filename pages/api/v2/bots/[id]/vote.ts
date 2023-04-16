@@ -37,8 +37,8 @@ const BotVote = RequestHandler()
 		else if(vote === true) {
 			sendWebhook(bot, {
 				type: 'bot',
-				botId: bot.id,
 				data: {
+					botId: bot.id,
 					type: WebhookType.HeartChange,
 					before: bot.votes,
 					after: bot.votes + 1,

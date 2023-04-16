@@ -61,8 +61,8 @@ const BotStats = RequestHandler().post(limiter)
 		if (validated.servers && botInfo.servers !== validated.servers) {
 			sendWebhook(botInfo, {
 				type: 'bot',
-				botId: botInfo.id,
 				data: {
+					botId: botInfo.id,
 					type: WebhookType.ServerCountChange,
 					before: botInfo.servers,
 					after: validated.servers,

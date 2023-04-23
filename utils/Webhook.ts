@@ -1,10 +1,11 @@
 import { APIEmbed, ButtonStyle, Colors, ComponentType, DiscordAPIError, parseWebhookURL, Snowflake, WebhookClient } from 'discord.js'
 
+import { setTimeout } from 'timers/promises'
 import { get, update } from './Query'
 import { DiscordBot, ServerListDiscordBot, webhookClients } from './DiscordBot'
 import { DiscordEnpoints } from './Constants'
 import fetch, { Response } from 'node-fetch'
-import { Bot, Server, WebhookStatus, WebhookType } from '@types'
+import { Bot, Server, Webhook, WebhookStatus, WebhookType } from '@types'
 import { makeBotURL, makeDiscordCodeblock, makeServerURL } from './Tools'
 import crypto from 'crypto'
 
@@ -13,6 +14,75 @@ type RelayOptions = {
 	method: 'GET' | 'POST',
 	data?: string
 	secret: string,
+}
+
+async function sendRequest({
+	retryCount,
+	webhook,
+	target,
+	payload,	
+}: {
+	retryCount: number
+	webhook: Webhook
+	target: Bot | Server
+	payload: WebhookPayload
+}) {
+	const id = target.id
+	const isBot = payload.type === 'bot'
+
+	if(retryCount) {
+		await setTimeout(Math.pow(2, retryCount + 2) * 1000)
+	}
+	const result = await relayedFetch({
+		dest: webhook.url,
+		method: 'POST',
+		data: JSON.stringify(payload),
+		secret: webhook.secret
+	}).then(async r => {
+		if(!r.ok) {
+			return null
+		}
+		return r.json()
+	}).catch(() => null)
+
+	if(result === null) return
+
+	if(result.success) {
+		const data = result.data
+		if((200 <= result.status && result.status < 300) && data.length === 0) {
+			await update.webhook(id, isBot ? 'bots' : 'servers', { failedSince: null })
+			return
+		} else if((400 <= result.status && result.status < 500) || data.length !== 0) {
+			await update.webhook(id, isBot ? 'bots' : 'servers', {
+				status: WebhookStatus.Disabled,
+				failedSince: null,
+				secret: null
+			})
+			sendFailedMessage(target)
+			return
+		}
+	}
+	if(retryCount === 10) {
+		if(!webhook.failedSince) {
+			await update.webhook(id, isBot ? 'bots' : 'servers', {
+				failedSince: Math.floor(Date.now() / 1000)
+			})
+		} else if(Date.now() - webhook.failedSince * 1000 > 1000 * 60 * 60 * 24) {
+			await update.webhook(id, isBot ? 'bots' : 'servers', {
+				status: WebhookStatus.Disabled,
+				failedSince: null,
+				secret: null
+			})
+			sendFailedMessage(target)
+		}
+		return
+	}
+	sendRequest({
+		retryCount: retryCount + 1,
+		webhook,
+		target,
+		payload
+	})
 }
 
 export function destroyWebhookClient(id: string, type: 'bot' | 'server') {
@@ -87,7 +157,7 @@ export const verifyWebhook = async(webhookURL: string): Promise<string | false |
 	return false
 }
 
-export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload): Promise<boolean> => {
+export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload): Promise<void> => {
 	const id = target.id
 	const isBot = payload.type === 'bot'
 
@@ -118,43 +188,16 @@ export const sendWebhook = async (target: Bot | Server, payload: WebhookPayload)
 		if(!result) {
 			await update.webhook(id, isBot ? 'bots' : 'servers', { status: WebhookStatus.Disabled })
 			sendFailedMessage(target)
-			return false
+			return
 		}
 	} else if(webhook.status === WebhookStatus.HTTP) {
-		const result = await relayedFetch({
-			dest: webhook.url,
-			method: 'POST',
-			data: JSON.stringify(payload),
-			secret: webhook.secret
-		}).then(async r => {
-			if(!r.ok) {
-				return null
-			}
-			return r.json()
-		}).catch(() => null)
-		if(result === null) return
-
-		if(result.success) {
-			const data = result.data
-			if((200 <= result.status && result.status < 300) && data.length === 0) {
-				await update.webhook(id, isBot ? 'bots' : 'servers', { failedSince: null })
-				return true
-			}
-		}
-
-		if(!webhook.failedSince) {
-			await update.webhook(id, isBot ? 'bots' : 'servers', {
-				failedSince: Math.floor(Date.now() / 1000)
-			})
-		} else if(Date.now() - webhook.failedSince * 1000 > 1000 * 60 * 60 * 24) {
-			await update.webhook(id, isBot ? 'bots' : 'servers', {
-				status: WebhookStatus.Disabled,
-				failedSince: null,
-				secret: null
-			})
-			sendFailedMessage(target)
-		}
-		return false
+		sendRequest({
+			retryCount: 0,
+			webhook,
+			target,
+			payload
+		})
+		return
 	}
 }
 

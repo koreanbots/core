@@ -51,6 +51,7 @@ async function sendRequest({
 		const data = result.data
 		if((200 <= result.status && result.status < 300) && data.length === 0) {
 			await update.webhook(id, isBot ? 'bots' : 'servers', { failedSince: null })
+			return
 		} else if((400 <= result.status && result.status < 500) || data.length !== 0) {
 			await update.webhook(id, isBot ? 'bots' : 'servers', {
 				status: WebhookStatus.Disabled,
@@ -58,8 +59,8 @@ async function sendRequest({
 				secret: null
 			})
 			sendFailedMessage(target)
+			return
 		}
-		return
 	}
 	if(retryCount === 10) {
 		if(!webhook.failedSince) {

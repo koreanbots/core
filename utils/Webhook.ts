@@ -31,7 +31,7 @@ async function sendRequest({
 	const isBot = payload.type === 'bot'
 
 	if(retryCount) {
-		await setTimeout(Math.pow(2, retryCount) * 1000)
+		await setTimeout(Math.pow(2, retryCount + 2) * 1000)
 	}
 	const result = await relayedFetch({
 		dest: webhook.url,

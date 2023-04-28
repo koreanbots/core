@@ -1,6 +1,5 @@
 import { APIEmbed, ButtonStyle, Colors, ComponentType, DiscordAPIError, parseWebhookURL, Snowflake, WebhookClient } from 'discord.js'
 
-import { setTimeout } from 'timers/promises'
 import { get, update } from './Query'
 import { DiscordBot, ServerListDiscordBot, webhookClients } from './DiscordBot'
 import { DiscordEnpoints } from './Constants'
@@ -14,6 +13,13 @@ type RelayOptions = {
 	method: 'GET' | 'POST',
 	data?: string
 	secret: string,
+}
+
+const timeouts = new Map<Snowflake, Map<number, NodeJS.Timeout>>()
+
+const clearTimeouts = (id: Snowflake) => {
+	timeouts.get(id)?.forEach(clearTimeout)
+	timeouts.delete(id)
 }
 
 async function sendRequest({
@@ -30,9 +36,8 @@ async function sendRequest({
 	const id = target.id
 	const isBot = payload.type === 'bot'
 
-	if(retryCount) {
-		await setTimeout(Math.pow(2, retryCount + 1) * 1000)
-	}
+	timeouts.get(id)?.delete(payload.timestamp)
+
 	const result = await relayedFetch({
 		dest: webhook.url,
 		method: 'POST',
@@ -53,6 +58,7 @@ async function sendRequest({
 			await update.webhook(id, isBot ? 'bots' : 'servers', { failedSince: null })
 			return
 		} else if((400 <= result.status && result.status < 500) || data.length !== 0) {
+			clearTimeouts(id)
 			await update.webhook(id, isBot ? 'bots' : 'servers', {
 				status: WebhookStatus.Disabled,
 				failedSince: null,
@@ -68,6 +74,7 @@ async function sendRequest({
 				failedSince: Math.floor(Date.now() / 1000)
 			})
 		} else if(Date.now() - webhook.failedSince * 1000 > 1000 * 60 * 60 * 24) {
+			clearTimeouts(id)
 			await update.webhook(id, isBot ? 'bots' : 'servers', {
 				status: WebhookStatus.Disabled,
 				failedSince: null,
@@ -77,12 +84,19 @@ async function sendRequest({
 		}
 		return
 	}
-	sendRequest({
-		retryCount: retryCount + 1,
-		webhook,
-		target,
-		payload
-	})
+
+	if(!timeouts.has(id)) {
+		timeouts.set(id, new Map())
+	}
+
+	timeouts.get(id).set(payload.timestamp, setTimeout(() => {
+		sendRequest({
+			retryCount: retryCount + 1,
+			webhook,
+			target,
+			payload
+		})
+	}, Math.pow(2, retryCount + 2) * 1000))
 }
 
 export function destroyWebhookClient(id: string, type: 'bot' | 'server') {
@@ -260,7 +274,6 @@ function buildEmbed({payload, target}: {payload: WebhookPayload, target: Bot | S
 		}
 	}
 }
-
 
 type WebhookPayload = (BotWebhookPayload | ServerWebhookPayload) & {
 	timestamp: number

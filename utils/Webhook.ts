@@ -18,8 +18,13 @@ type RelayOptions = {
 const timeouts = new Map<Snowflake, Map<number, NodeJS.Timeout>>()
 
 const clearTimeouts = (id: Snowflake) => {
-	timeouts.get(id)?.forEach(clearTimeout)
-	timeouts.delete(id)
+	if(timeouts.has(id)) {
+		timeouts.get(id).forEach(clearTimeout)
+		timeouts.delete(id)
+		return true
+	} else {
+		return false
+	}
 }
 
 async function sendRequest({
@@ -58,7 +63,7 @@ async function sendRequest({
 			await update.webhook(id, isBot ? 'bots' : 'servers', { failedSince: null })
 			return
 		} else if((400 <= result.status && result.status < 500) || data.length !== 0) {
-			clearTimeouts(id)
+			if(!clearTimeouts(id)) return
 			await update.webhook(id, isBot ? 'bots' : 'servers', {
 				status: WebhookStatus.Disabled,
 				failedSince: null,
@@ -74,7 +79,7 @@ async function sendRequest({
 				failedSince: Math.floor(Date.now() / 1000)
 			})
 		} else if(Date.now() - webhook.failedSince * 1000 > 1000 * 60 * 60 * 24) {
-			clearTimeouts(id)
+			if(!clearTimeouts(id)) return
 			await update.webhook(id, isBot ? 'bots' : 'servers', {
 				status: WebhookStatus.Disabled,
 				failedSince: null,

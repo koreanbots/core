@@ -134,7 +134,7 @@ const sendFailedMessage = async (target: Bot | Server): Promise<void> => {
 					title: '웹후크 전송 실패',
 					description: `\`\`${target.name}\`\`에 등록된 웹후크 주소가 올바르지 않거나, 제대로 동작하지 않아 비활성화되었습니다.\n` +
 					'설정된 웹후크의 주소가 올바른지 확인해주세요.\n' +
-					`[관리 패널](https://koreanbots.dev/${isBot ? 'bots' : 'servers'}/${target.id}/edit)에서 설정된 내용을 다시 저장하면 웹후크가 활성화됩니다.\n` +
+					`[개발자 패널](${process.env.KOREANBOTS_URL}/developers/applications/${isBot ? 'bots' : 'servers'}/${target.id})에서 설정된 내용을 다시 저장하면 웹후크가 활성화됩니다.\n` +
 					(isBot ? '문제가 지속될 경우 본 DM을 통해 문의해주세요.' : '문제가 지속될 경우 한디리 공식 디스코드 서버에서 문의해주세요.'),
 					color: Colors.Red
 				}

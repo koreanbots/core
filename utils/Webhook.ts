@@ -1,6 +1,5 @@
 import { APIEmbed, ButtonStyle, Colors, ComponentType, DiscordAPIError, parseWebhookURL, Snowflake, WebhookClient } from 'discord.js'
 
-import { setTimeout } from 'timers/promises'
 import { get, update } from './Query'
 import { DiscordBot, ServerListDiscordBot, webhookClients } from './DiscordBot'
 import { DiscordEnpoints } from './Constants'
@@ -14,6 +13,18 @@ type RelayOptions = {
 	method: 'GET' | 'POST',
 	data?: string
 	secret: string,
+}
+
+const timeouts = new Map<Snowflake, Map<number, NodeJS.Timeout>>()
+
+const clearTimeouts = (id: Snowflake) => {
+	if(timeouts.has(id)) {
+		timeouts.get(id).forEach(clearTimeout)
+		timeouts.delete(id)
+		return true
+	} else {
+		return false
+	}
 }
 
 async function sendRequest({
@@ -30,9 +41,8 @@ async function sendRequest({
 	const id = target.id
 	const isBot = payload.type === 'bot'
 
-	if(retryCount) {
-		await setTimeout(Math.pow(2, retryCount + 1) * 1000)
-	}
+	timeouts.get(id)?.delete(payload.timestamp)
+
 	const result = await relayedFetch({
 		dest: webhook.url,
 		method: 'POST',
@@ -53,6 +63,7 @@ async function sendRequest({
 			await update.webhook(id, isBot ? 'bots' : 'servers', { failedSince: null })
 			return
 		} else if((400 <= result.status && result.status < 500) || data.length !== 0) {
+			if(!clearTimeouts(id)) return
 			await update.webhook(id, isBot ? 'bots' : 'servers', {
 				status: WebhookStatus.Disabled,
 				failedSince: null,
@@ -68,6 +79,7 @@ async function sendRequest({
 				failedSince: Math.floor(Date.now() / 1000)
 			})
 		} else if(Date.now() - webhook.failedSince * 1000 > 1000 * 60 * 60 * 24) {
+			if(!clearTimeouts(id)) return
 			await update.webhook(id, isBot ? 'bots' : 'servers', {
 				status: WebhookStatus.Disabled,
 				failedSince: null,
@@ -77,12 +89,19 @@ async function sendRequest({
 		}
 		return
 	}
-	sendRequest({
-		retryCount: retryCount + 1,
-		webhook,
-		target,
-		payload
-	})
+
+	if(!timeouts.has(id)) {
+		timeouts.set(id, new Map())
+	}
+
+	timeouts.get(id).set(payload.timestamp, setTimeout(() => {
+		sendRequest({
+			retryCount: retryCount + 1,
+			webhook,
+			target,
+			payload
+		})
+	}, Math.pow(2, retryCount + 2) * 1000))
 }
 
 export function destroyWebhookClient(id: string, type: 'bot' | 'server') {
@@ -115,7 +134,7 @@ const sendFailedMessage = async (target: Bot | Server): Promise<void> => {
 					title: '웹후크 전송 실패',
 					description: `\`\`${target.name}\`\`에 등록된 웹후크 주소가 올바르지 않거나, 제대로 동작하지 않아 비활성화되었습니다.\n` +
 					'설정된 웹후크의 주소가 올바른지 확인해주세요.\n' +
-					`[관리 패널](https://koreanbots.dev/${isBot ? 'bots' : 'servers'}/${target.id}/edit)에서 설정된 내용을 다시 저장하면 웹후크가 활성화됩니다.\n` +
+					`[개발자 패널](${process.env.KOREANBOTS_URL}/developers/applications/${isBot ? 'bots' : 'servers'}/${target.id})에서 설정된 내용을 다시 저장하면 웹후크가 활성화됩니다.\n` +
 					(isBot ? '문제가 지속될 경우 본 DM을 통해 문의해주세요.' : '문제가 지속될 경우 한디리 공식 디스코드 서버에서 문의해주세요.'),
 					color: Colors.Red
 				}
@@ -260,7 +279,6 @@ function buildEmbed({payload, target}: {payload: WebhookPayload, target: Bot | S
 		}
 	}
 }
-
 
 type WebhookPayload = (BotWebhookPayload | ServerWebhookPayload) & {
 	timestamp: number

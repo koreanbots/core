@@ -37,5 +37,4 @@ jobs:
           printf 'defaults.url=https://sentry.io/\ndefaults.org=koreanbots\ndefaults.project=client' > sentry.properties
           docker build --build-arg NEXT_PUBLIC_HCAPTCHA_SITEKEY=$NEXT_PUBLIC_HCAPTCHA_SITEKEY --build-arg SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN --build-arg NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN --build-arg SENTRY_DSN=$SENTRY_DSN --build-arg SOURCE_COMMIT=${{ env.GITHUB_SHA }} --build-arg TAG=${{ env.RELEASE_TAG }} -t koreanlist .
           docker tag koreanlist:latest ${{ secrets.AWS_IMAGE_URL }}:stable
-          docker tag koreanlist:latest ${{ secrets.AWS_IMAGE_URL }}:${{ github.ref_name }}
           docker push ${{ secrets.AWS_IMAGE_URL }} --all-tags

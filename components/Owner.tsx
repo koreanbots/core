@@ -9,7 +9,7 @@ const Owner: React.FC<OwnerProps> = ({ id, username, tag, crown=false }) => {
 					<DiscordAvatar userID={id} className='z-negative absolute inset-0 w-full h-full' />
 				</div>
 				<div className='flex-1 w-0 leading-snug'>
-					<h4 className='whitespace-nowrap'>{ crown && <i className='fas fa-crown text-yellow-300 text-xs' /> }{username}</h4>
+					<h4 className='whitespace-nowrap truncate'>{ crown && <i className='fas fa-crown text-yellow-300 text-xs' /> }{username}</h4>
 					<span className='text-gray-600 text-sm'>#{tag}</span>
 					
 				</div>

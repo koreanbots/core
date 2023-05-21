@@ -76,10 +76,10 @@ const ServerApplication: NextPage<ServerApplicationProps> = ({ user, spec, serve
 							{
 								!data ? '' : data.code === 200 ? 
 									<Message type='success'>
-										<h2 className='text-lg font-black'>수정 성공!</h2>
+										<h2 className='text-lg font-extrabold'>수정 성공!</h2>
 										<p>서버 정보를 저장했습니다.</p>
 									</Message> : <Message type='error'>
-										<h2 className='text-lg font-black'>{data.message}</h2>
+										<h2 className='text-lg font-extrabold'>{data.message}</h2>
 										<ul className='list-disc list-inside'>
 											{
 												data.errors?.map((el, i)=> <li key={i}>{el}</li>)
@@ -140,7 +140,7 @@ const ServerApplication: NextPage<ServerApplicationProps> = ({ user, spec, serve
 				</div>
 			</> : <div className='mt-5'>
 				<Message type='error'>
-					<h2 className='text-lg font-black'>서버 정보를 불러올 수 없습니다.</h2>
+					<h2 className='text-lg font-extrabold'>서버 정보를 불러올 수 없습니다.</h2>
 					<p>서버에서 봇이 추방되었거나, 봇이 오프라인이여서 서버 정보를 갱신할 수 없습니다.</p>
 				</Message>
 			</div>

@@ -86,10 +86,10 @@ const AddServer:NextPage<AddServerProps> = ({ logged, user, csrfToken, server, s
 		</div>
 		{
 			data ? data.code == 200 && data.data ? <Message type='success'>
-				<h2 className='text-lg font-black'>서버 등록 성공!</h2>
+				<h2 className='text-lg font-extrabold'>서버 등록 성공!</h2>
 				<p>서버를 성공적으로 등록했습니다! 서버 페이지로 리다이랙트 됩니다! {redirectTo(router, `/servers/${router.query.id}`)}</p>
 			</Message> : <Message type='error'>
-				<h2 className='text-lg font-black'>{data.message || '오류가 발생했습니다.'}</h2>
+				<h2 className='text-lg font-extrabold'>{data.message || '오류가 발생했습니다.'}</h2>
 				<ul className='list-disc list-inside'>
 					{data.errors?.map((el, n) => <li key={n}>{el}</li>)}
 				</ul>
@@ -98,10 +98,10 @@ const AddServer:NextPage<AddServerProps> = ({ logged, user, csrfToken, server, s
 		}
 		{
 			server ? <Message type='warning'>
-				<h2 className='text-lg font-black'>이미 등록된 서버입니다.</h2>
+				<h2 className='text-lg font-extrabold'>이미 등록된 서버입니다.</h2>
 			</Message> :
 				!serverData ? <Message type='info'>
-					<h2 className='text-lg font-black'>서버에 봇이 초대되지 않았습니다.</h2>
+					<h2 className='text-lg font-extrabold'>서버에 봇이 초대되지 않았습니다.</h2>
 					<p>서버를 등록하시려면 먼저 봇을 초대해야합니다.</p>
 					<p>서버에 이미 봇이 초대되었다면 반영까지 최대 1분이 소요될 수 있습니다.</p>
 				</Message>
@@ -112,7 +112,7 @@ const AddServer:NextPage<AddServerProps> = ({ logged, user, csrfToken, server, s
 							<Form>
 								<div className='py-3'>
 									<Message type='warning'>
-										<h2 className='text-lg font-black'>등록하시기 전에 다음 사항을 확인해 주세요!</h2>
+										<h2 className='text-lg font-extrabold'>등록하시기 전에 다음 사항을 확인해 주세요!</h2>
 										<ul className='list-disc list-inside'>
 											<li><Link href='/discord'><a rel='noreferrer' target='_blank' className='text-blue-500 hover:text-blue-600'>디스코드 서버</a></Link>에 참여를 권장드립니다.</li>
 											<li>서버가 <Link href='/guidelines'><a rel='noreferrer' target='_blank' className='text-blue-500 hover:text-blue-600'>가이드라인</a></Link>을 지키고 있나요?</li>

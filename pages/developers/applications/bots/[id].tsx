@@ -75,10 +75,10 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 					{
 						!data ? '' : data.code === 200 ? 
 							<Message type='success'>
-								<h2 className='text-lg font-black'>수정 성공!</h2>
+								<h2 className='text-lg font-extrabold'>수정 성공!</h2>
 								<p>봇 정보를 저장했습니다.</p>
 							</Message> : <Message type='error'>
-								<h2 className='text-lg font-black'>{data.message}</h2>
+								<h2 className='text-lg font-extrabold'>{data.message}</h2>
 								<ul className='list-disc list-inside'>
 									{
 										data.errors?.map((el, i)=> <li key={i}>{el}</li>)

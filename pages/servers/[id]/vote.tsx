@@ -62,7 +62,7 @@ const VoteServer: NextPage<VoteServerProps> = ({ data, user, theme, csrfToken })
 		{
 			data.state === 'blocked' ? <div className='pb-40'>
 				<Message type='error'>
-					<h2 className='text-lg font-black'>해당 서버는 관리자에 의해 삭제되었습니다.</h2>
+					<h2 className='text-lg font-extrabold'>해당 서버는 관리자에 의해 삭제되었습니다.</h2>
 				</Message>
 			</div> : <>
 				<Advertisement />

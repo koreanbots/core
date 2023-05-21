@@ -86,10 +86,10 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 		</div>
 		{
 			data ? data.code == 200 && data.data ? <Message type='success'>
-				<h2 className='text-lg font-black'>봇 신청 성공!</h2>
+				<h2 className='text-lg font-extrabold'>봇 신청 성공!</h2>
 				<p>봇을 성공적으로 신청했습니다! 심사 페이지로 리다이랙트됩니다. {redirectTo(router, `/pendingBots/${data.data.id}/${data.data.date}`)}</p>
 			</Message> : <Message type='error'>
-				<h2 className='text-lg font-black'>{data.message || '오류가 발생했습니다.'}</h2>
+				<h2 className='text-lg font-extrabold'>{data.message || '오류가 발생했습니다.'}</h2>
 				<ul className='list-disc list-inside'>
 					{data.errors?.map((el, n) => <li key={n}>{el}</li>)}
 				</ul>
@@ -103,7 +103,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 				<Form>
 					<div className='py-3'>
 						<Message type='warning'>
-							<h2 className='text-lg font-black'>신청하시기 전에 다음 사항을 확인해 주세요!</h2>
+							<h2 className='text-lg font-extrabold'>신청하시기 전에 다음 사항을 확인해 주세요!</h2>
 							<ul className='list-disc list-inside'>
 								<li><Link href='/discord'><a rel='noreferrer' target='_blank' className='text-blue-500 hover:text-blue-600'>디스코드 서버</a></Link>에 참가하셨나요?</li>
 								<li>봇이 <Link href='/guidelines'><a rel='noreferrer' target='_blank' className='text-blue-500 hover:text-blue-600'>가이드라인</a></Link>을 지키고 있나요?</li>

@@ -21,8 +21,8 @@ class MyDocument extends Document {
 					<link rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png' />
 					<link rel='icon' type='image/png' sizes='96x96' href='/favicon-96x96.png' />
 					<link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png' />
-					<link rel='stylesheet' as='style' crossOrigin='anonymous' href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard-dynamic-subset.css' />
-
+					<link rel='stylesheet' as='style' crossOrigin='anonymous' href='https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/variable/pretendardvariable-dynamic-subset.css' />
+					
 					{/* iOS */}
 					<link rel='apple-touch-icon' sizes='57x57' href='/static/apple-icon-57x57.png' />
 					<link rel='apple-touch-icon' sizes='60x60' href='/static/apple-icon-60x60.png' />

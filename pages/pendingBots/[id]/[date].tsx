@@ -35,16 +35,16 @@ const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
 			<div className='w-full lg:w-3/4 lg:pr-5 py-8 text-center lg:text-left'>
 				{
 					data.state === 0 ? <Message type='info'>
-						<h2 className='text-lg font-black'>승인 대기중</h2>
+						<h2 className='text-lg font-extrabold'>승인 대기중</h2>
 						<p>해당 봇은 아직 승인 대기 상태입니다.</p>
 						
 					</Message> 
 						: data.state === 1 ? <Message type='success'>
-							<h2 className='text-lg font-black'>승인됨</h2>
+							<h2 className='text-lg font-extrabold'>승인됨</h2>
 							<p>신청하신 해당 봇이 승인되었습니다!</p>
 							<p><Link href={`/bots/${data.id}`}><a className='text-blue-500 hover:text-blue-400'>봇 페이지</a></Link></p>
 						</Message> : <Message type='error'>
-							<h2 className='text-lg font-black'>거부됨</h2>
+							<h2 className='text-lg font-extrabold'>거부됨</h2>
 							<p>아쉽게도 신청하신 해당 봇은 거부되었습니다.</p>
 							{
 								data.reason && <>

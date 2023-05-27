@@ -74,13 +74,13 @@ const ManageServerPage:NextPage<ManageServerProps> = ({ server, user, owners, cs
 						data ? data.code === 200 ? <div className='mt-4'>
 							<Redirect to={makeServerURL(server)}>
 								<Message type='success'>
-									<h2 className='text-lg font-black'>정보를 저장했습니다.</h2>
+									<h2 className='text-lg font-extrabold'>정보를 저장했습니다.</h2>
 									<p>반영까지는 시간이 조금 걸릴 수 있습니다!</p>
 								</Message>
 							</Redirect>
 						</div> : <div className='mt-4'>
 							<Message type='error'>
-								<h2 className='text-lg font-black'>{data.message || '오류가 발생했습니다.'}</h2>
+								<h2 className='text-lg font-extrabold'>{data.message || '오류가 발생했습니다.'}</h2>
 								<ul className='list-disc list-inside'>
 									{data.errors?.map((el, n) => <li key={n}>{el}</li>)}
 								</ul>

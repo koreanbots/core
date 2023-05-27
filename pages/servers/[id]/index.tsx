@@ -66,14 +66,14 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 			{
 				data.state === 'blocked' ? <div className='pb-40'>
 					<Message type='error'>
-						<h2 className='text-lg font-black'>해당 서버는 관리자에 의해 삭제되었습니다.</h2>
+						<h2 className='text-lg font-extrabold'>해당 서버는 관리자에 의해 삭제되었습니다.</h2>
 					</Message>
 				</div>
 					: <>
 						<div className='w-full pb-2'>
 							{
 								data.state === 'unreachable' ? <Message type='error'>
-									<h2 className='text-lg font-black'>서버 정보를 갱신할 수 없습니다.</h2>
+									<h2 className='text-lg font-extrabold'>서버 정보를 갱신할 수 없습니다.</h2>
 									<p>서버에서 봇이 추방되었거나, 봇이 오프라인이여서 서버 정보를 갱신할 수 없습니다.</p>
 									{
 										owners?.find(el => el.id === user?.id) && <>
@@ -84,7 +84,7 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 								</Message> :
 									data.state === 'reported' ?
 										<Message type='error'>
-											<h2 className='text-lg font-black'>해당 서버는 신고가 접수되어, 관리자에 의해 잠금 상태입니다.</h2>
+											<h2 className='text-lg font-extrabold'>해당 서버는 신고가 접수되어, 관리자에 의해 잠금 상태입니다.</h2>
 											<p>해당 서버를 주의해주세요.</p>
 											<p>서버 관리자 분은 <Link href='/guidelines'><a className='text-blue-500 hover:text-blue-400'>가이드라인</a></Link>에 대한 위반사항을 확인해주시고 <Link href='/discord'><a className='text-blue-500 hover:text-blue-400'>디스코드 서버</a></Link>로 문의해주세요.</p>
 										</Message> : ''

@@ -61,7 +61,7 @@ const BotCard: React.FC<BotCardProps> = ({ manage = false, bot }) => {
 									</h2>
 									<h1 className='mb-3 text-left text-xl sm:text-2xl font-bold truncate'>{bot.name}</h1>
 								</div>
-								<p className='mb-10 px-4 h-6 text-left text-gray-400 text-sm font-medium'>
+								<p className='mb-10 px-4 h-6 text-left text-gray-400 text-sm'>
 									{bot.intro}
 								</p>
 								<div>

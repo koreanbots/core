@@ -68,7 +68,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 			{
 				data.state === 'blocked' ? <div className='pb-40'>
 					<Message type='error'>
-						<h2 className='text-lg font-black'>해당 봇은 관리자에 의해 삭제되었습니다.</h2>
+						<h2 className='text-lg font-extrabold'>해당 봇은 관리자에 의해 삭제되었습니다.</h2>
 					</Message>
 				</div>
 					: data.category.includes('NSFW') && !nsfw ? <NSFW onClick={() => setNSFW(true)} onDisableClick={() => localStorage.nsfw = true} /> 
@@ -76,12 +76,12 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 							<div className='w-full pb-2'>
 								{
 									data.state === 'private' ? <Message type='info'>
-										<h2 className='text-lg font-black'>해당 봇은 특수목적 봇이므로 초대하실 수 없습니다.</h2>
+										<h2 className='text-lg font-extrabold'>해당 봇은 특수목적 봇이므로 초대하실 수 없습니다.</h2>
 										<p>해당 봇은 공개 사용이 목적이 아닌 특수목적봇입니다. 따라서 따로 초대하실 수 없습니다.</p>
 									</Message> :
 										data.state === 'reported' ?
 											<Message type='error'>
-												<h2 className='text-lg font-black'>해당 봇은 신고가 접수되어, 관리자에 의해 잠금 상태입니다.</h2>
+												<h2 className='text-lg font-extrabold'>해당 봇은 신고가 접수되어, 관리자에 의해 잠금 상태입니다.</h2>
 												<p>해당 봇 사용에 주의해주세요.</p>
 												<p>봇 소유자분은 <Link href='/guidelines'><a className='text-blue-500 hover:text-blue-400'>가이드라인</a></Link>에 대한 위반사항을 확인해주시고 <Link href='/discord'><a className='text-blue-500 hover:text-blue-400'>디스코드 서버</a></Link>로 문의해주세요.</p>
 											</Message> : ''

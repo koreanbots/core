@@ -1,6 +1,6 @@
 {
 	"name": "koreanbots",
-	"version": "2.6",
+	"version": "2.6.1",
 	"private": true,
 	"scripts": {
 		"dev": "next dev",

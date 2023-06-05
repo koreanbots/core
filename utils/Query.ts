@@ -476,8 +476,7 @@ async function submitServer(userID: string, id: string, data: AddServerSubmit): 
 		desc: data.desc,
 		category: JSON.stringify(data.category),
 		invite: data.invite,
-		token: sign({ id }),
-		last_updated: new Date().toISOString()
+		token: sign({ id })
 	})
 	get.server.clear(id)
 	return true

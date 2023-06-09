@@ -46,10 +46,10 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 		.orWhere({ vanity: id, trusted: true })
 		.orWhere({ vanity: id, partnered: true })
 	if (res[0]) {
-		const discordBot = await DiscordBot.rest.get(`/users/${res[0].id}`).then(r=> r).catch(() => null) as DiscordUser & { display_name: string }
+		const discordBot = await DiscordBot.rest.get(`/users/${res[0].id}`).then(r=> r).catch(() => null) as DiscordUser & { global_name: string }
 		if(!discordBot) return null
 		const botMember = await getMainGuild()?.members?.fetch(res[0].id).catch(e=> e) as GuildMember
-		const name = discordBot.display_name ?? discordBot.username
+		const name = discordBot.global_name ?? discordBot.username
 		res[0].flags = res[0].flags | (discordBot.flags & DiscordUserFlags.VERIFIED_BOT ? BotFlags.verified : 0) | (res[0].trusted ? BotFlags.trusted : 0) | (res[0].partnered ? BotFlags.partnered : 0)
 		res[0].tag = discordBot.discriminator
 		res[0].avatar = discordBot.avatar

@@ -29,7 +29,6 @@ const Tooltip = dynamic(() => import('@components/Tooltip'))
 const Users: NextPage<UserProps> = ({ user, data }) => {
 	const router = useRouter()
 	if (!data?.id) return <NotFound />
-	console.log(data.tag, data.tag === '0')
 	return (
 		<Container paddingTop className='py-10'>
 			<NextSeo

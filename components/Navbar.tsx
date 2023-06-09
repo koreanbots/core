@@ -32,7 +32,7 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 				if(data.code !== 200) return
 				setUserCache(JSON.parse(localStorage.userCache = JSON.stringify({
 					id: data.data.id,
-					username: data.data.username,
+					username: data.data.globalName,
 					tag: data.data.tag,
 					version: 2
 				})))

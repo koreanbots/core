@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 import { TLRU } from 'tlru'
 import DataLoader from 'dataloader'
-import { ActivityType, GuildFeature, GuildMember, User as DiscordUser, APIUser as APIDiscordUser, UserFlags, BitField } from 'discord.js'
+import { ActivityType, GuildFeature, GuildMember, User as DiscordUser, APIUser as APIDiscordUser, UserFlags } from 'discord.js'
 
 import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable, Webhook, BotSpec, ServerSpec } from '@types'
 import { botCategories, DiscordEnpoints, imageSafeHost, serverCategories, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'

@@ -229,6 +229,7 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 										key={data.owner.id}
 										id={data.owner.id}
 										tag={data.owner.tag}
+										globalName={data.owner.globalName}
 										username={data.owner.username}
 									/>
 								}
@@ -241,6 +242,7 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 												key={el.id}
 												id={el.id}
 												tag={el.tag}
+												globalName={el.globalName}
 												username={el.username}
 												crown={el.id === data.owner?.id}
 											/>

@@ -131,6 +131,7 @@ const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
 						key={el.id}
 						id={el.id}
 						tag={el.tag}
+						globalName={el.globalName}
 						username={el.username}
 					/>
 				))}

@@ -210,6 +210,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 											key={el.id}
 											id={el.id}
 											tag={el.tag}
+											globalName={el.globalName}
 											username={el.username}
 										/>
 									))}

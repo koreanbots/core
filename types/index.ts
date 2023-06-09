@@ -77,6 +77,7 @@ export interface User {
 	avatar: string
 	tag: string
 	username: string
+	globalName: string
 	flags: number
 	github: string
 	bots: Bot[] | string[]

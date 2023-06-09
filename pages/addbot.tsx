@@ -82,7 +82,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 		}} />
 		<h1 className='text-3xl font-bold'>새로운 봇 추가하기</h1>
 		<div className='mt-1 mb-5'>
-			안녕하세요, <span className='font-semibold'>{user.username}#{user.tag}</span>님! <a role='button' tabIndex={0} onKeyDown={toLogin} onClick={toLogin} className='text-discord-blurple cursor-pointer outline-none'>본인이 아니신가요?</a>
+			안녕하세요, <span className='font-semibold'>{user.tag === '0' ? `${user.globalName} (@${user.username})` : `${user.globalName}#${user.tag}`}</span>님! <a role='button' tabIndex={0} onKeyDown={toLogin} onClick={toLogin} className='text-discord-blurple cursor-pointer outline-none'>본인이 아니신가요?</a>
 		</div>
 		{
 			data ? data.code == 200 && data.data ? <Message type='success'>

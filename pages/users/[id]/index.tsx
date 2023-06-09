@@ -32,7 +32,7 @@ const Users: NextPage<UserProps> = ({ user, data }) => {
 	return (
 		<Container paddingTop className='py-10'>
 			<NextSeo
-				title={data.username}
+				title={data.globalName}
 				description={data.bots.length === 0 ? `${data.globalName}님의 프로필입니다.` : josa(
 					`${(data.bots as Bot[])
 						.slice(0, 5)

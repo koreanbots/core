@@ -39,9 +39,9 @@ const ReportUser: NextPage<ReportUserProps> = ({ data, user, csrfToken }) => {
 		</div>
 	</>
 	return <Container paddingTop className='py-10'>
-		<NextSeo title={`${data.username} 신고하기`} />
+		<NextSeo title={`${data.globalName} 신고하기`} />
 		<Link href={makeUserURL(data)}>
-			<a className='text-blue-500 hover:opacity-80'><i className='fas fa-arrow-left mt-3 mb-3' /> <strong>{data.username}</strong>{getJosaPicker('로')(data.username)} 돌아가기</a>
+			<a className='text-blue-500 hover:opacity-80'><i className='fas fa-arrow-left mt-3 mb-3' /> <strong>{data.globalName}</strong>{getJosaPicker('로')(data.globalName)} 돌아가기</a>
 		</Link>
 		{
 			reportRes?.code === 200 ? <Message type='success'>

@@ -14,7 +14,6 @@ import { botCategories, library } from '@utils/Constants'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
 import { ResponseProps, SubmittedBot, Theme, User } from '@types'
-import Tooltip from '@components/Tooltip'
 
 const Advertisement = dynamic(() => import('@components/Advertisement'))
 const CheckBox = dynamic(() => import('@components/Form/CheckBox'))

@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 import { TLRU } from 'tlru'
 import DataLoader from 'dataloader'
-import { ActivityType, GuildFeature, GuildMember, User as DiscordUser, UserFlags } from 'discord.js'
+import { ActivityType, GuildFeature, GuildMember, User as DiscordUser, APIUser as APIDiscordUser, UserFlags } from 'discord.js'
 
 import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable, Webhook, BotSpec, ServerSpec } from '@types'
 import { botCategories, DiscordEnpoints, imageSafeHost, serverCategories, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'
@@ -46,19 +46,21 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 		.orWhere({ vanity: id, trusted: true })
 		.orWhere({ vanity: id, partnered: true })
 	if (res[0]) {
-		const discordBot = await DiscordBot.users.fetch(res[0].id).then(r=> r).catch(() => null) as DiscordUser
+		const discordBot = await get.discord._rawUser.load(res[0].id)
 		if(!discordBot) return null
 		const botMember = await getMainGuild()?.members?.fetch(res[0].id).catch(e=> e) as GuildMember
-		res[0].flags = res[0].flags | (discordBot.flags?.bitfield & DiscordUserFlags.VERIFIED_BOT ? BotFlags.verified : 0) | (res[0].trusted ? BotFlags.trusted : 0) | (res[0].partnered ? BotFlags.partnered : 0)
+		const name = discordBot.global_name ?? discordBot.username
+		res[0].flags = res[0].flags | (discordBot.flags & DiscordUserFlags.VERIFIED_BOT ? BotFlags.verified : 0) | (res[0].trusted ? BotFlags.trusted : 0) | (res[0].partnered ? BotFlags.partnered : 0)
 		res[0].tag = discordBot.discriminator
 		res[0].avatar = discordBot.avatar
-		res[0].name = discordBot.username
+		res[0].name = name
 		res[0].category = JSON.parse(res[0].category)
 		res[0].owners = JSON.parse(res[0].owners)
-		if(botMember) {
-			if(discordBot.flags.has(UserFlags.BotHTTPInteractions)) {
-				res[0].status = 'online'
-			} else if(!botMember.presence) {
+
+		if(discordBot.flags & UserFlags.BotHTTPInteractions) {
+			res[0].status = 'online'
+		} else if(botMember) {
+			if(!botMember.presence) {
 				res[0].status = 'offline'
 			} else {
 				res[0].status = botMember.presence.activities.some(r => r.type === ActivityType.Streaming) ? 'streaming' : botMember.presence.status
@@ -75,7 +77,7 @@ async function getBot(id: string, topLevel=true):Promise<Bot> {
 			res[0].owners = res[0].owners.filter((el: User | null) => el).map((row: User) => ({ ...row }))
 		}
 
-		await knex('bots').update({ name: discordBot.username }).where({ id })
+		await knex('bots').update({ name }).where({ id })
 
 	}
 
@@ -153,9 +155,10 @@ async function getUser(id: string, topLevel = true):Promise<User> {
 			.where('owners', 'like', `%${id}%`)
 			.orderBy('date', 'asc')
 
-		const discordUser = await get.discord.user.load(id)
+		const discordUser = await get.discord._rawUser.load(id)
 		res[0].tag = discordUser?.discriminator || '0000'
 		res[0].username = discordUser?.username || 'Unknown User'
+		res[0].globalName = discordUser?.global_name || discordUser?.username || 'Unknown User'
 		if (topLevel) {
 			res[0].bots = (await Promise.all(ownedBots.map(async b => await get._rawBot.load(b.id)))).filter((el: Bot | null) => el)
 			res[0].servers = (await Promise.all(ownedServer.map(async b => await get._rawServer.load(b.id)))).filter((el: Server | null) => el)
@@ -607,7 +610,10 @@ async function getImage(url: string) {
 	return await res.buffer()
 }
 
-async function getDiscordUser(id: string):Promise<DiscordUser> {
+async function getDiscordUser(id: string, raw = false):Promise<APIDiscordUser & { global_name: string } | DiscordUser> {
+	if(raw) {
+		return await DiscordBot.rest.get(`/users/${id}`).catch(() => null) as APIDiscordUser & { global_name: string }
+	}
 	return await DiscordBot.users.fetch(id, {cache: true}).then(u => u).catch(()=>null)
 }
 
@@ -752,7 +758,11 @@ export const get = {
 	discord: {
 		user: new DataLoader(
 			async (ids: string[]) =>
-				(await Promise.all(ids.map(async (id: string) => await getDiscordUser(id))))
+				(await Promise.all(ids.map(async (id: string) => await getDiscordUser(id, false) as DiscordUser)))
+			, { cacheMap: new TLRU({ maxStoreSize: 5000, maxAgeMs: 43200000 }) }),
+		_rawUser: new DataLoader(
+			async (ids: string[]) =>
+				(await Promise.all(ids.map(async (id: string) => await getDiscordUser(id, true) as APIDiscordUser & { global_name: string })))
 			, { cacheMap: new TLRU({ maxStoreSize: 5000, maxAgeMs: 43200000 }) }),
 	},
 	bot: new DataLoader(

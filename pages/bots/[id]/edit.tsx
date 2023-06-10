@@ -205,7 +205,7 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 											<div className='flex flex-wrap'>
 												{
 													(values.owners as User[]).map((el, n) => <Tag className='flex items-center' text={<>
-														<DiscordAvatar userID={el.id} size={128} className='w-6 h-6 mr-1 rounded-full' /> {el.username}#{el.tag}
+														<DiscordAvatar userID={el.id} size={128} className='w-6 h-6 mr-1 rounded-full' /> {el.tag === '0' ? `${el.globalName} (@${el.username})` : `${el.username}#${el.tag}`}
 														{
 															n !== 0 && <button className='ml-0.5 hover:text-red-500' onClick={() => {
 																setFieldValue('owners', (() => {

@@ -32,8 +32,8 @@ const Users: NextPage<UserProps> = ({ user, data }) => {
 	return (
 		<Container paddingTop className='py-10'>
 			<NextSeo
-				title={data.username}
-				description={data.bots.length === 0 ? `${data.username}님의 프로필입니다.` : josa(
+				title={data.globalName}
+				description={data.bots.length === 0 ? `${data.globalName}님의 프로필입니다.` : josa(
 					`${(data.bots as Bot[])
 						.slice(0, 5)
 						.map(el => el.name)
@@ -58,10 +58,15 @@ const Users: NextPage<UserProps> = ({ user, data }) => {
 				</div>
 				<div className='flex-grow px-5 py-10 w-full text-center lg:w-5/12 lg:text-left'>
 					<div>
-						<div className='lg:flex mt-3 mb-1 '>
-							<h1 className='text-4xl font-bold'>{data.username}</h1>
-							<span className='ml-0.5 text-gray-400 text-3xl font-semibold mt-1'>#{data.tag}</span>
-						</div>
+						{
+							(data.tag !== '0') ? <div className='lg:flex mt-3 mb-1 '>
+								<h1 className='text-4xl font-bold'>{data.globalName}</h1>
+								<span className='ml-0.5 text-gray-400 text-3xl font-semibold mt-1'>#{data.tag}</span>
+							</div> : <div className='lg:flex mt-3 mb-1 flex-col'>
+								<h1 className='text-4xl font-bold'>{data.globalName}</h1>
+								<span className='text-gray-400 text-2xl font-semibold mt-1'>@{data.username}</span>
+							</div>
+						}
 						<div className='badges flex mb-2 justify-center lg:justify-start'>
 							{checkUserFlag(data.flags, 'staff') && (
 								<Tooltip text='한국 디스코드 리스트 스탭입니다.' direction='left'>

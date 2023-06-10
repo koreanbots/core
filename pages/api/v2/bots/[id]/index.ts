@@ -95,7 +95,7 @@ const Bots = RequestHandler()
 			embeds: [
 				new EmbedBuilder()
 					.setAuthor({
-						name: `${userinfo.username}#${userinfo.tag}`, 
+						name: userinfo.tag === '0' ? `${userinfo.globalName} (@${userinfo.username})` : `${userinfo.username}#${userinfo.tag}`, 
 						iconURL: KoreanbotsEndPoints.URL.root + KoreanbotsEndPoints.CDN.avatar(userinfo.id, { format: 'png', size: 256 }), 
 						url: KoreanbotsEndPoints.URL.user(userinfo.id)
 					})

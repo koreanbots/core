@@ -63,8 +63,7 @@
 		"twemoji": "13.1.0",
 		"url-regex-safe": "2.0.2",
 		"yup": "0.32.9",
-		"yup-locales-ko": "1.2.0",
-		"zlib-sync": "0.1.7"
+		"yup-locales-ko": "1.2.0"
 	},
 	"devDependencies": {
 		"@tailwindcss/custom-forms": "0.2.1",

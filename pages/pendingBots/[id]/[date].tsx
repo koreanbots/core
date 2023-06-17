@@ -82,7 +82,7 @@ const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
 				</LongButton>
 				<LongButton onClick={setCopied}>
 					<h4>
-						{ isCopied ? <><i className='fas fa-check text-green-400' /> 복사됨</> : <><i className='far fa-copy'/> 설명 마크다운 복사하기</>}
+						{ isCopied ? <><i className='fas fa-check text-emerald-400' /> 복사됨</> : <><i className='far fa-copy'/> 설명 마크다운 복사하기</>}
 					</h4>
 				</LongButton>
 			</div>

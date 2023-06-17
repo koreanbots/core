@@ -129,7 +129,7 @@ const ManageServerPage:NextPage<ManageServerProps> = ({ server, user, owners, cs
 				<p className='text-gray-400 mb-3'>관리자 추가나 소유권 이전은 웹사이트에서 진행하실 수 없습니다. 디스코드 서버 내에서 "관리자" 권한을 부여하시거나 서버의 소유권을 이전하시면 됩니다.</p>
 				<Segment>
 					<div className='lg:flex items-center'>
-						<div className='flex-grow py-1'>
+						<div className='grow py-1'>
 							<h3 className='text-lg font-semibold'>서버 삭제하기</h3>
 							<p className='text-gray-400'>서버를 삭제하게 되면 되돌릴 수 없습니다.</p>
 						</div>

@@ -85,7 +85,7 @@ const ServerCard: React.FC<BotCardProps> = ({ type, server }) => {
 								{
 									type === 'add' ? 
 										server.data ? <Link href={newServerLink}>
-											<a className='py-3 w-full text-center text-green-500 hover:text-white text-sm font-bold hover:bg-green-500 rounded-b-2xl hover:shadow-lg transition duration-100 ease-in'>
+											<a className='py-3 w-full text-center text-emerald-500 hover:text-white text-sm font-bold hover:bg-emerald-500 rounded-b-2xl hover:shadow-lg transition duration-100 ease-in'>
 												등록하기
 											</a>
 										</Link> : <Link href={newServerLink}>
@@ -106,7 +106,7 @@ const ServerCard: React.FC<BotCardProps> = ({ type, server }) => {
 											</Link>
 											{type === 'manage' ? (
 												<Link href={`/servers/${server.id}/edit`}>
-													<a className='py-3 w-full text-center text-green-500 hover:text-white text-sm font-bold hover:bg-green-500 rounded-br-2xl hover:shadow-lg transition duration-100 ease-in'>
+													<a className='py-3 w-full text-center text-emerald-500 hover:text-white text-sm font-bold hover:bg-emerald-500 rounded-br-2xl hover:shadow-lg transition duration-100 ease-in'>
 											관리하기
 													</a>
 												</Link>

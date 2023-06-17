@@ -175,7 +175,7 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 				<h2 className='text-2xl font-semibold pb-2'>위험구역</h2>
 				<Segment>
 					<div className='lg:flex items-center'>
-						<div className='flex-grow py-1'>
+						<div className='grow py-1'>
 							<h3 className='text-lg font-semibold'>관리자 수정</h3>
 							<p className='text-gray-400'>봇의 관리자를 추가하거나 삭제합니다.</p>
 						</div>
@@ -221,7 +221,7 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 												}
 											</div>
 											<div className='flex'>
-												<div className='flex-grow pr-2'>
+												<div className='grow pr-2'>
 													<Input name='id' placeholder='추가할 유저 ID' />
 												</div>
 												<Button className='w-16 bg-discord-blurple' onClick={async () => {
@@ -248,7 +248,7 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 					</div>
 					<Divider />
 					<div className='lg:flex items-center'>
-						<div className='flex-grow py-1'>
+						<div className='grow py-1'>
 							<h3 className='text-lg font-semibold'>소유권 이전</h3>
 							<p className='text-gray-400'>봇의 소유권을 이전합니다. 소유권을 이전하게 되면 소유권을 잃게 됩니다.</p>
 						</div>
@@ -290,7 +290,7 @@ const ManageBotPage:NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme })
 					</div>
 					<Divider />
 					<div className='lg:flex items-center'>
-						<div className='flex-grow py-1'>
+						<div className='grow py-1'>
 							<h3 className='text-lg font-semibold'>봇 삭제하기</h3>
 							<p className='text-gray-400'>봇을 삭제하게 되면 되돌릴 수 없습니다.</p>
 						</div>

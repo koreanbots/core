@@ -6,7 +6,7 @@ const Button = dynamic(() => import('@components/Button'))
 const TextArea = dynamic(() => import('@components/Form/TextArea'))
 
 export const Check: FC<{ checked: boolean, text: string }> = ({ checked, text }) => <>
-	{checked && <i className='text-green-400 fas fa-check-circle mr-1' />}
+	{checked && <i className='text-emerald-400 fas fa-check-circle mr-1' />}
 	{text}
 </>
 

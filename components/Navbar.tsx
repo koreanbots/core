@@ -121,7 +121,7 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 							</li>
 						</ul>
 					</div>
-					<div className='hidden flex-grow items-center bg-white lg:flex lg:bg-transparent lg:shadow-none'>
+					<div className='hidden grow items-center bg-white lg:flex lg:bg-transparent lg:shadow-none'>
 						<ul className='flex flex-col list-none lg:flex-row lg:ml-auto'>
 							<li className='flex items-center outline-none' onFocus={() => setDropdownOpen(true)} onMouseOver={() => setDropdownOpen(true)} onMouseOut={() => setDropdownOpen(false)} onBlur={() => setDropdownOpen(false)}>
 								{

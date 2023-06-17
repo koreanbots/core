@@ -56,7 +56,7 @@ const Users: NextPage<UserProps> = ({ user, data }) => {
 						className='w-full rounded-full'
 					/>
 				</div>
-				<div className='flex-grow px-5 py-10 w-full text-center lg:w-5/12 lg:text-left'>
+				<div className='grow px-5 py-10 w-full text-center lg:w-5/12 lg:text-left'>
 					<div>
 						{
 							(data.tag !== '0') ? <div className='lg:flex mt-3 mb-1 '>
@@ -77,7 +77,7 @@ const Users: NextPage<UserProps> = ({ user, data }) => {
 							)}
 							{checkUserFlag(data.flags, 'bughunter') && (
 								<Tooltip text='버그를 많이 제보해주신 분입니다.' direction='left'>
-									<div className='pr-5 text-green-500 text-2xl'>
+									<div className='pr-5 text-emerald-500 text-2xl'>
 										<i className='fas fa-bug' />
 									</div>
 								</Tooltip>

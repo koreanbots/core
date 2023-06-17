@@ -30,7 +30,7 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 				<Paginator totalPage={votes.totalPage} currentPage={votes.currentPage} pathname='/bots/list/votes' />
 				<Advertisement />
 				<h1 className='text-3xl font-bold mb-2'>
-					<i className='fa fa-check mr-3 mt-10 text-green-500' /> 신뢰된 봇
+					<i className='fa fa-check mr-3 mt-10 text-emerald-500' /> 신뢰된 봇
 				</h1>
 				<p className='text-base'>한국 디스코드 리스트에서 인증받은 신뢰할 수 있는 봇들입니다!!</p>
 				<ResponsiveGrid>
@@ -39,7 +39,7 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 					}
 				</ResponsiveGrid>
 				<h1 className='text-3xl font-bold mt-20 mb-2'>
-					<i className='far fa-star mr-3 text-yellow-500' /> 새로운 봇
+					<i className='far fa-star mr-3 text-amber-500' /> 새로운 봇
 				</h1>
 				<p className='text-base'>최근에 한국 디스코드 리스트에 추가된 따끈따끈한 봇입니다.</p>
 				<ResponsiveGrid>

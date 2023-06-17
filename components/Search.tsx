@@ -87,7 +87,7 @@ const Search: React.FC = () => {
 				<input
 					type='search'
 					maxLength={50}
-					className='flex-grow pr-20 px-7 py-3 h-16 text-xl bg-transparent border-0 border-none outline-none shadow'
+					className='grow pr-20 px-7 py-3 h-16 text-xl bg-transparent border-0 border-none outline-none shadow'
 					placeholder='검색...'
 					value={query}
 					onChange={e => {

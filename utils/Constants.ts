@@ -14,11 +14,11 @@ export const BUG_REPORT_GROUPS = ['경북소프트웨어고등학교 해킹방�
 export const Status = {
 	online: {
 		text: '온라인',
-		color: 'green-400',
+		color: 'emerald-400',
 	},
 	idle: {
 		text: '자리 비움',
-		color: 'yellow-300',
+		color: 'amber-300',
 	},
 	dnd: {
 		text: '다른 용무중',
@@ -30,7 +30,7 @@ export const Status = {
 	},
 	streaming: {
 		text: '방송중',
-		color: 'purple-500'
+		color: 'violet-500'
 	},
 	null: {
 		text: '알 수 없음',
@@ -178,9 +178,9 @@ export const imageSafeHost = [
 ]
 
 export const MessageColor = {
-	success: 'bg-green-200 text-green-800',
+	success: 'bg-emerald-200 text-emerald-800',
 	error: 'bg-red-200 text-red-800',
-	warning: 'bg-yellow-50 text-yellow-700',
+	warning: 'bg-amber-50 text-amber-700',
 	info: 'bg-blue-200 text-blue-800'
 }
 

@@ -18,7 +18,7 @@ const Calculator:NextPage<CalculatorProps> = ({ query }) => {
 				<input className='form-checkbox text-discord-blurple bg-gray-300 h-5 w-5 rounded' type='checkbox' checked={value[perm]} onChange={() => {
 					setValue({  ...value, [perm]: !value[perm] })
 				}} />
-				<span className={`ml-2.5 text-lg ${yellow ? 'text-yellow-500' : ''}`}>{name}</span>
+				<span className={`ml-2.5 text-lg ${yellow ? 'text-amber-500' : ''}`}>{name}</span>
 			</label>
 		</li>
 	
@@ -76,7 +76,7 @@ const Calculator:NextPage<CalculatorProps> = ({ query }) => {
 			</div>
 		</div>
 		<div className='py-10'>
-			<span className='text-yellow-500'>노란색 = 서버에 2단계 인증 필수가 활성화되어있다면, 봇 소유자는 <a href='https://support.discord.com/hc/ko/articles/219576828-2단계-인증-설정하기'>2단계 인증</a>이 완료되어있어야합니다.</span>
+			<span className='text-amber-500'>노란색 = 서버에 2단계 인증 필수가 활성화되어있다면, 봇 소유자는 <a href='https://support.discord.com/hc/ko/articles/219576828-2단계-인증-설정하기'>2단계 인증</a>이 완료되어있어야합니다.</span>
 		</div>
 		<Formik onSubmit={()=> console.log('Pong?')} initialValues={{
 			id: query.id?.toString() || '',

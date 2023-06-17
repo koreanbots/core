@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import AbortController from 'abort-controller'
-
 import { makeBotURL, makeServerURL, redirectTo } from '@utils/Tools'
 import Fetch from '@utils/Fetch'
 import { Bot, Server, ResponseProps } from '@types'

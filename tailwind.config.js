@@ -38,5 +38,7 @@ module.exports = {
 			'3': '30rem'
 		}
 	},
-	plugins: [require('@tailwindcss/forms')],
+	plugins: [require('@tailwindcss/forms')({
+		strategy: 'class',
+	})],
 }

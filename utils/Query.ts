@@ -3,133 +3,148 @@ import { TLRU } from 'tlru'
 import DataLoader from 'dataloader'
 import { ActivityType, GuildFeature, GuildMember, User as DiscordUser, APIUser as APIDiscordUser, UserFlags } from 'discord.js'
 
-import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable, Webhook, BotSpec, ServerSpec } from '@types'
+import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUserFlags, SubmittedBot, DiscordTokenInfo, ServerData, ServerFlags, RawGuild, Nullable, Webhook, BotSpec, ServerSpec, Library, BotCategory } from '@types'
 import { botCategories, DiscordEnpoints, imageSafeHost, serverCategories, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'
 
+import prisma from './Prisma'
 import knex from './Knex'
 import { Bots, Servers } from './Mongo'
 import { DiscordBot, getMainGuild } from './DiscordBot'
 import { sign, verify } from './Jwt'
-import { camoUrl, formData, getYYMMDD, serialize } from './Tools'
+import { camoUrl, formData, getYYMMDD, serialize, shuffleArray } from './Tools'
 import { AddBotSubmit, AddServerSubmit, ManageBot, ManageServer } from './Yup'
 import { markdownImage } from './Regex'
+import { servers } from '@prisma/client'
 
 export const imageRateLimit = new TLRU<unknown, number>({ maxAgeMs: 60000 })
 
 async function getBot(id: string, topLevel=true):Promise<Bot> {
-	const res = await knex('bots')
-		.select([
-			'id',
-			'flags',
-			'owners',
-			'lib',
-			'prefix',
-			'votes',
-			'servers',
-			'shards',
-			'intro',
-			'desc',
-			'web',
-			'git',
-			'url',
-			'category',
-			'status',
-			'trusted',
-			'partnered',
-			'discord',
-			'state',
-			'vanity',
-			'bg',
-			'banner',
-		])
-		.where({ id })
-		.orWhere({ vanity: id, trusted: true })
-		.orWhere({ vanity: id, partnered: true })
-	if (res[0]) {
-		const discordBot = await get.discord._rawUser.load(res[0].id)
-		if(!discordBot) return null
-		const botMember = await getMainGuild()?.members?.fetch(res[0].id).catch(e=> e) as GuildMember
-		const name = discordBot.global_name ?? discordBot.username
-		res[0].flags = res[0].flags | (discordBot.flags & DiscordUserFlags.VERIFIED_BOT ? BotFlags.verified : 0) | (res[0].trusted ? BotFlags.trusted : 0) | (res[0].partnered ? BotFlags.partnered : 0)
-		res[0].tag = discordBot.discriminator
-		res[0].avatar = discordBot.avatar
-		res[0].name = name
-		res[0].category = JSON.parse(res[0].category)
-		res[0].owners = JSON.parse(res[0].owners)
+	const res = await prisma.bots.findFirst({
+		select: {
+			id: true,
+			flags: true,
+			owners: true,
+			lib: true,
+			prefix: true,
+			votes: true,
+			servers: true,
+			shards: true,
+			intro: true,
+			desc: true,
+			web: true,
+			git: true,
+			url: true,
+			category: true,
+			status: true,
+			trusted: true,
+			partnered: true,
+			discord: true,
+			state: true,
+			vanity: true,
+			bg: true,
+			banner: true
+		},
+		where: {
+			OR: [
+				{ id },
+				{ vanity: id, trusted: true },
+				{ vanity: id, partnered: true },
+			],
+		},
+	})
 
-		if(discordBot.flags & UserFlags.BotHTTPInteractions) {
-			res[0].status = 'online'
-		} else if(botMember) {
-			if(!botMember.presence) {
-				res[0].status = 'offline'
-			} else {
-				res[0].status = botMember.presence.activities.some(r => r.type === ActivityType.Streaming) ? 'streaming' : botMember.presence.status
-			}
-		} else {
-			res[0].status = null
-		}
-		delete res[0].trusted
-		delete res[0].partnered
-		if (topLevel) {
-			res[0].owners = await Promise.all(
-				res[0].owners.map(async (u: string) => await get._rawUser.load(u))
-			)
-			res[0].owners = res[0].owners.filter((el: User | null) => el).map((row: User) => ({ ...row }))
-		}
+	if (!res) return null
+	const discordBot = await get.discord._rawUser.load(res.id)
+	if(!discordBot) return null
+	const botMember = await getMainGuild()?.members?.fetch(res.id).catch(e=> e) as GuildMember
+	const name = discordBot.global_name ?? discordBot.username
 
-		await knex('bots').update({ name }).where({ id })
-
+	const result = {
+		... res,
+		flags: res.flags | (discordBot.flags & DiscordUserFlags.VERIFIED_BOT ? BotFlags.verified : 0) | (res.trusted ? BotFlags.trusted : 0) | (res.partnered ? BotFlags.partnered : 0),
+		tag: discordBot.discriminator,
+		avatar: discordBot.avatar,
+		name: name,
+		category: JSON.parse(res.category),
+		owners: JSON.parse(res.owners)
 	}
 
-	return res[0] ?? null
+	if(discordBot.flags & UserFlags.BotHTTPInteractions) {
+		result.status = 'online'
+	} else if(botMember) {
+		if(!botMember.presence) {
+			result.status = 'offline'
+		} else {
+			result.status = botMember.presence.activities.some(r => r.type === ActivityType.Streaming)
+				? 'streaming'
+				: botMember.presence.status === 'invisible'
+					? null
+					: botMember.presence.status
+		}
+	} else {
+		result.status = null
+	}
+
+	if (topLevel) {
+		result.owners = await Promise.all(
+			result.owners.map(async (u: string) => await get._rawUser.load(u))
+		)
+		result.owners = result.owners.filter((el: User | null) => el).map((row: User) => ({ ...row }))
+	}
+
+	await prisma.bots.update({
+		data: { name },
+		where: { id }
+	})
+
+	return result as Bot ?? null
 }
 
 async function getServer(id: string, topLevel=true): Promise<Server> {
-	const res = await knex('servers')
-		.select([
-			'id',
-			'name',
-			'flags',
-			'intro',
-			'desc',
-			'votes',
-			'owners',
-			'category',
-			'invite',
-			'state',
-			'vanity',
-			'bg',
-			'banner',
-			'flags'
-		])
-		.where({ id })
-		.orWhereRaw(`(flags & ${ServerFlags.trusted}) and vanity=?`, [id])
-		.orWhereRaw(`(flags & ${ServerFlags.partnered}) and vanity=?`, [id])
-	if (res[0]) {
-		const data = await getServerData(res[0].id)
-		if(!data || (+new Date() - +new Date(data.updatedAt)) > 3 * 60 * 1000) {
-			if(res[0].state === 'ok') res[0].state = 'unreachable'
-		} else {
-			res[0].flags = res[0].flags | (data.features.includes(GuildFeature.Partnered) && ServerFlags.discord_partnered) | (data.features.includes(GuildFeature.Verified) && ServerFlags.verified)
-			if(res[0].owners !== JSON.stringify([data.owner, ...data.admins]) || res[0].name !== data.name)
-				await knex('servers').update({ name: data.name, owners: JSON.stringify([data.owner, ...data.admins]) })
-					.where({ id: res[0].id })
-		}
-		delete res[0].owners
-		res[0].icon = data?.icon || null
-		res[0].members = data?.memberCount || null
-		res[0].emojis = data?.emojis || []
-		res[0].category = JSON.parse(res[0].category)
-		res[0].boostTier = data?.boostTier ?? null
-		if(topLevel) {
-			res[0].owner = await get._rawUser.load(data?.owner || '') ||  null
-			res[0].bots = (await Promise.all(data?.bots.slice(0, 3).map(el => get._rawBot.load(el)) || [])).filter(el => el) || null
-		} else {
-			res[0].owner = data?.owner || null
-			res[0].bots = data?.bots || null
-		}
+	const [res]: servers[] = await prisma.$queryRaw`
+		SELECT id, name, flags, intro, \`desc\`, votes, owners, category, invite, state, vanity, bg, banner
+		FROM servers
+		WHERE id = ${id}
+			OR ((flags & ${ServerFlags.trusted}) <> 0 AND vanity = ${id})
+			OR ((flags & ${ServerFlags.partnered}) <> 0 AND vanity = ${id})
+	`
+
+	if (!res) return null
+	const data = await getServerData(res.id)
+	if(!data || (+new Date() - +new Date(data.updatedAt)) > 3 * 60 * 1000) {
+		if(res.state === 'ok') res.state = 'unreachable'
+	} else {
+		res.flags = res.flags | (data.features.includes(GuildFeature.Partnered) && ServerFlags.discord_partnered) | (data.features.includes(GuildFeature.Verified) && ServerFlags.verified)
+		if(res.owners !== JSON.stringify([data.owner, ...data.admins]) || res.name !== data.name)
+			await prisma.servers.update({
+				data: {
+					name: data.name,
+					owners: JSON.stringify([data.owner, ...data.admins])
+				},
+				where: { id: res.id }
+			})
 	}
-	return res[0] ?? null
+	delete res.owners
+	const result = {
+		...res,
+		icon: data?.icon || null,
+		members: data?.memberCount || null,
+		emojis:data?.emojis || [],
+		category: JSON.parse(res.category),
+		boostTier: data?.boostTier ?? null,
+		owner: null,
+		bots: null
+	}
+
+	if(topLevel) {
+		result.owner = await get._rawUser.load(data?.owner || '') ||  null
+		result.bots = (await Promise.all(data?.bots.slice(0, 3).map(el => get._rawBot.load(el)) || [])).filter(el => el) || null
+	} else {
+		result.owner = data?.owner || null
+		result.bots = data?.bots || null
+	}
+
+	return result as Server ?? null
 }
 
 async function fetchServerOwners(id: string): Promise<User[]|null> {
@@ -142,33 +157,46 @@ async function getServerData(id: string): Promise<ServerData|null> {
 }
 
 async function getUser(id: string, topLevel = true):Promise<User> {
-	const res = await knex('users')
-		.select(['id', 'flags', 'github'])
-		.where({ id })
-	if (res[0]) {
-		const ownedBots = await knex('bots')
-			.select(['id'])
-			.where('owners', 'like', `%${id}%`)
-			.orderBy('date', 'asc')
-		const ownedServer = await knex('servers')
-			.select(['id'])
-			.where('owners', 'like', `%${id}%`)
-			.orderBy('date', 'asc')
+	const res = await prisma.users.findFirst({
+		select: { id: true, flags: true, github: true },
+		where: { id }
+	})
 
-		const discordUser = await get.discord._rawUser.load(id)
-		res[0].tag = discordUser?.discriminator || '0000'
-		res[0].username = discordUser?.username || 'Unknown User'
-		res[0].globalName = discordUser?.global_name || discordUser?.username || 'Unknown User'
-		if (topLevel) {
-			res[0].bots = (await Promise.all(ownedBots.map(async b => await get._rawBot.load(b.id)))).filter((el: Bot | null) => el)
-			res[0].servers = (await Promise.all(ownedServer.map(async b => await get._rawServer.load(b.id)))).filter((el: Server | null) => el)
-		}
-		else {
-			res[0].bots = ownedBots.map(el => el.id)
-			res[0].servers = ownedServer.map(el => el.id)
-		}
+	if (!res) return null 
+	const ownedBots = await prisma.bots.findMany({
+		where: { owners: { contains: id } },
+		select: { id: true },
+		orderBy: { date: 'asc' }
+	})
+
+	const ownedServer = await prisma.servers.findMany({
+		where: { owners: {	contains: id } },
+		select: { id: true },
+		orderBy: { date: 'asc' }
+	})
+
+	const discordUser = await get.discord._rawUser.load(id)
+	const result: User = {
+		...res,
+		avatar: discordUser?.avatar,
+		tag: discordUser?.discriminator || '0000',
+		username: discordUser?.username || 'Unknown User',
+		globalName: discordUser?.global_name || discordUser?.username || 'Unknown User',
+		bots:null,
+		servers: null,
+
 	}
-	return res[0] || null
+
+	if (topLevel) {
+		result.bots = (await Promise.all(ownedBots.map(async b => await get._rawBot.load(b.id)))).filter((el: Bot | null) => el)
+		result.servers = (await Promise.all(ownedServer.map(async b => await get._rawServer.load(b.id)))).filter((el: Server | null) => el)
+	}
+	else {
+		result.bots = ownedBots.map(el => el.id)
+		result.servers = ownedServer.map(el => el.id)
+	}
+
+	return result || null
 }
 
 async function getUserGuilds(id: string): Promise<Nullable<RawGuild[]>> {
@@ -343,22 +371,78 @@ async function getServerList(type: ListType, page = 1, query?: string):Promise<L
 }
 
 async function getBotSubmit(id: string, date: number): Promise<SubmittedBot> {
-	const res = await knex('submitted').select(['id', 'date', 'category', 'lib', 'prefix', 'intro', 'desc', 'url', 'web', 'git', 'discord', 'state', 'owners', 'reason']).where({ id, date })
-	if(res.length === 0) return null
-	res[0].category = JSON.parse(res[0].category)
-	res[0].owners = await Promise.all(JSON.parse(res[0].owners).map(async (u: string)=> await get.user.load(u)))
-	return res[0]
+	const res = await prisma.submitted.findFirst({
+		where: {
+			id: { equals: id },
+			date: { equals: date },
+		},
+		select: {
+			id: true,
+			date: true,
+			category: true,
+			lib: true,
+			prefix: true,
+			intro: true,
+			desc: true,
+			url: true,
+			web: true,
+			git: true,
+			discord: true,
+			state: true,
+			owners: true,
+			reason: true,
+		},
+	})
+	if(!res) return null
+	const result: SubmittedBot = {
+		...res,
+		lib: res.lib as Library,
+		category: JSON.parse(res.category) as BotCategory[],
+		owners: await Promise.all(JSON.parse(res.owners).map(async (u: string)=> await get.user.load(u)))
+	}
+	return result
 }
 
 async function getBotSubmits(id: string): Promise<SubmittedBot[]> {
-	if(!id) return []
-	let res = await knex('submitted').select(['id', 'date', 'category', 'lib', 'prefix', 'intro', 'desc', 'url', 'web', 'git', 'discord', 'state', 'owners', 'reason']).orderBy('date', 'desc').where('owners', 'LIKE', `%${id}%`)
-	res = await Promise.all(res.map(async el=> {
-		el.category = JSON.parse(el.category)
-		el.owners = await Promise.all(JSON.parse(el.owners).map(async (u: string)=> await get.user.load(u)))
-		return el
-	}))
-	return res
+	if (!id) return []
+
+	const res = await prisma.submitted.findMany({
+		where: {
+			owners: { contains: id },
+		},
+		orderBy: { date: 'desc' },
+		select: {
+			id: true,
+			date: true,
+			category: true,
+			lib: true,
+			prefix: true,
+			intro: true,
+			desc: true,
+			url: true,
+			web: true,
+			git: true,
+			discord: true,
+			state: true,
+			owners: true,
+			reason: true,
+		},
+	})
+
+	const transformedRes = await Promise.all(
+		res.map(async (el) => {
+			const result = {
+				...el,
+				lib: el.lib as Library,
+				category: JSON.parse(el.category),
+				owners: await Promise.all(JSON.parse(el.owners).map(async (u: string) => await get.user.load(u)))
+			}
+
+			return result
+		})
+	)
+
+	return transformedRes
 }
 
 /**
@@ -367,50 +451,104 @@ async function getBotSubmits(id: string): Promise<SubmittedBot[]> {
  * @returns Timestamp
  */
 async function getVote(userID: string, targetID: string, type: 'bot' | 'server'): Promise<number|null> {
-	const user = await knex('users').select(['votes']).where({ id: userID })
-	if(user.length === 0) return null
-	const data = JSON.parse(user[0].votes)
+	const user = await prisma.users.findFirst({
+		select: { votes: true },
+		where: { id: userID }
+	})
+
+	if(!user) return null
+	const data = JSON.parse(user.votes)
 	return data[`${type}:${targetID}`] || 0
 }
 
 async function getWebhook(id: string, type: 'bots' | 'servers'): Promise<Webhook | null> {
-	const res = (await knex(type).select(['webhook_url', 'webhook_status', 'webhook_failed_since', 'webhook_secret']).where({ id }))[0]
-	if(!res) return null
-	return {
-		url: res.webhook_url,
-		status: res.webhook_status,
-		failedSince: res.webhook_failed_since,
-		secret: res.webhook_secret
+	if (type === 'bots') {
+		const res = await prisma.bots.findFirst({
+			select: {
+				webhookUrl: true,
+				webhookStatus: true,
+				webhookFailedSince: true,
+				webhookSecret: true
+			},
+			where: { id }
+		})
+		if (!res) return null
+		return {
+			url: res.webhookUrl,
+			status: res.webhookStatus,
+			failedSince: res.webhookFailedSince,
+			secret: res.webhookSecret
+		}
+	} else {
+		const res = await prisma.servers.findFirst({
+			select: {
+				webhookUrl: true,
+				webhookStatus: true,
+				webhookFailedSince: true,
+				webhookSecret: true
+			},
+			where: { id }
+		})
+		if (!res) return null
+		return {
+			url: res.webhookUrl,
+			status: res.webhookStatus,
+			failedSince: res.webhookFailedSince,
+			secret: res.webhookSecret
+		}
 	}
 }
 
 async function voteBot(userID: string, botID: string): Promise<number|boolean> {
-	const user = await knex('users').select(['votes']).where({ id: userID })
+	const user = await prisma.users.findFirst({
+		select: { votes: true },
+		where: { id: userID }
+	})
 	const key = `bot:${botID}`
-	if(user.length === 0) return null
-	const date = +new Date()
-	const data = JSON.parse(user[0].votes)
+
+	if(!user) return null
+	const date = + new Date()
+	const data = JSON.parse(user.votes)
 	const lastDate = data[key] || 0
 	if(date - lastDate < VOTE_COOLDOWN) return VOTE_COOLDOWN - (date - lastDate)
 	data[key] = date
-	await knex('bots').where({ id: botID }).increment('votes', 1)
-	await knex('users').where({ id: userID }).update({ votes: JSON.stringify(data) })
+
+	await prisma.bots.update({
+		where: { id: botID },
+		data: { votes: { increment: 1 } },
+	})
+	await prisma.users.update({
+		where: { id: userID },
+		data: { votes: JSON.stringify(data) }
+	})
+
 	const record = await Bots.updateOne({ _id: botID, 'voteMetrix.day': getYYMMDD() }, { $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } })
-	if(record.matchedCount === 0) await Bots.findByIdAndUpdate(botID, { $push: { voteMetrix: { count: (await knex('bots').where({ id: botID }))[0].votes } } }, { upsert: true })
+	if(record.matchedCount === 0) await Bots.findByIdAndUpdate(botID, { $push: { voteMetrix: { count: (await prisma.bots.findFirst({where:{ id: botID }})).votes } } }, { upsert: true })
 	return true
 }
 
 async function voteServer(userID: string, serverID: string): Promise<number|boolean> {
-	const user = await knex('users').select(['votes']).where({ id: userID })
+	const user = await prisma.users.findFirst({
+		select: { votes: true },
+		where: { id: userID }
+	})
 	const key = `server:${serverID}`
-	if(user.length === 0) return null
+
+	if(!user) return null
 	const date = +new Date()
-	const data = JSON.parse(user[0].votes)
+	const data = JSON.parse(user.votes)
 	const lastDate = data[key] || 0
 	if(date - lastDate < VOTE_COOLDOWN) return VOTE_COOLDOWN - (date - lastDate)
 	data[key] = date
-	await knex('servers').where({ id: serverID }).increment('votes', 1)
-	await knex('users').where({ id: userID }).update({ votes: JSON.stringify(data) })
+
+	await prisma.servers.update({
+		where: { id: serverID },
+		data: { votes: { increment: 1 } },
+	})
+	await prisma.users.update({
+		where: { id: userID },
+		data: { votes: JSON.stringify(data) }
+	})
 	// const record = await Servers.updateOne({ _id: serverID, 'voteMetrix.day': getYYMMDD() }, { $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } })
 	// if(record.n === 0) await Servers.findByIdAndUpdate(serverID, { $push: { voteMetrix: { count: (await knex('servers').where({ id: serverID }))[0].votes } } }, { upsert: true })
 	return true
@@ -424,33 +562,44 @@ async function voteServer(userID: string, serverID: string): Promise<number|bool
  * @returns obj - Success
  */
 async function submitBot(id: string, data: AddBotSubmit):Promise<1|2|3|4|5|SubmittedBot> {
-	const submits = await knex('submitted').select(['id']).where({ state: 0 }).andWhere('owners', 'LIKE', `%${id}%`)
+	const submits = await prisma.submitted.findMany({
+		where: {
+			state: 0,
+			owners: { contains: id }
+		},
+		select: { id: true }
+	})
 	if(submits.length > 1) return 1
 	const botId = data.id
 	const strikes = await get.botSubmitStrikes(botId)
 	if(strikes >= 3) return 5
 	const date =  Math.round(+new Date()/1000)
-	const sameID = await knex('submitted').select(['id']).where({ id: botId, state: 0 })
+	const sameID = await prisma.submitted.findMany({
+		select: { id: true },
+		where: { id: botId, state:0 }
+	})
 	const bot = await get.bot.load(data.id)
 	if(sameID.length !== 0 || bot) return 2
 	const user = await DiscordBot.users.fetch(data.id)
 	if(!user) return 3
 	const member = await getMainGuild().members.fetch(id).then(() => true).catch(() => false)
 	if(!member) return 4
-	await knex('submitted').insert({
-		id: botId,
-		date: date,
-		owners: JSON.stringify([ id ]),
-		lib: data.library,
-		prefix: data.prefix,
-		intro: data.intro,
-		desc: data.desc,
-		web: data.website,
-		git: data.git,
-		url: data.url,
-		category: JSON.stringify(data.category),
-		discord: data.discord,
-		state: 0
+	await prisma.submitted.create({
+		data: {
+			id: botId,
+			date,
+			owners: JSON.stringify([ id ]),
+			lib: data.library,
+			prefix: data.prefix,
+			intro: data.intro,
+			desc: data.desc,
+			web: data.website,
+			git: data.git,
+			url: data.url,
+			category: JSON.stringify(data.category),
+			discord: data.discord,
+			state: 0,
+		},
 	})
 
 	return await getBotSubmit(botId, date)
@@ -471,80 +620,107 @@ async function submitServer(userID: string, id: string, data: AddServerSubmit): 
 	if(serverData.owner !== userID && !serverData.admins.includes(userID)) return 3
 	const inviteData = await DiscordBot.fetchInvite(data.invite).catch(() => null)
 	if(!inviteData || inviteData.guild.id !== id || inviteData.expiresAt) return 4
-	await knex('servers').insert({
-		id: id,
-		name: serverData.name,
-		owners: JSON.stringify([ serverData.owner, ...serverData.admins ]),
-		intro: data.intro,
-		desc: data.desc,
-		category: JSON.stringify(data.category),
-		invite: data.invite,
-		token: sign({ id })
+	await prisma.servers.create({
+		data:{
+			id: id,
+			name: serverData.name,
+			owners: JSON.stringify([ serverData.owner, ...serverData.admins ]),
+			intro: data.intro,
+			desc: data.desc,
+			category: JSON.stringify(data.category),
+			invite: data.invite,
+			token: sign({ id })
+		}
 	})
+
 	get.server.clear(id)
 	return true
 }
 
 async function getBotSpec(id: string, userID: string): Promise<BotSpec | null> {
-	const res = await knex('bots').select(['id', 'token', 'webhook_url', 'webhook_status']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
-	if(!res[0]) return null
+	const res = await prisma.bots.findFirst({
+		select: {
+			id: true,
+			token: true,
+			webhookUrl: true,
+			webhookStatus: true
+		},
+		where: { id, owners: { contains: userID } }
+	})
+
+	if(!res) return null
 	return {
-		id: res[0].id,
-		token: res[0].token,
-		webhookURL: res[0].webhook_url,
-		webhookStatus: res[0].webhook_status
+		id: res.id,
+		token: res.token,
+		webhookURL: res.webhookUrl,
+		webhookStatus: res.webhookStatus
 	}
 }
 
 async function getServerSpec(id: string, userID: string): Promise<ServerSpec | null> {
-	const res = await knex('servers').select(['id', 'token', 'webhook_url', 'webhook_status']).where({ id }).andWhere('owners', 'like', `%${userID}%`)
-	if(!res[0]) return null
+	const res = await prisma.servers.findFirst({
+		select: {
+			id: true,
+			token: true,
+			webhookUrl: true,
+			webhookStatus: true
+		},
+		where: { id, owners: { contains: userID } }
+	})
+
+	if(!res) return null
 	return {
-		id: res[0].id,
-		token: res[0].token,
-		webhookURL: res[0].webhook_url,
-		webhookStatus: res[0].webhook_status
+		id: res.id,
+		token: res.token,
+		webhookURL: res.webhookUrl,
+		webhookStatus: res.webhookStatus
 	}
 }
 
 async function deleteBot(id: string): Promise<boolean> {
-	const bot = await knex('bots').where({ id }).del()
+	const bot = await prisma.bots.delete({ where: { id } })
 	get.bot.clear(id)
 	return !!bot
 }
 
 async function deleteServer(id: string): Promise<boolean> {
-	const server = await knex('servers').where({ id }).del()
+	const server = await prisma.servers.delete({ where: { id } })
 	return !!server
 }
 
 async function updateBot(id: string, data: ManageBot): Promise<number> {
-	const res = await knex('bots').where({ id })
-	if(res.length === 0) return 0
-	await knex('bots').update({
-		prefix: data.prefix,
-		lib: data.library,
-		web: data.website,
-		git: data.git,
-		url: data.url,
-		discord: data.discord,
-		category: JSON.stringify(data.category),
-		intro: data.intro,
-		desc: data.desc
-	}).where({ id })
+	const res = await prisma.bots.findUnique({ where: { id } })
+	if(!res) return 0
+	await prisma.bots.update({
+		data: {
+			prefix: data.prefix,
+			lib: data.library,
+			web: data.website,
+			git: data.git,
+			url: data.url,
+			discord: data.discord,
+			category: JSON.stringify(data.category),
+			intro: data.intro,
+			desc: data.desc,
+		},
+		where: { id }
+	})
 
 	return 1
 }
 
 async function updatedServer(id: string, data: ManageServer) {
-	const res = await knex('servers').where({ id })
-	if(res.length === 0) return 0
-	await knex('servers').update({
-		invite: data.invite,
-		category: JSON.stringify(data.category),
-		intro: data.intro,
-		desc: data.desc
-	}).where({ id })
+	const res = await prisma.servers.findUnique({ where: { id } })
+	if(!res) return 0
+	await prisma.servers.update({
+		data: {
+			invite: data.invite,
+			category: JSON.stringify(data.category),
+			intro: data.intro,
+			desc: data.desc
+		},
+		where:{ id }
+	})
 
 	return 1
 }
@@ -556,10 +732,19 @@ async function updatedServer(id: string, data: ManageServer) {
  */
 async function updateServer(id: string, servers: number, shards: number) {
 	const bot = await get.bot.load(id)
+
 	if(bot.servers < 10000 && servers >= 10000) return 1
 	else if(bot.servers < 1000000 && servers >= 1000000) return 2
 	if(bot.shards < 200 && shards >= 200) return 3
-	await knex('bots').update({ servers: servers === undefined ? bot.servers : servers, shards: shards === undefined ? bot.shards : shards }).where({ id })
+
+	await prisma.bots.update({
+		data: {
+			servers: servers === undefined ? bot.servers : servers,
+			shards: shards === undefined ? bot.shards : shards,
+		},
+		where: { id }
+	})
+
 	if(servers) {
 		await Bots.findByIdAndUpdate(id, { $pull: { serverMetrix: { day: getYYMMDD() } } }, { upsert: true })
 		await Bots.findByIdAndUpdate(id, { $push: { serverMetrix: { count: servers } } })
@@ -568,39 +753,75 @@ async function updateServer(id: string, servers: number, shards: number) {
 }
 
 async function updateWebhook(id: string, type: 'bots' | 'servers', value: Partial<Webhook>) {
-	const res = await knex(type).update({ 
-		webhook_url: value.url, 
-		webhook_status: value.status, 
-		webhook_failed_since: value.failedSince, 
-		webhook_secret: value.secret
-	}).where({ id })
-	if(res !== 1) return false
-	return true
+	if (type === 'bots') {
+		const res = await prisma.bots.update({
+			data: {
+				webhookUrl: value.url,
+				webhookStatus: value.status,
+				webhookFailedSince: value.failedSince,
+				webhookSecret: value.secret
+			},
+			where: { id }
+		})
+
+		if(!res) return false
+		return true
+	} else {
+		const res = await prisma.servers.update({
+			data: {
+				webhookUrl: value.url,
+				webhookStatus: value.status,
+				webhookFailedSince: value.failedSince,
+				webhookSecret: value.secret
+			},
+			where: { id }
+		})
+
+		if(!res) return false
+		return true
+	}
 }
 
 async function updateOwner(id: string, owners: string[]): Promise<void> {
-	await knex('bots').where({ id }).update({ owners: JSON.stringify(owners) })
+	await prisma.bots.update({
+		data: { owners: JSON.stringify(owners) },
+		where: { id }
+	})
 	get.bot.clear(id)
 }
 
 async function resetBotToken(id: string, beforeToken: string) {
 	const token = sign({ id })
-	const bot = await knex('bots').update({ token }).where({ id, token: beforeToken })
-	if(bot !== 1) return null
+	const bot = await prisma.bots.updateMany({
+		data: { token },
+		where: { id: id, token: beforeToken }
+	})
+	if(bot.count !== 1) return null
 	return token
 }
 
 async function resetServerToken(id: string, beforeToken: string) {
 	const token = sign({ id })
-	const server = await knex('servers').update({ token }).where({ id, token: beforeToken })
-	if(server !== 1) return null
+	const server = await prisma.servers.updateMany({
+		data: { token },
+		where: { id: id, token: beforeToken }
+	})
+	if(server.count !== 1) return null
 	return token
 }
 
 async function Github(id: string, github: string) {
-	const user = await knex('users').where({ github }).whereNot({ id })
-	if(github && user.length !== 0) return 0
-	await knex('users').update({ github }).where({ id })
+	const user = await prisma.users.findFirst({
+		where:{
+			github,
+			NOT: { id }
+		}	
+	})
+	if(github && !user) return 0
+	await prisma.users.update({
+		data: { github },
+		where: { id }
+	})
 	return 1
 }
 
@@ -624,47 +845,96 @@ async function getDiscordUser(id: string, raw = false):Promise<APIDiscordUser & 
  * @returns 2 - Blocked
  */
 async function assignToken(info: TokenRegister):Promise<string|1|2> {
-	let token = await knex('users').select(['token', 'perm']).where({ id: info.id || '' })
+	let token = await prisma.users.findFirst({
+		select: { token: true, perm: true },
+		where: { id: info.id || '' }
+	})
 	let t: string
 	if(!info.verified) return 1
-	if(token.length === 0) {
+	if(!token) {
 		t = sign({ id: info.id }, { expiresIn: '30d' })
-		await knex('users').insert({ token: t, date: Math.round(Number(new Date()) / 1000), id: info.id, email: info.email, tag: info.discriminator, username: info.username, discord: sign({ access_token: info.access_token, expires_in: info.expires_in, refresh_token: info.refresh_token })  })
-		token = await knex('users').select(['token']).where({ id: info.id })
-	} else await knex('users').update({ email: info.email, tag: info.discriminator, username: info.username, discord: sign({ access_token: info.access_token, expires_in: info.expires_in, refresh_token: info.refresh_token }) }).where({ id: info.id })
-	if(token[0].perm && token[0].perm !== 'user') return 2
-	if(!verify(token[0]?.token ?? '')) {
+		await prisma.users.create({
+			data: {
+				token: t,
+				date: Math.round(Number(new Date()) / 1000),
+				id: info.id,
+				email: info.email,
+				tag: info.discriminator,
+				username: info.username,
+				discord: sign({ access_token: info.access_token, expires_in: info.expires_in, refresh_token: info.refresh_token })
+			}
+		})
+		token = await prisma.users.findUnique({
+			select: { token: true, perm: true },
+			where: { id: info.id }
+		})
+	} else {
+		await prisma.users.update({
+			data: {
+				email: info.email,
+				tag: info.discriminator,
+				username: info.username,
+				discord: sign({
+					access_token: info.access_token,
+					expires_in: info.expires_in,
+					refresh_token: info.refresh_token,
+				})
+			},
+			where: {
+				id: info.id,
+			}
+		})
+	}
+	if(token.perm && token.perm !== 'user') return 2
+	if(!verify(token.token ?? '')) {
 		t = sign({ id: info.id }, { expiresIn: '30d' })
-		await knex('users').update({ token: t }).where({ id: info.id })
-	} else t = token[0].token
+		await prisma.users.update({
+			data: { token: t },
+			where: { id: info.id }
+		})
+	} else t = token.token
 
 	return t
 }
 
 async function Authorization(token: string):Promise<string|false> {
 	const tokenInfo = verify(token ?? '')
-	const user = await knex('users').select(['id']).where({ id: tokenInfo?.id ?? '', token: token ?? '' })
-	if(user.length === 0) return false
-	else return user[0].id
+	const user = await prisma.users.findFirst({
+		select: { id: true },
+		where: { id: tokenInfo.id ?? '', token: token ?? ''  }
+	})
+	if(!user) return false
+	else return user.id
 }
 
 async function BotAuthorization(token: string):Promise<string|false> {
 	const tokenInfo = verify(token ?? '')
-	const bot = await knex('bots').select(['id']).where({ id: tokenInfo?.id ?? '', token: token ?? '' })
-	if(bot.length === 0) return false
-	else return bot[0].id
+	const bot = await prisma.bots.findFirst({
+		select: { id: true },
+		where: { id: tokenInfo.id ?? '', token: token ?? '' }
+	})
+	
+	if(!bot) return false
+	else return bot.id
 }
 
 async function ServerAuthorization(token: string): Promise<string|false> {
 	const tokenInfo = verify(token ?? '')
-	const server = await knex('servers').select(['id']).where({ id: tokenInfo?.id ?? '', token: token ?? '' })
-	if(server.length === 0) return false
-	else return server[0].id
+	const server = await prisma.servers.findFirst({
+		select: { id: true },
+		where: { id: tokenInfo?.id ?? '', token: token ?? '' }
+	})
+	
+	if(!server) return false
+	else return server.id
 }
 
 async function fetchUserDiscordToken(id: string): Promise<DiscordTokenInfo> {
-	const res = await knex('users').select(['discord']).where({ id })
-	let discord = verify(res[0]?.discord ?? '')
+	const res = await prisma.users.findUnique({
+		select: { discord: true },
+		where: { id }
+	})
+	let discord = verify(res.discord ?? '')
 	if(!discord) return null
 	if(Date.now() > (discord.iat + discord.expires_in) * 1000) {
 		const token: DiscordTokenInfo = await fetch(DiscordEnpoints.Token, {
@@ -680,7 +950,17 @@ async function fetchUserDiscordToken(id: string): Promise<DiscordTokenInfo> {
 			},
 		}).then(r=> r.json())
 		if (token.error) return null
-		await knex('users').update({ discord: sign({ access_token: token.access_token, expires_in: token.expires_in, refresh_token: token.refresh_token }) }).where({ id })
+		await prisma.users.update({
+			data: {
+				discord: sign({
+					access_token: token.access_token,
+					expires_in: token.expires_in,
+					refresh_token: token.refresh_token,
+				})
+			},
+			where: { id },
+		})
+		
 		discord = token
 	}
 	return discord
@@ -709,32 +989,87 @@ export async function CaptchaVerify(response: string): Promise<boolean> {
 // Private APIs
 
 async function getBotSubmitList() {
-	const res = await knex('submitted').select(['id', 'date']).where({ state: 0 })
+	const res = await prisma.submitted.findMany({
+		select: { id: true, date: true },
+		where: { state: 0 }
+	})
 	return await Promise.all(res.map(b => get.botSubmit.load(JSON.stringify({ id: b.id, date: b.date }))))
 }
 
 async function getBotSubmitHistory(id: string): Promise<SubmittedBot[]> {
-	const res = await knex('submitted').select(['id', 'date']).where({ id })
+	const res = await prisma.submitted.findMany({
+		select: { id: true, date: true },
+		where: { id }
+	})
 	return await Promise.all(res.map(b => get.botSubmit.load(JSON.stringify({ id: b.id, date: b.date }))))
 }
 
 async function denyBotSubmission(id: string, date: number, reason?: string) {
-	await knex('submitted').update({ state: 2, reason: reason || null }).where({ state: 0, id, date })
+	await prisma.submitted.updateMany({
+		data: { state: 2, reason: reason || null },
+		where: { state: 0, id, date }
+	})
 }
 
 async function getBotSubmitStrikes(id: string) {
-	const identicalSubmits = await knex('submitted')
-		.select(['id'])
-		.where({ id, state: 2 })
-		.whereNotIn('reason', ['PRIVATE', 'OFFLINE', 'ABSENT_AT_DISCORD']) // 다음 사유를 제외한 다른 사유의 3회 이상 거부 존재시 봇 등록 제한.
+	const identicalSubmits = await prisma.submitted.findMany({
+		select: { id: true },
+		where: {
+			id, 
+			state: 2,
+			reason: {
+				notIn: ['PRIVATE', 'OFFLINE', 'ABSENT_AT_DISCORD'] // 다음 사유를 제외한 다른 사유의 3회 이상 거부 존재시 봇 등록 제한.
+			}
+		}
+	})
+
 	return identicalSubmits.length
 }
 
 async function approveBotSubmission(id: string, date: number) {
-	const data = await knex('submitted').select(['id', 'date', 'category', 'lib', 'prefix', 'intro', 'desc', 'url', 'web', 'git', 'discord', 'state', 'owners', 'reason']).where({ state: 0, id, date })
-	if(!data[0]) return false
-	await knex('submitted').where({ state: 0, id, date }).update({ state: 1 })
-	await knex('bots').insert({ id, date, owners: data[0].owners, lib: data[0].lib, prefix: data[0].prefix, intro: data[0].intro, desc: data[0].desc, url: data[0].url, web: data[0].web, git: data[0].git, category: data[0].category, discord: data[0].discord, token: sign({ id }) })
+	const data = await prisma.submitted.findFirst({
+		select: {
+			id: true,
+			date: true,
+			category: true,
+			lib: true,
+			prefix: true,
+			intro: true,
+			desc: true,
+			url: true,
+			web: true,
+			git: true,
+			discord: true,
+			state: true,
+			owners: true,
+			reason: true
+		},
+		where: { state: 0, id, date }
+	})
+	
+	if(!data) return false
+	await prisma.submitted.updateMany({
+		data: { state: 1 },
+		where: { state: 0, id, date}
+	})
+	await prisma.bots.create({
+		data: {
+			id,
+			date,
+			owners: data.owners,
+			lib: data.lib,
+			prefix: data.prefix,
+			intro: data.intro,
+			desc: data.desc,
+			url: data.url,
+			web: data.web,
+			git: data.git,
+			category: data.category,
+			discord: data.discord,
+			token: sign({ id }),
+		}
+	})
+	
 	return true
 }
 

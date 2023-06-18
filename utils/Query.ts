@@ -212,76 +212,90 @@ async function getUserGuilds(id: string): Promise<Nullable<RawGuild[]>> {
 }
 
 async function getBotList(type: ListType, page = 1, query?: string):Promise<List<Bot>> {
-	let res: { id: string }[]
-	let count:string|number
+	const res = []
+	let count:string|number = 1
 	if (type === 'VOTE') {
-		count = (await knex('bots').whereNot({ state: 'blocked' }).count())[0]['count(*)']
-		res = await knex('bots')
-			.orderBy('votes', 'desc')
-			.orderBy('servers', 'desc')
-			.limit(16)
-			.offset(((page ? Number(page) : 1) - 1) * 16)
-			.select(['id'])
-			.whereNot({ state: 'blocked' })
+		count = await prisma.bots.count({ where: { state: { not: 'blocked' } } })
+		res.push(await prisma.bots.findMany({
+			where: { state: { not: 'blocked' } },
+			orderBy: [{ votes: 'desc' }, { servers: 'desc' }],
+			take: 16,
+			skip: ((page ? Number(page) : 1) - 1) * 16,
+			select: { id: true },
+		}))
 	} else if (type === 'TRUSTED') {
-		count = (
-			await knex('bots')
-				.where({ trusted: true })
-				.count()
-				.whereNot({ state: 'blocked' })
-		)[0]['count(*)']
-		res = await knex('bots').whereNot({ state: 'blocked' })
-			.where({ trusted: true })
-			.orderByRaw('RAND()')
-			.limit(16)
-			.offset(((page ? Number(page) : 1) - 1) * 16)
-			.select(['id'])
-			.whereNot({ state: 'blocked' })
+		count = await prisma.bots.count({ where: { trusted: true, state: { not: 'blocked' } } })
+		const results = await prisma.bots.findMany({
+			select: { id: true },
+			where: { state: { not: 'blocked' }, trusted: true },
+			take: 16,
+			skip: ((page ? Number(page) : 1) - 1) * 16
+		})
+		res.push(shuffleArray(results)) // prisma가 orderby random을 지원하지 않아 선 호출후 섞는작업
 	} else if (type === 'NEW') {
-		count = (
-			await knex('bots').whereNot({ state: 'blocked' })
-				.count()
-		)[0]['count(*)']
-		res = await knex('bots')
-			.orderBy('date', 'desc')
-			.limit(16)
-			.offset(((page ? Number(page) : 1) - 1) * 16)
-			.select(['id'])
-			.whereNot({ state: 'blocked' })
+		count = await prisma.bots.count({ where: { state: { not: 'blocked' } } })
+		res.push(await prisma.bots.findMany({
+			select: { id: true },
+			where: { state: { not: 'blocked' } },
+			orderBy: { date: 'desc'},
+			take: 16,
+			skip: ((page ? Number(page) : 1) - 1) * 16
+		}))
 	} else if (type === 'PARTNERED') {
-		count = (
-			await knex('bots')
-				.where({ partnered: true }).andWhereNot({ state: 'blocked' })
-				.count()
-		)[0]['count(*)']
-		res = await knex('bots')
-			.where({ partnered: true }).andWhereNot({ state: 'blocked' })
-			.orderByRaw('RAND()')
-			.limit(16)
-			.offset(((page ? Number(page) : 1) - 1) * 16)
-			.select(['id'])
+		count = await prisma.bots.count({ where: { partnered: true, state: { not: 'blocked' } } })
+		const results = await prisma.bots.findMany({
+			select: { id: true },
+			where: {
+				partnered: true,
+				state: { not: 'blocked' }
+			},
+			take: 16,
+			skip: ((page ? Number(page) : 1) - 1) * 16
+		})
+		res.push(shuffleArray(results))
 	} else if (type === 'CATEGORY') {
 		if (!query) throw new Error('쿼리가 누락되었습니다.')
 		if (!botCategories.includes(query)) throw new Error('알 수 없는 카테고리입니다.')
-		count = (
-			await knex('bots')
-				.where('category', 'like', `%${decodeURI(query)}%`).andWhereNot({ state: 'blocked' })
-				.count()
-		)[0]['count(*)']
-		res = await knex('bots')
-			.where('category', 'like', `%${decodeURI(query)}%`).andWhereNot({ state: 'blocked' })
-			.orderBy('votes', 'desc')
-			.orderBy('servers', 'desc')
-			.limit(16)
-			.offset(((page ? Number(page) : 1) - 1) * 16)
-			.select(['id'])
+
+		count = await prisma.bots.count({
+			where: {
+				category: { contains: decodeURI(query) },
+				state: { not: 'blocked' }
+			}
+		})
+		res.push(await prisma.bots.findMany({
+			select: { id: true },
+			where: {
+				category: { contains: decodeURI(query) },
+				state: { not: 'blocked' }
+			},
+			orderBy: [
+				{ votes: 'desc' },
+				{ servers: 'desc' },
+			],
+			take: 16,
+			skip: ((page ? Number(page) : 1) - 1) * 16
+		}))
 	} else if (type === 'SEARCH') {
 		if (!query) throw new Error('쿼리가 누락되었습니다.')
-		count = (await knex.raw('SELECT count(*) FROM bots WHERE `state` != "blocked" AND MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode)', [decodeURI(query) + '*']))[0][0]['count(*)']
-		res = (await knex.raw('SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM bots WHERE `state` != "blocked" AND MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 16 OFFSET ?', [decodeURI(query) + '*', decodeURI(query) + '*', ((page ? Number(page) : 1) - 1) * 16]))[0]
-	} else {
-		count = 1
-		res = []
+		
+		count = await prisma.bots.count({
+			where: {
+				state: { not: 'blocked' },
+				OR: [
+					{ name: { contains: query } },
+					{ intro: { contains: query } },
+					{ desc: { contains: query } }
+				]
+			}
+		})
+		const results = await prisma.$queryRaw`
+			SELECT id, votes, MATCH(name, intro, desc) AGAINST('${decodeURI(query)}*' IN BOOLEAN MODE) as relevance
+			FROM bots
+			WHERE state != 'blocked' AND MATCH(name, intro, desc) AGAINST('${decodeURI(query)}*' IN BOOLEAN MODE)
+			ORDER BY relevance DESC, votes DESC
+			LIMIT 16 OFFSET ${((page ? Number(page) : 1) - 1) * 16}`
+		res.push(results)
 	}
 
 	return { type, data: (await Promise.all(res.map(async el => await getBot(el.id)))).map(r=> ({...r})), currentPage: page, totalPage: Math.ceil(Number(count) / 16) }

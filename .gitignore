@@ -44,3 +44,6 @@ package-lock.json
 
 # sub module
 api-docs/
+
+# prisma migrations
+prisma/migrations/*

@@ -1,0 +1,151 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("MYSQL_URL")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model bots {
+  id                 String  @id @unique(map: "id") @db.VarChar(50)
+  date               Int
+  owners             String  @db.MediumText
+  lib                String  @db.MediumText
+  prefix             String  @db.MediumText
+  votes              Int     @default(0)
+  servers            Int?
+  shards             Int?
+  intro              String  @db.Text
+  desc               String  @db.Text
+  web                String? @db.MediumText
+  git                String? @db.MediumText
+  url                String? @db.MediumText
+  category           String  @default("'[]'") @db.MediumText
+  status             String? @db.Text
+  name               String? @db.Text
+  avatar             String? @db.Text
+  tag                String? @db.Text
+  verified           Boolean @default(false)
+  trusted            Boolean @default(false)
+  discord            String? @db.MediumText
+  token              String? @db.Text
+  state              String  @default("ok") @db.Text
+  boosted            Boolean @default(false)
+  vanity             String? @db.Text
+  bg                 String? @db.Text
+  banner             String? @db.Text
+  partnered          Boolean @default(false)
+  webhookUrl         String? @map("webhook_url") @db.Text
+  flags              Int     @default(0)
+  webhookStatus      Int     @default(0) @map("webhook_status")
+  webhookFailedSince Int?    @map("webhook_failed_since")
+  webhookSecret      String? @map("webhook_secret") @db.Text
+
+  @@fulltext([name, desc, intro])
+  @@map("bots")
+}
+
+model reports {
+  id       Int      @id @default(autoincrement())
+  date     DateTime @default(now()) @db.Timestamp(0)
+  issuer   String   @db.Text
+  type     String   @db.Text
+  reported String   @db.Text
+  state    Int      @default(0)
+  category String   @db.Text
+  desc     String   @db.Text
+}
+
+model servers {
+  id                 String    @id @unique(map: "id") @db.VarChar(50)
+  name               String?   @db.Text
+  date               DateTime  @default(now()) @db.DateTime(0)
+  votes              Int       @default(0)
+  intro              String    @db.MediumText
+  desc               String    @db.LongText
+  owners             String    @default("[]") @db.Text
+  category           String    @default("[]") @db.MediumText
+  invite             String?   @db.TinyText
+  token              String?   @db.Text
+  state              String    @default("ok") @db.Text
+  vanity             String?   @db.Text
+  bg                 String?   @db.Text
+  banner             String?   @db.Text
+  flags              Int       @default(0)
+  webhookUrl         String?   @db.Text
+  webhookStatus      Int       @default(0) @map("webhook_status")
+  webhookFailedSince Int?      @map("webhook_failed_since")
+  webhookSecret      String?   @map("webhook_secret") @db.Text
+  lastUpdated        DateTime? @map("last_updated") @db.DateTime(0)
+
+  @@map("servers")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model submits {
+  id       String  @db.MediumText
+  date     Int
+  owners   String  @db.MediumText
+  lib      String  @db.MediumText
+  prefix   String  @db.MediumText
+  intro    String  @db.MediumText
+  desc     String  @db.LongText
+  web      String? @db.MediumText
+  git      String? @db.MediumText
+  url      String? @db.MediumText
+  category String? @default("'[]'") @db.MediumText
+  tag      String? @db.MediumText
+  discord  String? @db.MediumText
+  state    Int     @default(0)
+  reason   String? @db.TinyText
+  p_id     Int     @id @unique @default(autoincrement())
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model submitted {
+  id       String  @db.MediumText
+  date     Int
+  owners   String  @db.MediumText
+  lib      String  @db.MediumText
+  prefix   String  @db.MediumText
+  intro    String  @db.MediumText
+  desc     String  @db.LongText
+  web      String? @db.MediumText
+  git      String? @db.MediumText
+  url      String? @db.MediumText
+  category String? @default("'[]'") @db.MediumText
+  discord  String? @db.MediumText
+  state    Int     @default(0)
+  reason   String? @db.MediumText
+  p_id     Int     @id @unique @default(autoincrement())
+}
+
+model users {
+  id       String  @unique(map: "id") @db.Char(19)
+  email    String? @db.Text
+  perm     String  @default("user") @db.Text
+  date     Int
+  bots     String  @default("[]") @db.MediumText
+  token    String  @db.MediumText
+  discord  String  @db.Text
+  avatar   String? @db.MediumText
+  username String  @db.MediumText
+  tag      String  @db.MediumText
+  votes    String  @default("{}") @db.MediumText
+  github   String? @db.TinyText
+  flags    Int     @default(0)
+  stared   String  @default("[]") @db.Text
+
+  @@index([id], map: "id_2")
+}
+
+model warn {
+  idx    Int      @id @default(autoincrement())
+  type   String   @default("user") @db.TinyText
+  id     String   @db.Text
+  reason String?  @db.Text
+  time   DateTime @default(now()) @db.Timestamp(0)
+}

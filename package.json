@@ -15,7 +15,7 @@
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "5.15.3",
-		"@hcaptcha/react-hcaptcha": "1.8.1",
+		"@hcaptcha/react-hcaptcha": "^1.8.1",
 		"@sentry/nextjs": "^7.31.1",
 		"@tailwindcss/forms": "^0.5.3",
 		"autoprefixer": "^10.4.14",

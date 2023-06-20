@@ -38,6 +38,7 @@ module.exports = {
 			'3': '30rem'
 		}
 	},
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	plugins: [require('@tailwindcss/forms')({
 		strategy: 'class',
 	})],

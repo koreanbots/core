@@ -433,7 +433,7 @@ async function submitBot(id: string, data: AddBotSubmit):Promise<1|2|3|4|5|Submi
 	const sameID = await knex('submitted').select(['id']).where({ id: botId, state: 0 })
 	const bot = await get.bot.load(data.id)
 	if(sameID.length !== 0 || bot) return 2
-	const user = await DiscordBot.users.fetch(data.id)
+	const user = await DiscordBot.users.fetch(data.id).catch(() => false)
 	if(!user) return 3
 	const member = await getMainGuild().members.fetch(id).then(() => true).catch(() => false)
 	if(!member) return 4

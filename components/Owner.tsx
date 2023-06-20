@@ -9,8 +9,8 @@ const Owner: React.FC<OwnerProps> = ({ id, globalName, username, tag, crown=fals
 					<DiscordAvatar userID={id} className='z-negative absolute inset-0 w-full h-full' />
 				</div>
 				<div className='flex-1 w-0 leading-snug'>
-					<h4 className='whitespace-nowrap truncate'>{ crown && <i className='fas fa-crown text-amber-300 text-xs' /> }{globalName}</h4>
-					<span className='text-gray-600 text-sm'>{tag !== '0' ? '#' + tag : '@' + username}</span>
+					<h4 className='whitespace-nowrap truncate'>{ crown && <i className='fas fa-crown text-amber-300 text-xs' /> }{tag === '0' ? globalName : username}</h4>
+					<span className='text-gray-600 text-sm'>{tag === '0' ? '@' + username : '#' + tag}</span>
 				</div>
 			</a>
 		</Link>

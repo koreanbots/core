@@ -98,7 +98,7 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 									className='w-full rounded-full'
 								/>
 							</div>
-							<div className='flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left'>
+							<div className='grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left'>
 								<h1 className='mb-2 mt-3 text-4xl font-bold' style={bg ? { color: 'white' } : {}}>
 									{data.name}{' '}
 									{checkServerFlag(data.flags, 'trusted') ? (

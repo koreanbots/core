@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import AbortController from 'abort-controller'
-
 import { makeBotURL, makeServerURL, redirectTo } from '@utils/Tools'
 import Fetch from '@utils/Fetch'
 import { Bot, Server, ResponseProps } from '@types'
@@ -87,7 +85,7 @@ const Search: React.FC = () => {
 				<input
 					type='search'
 					maxLength={50}
-					className='flex-grow pr-20 px-7 py-3 h-16 text-xl bg-transparent border-0 border-none outline-none shadow'
+					className='grow pr-20 px-7 py-3 h-16 text-xl bg-transparent border-0 border-none outline-none shadow'
 					placeholder='검색...'
 					value={query}
 					onChange={e => {

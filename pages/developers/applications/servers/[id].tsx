@@ -94,7 +94,7 @@ const ServerApplication: NextPage<ServerApplicationProps> = ({ user, spec, serve
 							<pre className='text-sm overflow-x-scroll w-full'>{showToken ? spec.token : '******************'}</pre>
 							<div className='pt-3 pb-6'>
 								<Button onClick={() => setShowToken(!showToken)}>{showToken ? '숨기기' : '보기'}</Button>
-								<Button onClick={setTokenCopied} className={tokenCopied ? 'bg-green-400 text-white' : null}>{tokenCopied ? '복사됨' : '복사'}</Button>
+								<Button onClick={setTokenCopied} className={tokenCopied ? 'bg-emerald-400 text-white' : null}>{tokenCopied ? '복사됨' : '복사'}</Button>
 								<Button onClick={()=> setModalOpen(true)}>재발급</Button>
 								<Modal isOpen={modalOpened} onClose={() => setModalOpen(false)} dark={theme === 'dark'} header='정말로 토큰을 재발급하시겠습니까?'>
 									<p>기존에 사용중이시던 토큰은 더 이상 사용하실 수 없습니다</p>

@@ -76,10 +76,10 @@ export async function getStaticProps () {
 
 function code({ children }:{ children: string }):JSX.Element {
 	const methods = {
-		get: 'text-green-400',
-		post: 'text-yellow-400',
+		get: 'text-emerald-400',
+		post: 'text-amber-400',
 		put: 'text-blue-500',
-		patch: 'text-yellow-400',
+		patch: 'text-amber-400',
 		delete: 'text-red-500'
 	}
 	return <code className={`${methods[String(children).toLowerCase()]}`}>

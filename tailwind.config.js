@@ -3,14 +3,10 @@ module.exports = {
 		removeDeprecatedGapUtilities: true,
 		purgeLayersByDefault: true,
 	},
-	purge: {
-		content: [
-			'./**/*.{ts,tsx}',
-		],
-		options: {
-			safelist: ['text-green-400', 'text-yellow-300', 'text-red-500', 'text-gray-500', 'text-purple-500', 'bg-koreanbots-blue', 'bg-very-black'],
-		}
-	},
+	content: [
+		'./**/*.{ts,tsx}',
+	],
+	safelist: ['text-emerald-400', 'text-amber-300', 'text-red-500', 'text-gray-500', 'text-violet-500', 'bg-koreanbots-blue', 'bg-very-black'],
 	darkMode: 'class', // or 'media' or 'class'
 	theme: {
 		extend: {
@@ -42,10 +38,7 @@ module.exports = {
 			'3': '30rem'
 		}
 	},
-	variants: {
-		extend: {
-			inset: ['checked']
-		},
-	},
-	plugins: [require('@tailwindcss/custom-forms')],
+	plugins: [require('@tailwindcss/forms')({
+		strategy: 'class',
+	})],
 }

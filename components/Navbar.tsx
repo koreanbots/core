@@ -43,7 +43,7 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 	}, [ token ])
 	return (
 		<>
-			<nav className='fixed z-40 top-0 flex flex-wrap items-center justify-between px-2 py-3 w-full text-gray-100 dark:bg-discord-black bg-discord-blurple bg-transparent lg:absolute'>
+			<nav className='fixed z-40 top-0 flex flex-wrap items-center justify-between px-2 py-3 w-full text-gray-100 dark:bg-discord-black bg-discord-blurple lg:absolute'>
 				<div className='container flex flex-wrap items-center justify-between mx-auto px-4'>
 					<div className='relative flex justify-between w-full lg:justify-start lg:w-auto'>
 						<Link href={dev ? '/developers' : '/'}>
@@ -121,7 +121,7 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 							</li>
 						</ul>
 					</div>
-					<div className='hidden flex-grow items-center bg-white lg:flex lg:bg-transparent lg:shadow-none'>
+					<div className='hidden grow items-center bg-white lg:flex lg:bg-transparent lg:shadow-none'>
 						<ul className='flex flex-col list-none lg:flex-row lg:ml-auto'>
 							<li className='flex items-center outline-none' onFocus={() => setDropdownOpen(true)} onMouseOver={() => setDropdownOpen(true)} onMouseOut={() => setDropdownOpen(false)} onBlur={() => setDropdownOpen(false)}>
 								{

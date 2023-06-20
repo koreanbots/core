@@ -95,7 +95,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 										className='w-full rounded-full'
 									/>
 								</div>
-								<div className='flex-grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left'>
+								<div className='grow px-5 py-12 w-full text-center lg:w-5/12 lg:text-left'>
 									<Tag
 										circular
 										text={
@@ -318,7 +318,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 									{
 										checkBotFlag(data.flags, 'hackerthon') ? <Segment className='mt-10'>
 											<h1 className='text-3xl font-semibold'>
-												<i className='fas fa-trophy mr-4 my-2 text-yellow-300' /> 해당 봇은 한국 디스코드 리스트 해커톤 수상작품입니다!
+												<i className='fas fa-trophy mr-4 my-2 text-amber-300' /> 해당 봇은 한국 디스코드 리스트 해커톤 수상작품입니다!
 											</h1>
 											<p>해당 봇은 한국 디스코드 리스트 주최로 진행되었던 "한국 디스코드 리스트 제1회 해커톤"에서 우수한 성적을 거둔 봇입니다.</p>
 											<p>자세한 내용은 <a className='text-blue-500 hover:text-blue-400' href='https://blog.koreanbots.dev/first-hackathon-results/'>해당 글</a>을 확인해주세요.</p>

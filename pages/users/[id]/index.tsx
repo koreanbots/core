@@ -60,7 +60,7 @@ const Users: NextPage<UserProps> = ({ user, data }) => {
 					<div>
 						{
 							(data.tag !== '0') ? <div className='lg:flex mt-3 mb-1 '>
-								<h1 className='text-4xl font-bold'>{data.globalName}</h1>
+								<h1 className='text-4xl font-bold'>{data.username}</h1>
 								<span className='ml-0.5 text-gray-400 text-3xl font-semibold mt-1'>#{data.tag}</span>
 							</div> : <div className='lg:flex mt-3 mb-1 flex-col'>
 								<h1 className='text-4xl font-bold'>{data.globalName}</h1>

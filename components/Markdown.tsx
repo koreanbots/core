@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react'
 import MarkdownView from 'react-showdown'
 import sanitizeHtml from 'sanitize-html'
-import Emoji from 'node-emoji'
+import * as Emoji from 'node-emoji'
 
 import { anchorHeader, customEmoji, twemoji } from '@utils/Tools'
 

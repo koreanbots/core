@@ -61,7 +61,7 @@
 		"tlru": "1.0.2",
 		"twemoji": "13.1.0",
 		"url-regex-safe": "2.0.2",
-		"yup": "0.32.9",
+		"yup": "1.2.0",
 		"yup-locales-ko": "1.2.0"
 	},
 	"devDependencies": {

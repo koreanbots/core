@@ -38,6 +38,10 @@ const NextConfig = {
 				permanent: true
 			}
 		]
-	}
+	},
+	sentry: process.env.CI ? {
+		disableServerWebpackPlugin: true,
+		disableClientWebpackPlugin: true,
+	} : {}
 }
 module.exports = withSentryConfig(withPWA(NextConfig))

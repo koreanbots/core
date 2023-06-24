@@ -40,7 +40,6 @@ const NextConfig = {
 		]
 	},
 	sentry: process.env.CI ? {
-		dryRun: true,
 		disableServerWebpackPlugin: true,
 		disableClientWebpackPlugin: true,
 	} : {}

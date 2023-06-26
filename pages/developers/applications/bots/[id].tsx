@@ -3,7 +3,7 @@ import { NextPage, NextPageContext } from 'next'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import useCopyClipboard from 'react-use-clipboard'
+import useClipboard from 'react-use-clipboard'
 
 import { get } from '@utils/Query'
 import { cleanObject, parseCookie, redirectTo } from '@utils/Tools'
@@ -31,7 +31,7 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 	const [ data, setData ] = useState<ResponseProps<unknown>>(null)
 	const [ modalOpened, setModalOpen ] = useState(false)
 	const [ showToken, setShowToken ] = useState(false)
-	const [ tokenCopied, setTokenCopied ] = useCopyClipboard(spec?.token, {
+	const [ tokenCopied, setTokenCopied ] = useClipboard(spec?.token, {
 		successDuration: 1000
 	})
 	async function updateApplication(d: DeveloperBot) {

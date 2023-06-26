@@ -22,7 +22,7 @@
 		"badgen": "3.2.2",
 		"cookie": "0.5.0",
 		"csrf": "3.1.0",
-		"dataloader": "2.0.0",
+		"dataloader": "2.2.2",
 		"dayjs": "^1.10.6",
 		"dd-trace": "^3.11.0",
 		"difflib": "0.2.4",

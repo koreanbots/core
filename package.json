@@ -55,7 +55,7 @@
 		"react-select": "4.3.1",
 		"react-showdown": "2.3.0",
 		"react-sortable-hoc": "2.0.0",
-		"react-use-clipboard": "1.0.7",
+		"react-use-clipboard": "1.0.9",
 		"sanitize-html": "^2.8.1",
 		"tailwindcss": "^3.3.2",
 		"tlru": "1.0.2",

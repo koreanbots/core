@@ -9,7 +9,7 @@ import Day from '@utils/Day'
 
 import { SubmittedBot, User } from '@types'
 
-import useCopyClipboard from 'react-use-clipboard'
+import useClipboard from 'react-use-clipboard'
 import { ParsedUrlQuery } from 'querystring'
 
 import NotFound from 'pages/404'
@@ -25,7 +25,7 @@ const Owner = dynamic(() => import('@components/Owner'))
 const Message = dynamic(() => import('@components/Message'))
 
 const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
-	const [ isCopied, setCopied ] = useCopyClipboard(data?.desc, {
+	const [ isCopied, setCopied ] = useClipboard(data?.desc, {
 		successDuration: 1000
 	})
 	if(!data) return <NotFound />

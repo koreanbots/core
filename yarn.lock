@@ -1744,7 +1744,7 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bedrock-layout/use-forwarded-ref@^1.1.4":
+"@bedrock-layout/use-forwarded-ref@^1.3.1":
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/@bedrock-layout/use-forwarded-ref/-/use-forwarded-ref-1.6.1.tgz#e0d25c35af41ccaa36df809a7de8d5ccd9c70d1e"
   integrity sha512-GD9A9AFLzFNjr7k6fgerSqxfwDWl+wsPS11PErOKe1zkVz0y7RGC9gzlOiX/JrgpyB3NFHWIuGtoOQqifJQQpw==
@@ -3939,7 +3939,7 @@ cjs-module-lexer@^1.0.0, cjs-module-lexer@^1.2.2:
   resolved "https://registry.yarnpkg.com/cjs-module-lexer/-/cjs-module-lexer-1.2.3.tgz#6c370ab19f8a3394e318fe682686ec0ac684d107"
   integrity sha512-0TNiGstbQmCFwt4akjjBg5pLRTSyj/PkWQ1ZoO2zntmg9yLqSRxwEa4iCfQLGjqhiqBfOJa7W/E8wfGrTDmlZQ==
 
-classnames@2.x, classnames@^2.2.1, classnames@^2.2.6:
+classnames@2.x, classnames@^2.2.1, classnames@^2.2.6, classnames@^2.3.1:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.2.tgz#351d813bf0137fcc6a76a16b88208d2560a0d924"
   integrity sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==
@@ -8368,14 +8368,14 @@ react-is@^18.0.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
-react-responsive-modal@6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/react-responsive-modal/-/react-responsive-modal-6.1.0.tgz#0ac17083e3053268a799755e1e9406052e28d5e3"
-  integrity sha512-A0HUi0VCkLucfKblljLytnPXJ0FTnEOwYh/Yg3HSU0pT6Uevkc5bjDc+ai7RTZ6ENnXS+rR55i62tWpsW7B5EQ==
+react-responsive-modal@6.4.2:
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/react-responsive-modal/-/react-responsive-modal-6.4.2.tgz#666b5c35b232cec617981006c9fe59414531a5a0"
+  integrity sha512-ARjGEKE5Gu5CSvyA8U9ARVbtK4SMAtdXsjtzwtxRlQIHC99RQTnOUctLpl7+/sp1Kg1OJZ6yqvp6ivd4TBueEw==
   dependencies:
-    "@bedrock-layout/use-forwarded-ref" "^1.1.4"
+    "@bedrock-layout/use-forwarded-ref" "^1.3.1"
     body-scroll-lock "^3.1.5"
-    classnames "^2.2.6"
+    classnames "^2.3.1"
 
 react-select@4.3.1:
   version "4.3.1"

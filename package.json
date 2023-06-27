@@ -76,7 +76,6 @@
 		"@types/nprogress": "0.2.0",
 		"@types/rc-tooltip": "^3.7.4",
 		"@types/react": "^17.0.15",
-		"@types/react-select": "^5.0.1",
 		"@types/sanitize-html": "^2.8.0",
 		"@types/twemoji": "^12.1.2",
 		"@types/url-regex-safe": "1.0.0",

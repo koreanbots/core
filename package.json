@@ -59,7 +59,7 @@
 		"sanitize-html": "^2.8.1",
 		"tailwindcss": "^3.3.2",
 		"tlru": "1.0.2",
-		"twemoji": "13.1.0",
+		"twemoji": "14.0.2",
 		"url-regex-safe": "2.0.2",
 		"yup": "0.32.9",
 		"yup-locales-ko": "1.2.0"

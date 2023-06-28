@@ -22,7 +22,10 @@ const botSchema = new mongoose.Schema({
 
 const serverSchema = new mongoose.Schema({
 	_id: String,
-	data: {}
+	data: {},
+	viewMetrix: [ metrix ],
+	voteMetrix: [ { ...metrix, increasement: { type: Number, default: 1 } } ],
+	joinMetrix: [ metrix ],
 })
 
 type ModelType<TSchema extends Schema> = Model<

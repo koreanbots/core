@@ -12,7 +12,7 @@ import { ParsedUrlQuery } from 'querystring'
 import { Bot, ResponseProps, Theme, User } from '@types'
 
 import { git, KoreanbotsEndPoints, reportCats, Status } from '@utils/Constants'
-import { get } from '@utils/Query'
+import {get, put} from '@utils/Query'
 import Day from '@utils/Day'
 import { ReportSchema } from '@utils/Yup'
 import Fetch from '@utils/Fetch'
@@ -344,6 +344,9 @@ export const getServerSideProps = async (ctx: Context) => {
 			data
 		}
 	}
+
+	await put.viewBot(ctx.query.id)
+
 	const desc = await get.botDescSafe(data.id)
 	const user = await get.Authorization(parsed?.token)
 	if((checkBotFlag(data.flags, 'trusted') || checkBotFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== ctx.query.id) {

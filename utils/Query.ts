@@ -411,8 +411,8 @@ async function voteServer(userID: string, serverID: string): Promise<number|bool
 	data[key] = date
 	await knex('servers').where({ id: serverID }).increment('votes', 1)
 	await knex('users').where({ id: userID }).update({ votes: JSON.stringify(data) })
-	// const record = await Servers.updateOne({ _id: serverID, 'voteMetrix.day': getYYMMDD() }, { $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } })
-	// if(record.n === 0) await Servers.findByIdAndUpdate(serverID, { $push: { voteMetrix: { count: (await knex('servers').where({ id: serverID }))[0].votes } } }, { upsert: true })
+	const record = await Servers.updateOne({ _id: serverID, 'voteMetrix.day': getYYMMDD() }, { $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } })
+	if(record.matchedCount === 0) await Servers.findByIdAndUpdate(serverID, { $push: { voteMetrix: { count: (await knex('servers').where({ id: serverID }))[0].votes } } }, { upsert: true })
 	return true
 }
 /**
@@ -754,6 +754,11 @@ async function viewBot(id: string) {
 	if(record.matchedCount === 0) await Bots.findByIdAndUpdate(id, { $push: { viewMetrix: { count: 0 } } }, { upsert: true })
 }
 
+async function viewServer(id: string) {
+	const record = await Servers.updateOne({ _id: id, 'viewMetrix.day': getYYMMDD() }, { $inc: { 'viewMetrix.$.count': 1 } })
+	if(record.matchedCount === 0) await Servers.findByIdAndUpdate(id, { $push: { viewMetrix: { count: 0 } } }, { upsert: true })
+}
+
 export const get = {
 	discord: {
 		user: new DataLoader(
@@ -911,7 +916,8 @@ export const put = {
 	voteServer,
 	submitBot,
 	submitServer,
-	viewBot
+	viewBot,
+	viewServer
 }
 
 export const remove = {

@@ -11,7 +11,7 @@ import { ParsedUrlQuery } from 'querystring'
 import { Server, Theme, User } from '@types'
 
 import { DiscordEnpoints, DSKR_BOT_ID, KoreanbotsEndPoints } from '@utils/Constants'
-import { get, safeImageHost } from '@utils/Query'
+import {get, put, safeImageHost} from '@utils/Query'
 import Day from '@utils/Day'
 import Fetch from '@utils/Fetch'
 import { checkBotFlag, checkServerFlag, checkUserFlag, formatNumber, parseCookie } from '@utils/Tools'
@@ -280,6 +280,9 @@ export const getServerSideProps = async (ctx: Context) => {
 			data
 		}
 	}
+
+	await put.viewServer(ctx.query.id)
+
 	const desc = safeImageHost(data.desc)
 	const user = await get.Authorization(parsed?.token)
 	if((checkServerFlag(data.flags, 'trusted') || checkServerFlag(data.flags, 'partnered')) && data.vanity && data.vanity !== ctx.query.id) {

@@ -10,7 +10,7 @@ db.once('open', () =>
 	console.log('[DB] Mongo Connected')
 )
 
-const metrix = { day: { type: String, default: getYYMMDD, unique: true }, createdAt: { type: Date, default: Date.now }, count: Number }
+const metrix = { day: { type: String, default: getYYMMDD, unique: true }, createdAt: { type: Date, default: Date.now }, count: Number, _id: false }
 const botSchema = new mongoose.Schema({
 	_id: String,
 	serverMetrix: [ metrix ],

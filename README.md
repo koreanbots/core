@@ -37,6 +37,8 @@
   <tr>
     <td align="center"><a href="https://wonder.im"><img src="https://avatars.githubusercontent.com/u/31924512?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Junseo Park</b></sub></a><br /><a href="#maintenance-wonderlandpark" title="Maintenance">🚧</a> <a href="#business-wonderlandpark" title="Business development">💼</a></td>
     <td align="center"><a href="https://github.com/zero734kr"><img src="https://avatars.githubusercontent.com/u/51540538?v=4?s=100" width="100px;" alt=""/><br /><sub><b>zero734kr</b></sub></a><br /><a href="https://github.com/koreanbots/koreanbots/pulls?q=is%3Apr+reviewed-by%3Azero734kr" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://eunwoo.dev"><img src="https://avatars.githubusercontent.com/u/61371424?v=4?s=100" width="100px;" alt=""/><br /><sub><b>eunwoo1104</b></sub></a><br /><a href="#maintenance-eunwoo1104" title="Maintenance">🚧</a>
+    <td align="center"><a href="https://skinmaker.dev"><img src="https://avatars.githubusercontent.com/u/45376950?v=4?s=100" width="100px;" alt=""/><br /><sub><b>SKINMAKER</b></sub></a><br /><a href="#maintenance-skinmaker1345" title="Maintenance">🚧</a>
   </tr>
 </table>
 

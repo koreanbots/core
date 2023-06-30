@@ -38,7 +38,8 @@ jobs:
           tags: |
             type=raw,value=latest,priority=100
             type=raw,value=stable,priority=200
-            type=sha,prefix=,suffix=,format=short,priority=300
+            type=semver,pattern={{version}},priority=300
+            type=sha,prefix=,suffix=,format=short,priority=400
             type=schedule,pattern={{date 'YYYYMMDD-hhmmss' tz='Asia/Seoul'}}
       - name: Build and push
         uses: docker/build-push-action@v4

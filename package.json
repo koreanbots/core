@@ -44,7 +44,7 @@
 		"node-emoji": "2.1.0",
 		"nprogress": "0.2.0",
 		"postcss": "^8.4.24",
-		"postcss-preset-env": "6.7.0",
+		"postcss-preset-env": "8.5.1",
 		"rc-tooltip": "5.1.1",
 		"react": "17.0.2",
 		"react-adsense": "0.1.0",

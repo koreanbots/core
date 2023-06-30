@@ -2,20 +2,20 @@
   <img src="./.github/assets/koreanbots-en.png">
 </div>
 
-![Tests](https://github.com/koreanbots/koreanbots/workflows/Tests/badge.svg)
-![Deploy](https://github.com/koreanbots/koreanbots/workflows/Deploy/badge.svg)
+![CI](https://github.com/koreanbots/koreanbots/workflows/CI/badge.svg)
+![Publish](https://github.com/koreanbots/koreanbots/workflows/Publish/badge.svg)
 [![DeepScan grade](https://deepscan.io/api/teams/12468/projects/15503/branches/310734/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=12468&pid=15503&bid=310734)
 
-> Korean Discord Bots in one place.
+> All about Korean Discord in one place.
 
 # SNS
 
 - [Twitter](https://twitter.com/koreanbots)
-- [Instagram](https://instagram.com/koreanbots)
+- [Instagram](https://instagram.com/discordlist)
 
 # Contact
 
-- [Developer Email](mailto:wonderlandpark@callisto.team)
+- [Email](mailto:team@koreanbots.dev)
 - [Discord](https://discord.gg/JEh53MQ)
 
 # Contributing

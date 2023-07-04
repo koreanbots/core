@@ -79,7 +79,7 @@
 		"@types/react-select": "^4.0.17",
 		"@types/sanitize-html": "^2.8.0",
 		"@types/url-regex-safe": "1.0.0",
-		"@typescript-eslint/eslint-plugin": "^5.60.1",
+		"@typescript-eslint/eslint-plugin": "^5.61.0",
 		"@typescript-eslint/parser": "^5.60.1",
 		"eslint": "^8.43.0",
 		"eslint-config-next": "^13.4.7",

@@ -35,7 +35,6 @@
 		"generate-license-file": "1.1.0",
 		"josa": "3.0.1",
 		"jsonwebtoken": "^9.0.0",
-		"knex": "^2.4.0",
 		"mongoose": "6.9.0",
 		"mysql": "2.18.1",
 		"next": "^12.3.2",

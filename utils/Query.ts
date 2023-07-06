@@ -7,7 +7,6 @@ import { Bot, Server, User, ListType, List, TokenRegister, BotFlags, DiscordUser
 import { botCategories, DiscordEnpoints, imageSafeHost, serverCategories, SpecialEndPoints, VOTE_COOLDOWN } from './Constants'
 
 import prisma from './Prisma'
-import knex from './Knex'
 import { Bots, Servers } from './Mongo'
 import { DiscordBot, getMainGuild } from './DiscordBot'
 import { sign, verify } from './Jwt'
@@ -302,84 +301,107 @@ async function getBotList(type: ListType, page = 1, query?: string):Promise<List
 }
 
 async function getServerList(type: ListType, page = 1, query?: string):Promise<List<Server>> {
-	let res: { id: string }[]
-	let count:string|number
+	const res = []
+	let count:string|number = 1
 	if (type === 'VOTE') {
-		count = (await knex('servers').whereNot({ state: 'blocked' }).count())[0]['count(*)']
-		res = await knex('servers')
-			.orderBy('votes', 'desc')
-			.limit(16)
-			.offset(((page ? Number(page) : 1) - 1) * 16)
-			.select(['id'])
-			.where('last_updated', '>=', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
-			.whereNot({ state: 'blocked' })
+		count = await prisma.servers.count({ where: { state: { not: 'blocked' } } })
+		res.push(prisma.servers.findMany({
+			select: { id: true },
+			orderBy: { votes: 'desc' },
+			where: {
+				lastUpdated: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() },
+				state: { not: 'blocked' }
+			},
+			take: 16,
+			skip: ((page ? Number(page) : 1) - 1) * 16
+		}))
 	} else if (type === 'TRUSTED') {
-		count = (
-			await knex('servers')
-				.whereRaw(`flags & ${ServerFlags.trusted}`)
-				.count()
-				.where('last_updated', '>=', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
-				.whereNot({ state: 'blocked' })
-		)[0]['count(*)']
-		res = await knex('servers').whereNot({ state: 'blocked' })
-			.whereRaw(`flags & ${ServerFlags.trusted}`)
-			.orderByRaw('RAND()')
-			.limit(16)
-			.offset(((page ? Number(page) : 1) - 1) * 16)
-			.select(['id'])
-			.where('last_updated', '>=', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
-			.whereNot({ state: 'blocked' })
+		count = await prisma.$queryRaw`
+			SELECT COUNT(*) as count
+			FROM servers
+			WHERE flags & ${ServerFlags.trusted}
+			AND last_updated >= ${new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()}
+			AND state != 'blocked'`
+		count	=	await prisma.$queryRaw`
+			SELECT COUNT(*) as count
+			FROM servers
+			WHERE flags & ${ServerFlags.trusted}
+			AND last_updated >= ${new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()}
+			AND state != 'blocked'`
+		res.push(	await prisma.$queryRaw`
+			SELECT id
+			FROM servers
+			WHERE flags & ${ServerFlags.trusted}
+			AND last_updated >= ${new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()}
+			AND state != 'blocked'
+			ORDER BY RAND()
+			LIMIT 16 OFFSET ${(page ? Number(page) : 1) - 1}`)
 	} else if (type === 'NEW') {
-		count = (
-			await knex('servers').whereNot({ state: 'blocked' })
-				.count()
-		)[0]['count(*)']
-		res = await knex('servers')
-			.orderBy('date', 'desc')
-			.limit(16)
-			.offset(((page ? Number(page) : 1) - 1) * 16)
-			.select(['id'])
-			.where('last_updated', '>=', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
-			.whereNot({ state: 'blocked' })
+		count = await prisma.servers.count({ where: { state: { not: 'blocked' } } })
+		res.push(await prisma.servers.findMany({
+			select: { id: true },
+			orderBy: { date: 'desc' },
+			where: {
+				lastUpdated: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() },
+				state: { not: 'blocked' }
+			},
+			take: 16,
+			skip: ((page ? Number(page) : 1) - 1) * 16
+		}))
 	} else if (type === 'PARTNERED') {
-		count = (
-			await knex('servers')
-				.whereRaw(`flags & ${ServerFlags.partnered} AND last_updated >= ?`, [new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()])
-				.andWhereNot({ state: 'blocked' })
-				.count()
-		)[0]['count(*)']
-		res = await knex('servers')
-			.whereRaw(`flags & ${ServerFlags.partnered} AND last_updated >= ?`, [new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()])
-			.andWhereNot({ state: 'blocked' })
-			.orderByRaw('RAND()')
-			.limit(16)
-			.offset(((page ? Number(page) : 1) - 1) * 16)
-			.select(['id'])
+		const servers = await prisma.servers.findMany({
+			select: { flags: true },
+			where: {
+				lastUpdated: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), },
+				state: { not: 'blocked' }
+			}
+		}) 
+		count = servers.filter(server => { return server.flags & ServerFlags.trusted}).length
+		res.push(await prisma.$queryRaw`
+			SELECT id
+			FROM servers
+			WHERE flags & ${ServerFlags.partnered}
+			AND last_updated >= ${new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()}
+			AND state != 'blocked'
+			ORDER BY RAND()
+			LIMIT 16 OFFSET ${(page ? Number(page) : 1) - 1}`)
 	} else if (type === 'CATEGORY') {
 		if (!query) throw new Error('쿼리가 누락되었습니다.')
 		if (!serverCategories.includes(query)) throw new Error('알 수 없는 카테고리입니다.')
-		count = (
-			await knex('servers')
-				.where('last_updated', '>=', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
-				.where('category', 'like', `%${decodeURI(query)}%`)
-				.andWhereNot({ state: 'blocked' })
-				.count()
-		)[0]['count(*)']
-		res = await knex('servers')
-			.where('category', 'like', `%${decodeURI(query)}%`)
-			.where('last_updated', '>=', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
-			.andWhereNot({ state: 'blocked' })
-			.orderBy('votes', 'desc')
-			.limit(16)
-			.offset(((page ? Number(page) : 1) - 1) * 16)
-			.select(['id'])
+		count = await prisma.servers.count({
+			where: {
+				lastUpdated: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() },
+				category: { contains: decodeURIComponent(query) },
+				state: { not: 'blocked' }
+			}
+		})
+		res.push(await prisma.servers.findMany({
+			select: { id: true },
+			where: {
+				category: { contains: decodeURIComponent(query) },
+				lastUpdated: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() },
+				state: { not: 'blocked' }
+			},
+			take: 16,
+			orderBy: { votes: 'desc' },
+			skip: ((page ? Number(page) : 1) - 1) * 16
+		}))
 	} else if (type === 'SEARCH') {
 		if (!query) throw new Error('쿼리가 누락되었습니다.')
-		count = (await knex.raw('SELECT count(*) FROM servers WHERE `state` != "blocked" AND last_updated >= ? AND MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode)', [new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), decodeURI(query) + '*']))[0][0]['count(*)']
-		res = (await knex.raw('SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM servers WHERE `state` != "blocked" AND last_updated >= ? AND MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 16 OFFSET ?', [decodeURI(query)  + '*', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), decodeURI(query)  + '*', ((page ? Number(page) : 1) - 1) * 16]))[0]
-	} else {
-		count = 1
-		res = []
+		count = await prisma.$queryRaw`
+			SELECT COUNT(*) as count
+			FROM servers
+			WHERE state != 'blocked'
+			AND last_updated >= ${new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()}
+			AND MATCH(name, intro, \`desc\`) AGAINST(${decodeURIComponent(query)} in boolean mode)`
+		res.push(await prisma.$queryRaw`
+			SELECT id, votes, MATCH(name, intro, \`desc\`) AGAINST(${decodeURIComponent(query)} in boolean mode) as relevance
+			FROM servers
+			WHERE state != 'blocked'
+			AND last_updated >= ${new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()}
+			AND MATCH(name, intro, \`desc\`) AGAINST(${decodeURIComponent(query)} in boolean mode)
+			ORDER BY relevance DESC, votes DESC
+			LIMIT 16 OFFSET ${(page ? Number(page) : 1) - 1}`)
 	}
 	return { type, data: (await Promise.all(res.map(async el => await getServer(el.id)))).map(r=> ({...r})), currentPage: page, totalPage: Math.ceil(Number(count) / 16) }
 }

@@ -20,6 +20,7 @@
 		"@tailwindcss/forms": "^0.5.3",
 		"autoprefixer": "^10.4.14",
 		"badgen": "3.2.2",
+		"chart.js": "^4.3.0",
 		"cookie": "0.5.0",
 		"csrf": "3.1.0",
 		"dataloader": "2.2.2",

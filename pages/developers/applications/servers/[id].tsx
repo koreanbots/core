@@ -20,6 +20,7 @@ import Tooltip from '@components/Tooltip'
 import Input from '@components/Form/Input'
 
 const Button = dynamic(() => import('@components/Button'))
+const Divider = dynamic(() => import('@components/Divider'))
 const DeveloperLayout = dynamic(() => import('@components/DeveloperLayout'))
 const ServerIcon = dynamic(() => import('@components/ServerIcon'))
 const Message = dynamic(() => import('@components/Message'))
@@ -67,7 +68,7 @@ const ServerApplication: NextPage<ServerApplicationProps> = ({ user, spec, serve
 		<p className='text-gray-400'>한국 디스코드 리스트 API에 사용할 정보를 이곳에서 설정하실 수 있습니다.</p>
 		{
 			spec ? <>
-				<div className='lg:flex pt-6'>
+				<div className='lg:flex py-6'>
 					<div className='lg:w-1/5'>
 						<ServerIcon id={server.id} />
 					</div>
@@ -145,6 +146,8 @@ const ServerApplication: NextPage<ServerApplicationProps> = ({ user, spec, serve
 				</Message>
 			</div>
 		}
+		<Divider />
+		<h1 className='text-3xl font-bold pt-6'>서버 통계</h1>
 	</DeveloperLayout>
 
 }

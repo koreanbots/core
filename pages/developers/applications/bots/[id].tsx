@@ -21,6 +21,7 @@ import Input from '@components/Form/Input'
 import Tooltip from '@components/Tooltip'
 
 const Button = dynamic(() => import('@components/Button'))
+const Divider = dynamic(() => import('@components/Divider'))
 const DeveloperLayout = dynamic(() => import('@components/DeveloperLayout'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 const Message = dynamic(() => import('@components/Message'))
@@ -66,7 +67,7 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 		</Link>
 		<h1 className='text-3xl font-bold'>봇 설정</h1>
 		<p className='text-gray-400'>한국 디스코드 리스트 API에 사용할 정보를 이곳에서 설정하실 수 있습니다.</p>
-		<div className='lg:flex pt-6'>
+		<div className='lg:flex py-6'>
 			<div className='lg:w-1/5'>
 				<DiscordAvatar userID={bot.id} />
 			</div>
@@ -137,6 +138,8 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 				</div>
 			</div>
 		</div>
+		<Divider />
+		<h1 className='text-3xl font-bold pt-6'>봇 통계</h1>
 	</DeveloperLayout>
 
 }

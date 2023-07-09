@@ -8,7 +8,7 @@ const Docs = dynamic(()=> import('@components/Docs'))
 const Markdown = dynamic(() => import('@components/Markdown'))
 
 
-const Guidelines: NextPage<GuidelinesProps> = ({ content }) => {
+const CommunityRule: NextPage<CommunityRuleProps> = ({ content }) => {
 	return (
 		<Docs
 			header='커뮤니티 규칙'
@@ -19,11 +19,11 @@ const Guidelines: NextPage<GuidelinesProps> = ({ content }) => {
 	)
 }
 
-interface GuidelinesProps {
+interface CommunityRuleProps {
 	content: string
 }
 
-export const getStaticProps: GetStaticProps<GuidelinesProps> = async () => {
+export const getStaticProps: GetStaticProps<CommunityRuleProps> = async () => {
 	const res = await fetch(SpecialEndPoints.Github.Content('koreanbots', 'terms', 'community-rule.md'))
 	const json = await res.json()
 	return {
@@ -33,5 +33,5 @@ export const getStaticProps: GetStaticProps<GuidelinesProps> = async () => {
 	}
 }
 
-export default Guidelines
+export default CommunityRule
 

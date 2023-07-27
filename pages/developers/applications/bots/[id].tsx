@@ -26,15 +26,35 @@ const DeveloperLayout = dynamic(() => import('@components/DeveloperLayout'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 const Message = dynamic(() => import('@components/Message'))
 const Modal = dynamic(() => import('@components/Modal'))
+const StatisticsCard = dynamic(() => import('@components/StatisticsCard'))
+const Select = dynamic(() => import('@components/Form/Select'))
+const DateSelect = dynamic(() => import('@components/Form/DateSelect'))
 
 const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme, csrfToken }) => {
 	const router = useRouter()
 	const [ data, setData ] = useState<ResponseProps<unknown>>(null)
 	const [ modalOpened, setModalOpen ] = useState(false)
 	const [ showToken, setShowToken ] = useState(false)
+	const [ range, setRange ] = useState('day')
+	const [ startDate, setStartDate ] = useState(new Date())
+	const [ endDate, setEndDate ] = useState(new Date())
 	const [ tokenCopied, setTokenCopied ] = useClipboard(spec?.token, {
 		successDuration: 1000
 	})
+	const availableRanges = [
+		{
+			label: '일간',
+			value: 'day'
+		},
+		{
+			label: '주간',
+			value: 'week'
+		},
+		{
+			label: '월간',
+			value: 'month'
+		},
+	]
 	async function updateApplication(d: DeveloperBot) {
 		const res = await Fetch(`/applications/bots/${bot.id}`, {
 	 		method: 'PATCH',
@@ -140,6 +160,25 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 		</div>
 		<Divider />
 		<h1 className='text-3xl font-bold pt-6'>봇 통계</h1>
+		<div className='flex flex-row pt-2 items-center'>
+			<div className='w-20 mr-2'>
+				<Select options={availableRanges} handleChange={(option) => setRange(option.value)} value={availableRanges[0]} handleTouch={() => null} />
+			</div>
+			<DateSelect selected={startDate} onChange={(date) => setStartDate(date)} startDate={startDate} endDate={endDate} />
+			<p className='px-2 text-gray-400 text-xl font-semibold'>
+				부터
+			</p>
+			<DateSelect selected={endDate} onChange={(date) => setEndDate(date)} startDate={startDate} endDate={endDate} minDate={startDate} />
+			<p className='px-2 text-gray-400 text-xl font-semibold'>
+				까지
+			</p>
+		</div>
+		<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pt-3 gap-5'>
+			<StatisticsCard name='하트 수' currentValue={50} diff={10} icon={<i className='fas fa-heart text-red-600 self-center text-xl mr-1' />} range={range} />
+			<StatisticsCard name='서버 수' currentValue={1000} diff={-10} icon={<i className='fas fa-users text-discord-blurple self-center text-xl mr-2' />} range={range} />
+			<StatisticsCard name='조회수' currentValue={102} diff={0} icon={<i className='fas fa-mouse-pointer text-neutral-200 self-center text-lg -mr-1' />} range={range} />
+			<StatisticsCard name='초대 클릭 수' currentValue={5} diff={3} icon={<i className='fas fa-user-plus text-discord-old-blurple self-center text-xl mr-2.5' />} range={range} />
+		</div>
 	</DeveloperLayout>
 
 }

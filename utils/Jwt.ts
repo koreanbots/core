@@ -17,7 +17,7 @@ export function verify(token?: string): any | null {
 	try {
 		return jwt.verify(token, publicPem)
 	} catch(e) {
-		if(e.name !== 'TokenExpiredError') console.log(e)
+		if(e.name !== 'TokenExpiredError') console.error(e)
 		return null
 	}
 }

@@ -8,7 +8,7 @@ export const ServerListDiscordBot = new Discord.Client({
 	intents: []
 })
 
-const dummyURL = 'https://canary.discord.com/api/webhooks/1146793872329023489/f8ZhcQTazY4t9kSk0KIVks1PIopYRW71Uowqn5w1QRaVVC_ApbOnUlIHjqhtvUsdqCnJ'
+const dummyURL = 'https://discord.com/api/webhooks/123123123123123123/asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf'
 
 export const webhookClients = {
 	bot: new Discord.Collection<string, Discord.WebhookClient>(),

@@ -5,7 +5,7 @@ import tracer from 'dd-trace'
 import RequestHandler from '@utils/RequestHandler'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { get, update } from '@utils/Query'
-import { DiscordBot, getBotReviewLogChannel, getOpenBotReviewLogChannel } from '@utils/DiscordBot'
+import { DiscordBot, webhookClients } from '@utils/DiscordBot'
 import { BotSubmissionDenyReasonPresetsName, KoreanbotsEndPoints } from '@utils/Constants'
 
 const DenyBotSubmit = RequestHandler()
@@ -19,10 +19,10 @@ const DenyBotSubmit = RequestHandler()
 		get.botSubmit.clear(JSON.stringify({ id: req.query.id, date: req.query.date }))
 		const embed = new EmbedBuilder().setTitle('거부').setColor(Colors.Red).setDescription(`[${submit.id}/${submit.date}](${KoreanbotsEndPoints.URL.submittedBot(submit.id, submit.date)})`).setTimestamp()
 		if(req.body.reviewer || req.body.reason) embed.addFields({name: '📃 정보', value: `${req.body.reason ? `사유: ${BotSubmissionDenyReasonPresetsName[req.body.reason] || req.body.reason}\n`: ''}${req.body.reviewer ? `심사자: ${req.body.reviewer}` : ''}`})
-		await getBotReviewLogChannel().send({embeds: [embed]})
+		await webhookClients.internal.get('reviewLog').send({embeds: [embed]})
 		const openEmbed = new EmbedBuilder().setTitle('거부').setColor(Colors.Red).setDescription(`<@${submit.id}> (${submit.id})`).setTimestamp()
 		if(req.body.reason) openEmbed.addFields({name: '📃 사유', value: `${req.body.reason ? `${BotSubmissionDenyReasonPresetsName[req.body.reason] || req.body.reason}\n`: '없음'}`})
-		await getOpenBotReviewLogChannel().send({embeds: [openEmbed]})
+		await webhookClients.internal.get('openReviewLog').send({embeds: [openEmbed]})
 		tracer.trace('botSubmits.deny', span => {
 			span.setTag('id', submit.id)
 			span.setTag('date', submit.date)

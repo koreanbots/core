@@ -10,7 +10,7 @@ import { AddBotSubmit, AddBotSubmitSchema, CsrfCaptcha, ManageBot, ManageBotSche
 import RequestHandler from '@utils/RequestHandler'
 import { User } from '@types'
 import { checkUserFlag, diff, inspect, makeDiscordCodeblock, objectDiff, serialize } from '@utils/Tools'
-import { discordLog, getBotReviewLogChannel, getMainGuild } from '@utils/DiscordBot'
+import { discordLog, getMainGuild, webhookClients } from '@utils/DiscordBot'
 import { KoreanbotsEndPoints } from '@utils/Constants'
 
 const patchLimiter = rateLimit({
@@ -91,7 +91,7 @@ const Bots = RequestHandler()
 			format: 'js'
 		})
 		const userinfo = await get.user.load(user)
-		await getBotReviewLogChannel().send({
+		await webhookClients.internal.get('reviewLog').send({
 			embeds: [
 				new EmbedBuilder()
 					.setAuthor({

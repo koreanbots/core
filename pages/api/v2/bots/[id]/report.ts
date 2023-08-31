@@ -5,7 +5,7 @@ import { get } from '@utils/Query'
 import RequestHandler from '@utils/RequestHandler'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { ReportSchema, Report} from '@utils/Yup'
-import { getReportChannel } from '@utils/DiscordBot'
+import { webhookClients } from '@utils/DiscordBot'
 import { checkToken } from '@utils/Csrf'
 
 const limiter = rateLimit({
@@ -38,7 +38,7 @@ const BotReport = RequestHandler().post(limiter)
 			})
       
 		if(!validated) return
-		await getReportChannel().send({ content: `Reported by <@${user}> (${user})\nReported **${bot.name}** <@${bot.id}> (${bot.id})\nCategory ${req.body.category}\nDesc\n\`\`\`${req.body.description}\`\`\``, allowedMentions: { parse: ['users'] }})
+		await webhookClients.internal.reportChannel.send({ threadName: `봇-${bot.id}`, content: `Reported by <@${user}> (${user})\nReported **${bot.name}** <@${bot.id}> (${bot.id})\nCategory ${req.body.category}\nDesc\n\`\`\`${req.body.description}\`\`\``, allowedMentions: { parse: ['users'] }})
 		return ResponseWrapper(res, { code: 200, message: '성공적으로 처리되었습니다.' })
 	})
 

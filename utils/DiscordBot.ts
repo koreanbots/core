@@ -17,7 +17,8 @@ export const webhookClients = {
 		log: new Discord.WebhookClient({url: process.env.LOG_WEBHOOK_URL ?? dummyURL}),
 		reviewLog: new Discord.WebhookClient({url: process.env.REVIEW_LOG_WEBHOOK_URL ?? dummyURL}),
 		openReviewLog: new Discord.WebhookClient({url: process.env.OPEN_REVIEW_LOG_WEBHOOK_URL ?? dummyURL}),
-		statsLog: new Discord.WebhookClient({url: process.env.STATS_LOG_WEBHOOK_URL ?? dummyURL})
+		statsLog: new Discord.WebhookClient({url: process.env.STATS_LOG_WEBHOOK_URL ?? dummyURL}),
+		reportChannel: new Discord.WebhookClient({url: process.env.REPORT_WEBHOOK_URL ?? dummyURL})
 	}
 }
 
@@ -31,7 +32,6 @@ DiscordBot.login(process.env.DISCORD_TOKEN)
 ServerListDiscordBot.login(process.env.DISCORD_SERVERLIST_TOKEN)
 
 export const getMainGuild = () => DiscordBot.guilds.cache.get(process.env.GUILD_ID)
-export const getReportChannel = (): Discord.TextChannel => DiscordBot.channels.cache.get(process.env.REPORT_CHANNEL_ID) as Discord.TextChannel
 
 export const discordLog = async (type: string, issuerID: string, embed?: Discord.EmbedBuilder, attachment?: { content: string, format: string}, content?: string): Promise<void> => {
 	webhookClients.internal.log.send({

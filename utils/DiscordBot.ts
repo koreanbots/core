@@ -8,9 +8,18 @@ export const ServerListDiscordBot = new Discord.Client({
 	intents: []
 })
 
+const dummyURL = 'https://discord.com/api/webhooks/123123123123123123/asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf'
+
 export const webhookClients = {
 	bot: new Discord.Collection<string, Discord.WebhookClient>(),
-	server: new Discord.Collection<string, Discord.WebhookClient>()
+	server: new Discord.Collection<string, Discord.WebhookClient>(),
+	internal: {
+		log: new Discord.WebhookClient({url: process.env.LOG_WEBHOOK_URL ?? dummyURL}),
+		reviewLog: new Discord.WebhookClient({url: process.env.REVIEW_LOG_WEBHOOK_URL ?? dummyURL}),
+		openReviewLog: new Discord.WebhookClient({url: process.env.OPEN_REVIEW_LOG_WEBHOOK_URL ?? dummyURL}),
+		statsLog: new Discord.WebhookClient({url: process.env.STATS_LOG_WEBHOOK_URL ?? dummyURL}),
+		reportChannel: new Discord.WebhookClient({url: process.env.REPORT_WEBHOOK_URL ?? dummyURL})
+	}
 }
 
 DiscordBot.on('ready', async () => {
@@ -23,15 +32,9 @@ DiscordBot.login(process.env.DISCORD_TOKEN)
 ServerListDiscordBot.login(process.env.DISCORD_SERVERLIST_TOKEN)
 
 export const getMainGuild = () => DiscordBot.guilds.cache.get(process.env.GUILD_ID)
-export const getReviewGuild = () => DiscordBot.guilds.cache.get(process.env.REVIEW_GUILD_ID)
-export const getReportChannel = (): Discord.TextChannel => DiscordBot.channels.cache.get(process.env.REPORT_CHANNEL_ID) as Discord.TextChannel
-export const getLoggingChannel = (): Discord.TextChannel => DiscordBot.channels.cache.get(process.env.LOGGING_CHANNEL_ID) as Discord.TextChannel
-export const getStatsLoggingChannel = (): Discord.TextChannel => DiscordBot.channels.cache.get(process.env.STATS_LOGGING_CHANNEL_ID) as Discord.TextChannel
-export const getBotReviewLogChannel = (): Discord.TextChannel => DiscordBot.channels.cache.get(process.env.REVIEW_LOG_CHANNEL_ID) as Discord.TextChannel
-export const getOpenBotReviewLogChannel = (): Discord.TextChannel => DiscordBot.channels.cache.get(process.env.OPEN_REVIEW_LOG_CHANNEL_ID) as Discord.TextChannel
 
 export const discordLog = async (type: string, issuerID: string, embed?: Discord.EmbedBuilder, attachment?: { content: string, format: string}, content?: string): Promise<void> => {
-	getLoggingChannel().send({ 
+	webhookClients.internal.log.send({
 		content: `[${type}] <@${issuerID}> (${issuerID})\n${content || ''}`,
 		embeds: [embed && embed.setTitle(type).setTimestamp(new Date())],
 		...(attachment && { files: [

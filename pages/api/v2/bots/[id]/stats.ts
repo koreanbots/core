@@ -6,7 +6,7 @@ import { get, update } from '@utils/Query'
 import RequestHandler from '@utils/RequestHandler'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { BotStatUpdate, BotStatUpdateSchema } from '@utils/Yup'
-import { getStatsLoggingChannel } from '@utils/DiscordBot'
+import { webhookClients } from '@utils/DiscordBot'
 import { checkUserFlag, makeDiscordCodeblock } from '@utils/Tools'
 import { KoreanbotsEndPoints } from '@utils/Constants'
 import { User, WebhookType } from '@types'
@@ -70,7 +70,7 @@ const BotStats = RequestHandler().post(limiter)
 				timestamp: Date.now()
 			})
 		}
-		await getStatsLoggingChannel().send({
+		await webhookClients.internal.statsLog.send({
 			content: `[BOT/STATS] <@${botInfo.id}> (${botInfo.id})\n${makeDiscordCodeblock(`${botInfo.servers > validated.servers ? '-' : '+'} ${botInfo.servers} -> ${validated.servers} (${botInfo.servers > validated.servers ? '▼' : '▲'}${Math.abs(validated.servers - botInfo.servers)})`, 'diff')}`, 
 			embeds: [new EmbedBuilder().setDescription(`${botInfo.name} - <@${botInfo.id}> ([${botInfo.id}](${KoreanbotsEndPoints.URL.bot(botInfo.id)}))`)]
 		})

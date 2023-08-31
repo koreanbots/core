@@ -6,7 +6,7 @@ import { get, update } from '@utils/Query'
 import RequestHandler from '@utils/RequestHandler'
 import ResponseWrapper from '@utils/ResponseWrapper'
 import { BotStatUpdate, BotStatUpdateSchema } from '@utils/Yup'
-import { getStatsLoggingChannel } from '@utils/DiscordBot'
+import { webhookClients } from '@utils/DiscordBot'
 import { KoreanbotsEndPoints } from '@utils/Constants'
 import { makeDiscordCodeblock } from '@utils/Tools'
 
@@ -42,7 +42,7 @@ const BotStats = RequestHandler()
 		const d = await update.updateServer(botInfo.id, validated.servers, undefined)
 		if(d===1 || d===2) return ResponseWrapper(res, { code: 403, message: `서버 수를 ${[null, '1만', '100만'][d]} 이상으로 설정하실 수 없습니다. 문의해주세요.`, version: 1 })
 		get.bot.clear(bot)
-		await getStatsLoggingChannel().send({
+		await webhookClients.internal.statsLog.send({
 			content: `[BOT/STATS] <@${botInfo.id}> (${botInfo.id})\n${makeDiscordCodeblock(`${botInfo.servers > validated.servers ? '-' : '+'} ${botInfo.servers} -> ${validated.servers} (${botInfo.servers > validated.servers ? '▼' : '▲'}${Math.abs(validated.servers - botInfo.servers)})`, 'diff')}`,
 			embeds: [new EmbedBuilder().setDescription(`${botInfo.name} - <@${botInfo.id}> ([${botInfo.id}](${KoreanbotsEndPoints.URL.bot(botInfo.id)}`)]
 		})

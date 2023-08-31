@@ -8,14 +8,16 @@ export const ServerListDiscordBot = new Discord.Client({
 	intents: []
 })
 
+const dummyURL = 'https://canary.discord.com/api/webhooks/1146793872329023489/f8ZhcQTazY4t9kSk0KIVks1PIopYRW71Uowqn5w1QRaVVC_ApbOnUlIHjqhtvUsdqCnJ'
+
 export const webhookClients = {
 	bot: new Discord.Collection<string, Discord.WebhookClient>(),
 	server: new Discord.Collection<string, Discord.WebhookClient>(),
 	internal: {
-		log: new Discord.WebhookClient({url: process.env.LOG_WEBHOOK_URL}),
-		reviewLog: new Discord.WebhookClient({url: process.env.REVIEW_LOG_WEBHOOK_URL}),
-		openReviewLog: new Discord.WebhookClient({url: process.env.OPEN_REVIEW_LOG_WEBHOOK_URL}),
-		statsLog: new Discord.WebhookClient({url: process.env.STATS_LOG_WEBHOOK_URL})
+		log: new Discord.WebhookClient({url: process.env.LOG_WEBHOOK_URL ?? dummyURL}),
+		reviewLog: new Discord.WebhookClient({url: process.env.REVIEW_LOG_WEBHOOK_URL ?? dummyURL}),
+		openReviewLog: new Discord.WebhookClient({url: process.env.OPEN_REVIEW_LOG_WEBHOOK_URL ?? dummyURL}),
+		statsLog: new Discord.WebhookClient({url: process.env.STATS_LOG_WEBHOOK_URL ?? dummyURL})
 	}
 }
 

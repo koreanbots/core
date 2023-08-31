@@ -70,7 +70,7 @@ const BotStats = RequestHandler().post(limiter)
 				timestamp: Date.now()
 			})
 		}
-		await webhookClients.internal.get('statsLog').send({
+		await webhookClients.internal.statsLog.send({
 			content: `[BOT/STATS] <@${botInfo.id}> (${botInfo.id})\n${makeDiscordCodeblock(`${botInfo.servers > validated.servers ? '-' : '+'} ${botInfo.servers} -> ${validated.servers} (${botInfo.servers > validated.servers ? '▼' : '▲'}${Math.abs(validated.servers - botInfo.servers)})`, 'diff')}`, 
 			embeds: [new EmbedBuilder().setDescription(`${botInfo.name} - <@${botInfo.id}> ([${botInfo.id}](${KoreanbotsEndPoints.URL.bot(botInfo.id)}))`)]
 		})

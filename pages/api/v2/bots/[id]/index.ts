@@ -91,7 +91,7 @@ const Bots = RequestHandler()
 			format: 'js'
 		})
 		const userinfo = await get.user.load(user)
-		await webhookClients.internal.get('reviewLog').send({
+		await webhookClients.internal.reviewLog.send({
 			embeds: [
 				new EmbedBuilder()
 					.setAuthor({

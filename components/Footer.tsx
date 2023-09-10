@@ -14,17 +14,17 @@ const Footer: React.FC<FooterProps> = ({ theme, setTheme }) => {
 					<div className='w-full lg:w-2/5'>
 						<h1 className='text-koreanbots-blue text-2xl font-bold'>국내 디스코드의 모든 것을 한 곳에서.</h1>
 						<span className='text-base'>2020-2023 한국 디스코드 리스트, All rights reserved.</span>
-						<div className='text-2xl'>
+						<div className='text-2xl flex space-x-1'>
 							<Link href='/discord'>
-								<a className='mr-2'>
-									<i className='fab fa-discord' />
+								<a>
+									<i className='fab fa-discord inline-block w-full' />
 								</a>
 							</Link>
-							<a href='https://github.com/koreanbots' className='mr-2'>
-								<i className='fab fa-github' />
+							<a href='https://github.com/koreanbots'>
+								<i className='fab fa-github inline-block w-full' />
 							</a>
-							<a href='https://twitter.com/koreanbots' className='mr-2'>
-								<i className='fab fa-twitter' />
+							<a href='https://twitter.com/koreanbots'>
+								<i className='fab fa-twitter inline-block w-full' />
 							</a>
 						</div>
 					</div>

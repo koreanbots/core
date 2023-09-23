@@ -122,7 +122,7 @@ async function getServer(id: string, topLevel=true): Promise<Server> {
 		res[0].category = JSON.parse(res[0].category)
 		res[0].boostTier = data?.boostTier ?? null
 		if(topLevel) {
-			res[0].owner = await get._rawUser.load(data?.owner || '') ||  null
+			res[0].owner = (await get._rawUser.load(data?.owner || '')) ||  null
 			res[0].bots = (await Promise.all(data?.bots.slice(0, 3).map(el => get._rawBot.load(el)) || [])).filter(el => el) || null
 		} else {
 			res[0].owner = data?.owner || null

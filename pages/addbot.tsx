@@ -76,6 +76,12 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 			title:'새로운 봇 추가하기', description: '자신의 봇을 한국 디스코드 리스트에 등록하세요.'
 		}} />
 	</Login>
+	if(data?.data && data.code === 200) {
+		setTimeout(
+			() => redirectTo(router, `/pendingBots/${data.data.id}/${data.data.date}`),
+			1_000
+		)
+	}
 	return (
 		<Container paddingTop className='py-5'>
 			<NextSeo title='새로운 봇 추가하기' description='자신의 봇을 한국 디스코드 리스트에 등록하세요.' openGraph={{
@@ -88,7 +94,7 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 			{
 				data ? data.code == 200 && data.data ? <Message type='success'>
 					<h2 className='text-lg font-extrabold'>봇 신청 성공!</h2>
-					<p>봇을 성공적으로 신청했습니다! 심사 페이지로 리다이랙트됩니다. {redirectTo(router, `/pendingBots/${data.data.id}/${data.data.date}`)}</p>
+					<p>봇을 성공적으로 신청했습니다! 심사 페이지로 리다이렉트됩니다.</p>
 				</Message> : <Message type='error'>
 					<h2 className='text-lg font-extrabold'>{data.message || '오류가 발생했습니다.'}</h2>
 					<ul className='list-disc list-inside'>

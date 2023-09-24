@@ -41,6 +41,9 @@ const NextConfig = {
 	sentry: process.env.CI ? {
 		disableServerWebpackPlugin: true,
 		disableClientWebpackPlugin: true,
-	} : {}
+		hideSourceMaps: true,
+	} : {
+		hideSourceMaps: true,
+	},
 }
 module.exports = withSentryConfig(withPWA(NextConfig))

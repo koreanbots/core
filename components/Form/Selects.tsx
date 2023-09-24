@@ -1,5 +1,4 @@
-import { ComponentType } from 'react'
-import ReactSelect, { components, GroupTypeBase, MultiValueProps, OptionTypeBase } from 'react-select'
+import ReactSelect, { components } from 'react-select'
 import {
 	SortableContainer,
 	SortableElement,
@@ -37,7 +36,8 @@ const Select: React.FC<SelectProps> = ({ placeholder, options, values, setValues
 		setValues(newValue)
 	}
 	return <SortableSelect useDragHandle axis='xy' distance={4} getHelperDimensions={({ node }) => node.getBoundingClientRect()} onSortEnd={onSortEnd}
-	// select props
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	//@ts-ignore
 		styles={{
 			control: (provided) => {
 				return { ...provided, border: 'none' }
@@ -50,7 +50,7 @@ const Select: React.FC<SelectProps> = ({ placeholder, options, values, setValues
 		}} isMulti className='border border-grey-light dark:border-transparent rounded' classNamePrefix='outline-none text-black dark:bg-very-black dark:text-white cursor-pointer ' placeholder={placeholder || '선택해주세요.'} options={options} onChange={handleChange} onBlur={handleTouch} noOptionsMessage={() => '검색 결과가 없습니다.'}
 		value={values.map(el => ({ label: el, value: el}))}
 		components={{
-			MultiValue: SortableMultiValue as ComponentType<MultiValueProps<OptionTypeBase, GroupTypeBase<{ label: string, value: string}>>>,
+			MultiValue: SortableMultiValue,
 			MultiValueLabel: SortableMultiValueLabel,
 		}}
 		closeMenuOnSelect={false}

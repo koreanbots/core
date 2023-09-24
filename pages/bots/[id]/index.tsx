@@ -265,7 +265,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 																				</div>
 																			)
 																		}
-																		<div className='mt-1 text-red-500 text-xs font-light'>{errors.category && touched.category ? errors.category : null}</div>
+																		<div className='mt-1 text-red-500 text-xs font-light'>{errors.category && touched.category ? errors.category as string: null}</div>
 																		<h3 className='font-bold mt-2'>설명</h3>
 																		<p className='text-gray-400 text-sm mb-1'>신고하시는 내용을 자세하게 설명해주세요.</p>
 																		<TextArea name='description' placeholder='최대한 자세하게 설명해주세요!' theme={theme === 'dark' ? 'dark' : 'light'} value={values.description} setValue={(value) => setFieldValue('description', value)} />

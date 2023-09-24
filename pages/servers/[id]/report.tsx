@@ -74,7 +74,7 @@ const ReportServer: NextPage<ReportServerProps> = ({ data, user, csrfToken }) =>
 											</div>
 										)
 									}
-									<div className='mt-1 text-red-500 text-xs font-light'>{errors.category && touched.category ? errors.category : null}</div>
+									<div className='mt-1 text-red-500 text-xs font-light'>{errors.category && touched.category ? errors.category as string : null}</div>
 									{
 										values.category && <>
 											{

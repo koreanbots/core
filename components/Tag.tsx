@@ -37,27 +37,27 @@ const Tag: React.FC<LabelProps> = ({
 				{text}
 			</a>
 		) : (
-			<Link href={href}>
-				<a
-					className={`${className ?? ''} text-center text-base  ${
-						dark
-							? blurple
-								? 'bg-discord-blurple text-white'
-								: 'bg-little-white-hover hover:bg-little-white dark:bg-very-black'
-							: github
-								? 'bg-gray-900 text-white hover:bg-gray-700'
-								: 'bg-little-white dark:bg-discord-black hover:bg-little-white-hover'
-					} ${
-						!blurple && !github ? 'text-black dark:text-gray-400' : 'hover:bg-little-white-hover'
-					} ${
-						circular
-							? `rounded-3xl ${bigger ? 'px-3.5 py-2.5' : 'px-2.5 py-1.5'}`
-							: `rounded ${bigger ? 'px-3 py-2' : 'px-2 py-1'}`
-					} mr-1 mb-${marginBottom} dark:hover:bg-discord-dark-hover transition duration-100 ease-in`}
-				>
-					{text}
-				</a>
-			</Link>
+			(<Link
+				href={href}
+				className={`${className ?? ''} text-center text-base  ${
+					dark
+						? blurple
+							? 'bg-discord-blurple text-white'
+							: 'bg-little-white-hover hover:bg-little-white dark:bg-very-black'
+						: github
+							? 'bg-gray-900 text-white hover:bg-gray-700'
+							: 'bg-little-white dark:bg-discord-black hover:bg-little-white-hover'
+				} ${
+					!blurple && !github ? 'text-black dark:text-gray-400' : 'hover:bg-little-white-hover'
+				} ${
+					circular
+						? `rounded-3xl ${bigger ? 'px-3.5 py-2.5' : 'px-2.5 py-1.5'}`
+						: `rounded ${bigger ? 'px-3 py-2' : 'px-2 py-1'}`
+				} mr-1 mb-${marginBottom} dark:hover:bg-discord-dark-hover transition duration-100 ease-in`}>
+
+				{text}
+
+			</Link>)
 		)
 	) : (
 		<a

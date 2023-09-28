@@ -1,60 +1,92 @@
-import { ComponentType } from 'react'
-import ReactSelect, { components, GroupTypeBase, MultiValueProps, OptionTypeBase } from 'react-select'
+import React, { MouseEventHandler } from 'react'
+import ReactSelect, {
+	components,
+	MultiValueProps,
+	MultiValueRemoveProps,
+} from 'react-select'
+import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core'
+import { restrictToParentElement } from '@dnd-kit/modifiers'
 import {
-	SortableContainer,
-	SortableElement,
-	SortableHandle,
-} from 'react-sortable-hoc'
+	arrayMove,
+	horizontalListSortingStrategy,
+	SortableContext,
+	useSortable,
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
-function arrayMove(array, from, to) {
-	array = array.slice()
-	array.splice(to < 0 ? array.length + to : to, 0, array.splice(from, 1)[0])
-	return array
-}
-
-const SortableMultiValue = SortableElement(props => {
-	// this prevents the menu from being opened/closed when the user clicks
-	// on a value to begin dragging it. ideally, detecting a click (instead of
-	// a drag) would still focus the control and toggle the menu, but that
-	// requires some magic with refs that are out of scope for this example
-	const onMouseDown = e => {
+const MultiValue = (props: MultiValueProps<Option>) => {
+	const onMouseDown: MouseEventHandler<HTMLDivElement> = (e) => {
 		e.preventDefault()
 		e.stopPropagation()
 	}
 	const innerProps = { ...props.innerProps, onMouseDown }
-	return <components.MultiValue {...props} innerProps={innerProps} />
-})
+	const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: props.data.value })
+	const style = {
+		transform: CSS.Transform.toString(transform),
+		transition,
+	}
 
-const SortableMultiValueLabel = SortableHandle(props => (
-	<components.MultiValueLabel {...props} />
-))
+	return (
+		<div style={style} ref={setNodeRef} {...attributes} {...listeners}>
+			<components.MultiValue {...props} innerProps={innerProps} />
+		</div>
+	)
+}
 
-const SortableSelect = SortableContainer(ReactSelect)
+const MultiValueRemove = (props: MultiValueRemoveProps<Option>) => {
+	return (
+		<components.MultiValueRemove
+			{...props}
+			innerProps={{
+				onPointerDown: (e) => e.stopPropagation(),
+				...props.innerProps,
+			}}
+		/>
+	)
+}
 
 const Select: React.FC<SelectProps> = ({ placeholder, options, values, setValues, handleChange, handleTouch }) => {
-	const onSortEnd = ({ oldIndex, newIndex }) => {
-		const newValue = arrayMove(values, oldIndex, newIndex)
+	const onSortEnd = (event: DragEndEvent) => {
+		const { active, over } = event
+		const newValue = arrayMove(values, values.findIndex(i => i === active.id), values.findIndex(i => i === over.id))
 		setValues(newValue)
 	}
-	return <SortableSelect useDragHandle axis='xy' distance={4} getHelperDimensions={({ node }) => node.getBoundingClientRect()} onSortEnd={onSortEnd}
-	// select props
-		styles={{
-			control: (provided) => {
-				return { ...provided, border: 'none' }
-			},
-			option: (provided) => {
-				return { ...provided, cursor: 'pointer', ':hover': {
-					opacity: '0.7'
-				} }
-			}
-		}} isMulti className='border border-grey-light dark:border-transparent rounded' classNamePrefix='outline-none text-black dark:bg-very-black dark:text-white cursor-pointer ' placeholder={placeholder || '선택해주세요.'} options={options} onChange={handleChange} onBlur={handleTouch} noOptionsMessage={() => '검색 결과가 없습니다.'}
-		value={values.map(el => ({ label: el, value: el}))}
-		components={{
-			MultiValue: SortableMultiValue as ComponentType<MultiValueProps<OptionTypeBase, GroupTypeBase<{ label: string, value: string}>>>,
-			MultiValueLabel: SortableMultiValueLabel,
-		}}
-		closeMenuOnSelect={false}
-	/>
+	return <DndContext modifiers={[restrictToParentElement]} onDragEnd={onSortEnd} collisionDetection={closestCenter}>
+		<SortableContext
+			items={values}
+			strategy={horizontalListSortingStrategy}>
+			<ReactSelect
+				styles={{
+					placeholder: (provided) => {
+						return { ...provided, position: 'absolute' }
+					},
+					control: (provided) => {
+						return { ...provided, border: 'none' }
+					},
+					option: (provided) => {
+						return { ...provided, cursor: 'pointer', ':hover': {
+							opacity: '0.7'
+						} }
+					}
+				}} 
+				isMulti
+				className='border border-grey-light dark:border-transparent rounded' 
+				classNamePrefix='outline-none text-black dark:bg-very-black dark:text-white cursor-pointer ' 
+				placeholder={placeholder || '선택해주세요.'} 
+				options={options} 
+				onChange={handleChange} 
+				onBlur={handleTouch}
+				noOptionsMessage={() => '검색 결과가 없습니다.'}
+				value={values.map(el => ({ label: el, value: el}))}
+				components={{
+					MultiValue,
+					MultiValueRemove,
+				}}
+				closeMenuOnSelect={false}
+			/>
+		</SortableContext>
+	</DndContext> 
 }
 
 interface SelectProps {

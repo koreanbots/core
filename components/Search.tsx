@@ -115,7 +115,7 @@ const Search: React.FC = () => {
 										data.data.bots.length === 0 ? 
 											<li className='px-3 py-3.5'>검색 결과가 없습니다.</li> :
 											data.data.bots.map(el => (
-												<Link key={el.id} href={makeBotURL(el)}>
+												<Link key={el.id} href={makeBotURL(el)} legacyBehavior>
 													<li className='h-15 flex px-3 py-2 cursor-pointer'>
 														<DiscordAvatar className='mt-1 w-12 h-12' size={128} userID={el.id} />
 														<div className='ml-2'>
@@ -133,7 +133,7 @@ const Search: React.FC = () => {
 										data.data.servers.length === 0 ?
 											<li className='px-3 py-3.5'>검색 결과가 없습니다.</li> :
 											data.data.servers.map(el => (
-												<Link key={el.id} href={makeServerURL(el)}>
+												<Link key={el.id} href={makeServerURL(el)} legacyBehavior>
 													<li className='h-15 flex px-3 py-2 cursor-pointer'>
 														<ServerIcon className='mt-1 w-12 h-12' size={128} id={el.id} />
 														<div className='ml-2'>
@@ -177,7 +177,10 @@ const Search: React.FC = () => {
 									</li>
 									{
 										recentSearch.slice(0, 10).map((el, n) => (
-											<Link key={n} href={`/search?q=${encodeURIComponent(el?.value)}`}>
+											<Link
+												key={n}
+												href={`/search?q=${encodeURIComponent(el?.value)}`}
+												legacyBehavior>
 												<li className='h-15 px-3 py-2 cursor-pointer'>
 													<i className='fas fa-history' /> {el?.value}
 													<span className='absolute right-0 pr-10 text-gray-400 text-sm'>

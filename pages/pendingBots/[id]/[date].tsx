@@ -29,158 +29,160 @@ const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
 		successDuration: 1000
 	})
 	if(!data) return <NotFound />
-	return <Container paddingTop className='py-10'>
-		<NextSeo title='심사이력' />
-		<div className='lg:flex w-full'>
-			<div className='w-full lg:w-3/4 lg:pr-5 py-8 text-center lg:text-left'>
-				{
-					data.state === 0 ? <Message type='info'>
-						<h2 className='text-lg font-extrabold'>승인 대기중</h2>
-						<p>해당 봇은 아직 승인 대기 상태입니다.</p>
-						
-					</Message> 
-						: data.state === 1 ? <Message type='success'>
-							<h2 className='text-lg font-extrabold'>승인됨</h2>
-							<p>신청하신 해당 봇이 승인되었습니다!</p>
-							<p><Link href={`/bots/${data.id}`}><a className='text-blue-500 hover:text-blue-400'>봇 페이지</a></Link></p>
-						</Message> : <Message type='error'>
-							<h2 className='text-lg font-extrabold'>거부됨</h2>
-							<p>아쉽게도 신청하신 해당 봇은 거부되었습니다.</p>
-							{
-								data.reason && <>
-									<p>사유: <strong>{BotSubmissionDenyReasonPresetsName[data.reason] || data.reason}</strong></p>
-									<div className='pt-2'>
-										{DenyPresetsArticle[data.reason]}
-									</div>
-								</>
-							}
-							<div className='pt-2'>
-								{data.strikes < 3 ? (
-									<p>
-										앞으로 {3 - data.strikes}번의 심사 기회가 남았습니다. 심사 기회를 모두 소진하시면 동일한 봇으로의 심사가 제한됩니다. <br/>
-										'프라이빗 봇', '봇 오프라인', '공식 디스코드 서버 미참여'로 거부된 경우 심사 기회가 차감되지 않습니다.
-									</p>
-								) : (
-									<p>더 이상 해당 봇으로 심사를 신청하실 수 없습니다.</p>
-								)}
-							</div>
-						</Message>
-				}
-				<p className='dark:text-gray-300 text-gray-800 text-base mt-3'>{data.intro}</p>
-			</div>
-			<div className='w-full lg:w-1/4 lg:pt-8'>
-				<LongButton
-					newTab
-					href={
-						data.url ??
-							`https://discordapp.com/oauth2/authorize?client_id=${data.id}&scope=bot&permissions=0`
+	return (
+		<Container paddingTop className='py-10'>
+			<NextSeo title='심사이력' />
+			<div className='lg:flex w-full'>
+				<div className='w-full lg:w-3/4 lg:pr-5 py-8 text-center lg:text-left'>
+					{
+						data.state === 0 ? <Message type='info'>
+							<h2 className='text-lg font-extrabold'>승인 대기중</h2>
+							<p>해당 봇은 아직 승인 대기 상태입니다.</p>
+                            
+						</Message> 
+							: data.state === 1 ? <Message type='success'>
+								<h2 className='text-lg font-extrabold'>승인됨</h2>
+								<p>신청하신 해당 봇이 승인되었습니다!</p>
+								<p><Link href={`/bots/${data.id}`} className='text-blue-500 hover:text-blue-400'>봇 페이지</Link></p>
+							</Message> : <Message type='error'>
+								<h2 className='text-lg font-extrabold'>거부됨</h2>
+								<p>아쉽게도 신청하신 해당 봇은 거부되었습니다.</p>
+								{
+									data.reason && <>
+										<p>사유: <strong>{BotSubmissionDenyReasonPresetsName[data.reason] || data.reason}</strong></p>
+										<div className='pt-2'>
+											{DenyPresetsArticle[data.reason]}
+										</div>
+									</>
+								}
+								<div className='pt-2'>
+									{data.strikes < 3 ? (
+										<p>
+                                            앞으로 {3 - data.strikes}번의 심사 기회가 남았습니다. 심사 기회를 모두 소진하시면 동일한 봇으로의 심사가 제한됩니다. <br/>
+                                            '프라이빗 봇', '봇 오프라인', '공식 디스코드 서버 미참여'로 거부된 경우 심사 기회가 차감되지 않습니다.
+										</p>
+									) : (
+										<p>더 이상 해당 봇으로 심사를 신청하실 수 없습니다.</p>
+									)}
+								</div>
+							</Message>
 					}
-				>
-					<h4 className='whitespace-nowrap'>
-						<i className='fas fa-user-plus text-discord-blurple' /> 초대하기
-					</h4>
-				</LongButton>
-				<LongButton onClick={setCopied}>
-					<h4>
-						{ isCopied ? <><i className='fas fa-check text-emerald-400' /> 복사됨</> : <><i className='far fa-copy'/> 설명 마크다운 복사하기</>}
-					</h4>
-				</LongButton>
-			</div>
-			
-			
-		</div>
-		<Divider className='px-5' />
-		<div className='lg:flex lg:flex-row-reverse'>
-			<div className='mb-1 w-full lg:w-1/4'>
-				<h2 className='3xl mb-2 font-bold'>정보</h2>
-				<div className='grid gap-4 grid-cols-1 px-4 py-4 text-black dark:text-gray-400 dark:bg-discord-black bg-little-white rounded-sm'>
-					<div className='flex'>
-						<div className='w-2/5'>
-							<i className='fas fa-fingerprint' /> ID
-						</div>
-						<div className='text-black dark:text-gray-400 truncate'>
-							{data.id}
-						</div>
-					</div>
-					<div className='flex'>
-						<div className='w-2/5'>
-							<i className='fas fa-calendar-day' /> 등록일
-						</div>
-						<div className='text-black dark:text-gray-400'>
-							{Day(data.date * 1000).format('LLL')}
-						</div>
-					</div>
-					<div className='flex'>
-						<div className='w-2/5'>
-							<i className='far fa-flag' /> 접두사
-						</div>
-						<div className='markdown-body text-black dark:text-gray-400'>
-							<code>{data.prefix}</code>
-						</div>
-					</div>
+					<p className='dark:text-gray-300 text-gray-800 text-base mt-3'>{data.intro}</p>
 				</div>
-				<h2 className='3xl mb-2 mt-2 font-bold'>카테고리</h2>
-				<div className='flex flex-wrap'>
-					{data.category.map(el => (
-						<Tag key={el} text={el} href={`/bots/categories/${el}`} />
+				<div className='w-full lg:w-1/4 lg:pt-8'>
+					<LongButton
+						newTab
+						href={
+							data.url ??
+                                `https://discordapp.com/oauth2/authorize?client_id=${data.id}&scope=bot&permissions=0`
+						}
+					>
+						<h4 className='whitespace-nowrap'>
+							<i className='fas fa-user-plus text-discord-blurple' /> 초대하기
+						</h4>
+					</LongButton>
+					<LongButton onClick={setCopied}>
+						<h4>
+							{ isCopied ? <><i className='fas fa-check text-emerald-400' /> 복사됨</> : <><i className='far fa-copy'/> 설명 마크다운 복사하기</>}
+						</h4>
+					</LongButton>
+				</div>
+                
+                
+			</div>
+			<Divider className='px-5' />
+			<div className='lg:flex lg:flex-row-reverse'>
+				<div className='mb-1 w-full lg:w-1/4'>
+					<h2 className='3xl mb-2 font-bold'>정보</h2>
+					<div className='grid gap-4 grid-cols-1 px-4 py-4 text-black dark:text-gray-400 dark:bg-discord-black bg-little-white rounded-sm'>
+						<div className='flex'>
+							<div className='w-2/5'>
+								<i className='fas fa-fingerprint' /> ID
+							</div>
+							<div className='text-black dark:text-gray-400 truncate'>
+								{data.id}
+							</div>
+						</div>
+						<div className='flex'>
+							<div className='w-2/5'>
+								<i className='fas fa-calendar-day' /> 등록일
+							</div>
+							<div className='text-black dark:text-gray-400'>
+								{Day(data.date * 1000).format('LLL')}
+							</div>
+						</div>
+						<div className='flex'>
+							<div className='w-2/5'>
+								<i className='far fa-flag' /> 접두사
+							</div>
+							<div className='markdown-body text-black dark:text-gray-400'>
+								<code>{data.prefix}</code>
+							</div>
+						</div>
+					</div>
+					<h2 className='3xl mb-2 mt-2 font-bold'>카테고리</h2>
+					<div className='flex flex-wrap'>
+						{data.category.map(el => (
+							<Tag key={el} text={el} href={`/bots/categories/${el}`} />
+						))}
+					</div>
+					<h2 className='3xl mb-2 mt-2 font-bold'>제작자</h2>
+					{(data.owners as User[]).map(el => (
+						<Owner
+							key={el.id}
+							id={el.id}
+							tag={el.tag}
+							globalName={el.globalName}
+							username={el.username}
+						/>
 					))}
+					<div className='list grid'>
+						{data.discord && (
+							<a
+								rel='noopener noreferrer'
+								target='_blank'
+								className='text-discord-blurple hover:underline'
+								href={`https://discord.gg/${data.discord}`}
+							>
+								<i className='fab fa-discord' />
+                                    디스코드 서버
+							</a>
+						)}
+						{data.web && (
+							<a
+								rel='noopener noreferrer'
+								target='_blank'
+								className='text-blue-500 hover:underline'
+								href={data.web}
+							>
+								<i className='fas fa-globe' />
+                                    웹사이트
+							</a>
+						)}
+						{data.git && (
+							<a
+								rel='noopener noreferrer'
+								target='_blank'
+								className='hover:underline'
+								href={data.git}
+							>
+								<i className={`fab fa-${git[new URL(data.git).hostname]?.icon ?? 'git-alt'}`} />
+								{git[new URL(data.git).hostname]?.text ?? 'Git'}
+							</a>
+						)}
+					</div>
+					<Advertisement size='tall' />
 				</div>
-				<h2 className='3xl mb-2 mt-2 font-bold'>제작자</h2>
-				{(data.owners as User[]).map(el => (
-					<Owner
-						key={el.id}
-						id={el.id}
-						tag={el.tag}
-						globalName={el.globalName}
-						username={el.username}
-					/>
-				))}
-				<div className='list grid'>
-					{data.discord && (
-						<a
-							rel='noopener noreferrer'
-							target='_blank'
-							className='text-discord-blurple hover:underline'
-							href={`https://discord.gg/${data.discord}`}
-						>
-							<i className='fab fa-discord' />
-								디스코드 서버
-						</a>
-					)}
-					{data.web && (
-						<a
-							rel='noopener noreferrer'
-							target='_blank'
-							className='text-blue-500 hover:underline'
-							href={data.web}
-						>
-							<i className='fas fa-globe' />
-								웹사이트
-						</a>
-					)}
-					{data.git && (
-						<a
-							rel='noopener noreferrer'
-							target='_blank'
-							className='hover:underline'
-							href={data.git}
-						>
-							<i className={`fab fa-${git[new URL(data.git).hostname]?.icon ?? 'git-alt'}`} />
-							{git[new URL(data.git).hostname]?.text ?? 'Git'}
-						</a>
-					)}
+				<div className='markdown-body pt-10 w-full lg:pr-5 lg:w-3/4'>
+					<Advertisement />
+					<Segment className='my-4'>
+						<Markdown text={data.desc}/>
+					</Segment>
+					<Advertisement />
 				</div>
-				<Advertisement size='tall' />
 			</div>
-			<div className='markdown-body pt-10 w-full lg:pr-5 lg:w-3/4'>
-				<Advertisement />
-				<Segment className='my-4'>
-					<Markdown text={data.desc}/>
-				</Segment>
-				<Advertisement />
-			</div>
-		</div>
-	</Container>
+		</Container>
+	)
 }
 
 export const getServerSideProps = async (ctx: Context) => {

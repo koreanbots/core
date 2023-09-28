@@ -58,6 +58,9 @@ const Select: React.FC<SelectProps> = ({ placeholder, options, values, setValues
 			strategy={horizontalListSortingStrategy}>
 			<ReactSelect
 				styles={{
+					placeholder: (provided) => {
+						return { ...provided, position: 'absolute' }
+					},
 					control: (provided) => {
 						return { ...provided, border: 'none' }
 					},

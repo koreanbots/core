@@ -9,15 +9,11 @@ const LongButton: React.FC<LongButtonProps> = ({ children, newTab=false, href, o
 				{children}
 			</div>
 		</a>
-		else  return (
-			<Link
-				href={href}
-				className={`${center ? 'justify-center ': '' }text-base bg-little-white dark:bg-discord-black text-black dark:text-gray-400 rounded flex hover:bg-little-white-hover dark:hover:bg-discord-dark-hover cursor-pointer px-4 py-4 mb-1`}>
-
+		else  return <Link href={href}>
+			<a className={`${center ? 'justify-center ': '' }text-base bg-little-white dark:bg-discord-black text-black dark:text-gray-400 rounded flex hover:bg-little-white-hover dark:hover:bg-discord-dark-hover cursor-pointer px-4 py-4 mb-1`}>
 				{children}
-
-			</Link>
-		)
+			</a>
+		</Link>
 	}
 	if(onClick) return <div onKeyPress={onClick} onClick={onClick} className={`${center ? 'justify-center ': '' }text-base bg-little-white dark:bg-discord-black text-black dark:text-gray-400 rounded flex hover:bg-little-white-hover dark:hover:bg-discord-dark-hover cursor-pointer px-4 py-4 mb-1`}>
 		{children}

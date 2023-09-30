@@ -16,9 +16,9 @@ const Footer: React.FC<FooterProps> = ({ theme, setTheme }) => {
 						<span className='text-base'>2020-2023 한국 디스코드 리스트, All rights reserved.</span>
 						<div className='text-2xl flex space-x-1'>
 							<Link href='/discord'>
-
-								<i className='fab fa-discord inline-block w-full' />
-
+								<a>
+									<i className='fab fa-discord inline-block w-full' />
+								</a>
 							</Link>
 							<a href='https://github.com/koreanbots'>
 								<i className='fab fa-github inline-block w-full' />
@@ -33,18 +33,18 @@ const Footer: React.FC<FooterProps> = ({ theme, setTheme }) => {
 							<h2 className='text-koreanbots-blue text-base font-bold'>한국 디스코드 리스트</h2>
 							<ul className='text-sm'>
 								<li>
-									<Link href='/about' className='hover:text-gray-300'>
-										소개
+									<Link href='/about'>
+										<a className='hover:text-gray-300'>소개</a>
 									</Link>
 								</li>
 								<li>
-									<Link href='/developers' className='hover:text-gray-300'>
-										개발자
+									<Link href='/developers'>
+										<a className='hover:text-gray-300'>개발자</a>
 									</Link>
 								</li>
 								<li>
-									<Link href='/security' className='hover:text-gray-300'>
-										버그 바운티
+									<Link href='/security'>
+										<a className='hover:text-gray-300'>버그 바운티</a>
 									</Link>
 								</li>
 							</ul>
@@ -53,23 +53,23 @@ const Footer: React.FC<FooterProps> = ({ theme, setTheme }) => {
 							<h2 className='text-koreanbots-blue text-base font-bold'>정책</h2>
 							<ul className='text-sm'>
 								<li>
-									<Link href='/tos' className='hover:text-gray-300'>
-										서비스 이용약관
+									<Link href='/tos'>
+										<a className='hover:text-gray-300'>서비스 이용약관</a>
 									</Link>
 								</li>
 								<li>
-									<Link href='/privacy' className='hover:text-gray-300'>
-										개인정보취급방침
+									<Link href='/privacy'>
+										<a className='hover:text-gray-300'>개인정보취급방침</a>
 									</Link>
 								</li>
 								<li>
-									<Link href='/guidelines' className='hover:text-gray-300'>
-										가이드라인
+									<Link href='/guidelines'>
+										<a className='hover:text-gray-300'>가이드라인</a>
 									</Link>
 								</li>
 								<li>
-									<Link href='/license' className='hover:text-gray-300'>
-										라이선스
+									<Link href='/license'>
+										<a className='hover:text-gray-300'>라이선스</a>
 									</Link>
 								</li>
 							</ul>
@@ -83,8 +83,8 @@ const Footer: React.FC<FooterProps> = ({ theme, setTheme }) => {
 									</Link>
 								</li> */}
 								<li>
-									<Link href='/verification' className='hover:text-gray-300'>
-										인증
+									<Link href='/verification'>
+										<a className='hover:text-gray-300'>인증</a>
 									</Link>
 								</li>
 							</ul>

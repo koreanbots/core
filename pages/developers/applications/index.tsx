@@ -40,7 +40,7 @@ interface ApplicationsProps {
 
 export const getServerSideProps = async (ctx: NextPageContext) => {
 	const parsed = parseCookie(ctx.req)
-	const user = (await get.Authorization(parsed?.token)) || ''
+	const user = await get.Authorization(parsed?.token) || ''
 
 	return {
 		props: { user: await get.user.load(user) }

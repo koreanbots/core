@@ -9,13 +9,13 @@ const Button: React.FC<ButtonProps> = ({
 	disabled=false,
 	onClick,
 }) => {
-	return href ? <Link
-		href={!disabled && href}
-		className={`cursor-pointer rounded-md px-4 py-2 transition duration-300 ease select-none outline-none foucs:outline-none mr-1.5 ${className ??
-                'bg-discord-blurple hover:opacity-80 dark:bg-very-black dark:hover:bg-discord-dark-hover text-white'}`}>
-
-		{children}
-
+	return href ? <Link href={!disabled && href}>
+		<a
+			className={`cursor-pointer rounded-md px-4 py-2 transition duration-300 ease select-none outline-none foucs:outline-none mr-1.5 ${className ??
+					'bg-discord-blurple hover:opacity-80 dark:bg-very-black dark:hover:bg-discord-dark-hover text-white'}`}
+		>
+			{children}
+		</a>
 	</Link>
 		: onClick ? <button
 			type={disabled ? 'button' : type}

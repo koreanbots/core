@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import { redirectTo } from '@utils/Tools'
 
-const Login: React.FC<React.PropsWithChildren> = ({ children }) => {
+const Login: React.FC = ({ children }) => {
 	const router = useRouter()
 	useEffect(() => {
 		localStorage.redirectTo = window.location.href

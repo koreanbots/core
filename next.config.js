@@ -20,6 +20,7 @@ const NextConfig = {
 		NEXT_PUBLIC_RELEASE_VERSION: VERSION,
 		SENTRY_SKIP_AUTO_RELEASE: true
 	},
+	future: {},
 	experimental: { 
 		scrollRestoration: true
 	},
@@ -41,9 +42,6 @@ const NextConfig = {
 	sentry: process.env.CI ? {
 		disableServerWebpackPlugin: true,
 		disableClientWebpackPlugin: true,
-		hideSourceMaps: true,
-	} : {
-		hideSourceMaps: true,
-	},
+	} : {}
 }
 module.exports = withSentryConfig(withPWA(NextConfig))

@@ -22,8 +22,6 @@ const TextArea: React.FC<TextAreaProps> = ({ name, placeholder, theme='auto', ma
 		<div ref={ref}>
 			<div className='absolute bottom-12 left-10 z-30'>
 				{
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
 					!emojiPickerHidden && <Picker title='선택해주세요' emoji='sunglasses' set='twitter' enableFrequentEmojiSort	theme={theme} showSkinTones={false} onSelect={(e) => {
 						setEmojiPickerHidden(true)
 						setValue(value + ' ' + ((e as { native: string }).native || e.colons))

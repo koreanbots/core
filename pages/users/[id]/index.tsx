@@ -97,12 +97,10 @@ const Users: NextPage<UserProps> = ({ user, data }) => {
 						)}
 						{
 							user?.id !== data.id && <div className='list-none mt-2'>
-								<Link
-									href={`/users/${router.query.id}/report`}
-									className='text-red-600 hover:underline cursor-pointer'
-									aria-hidden='true'>
-
-									<i className='far fa-flag' />신고하기
+								<Link href={`/users/${router.query.id}/report`}>
+									<a className='text-red-600 hover:underline cursor-pointer' aria-hidden='true'>
+										<i className='far fa-flag' />신고하기
+									</a>
 								</Link>
 							</div>
 						}
@@ -140,9 +138,9 @@ const Users: NextPage<UserProps> = ({ user, data }) => {
 export const getServerSideProps = async (ctx: Context) => {
 	const parsed = parseCookie(ctx.req)
 	
-	const user = (await get.Authorization(parsed?.token)) || ''
+	const user = await get.Authorization(parsed?.token) || ''
 	const data = await get.user.load(ctx.query.id)
-	return { props: { user: (await get.user.load(user)) || {}, data, date: Number(SnowflakeUtil.deconstruct(data?.id ?? '0')?.timestamp), csrfToken: getToken(ctx.req, ctx.res) } }
+	return { props: { user: await get.user.load(user) || {}, data, date: Number(SnowflakeUtil.deconstruct(data?.id ?? '0')?.timestamp), csrfToken: getToken(ctx.req, ctx.res) } }
 }
 
 interface UserProps {

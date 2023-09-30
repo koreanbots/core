@@ -29,45 +29,44 @@ const Paginator: React.FC<PaginatorProps> = ({ currentPage, totalPage, pathname,
 	return (
 		<div className='flex flex-col items-center justify-center py-4 text-center'>
 			<div className='flex'>
-				<Link
-					href={{ pathname, hash: 'list', query: { ...searchParams, page: currentPage - 1 } }}
-					className={`${
-						currentPage === 1 ? 'invisible' : ''
-					} h-12 w-12 mr-1 flex justify-center items-center rounded-full transition duration-150 ease-in bg-gray-200 dark:bg-discord-black hover:bg-gray-300 dark:hover:bg-discord-dark-hover cursor-pointer text-center`}>
-
-					<i className='fas fa-chevron-left'></i>
-
+				<Link href={{ pathname, hash: 'list', query: { ...searchParams, page: currentPage - 1 } }}>
+					<a
+						className={`${
+							currentPage === 1 ? 'invisible' : ''
+						} h-12 w-12 mr-1 flex justify-center items-center rounded-full transition duration-150 ease-in bg-gray-200 dark:bg-discord-black hover:bg-gray-300 dark:hover:bg-discord-dark-hover cursor-pointer text-center`}
+					>
+						<i className='fas fa-chevron-left'></i>
+					</a>
 				</Link>
 				{pages.map((el, i) => (
-					(<Link
-						key={i}
-						href={{ pathname, hash: 'list', query: { ...searchParams, page: el } }}
-						className={`w-12 flex justify-center items-center cursor-pointer leading-5 transition duration-150 ease-in ${
-							i === 0 && i === pages.length - 1
-								? 'rounded-full'
-								: i === 0
-									? 'rounded-l-full'
-									: i === pages.length - 1
-										? 'rounded-r-full'
-										: ''
-						} ${
-							currentPage === el
-								? 'bg-gray-300 dark:bg-discord-dark-hover'
-								: 'bg-gray-200 dark:bg-discord-black hover:bg-gray-300 dark:hover:bg-discord-dark-hover'
-						}`}>
-
-						{el}
-
-					</Link>)
+					<Link key={i} href={{ pathname, hash: 'list', query: { ...searchParams, page: el } }}>
+						<a
+							className={`w-12 flex justify-center items-center cursor-pointer leading-5 transition duration-150 ease-in ${
+								i === 0 && i === pages.length - 1
+									? 'rounded-full'
+									: i === 0
+										? 'rounded-l-full'
+										: i === pages.length - 1
+											? 'rounded-r-full'
+											: ''
+							} ${
+								currentPage === el
+									? 'bg-gray-300 dark:bg-discord-dark-hover'
+									: 'bg-gray-200 dark:bg-discord-black hover:bg-gray-300 dark:hover:bg-discord-dark-hover'
+							}`}
+						>
+							{el}
+						</a>
+					</Link>
 				))}
-				<Link
-					href={{ pathname, hash: 'list', query: { ...searchParams, page: currentPage + 1 } }}
-					className={`${
-						currentPage === totalPage ? 'invisible' : ''
-					} h-12 w-12 ml-1 flex justify-center items-center rounded-full transition duration-150 ease-in bg-gray-200 dark:bg-discord-black hover:bg-gray-300 dark:hover:bg-discord-dark-hover cursor-pointer text-center`}>
-
-					<i className='fas fa-chevron-right'></i>
-
+				<Link href={{ pathname, hash: 'list', query: { ...searchParams, page: currentPage + 1 } }}>
+					<a
+						className={`${
+							currentPage === totalPage ? 'invisible' : ''
+						} h-12 w-12 ml-1 flex justify-center items-center rounded-full transition duration-150 ease-in bg-gray-200 dark:bg-discord-black hover:bg-gray-300 dark:hover:bg-discord-dark-hover cursor-pointer text-center`}
+					>
+						<i className='fas fa-chevron-right'></i>
+					</a>
 				</Link>
 			</div>
 		</div>

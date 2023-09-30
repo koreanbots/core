@@ -87,7 +87,7 @@ const Panel:NextPage<PanelProps> = ({ logged, user, submits, csrfToken }) => {
 
 export const getServerSideProps = async (ctx: NextPageContext) => {
 	const parsed = parseCookie(ctx.req)
-	const user = (await get.Authorization(parsed?.token)) || ''
+	const user = await get.Authorization(parsed?.token) || ''
 	const submits = await get.botSubmits.load(user)
 
 	return { props: { logged: !!user, user:  await get.user.load(user), submits, csrfToken: getToken(ctx.req, ctx.res) } }

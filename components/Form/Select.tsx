@@ -15,18 +15,6 @@ const Select: React.FC<SelectProps> = ({ placeholder, options, handleChange, han
 					},
 				}
 			},
-			placeholder: provided => {
-				return {
-					...provided,
-					position: 'absolute'
-				}
-			},
-			singleValue: provided => {
-				return {
-					...provided,
-					position: 'absolute'
-				}
-			}
 		}}
 		className='border-grey-light border dark:border-transparent rounded'
 		classNamePrefix='outline-none text-black dark:bg-very-black dark:text-white '

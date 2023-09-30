@@ -597,9 +597,11 @@ async function resetServerToken(id: string, beforeToken: string) {
 	return token
 }
 
-async function Github(id: string, github: string) {
-	const user = await knex('users').where({ github }).whereNot({ id })
-	if(github && user.length !== 0) return 0
+async function Github(id: string, github: string | null) {
+	if(github) {
+		const user = await knex('users').where({ github }).whereNot({ id })
+		if(user.length !== 0) return 0
+	}
 	await knex('users').update({ github }).where({ id })
 	return 1
 }

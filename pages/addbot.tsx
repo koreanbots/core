@@ -170,13 +170,6 @@ const AddBot:NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 								</Link>에서 초대링크를 생성하실 수 있습니다!
 							</span>
 						</Label>
-						{
-							values.category.includes('빗금 명령어') && <Message type='warning'>
-								<h2 className='text-lg font-semibold'>해당 봇은 빗금 명령어(Slash Command) 카테고리가 선택되었습니다.</h2>
-								<p>초대링크는 빗금 명령어 권한을 부여하지 않은 일반 봇 초대링크로 자동 생성됩니다.
-                                    따라서 빗금 명령어 권한을 포함한 초대링크를 직접 설정해주세요.</p>
-							</Message>
-						}
 						<Label For='discord' label='지원 디스코드 서버' labelDesc='봇의 지원 디스코드 서버를 입력해주세요. (봇에 대해 도움을 받을 수 있는 공간입니다.)' error={errors.discord && touched.discord ? errors.discord : null} short>
 							<div className='flex items-center'>
                             discord.gg/<Input name='discord' placeholder='JEh53MQ' />

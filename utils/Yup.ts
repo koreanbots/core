@@ -5,21 +5,15 @@ import { botCategories, library, reportCats, serverCategories } from '@utils/Con
 import { HTTPProtocol, ID, Prefix, Url, Vanity } from '@utils/Regex'
 
 Yup.setLocale(YupKorean)
-Yup.addMethod(Yup.array, 'unique', function(message, mapper = a => a) {
-	return this.test('unique', message || 'array must be unique', function(list) {
+Yup.addMethod(Yup.array, 'unique', function (message, mapper = (a) => a) {
+	return this.test('unique', message || 'array must be unique', function (list) {
 		return list.length === new Set(list.map(mapper)).size
 	})
 })
 
 export const botListArgumentSchema: Yup.SchemaOf<botListArgument> = Yup.object({
-	type: Yup.mixed()
-		.oneOf(['VOTE', 'TRUSTED', 'NEW', 'PARTNERED', 'CATEGORY', 'SEARCH'])
-		.required(),
-	page: Yup.number()
-		.positive()
-		.integer()
-		.notRequired()
-		.default(1),
+	type: Yup.mixed().oneOf(['VOTE', 'TRUSTED', 'NEW', 'PARTNERED', 'CATEGORY', 'SEARCH']).required(),
+	page: Yup.number().positive().integer().notRequired().default(1),
 	query: Yup.string().notRequired(),
 })
 
@@ -31,12 +25,8 @@ export interface botListArgument {
 
 export const ImageOptionsSchema: Yup.SchemaOf<ImageOptions> = Yup.object({
 	id: Yup.string().required(),
-	ext: Yup.mixed<ext>()
-		.oneOf(['webp', 'png', 'gif'])
-		.required(),
-	size: Yup.mixed<ImageSize>()
-		.oneOf(['128', '256', '512'])
-		.required(),
+	ext: Yup.mixed<ext>().oneOf(['webp', 'png', 'gif']).required(),
+	size: Yup.mixed<ImageSize>().oneOf(['128', '256', '512']).required(),
 })
 
 interface ImageOptions {
@@ -50,20 +40,10 @@ type ImageSize = '128' | '256' | '512'
 
 export const WidgetOptionsSchema: Yup.SchemaOf<WidgetOptions> = Yup.object({
 	id: Yup.string().required(),
-	ext: Yup.mixed<widgetExt>()
-		.oneOf(['svg'])
-		.required(),
-	type: Yup.mixed<widgetType>()
-		.oneOf(['votes', 'servers', 'status'])
-		.required(),
-	scale: Yup.number()
-		.positive()
-		.min(0.5)
-		.max(3)
-		.required(),
-	style: Yup.mixed<'flat' | 'classic'>()
-		.oneOf(['flat', 'classic'])
-		.default('flat'),
+	ext: Yup.mixed<widgetExt>().oneOf(['svg']).required(),
+	type: Yup.mixed<widgetType>().oneOf(['votes', 'servers', 'status']).required(),
+	scale: Yup.number().positive().min(0.5).max(3).required(),
+	style: Yup.mixed<'flat' | 'classic'>().oneOf(['flat', 'classic']).default('flat'),
 	icon: Yup.boolean().default(true),
 })
 
@@ -81,20 +61,10 @@ type widgetExt = 'svg'
 
 export const ServerWidgetOptionsSchema: Yup.SchemaOf<ServerWidgetOptions> = Yup.object({
 	id: Yup.string().required(),
-	ext: Yup.mixed<widgetExt>()
-		.oneOf(['svg'])
-		.required(),
-	type: Yup.mixed<serverWidgetType>()
-		.oneOf(['votes', 'members', 'boost'])
-		.required(),
-	scale: Yup.number()
-		.positive()
-		.min(0.5)
-		.max(3)
-		.required(),
-	style: Yup.mixed<'flat' | 'classic'>()
-		.oneOf(['flat', 'classic'])
-		.default('flat'),
+	ext: Yup.mixed<widgetExt>().oneOf(['svg']).required(),
+	type: Yup.mixed<serverWidgetType>().oneOf(['votes', 'members', 'boost']).required(),
+	scale: Yup.number().positive().min(0.5).max(3).required(),
+	style: Yup.mixed<'flat' | 'classic'>().oneOf(['flat', 'classic']).default('flat'),
 	icon: Yup.boolean().default(true),
 })
 
@@ -108,10 +78,7 @@ interface ServerWidgetOptions {
 }
 
 type serverWidgetType = 'votes' | 'members' | 'boost'
-export const PageCount = Yup.number()
-	.integer()
-	.positive()
-	.required()
+export const PageCount = Yup.number().integer().positive().required()
 
 export const OauthCallbackSchema: Yup.SchemaOf<OauthCallback> = Yup.object({
 	code: Yup.string().required(),
@@ -119,9 +86,7 @@ export const OauthCallbackSchema: Yup.SchemaOf<OauthCallback> = Yup.object({
 
 export const botCategoryListArgumentSchema: Yup.SchemaOf<botCategoryListArgument> = Yup.object({
 	page: PageCount,
-	category: Yup.mixed()
-		.oneOf(botCategories)
-		.required(),
+	category: Yup.mixed().oneOf(botCategories).required(),
 })
 
 interface botCategoryListArgument {
@@ -129,12 +94,11 @@ interface botCategoryListArgument {
 	category: string
 }
 
-export const serverCategoryListArgumentSchema: Yup.SchemaOf<serverCategoryListArgument> = Yup.object({
-	page: PageCount,
-	category: Yup.mixed()
-		.oneOf(serverCategories)
-		.required(),
-})
+export const serverCategoryListArgumentSchema: Yup.SchemaOf<serverCategoryListArgument> =
+	Yup.object({
+		page: PageCount,
+		category: Yup.mixed().oneOf(serverCategories).required(),
+	})
 
 interface serverCategoryListArgument {
 	page: number
@@ -151,18 +115,13 @@ export const SearchQuerySchema: Yup.SchemaOf<SearchQuery> = Yup.object({
 		.max(50)
 		.required('검색어를 입력해주세요.')
 		.label('검색어'),
-	page: Yup.number()
-		.positive()
-		.integer()
-		.notRequired()
-		.default(1)
-		.label('페이지'),
-	priority: Yup.mixed().oneOf(['bot', 'server']).notRequired()
+	page: Yup.number().positive().integer().notRequired().default(1).label('페이지'),
+	priority: Yup.mixed().oneOf(['bot', 'server']).notRequired(),
 })
 
 interface SearchQuery {
 	q: string
-	page: number,
+	page: number
 	priority?: 'bot' | 'server'
 }
 
@@ -170,17 +129,13 @@ export const AddBotSubmitSchema: Yup.SchemaOf<AddBotSubmit> = Yup.object({
 	agree: Yup.boolean()
 		.oneOf([true], '상단의 체크박스를 클릭해주세요.')
 		.required('상단의 체크박스를 클릭해주세요.'),
-	id: Yup.string()
-		.matches(ID, '올바른 봇 ID를 입력해주세요.')
-		.required('봇 ID는 필수 항목입니다.'),
+	id: Yup.string().matches(ID, '올바른 봇 ID를 입력해주세요.').required('봇 ID는 필수 항목입니다.'),
 	prefix: Yup.string()
 		.matches(Prefix, '접두사는 띄어쓰기로 시작할 수 없습니다.')
 		.min(1, '접두사는 최소 1자여야합니다.')
 		.max(32, '접두사는 최대 32자까지만 가능합니다.')
 		.required('접두사는 필수 항목입니다.'),
-	library: Yup.string()
-		.oneOf(library)
-		.required('라이브러리는 필수 항목입니다.'),
+	library: Yup.string().oneOf(library).required('라이브러리는 필수 항목입니다.'),
 	website: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')
 		.matches(Url, '올바른 웹사이트 URL을 입력해주세요.')
@@ -214,7 +169,7 @@ export const AddBotSubmitSchema: Yup.SchemaOf<AddBotSubmit> = Yup.object({
 		.max(1500, '봇 설명은 최대 1500자여야합니다.')
 		.required('봇 설명은 필수 항목입니다.'),
 	_csrf: Yup.string().required(),
-	_captcha: Yup.string().required()
+	_captcha: Yup.string().required(),
 })
 
 export interface AddBotSubmit {
@@ -255,7 +210,7 @@ export const AddServerSubmitSchema: Yup.SchemaOf<AddServerSubmit> = Yup.object({
 		.max(1500, '서버 설명은 최대 1500자여야합니다.')
 		.required('서버 설명은 필수 항목입니다.'),
 	_csrf: Yup.string().required(),
-	_captcha: Yup.string().required()
+	_captcha: Yup.string().required(),
 })
 export interface AddServerSubmit {
 	agree: boolean
@@ -286,9 +241,14 @@ export interface BotStatUpdate {
 }
 
 export const ReportSchema: Yup.SchemaOf<Report> = Yup.object({
-	category: Yup.mixed().oneOf(reportCats, '신고 구분은 필수 항목입니다.').required('신고 구분은 필수 항목입니다.'),
-	description: Yup.string().min(100, '최소 100자여야합니다.').max(1500, '1500자 이하로 입력해주세요.').required('설명은 필수 항목입니다.'),
-	_csrf: Yup.string()
+	category: Yup.mixed()
+		.oneOf(reportCats, '신고 구분은 필수 항목입니다.')
+		.required('신고 구분은 필수 항목입니다.'),
+	description: Yup.string()
+		.min(100, '최소 100자여야합니다.')
+		.max(1500, '1500자 이하로 입력해주세요.')
+		.required('설명은 필수 항목입니다.'),
+	_csrf: Yup.string(),
 })
 
 export interface Report {
@@ -303,9 +263,7 @@ export const ManageBotSchema: Yup.SchemaOf<ManageBot> = Yup.object({
 		.min(1, '접두사는 최소 1자여야합니다.')
 		.max(32, '접두사는 최대 32자까지만 가능합니다.')
 		.required('접두사는 필수 항목입니다.'),
-	library: Yup.string()
-		.oneOf(library)
-		.required('라이브러리는 필수 항목입니다.'),
+	library: Yup.string().oneOf(library).required('라이브러리는 필수 항목입니다.'),
 	website: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')
 		.matches(Url, '올바른 웹사이트 URL을 입력해주세요.')
@@ -385,7 +343,7 @@ export interface ManageServer {
 
 export const CsrfCaptchaSchema: Yup.SchemaOf<CsrfCaptcha> = Yup.object({
 	_csrf: Yup.string().required(),
-	_captcha: Yup.string().required()
+	_captcha: Yup.string().required(),
 })
 
 export interface CsrfCaptcha {
@@ -440,7 +398,7 @@ export const EditBotOwnerSchema: Yup.SchemaOf<EditBotOwner> = Yup.object({
 		.unique('소유자 아이디는 중복될 수 없습니다.')
 		.required('소유자는 필수 항목입니다.'),
 	_csrf: Yup.string().required(),
-	_captcha: Yup.string().required()
+	_captcha: Yup.string().required(),
 })
 
 export interface EditBotOwner {

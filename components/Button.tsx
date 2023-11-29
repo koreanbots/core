@@ -6,33 +6,41 @@ const Button: React.FC<ButtonProps> = ({
 	className,
 	children,
 	href,
-	disabled=false,
+	disabled = false,
 	onClick,
 }) => {
-	return href ? <Link
-		href={!disabled && href}
-		className={`cursor-pointer rounded-md px-4 py-2 transition duration-300 ease select-none outline-none foucs:outline-none mr-1.5 ${className ??
-                'bg-discord-blurple hover:opacity-80 dark:bg-very-black dark:hover:bg-discord-dark-hover text-white'}`}>
-
-		{children}
-
-	</Link>
-		: onClick ? <button
+	return href ? (
+		<Link
+			href={!disabled && href}
+			className={`ease foucs:outline-none mr-1.5 cursor-pointer select-none rounded-md px-4 py-2 outline-none transition duration-300 ${
+				className ??
+				'bg-discord-blurple text-white hover:opacity-80 dark:bg-very-black dark:hover:bg-discord-dark-hover'
+			}`}
+		>
+			{children}
+		</Link>
+	) : onClick ? (
+		<button
 			type={disabled ? 'button' : type}
 			onClick={disabled ? null : onClick}
-			className={`cursor-pointer rounded-md px-4 py-2 transition duration-300 ease select-none outline-none foucs:outline-none mr-1.5 ${className ??
-				'bg-discord-blurple hover:opacity-80 dark:bg-very-black dark:hover:bg-discord-dark-hover text-white'}`}
+			className={`ease foucs:outline-none mr-1.5 cursor-pointer select-none rounded-md px-4 py-2 outline-none transition duration-300 ${
+				className ??
+				'bg-discord-blurple text-white hover:opacity-80 dark:bg-very-black dark:hover:bg-discord-dark-hover'
+			}`}
 		>
 			{children}
 		</button>
-			: 
-			<button
-				type={disabled ? 'button' : type}
-				className={`cursor-pointer rounded-md px-4 py-2 transition duration-300 ease select-none outline-none foucs:outline-none mr-1.5 ${className ??
-				'bg-discord-blurple hover:opacity-80 dark:bg-very-black dark:hover:bg-discord-dark-hover text-white'}`}
-			>
-				{children}
-			</button>
+	) : (
+		<button
+			type={disabled ? 'button' : type}
+			className={`ease foucs:outline-none mr-1.5 cursor-pointer select-none rounded-md px-4 py-2 outline-none transition duration-300 ${
+				className ??
+				'bg-discord-blurple text-white hover:opacity-80 dark:bg-very-black dark:hover:bg-discord-dark-hover'
+			}`}
+		>
+			{children}
+		</button>
+	)
 }
 
 interface ButtonProps {

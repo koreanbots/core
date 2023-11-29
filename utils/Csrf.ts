@@ -23,7 +23,7 @@ export const getToken = (req: IncomingMessage, res: ServerResponse) => {
 			serialize(csrfKey, key, {
 				httpOnly: true,
 				sameSite: 'lax',
-				path: '/'
+				path: '/',
 			})
 		)
 	}

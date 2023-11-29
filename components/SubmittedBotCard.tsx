@@ -7,23 +7,23 @@ import Link from 'next/link'
 
 const SubmittedBotCard: React.FC<SubmittedBotProps> = ({ href, submit }) => {
 	return (
-		(<Link
+		<Link
 			href={href}
-			className='relative mx-auto px-4 py-5 w-full h-full text-black dark:text-white dark:bg-discord-black bg-little-white rounded-2xl shadow-xl transform hover:-translate-y-1 transition duration-100 ease-in'>
-
+			className='relative mx-auto h-full w-full transform rounded-2xl bg-little-white px-4 py-5 text-black shadow-xl transition duration-100 ease-in hover:-translate-y-1 dark:bg-discord-black dark:text-white'
+		>
 			<div className='h-18'>
 				<div className='flex'>
-					<div className='grow w-full'>
+					<div className='w-full grow'>
 						<h2 className='text-lg'>{submit.id}</h2>
 					</div>
-					<div className='absolute right-0 grid grid-cols-1 px-4 w-2/5 h-0'>
+					<div className='absolute right-0 grid h-0 w-2/5 grid-cols-1 px-4'>
 						<Tag
 							text={
 								<>
 									<i
-										className={`fas fa-circle text-${
-											[Status.offline, Status.online, Status.dnd][submit.state]?.color
-										}`}
+										className={`fas fa-circle text-${[Status.offline, Status.online, Status.dnd][
+											submit.state
+										]?.color}`}
 									/>{' '}
 									{['대기중', '승인됨', '거부됨'][submit.state]}
 								</>
@@ -32,13 +32,12 @@ const SubmittedBotCard: React.FC<SubmittedBotProps> = ({ href, submit }) => {
 						/>
 					</div>
 				</div>
-				<p className='mt-1.5 w-full h-6 text-left text-gray-400 text-sm font-medium truncate'>
+				<p className='mt-1.5 h-6 w-full truncate text-left text-sm font-medium text-gray-400'>
 					{submit.intro.slice(0, 25)}
 					{submit.intro.length > 25 && '...'}
 				</p>
 			</div>
-
-		</Link>)
+		</Link>
 	)
 }
 

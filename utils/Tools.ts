@@ -24,45 +24,72 @@ export function handlePWA(): boolean {
 	return displayMode === 'standalone'
 }
 
-export function formatNumber(value: number):string  {
-	if(!value) return '0'
-	const suffixes = ['', '만', '억', '조','해']
-	const suffixNum = Math.floor((''+value).length/4)
-	let shortValue: number = parseFloat((suffixNum != 0 ? (value / Math.pow(10000, suffixNum)) : value).toPrecision(2))
+export function formatNumber(value: number): string {
+	if (!value) return '0'
+	const suffixes = ['', '만', '억', '조', '해']
+	const suffixNum = Math.floor(('' + value).length / 4)
+	let shortValue: number = parseFloat(
+		(suffixNum != 0 ? value / Math.pow(10000, suffixNum) : value).toPrecision(2)
+	)
 	if (shortValue % 1 != 0) {
 		shortValue = Number(shortValue.toFixed(1))
 	}
-	if(suffixNum ===  1 && shortValue < 1) return shortValue * 10 + '천'
-	else if(shortValue === 1000) return '1천'
-	return shortValue+suffixes[suffixNum]
+	if (suffixNum === 1 && shortValue < 1) return shortValue * 10 + '천'
+	else if (shortValue === 1000) return '1천'
+	return shortValue + suffixes[suffixNum]
 }
 
 function checkFlag(base: number, required: number) {
 	return (base & required) === required
 }
 
-export function checkUserFlag(base: number, required: number | keyof typeof UserFlags):boolean {
+export function checkUserFlag(base: number, required: number | keyof typeof UserFlags): boolean {
 	return checkFlag(base, typeof required === 'number' ? required : UserFlags[required])
 }
 
-export function checkBotFlag(base: number, required: number | keyof typeof BotFlags):boolean {
+export function checkBotFlag(base: number, required: number | keyof typeof BotFlags): boolean {
 	return checkFlag(base, typeof required === 'number' ? required : BotFlags[required])
 }
 
-export function checkServerFlag(base: number, required: number | keyof typeof ServerFlags):boolean {
+export function checkServerFlag(
+	base: number,
+	required: number | keyof typeof ServerFlags
+): boolean {
 	return checkFlag(base, typeof required === 'number' ? required : ServerFlags[required])
 }
 
-export function makeImageURL(root:string, { format='png', size=256 }:ImageOptions):string {
+export function makeImageURL(root: string, { format = 'png', size = 256 }: ImageOptions): string {
 	return `${root}.${format}?size=${size}`
 }
 
-export function makeBotURL({ id, vanity, flags=0 }: { flags?: number, vanity?:string, id: string }): string {
-	return `/bots/${(checkBotFlag(flags, 'trusted') || checkBotFlag(flags, 'partnered')) && vanity ? vanity : id}`
+export function makeBotURL({
+	id,
+	vanity,
+	flags = 0,
+}: {
+	flags?: number
+	vanity?: string
+	id: string
+}): string {
+	return `/bots/${
+		(checkBotFlag(flags, 'trusted') || checkBotFlag(flags, 'partnered')) && vanity ? vanity : id
+	}`
 }
 
-export function makeServerURL({ id, vanity, flags=0 }: { flags?: number, vanity?:string, id: string }): string {
-	return `/servers/${(checkServerFlag(flags, 'trusted') || checkServerFlag(flags, 'partnered')) && vanity ? vanity : id}`
+export function makeServerURL({
+	id,
+	vanity,
+	flags = 0,
+}: {
+	flags?: number
+	vanity?: string
+	id: string
+}): string {
+	return `/servers/${
+		(checkServerFlag(flags, 'trusted') || checkServerFlag(flags, 'partnered')) && vanity
+			? vanity
+			: id
+	}`
 }
 
 export function makeUserURL({ id }: { id: string }): string {
@@ -73,20 +100,24 @@ export function serialize<T>(data: T): T {
 	return JSON.parse(JSON.stringify(data))
 }
 
-export function diff(original: string, current: string, header=false, sep='\n', join?: string) {
-	return difflib.unifiedDiff(original.split(sep), current.split(sep)).slice(header ? 2 : 3).join(join ?? sep)
+export function diff(original: string, current: string, header = false, sep = '\n', join?: string) {
+	return difflib
+		.unifiedDiff(original.split(sep), current.split(sep))
+		.slice(header ? 2 : 3)
+		.join(join ?? sep)
 }
 
-export function objectDiff(original: Record<string, string>, current: Record<string, string>): [string, (string|null)[] ][] {
+export function objectDiff(
+	original: Record<string, string>,
+	current: Record<string, string>
+): [string, (string | null)[]][] {
 	const obj: Record<string, string[]> = {}
-	Object.entries(original).forEach(k =>
-		obj[k[0]] = [ k[1] ]
-	)
-	Object.entries(current).forEach(k => {
-		if(!obj[k[0]]) obj[k[0]] = []
+	Object.entries(original).forEach((k) => (obj[k[0]] = [k[1]]))
+	Object.entries(current).forEach((k) => {
+		if (!obj[k[0]]) obj[k[0]] = []
 		obj[k[0]][1] = k[1]
 	})
-	return Object.entries(obj).filter(k => k[1][0] !== k[1][1])
+	return Object.entries(obj).filter((k) => k[1][0] !== k[1][1])
 }
 
 export function makeDiscordCodeblock(content: string, lang?: string): string {
@@ -94,7 +125,11 @@ export function makeDiscordCodeblock(content: string, lang?: string): string {
 }
 
 export function inspect(object: unknown) {
-	return utilInspect(object, { depth: Infinity, maxArrayLength: Infinity, maxStringLength: Infinity})
+	return utilInspect(object, {
+		depth: Infinity,
+		maxArrayLength: Infinity,
+		maxStringLength: Infinity,
+	})
 }
 
 export function supportsWebP() {
@@ -118,21 +153,22 @@ export function systemTheme() {
 export function checkBrowser(): string {
 	const ua = navigator.userAgent
 	let tem
-	let M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+(\.\d+)?(\.\d+)?)/i) || []
-	if(/trident/i.test(M[1])){
-		tem=/\brv[ :]+(\d+)/g.exec(ua) || []
-		return 'IE '+(tem[1] || '')
+	let M =
+		ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+(\.\d+)?(\.\d+)?)/i) || []
+	if (/trident/i.test(M[1])) {
+		tem = /\brv[ :]+(\d+)/g.exec(ua) || []
+		return 'IE ' + (tem[1] || '')
 	}
-	if(M[1]=== 'Chrome'){
-		tem= ua.match(/\b(OPR|Edge|Whale)\/(\d+)/)
-		if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera')
+	if (M[1] === 'Chrome') {
+		tem = ua.match(/\b(OPR|Edge|Whale)\/(\d+)/)
+		if (tem != null) return tem.slice(1).join(' ').replace('OPR', 'Opera')
 	}
-	M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?']
-	if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1])
+	M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?']
+	if ((tem = ua.match(/version\/(\d+)/i)) != null) M.splice(1, 1, tem[1])
 	return M.join(' ')
 }
 
-export function generateOauthURL(provider: 'discord'|'github', clientID: string, scope?: string) {
+export function generateOauthURL(provider: 'discord' | 'github', clientID: string, scope?: string) {
 	return Oauth[provider](clientID, scope)
 }
 
@@ -144,23 +180,21 @@ export function formData(details: { [key: string]: string | number | boolean }) 
 		formBody.push(encodedKey + '=' + encodedValue)
 	}
 	return formBody.join('&')
-	
 }
 
 export function bufferToStream(binary: Buffer) {
-
 	const readableInstanceStream = new Readable({
 		read() {
 			this.push(binary)
 			this.push(null)
-		}
+		},
 	})
 
 	return readableInstanceStream
 }
 
-export function parseCookie(req?: { headers: { cookie?: string }}): { [key: string]: string } {
-	if(!req) return {}
+export function parseCookie(req?: { headers: { cookie?: string } }): { [key: string]: string } {
+	if (!req) return {}
 	return cookie.parse(req.headers.cookie || '')
 }
 
@@ -183,11 +217,10 @@ export function camoUrl(url: string): string {
 	return BASE_URLs.camo + `/${HMAC(url)}/${toHex(url)}`
 }
 
-export function HMAC(value: string, secret=process.env.CAMO_SECRET):string|null {
+export function HMAC(value: string, secret = process.env.CAMO_SECRET): string | null {
 	try {
 		return createHmac('sha1', secret).update(value, 'utf8').digest('hex')
-	}
-	catch {
+	} catch {
 		return null
 	}
 }
@@ -196,7 +229,7 @@ export function toHex(value: string): string {
 	return Buffer.from(value).toString('hex')
 }
 
-export function getRandom<T=unknown>(arr: T[]): T {
+export function getRandom<T = unknown>(arr: T[]): T {
 	return arr[Math.floor(Math.random() * arr.length)]
 }
 
@@ -205,13 +238,13 @@ export function parseDockerhubTag(imageTag: string) {
 }
 
 export function getYYMMDD(): string {
-	return (new Date()).toISOString().slice(0, 10).split('-').join('')
+	return new Date().toISOString().slice(0, 10).split('-').join('')
 }
 
 export function convertMetrixToGraph(data: MetrixData[], keyname?: string) {
-	return data.map(el=> ({
+	return data.map((el) => ({
 		x: Day(el.day, 'YYMMDD').toDate(),
-		y: el[keyname] || el.count
+		y: el[keyname] || el.count,
 	}))
 }
 

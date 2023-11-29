@@ -134,9 +134,9 @@ export interface MetrixData {
 	createdAt: Date
 }
 export interface DocsData {
-  name: string
-  list?: DocsData[]
-  text?: string
+	name: string
+	list?: DocsData[]
+	text?: string
 }
 
 export enum UserFlags {
@@ -144,7 +144,7 @@ export enum UserFlags {
 	staff = 1 << 0,
 	bughunter = 1 << 1,
 	botreviewer = 1 << 2,
-	premium = 1 << 3
+	premium = 1 << 3,
 }
 
 export enum BotFlags {
@@ -186,14 +186,14 @@ export enum DiscordUserFlags {
 
 export enum WebhookStatus {
 	None = 0,
-	Discord = 1, 
+	Discord = 1,
 	HTTP = 2,
-	Disabled = 3
+	Disabled = 3,
 }
 
 export enum WebhookType {
 	HeartChange = 0,
-	ServerCountChange = 1
+	ServerCountChange = 1,
 }
 
 export interface List<T> {
@@ -315,7 +315,7 @@ export type BotCategory =
 	| 'NSFW'
 	| '검색'
 
-export type ServerCategory = 
+export type ServerCategory =
 	| '커뮤니티'
 	| '친목'
 	| '음악'

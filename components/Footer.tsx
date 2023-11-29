@@ -9,16 +9,16 @@ const Toggle = dynamic(() => import('@components/Toggle'))
 const Footer: React.FC<FooterProps> = ({ theme, setTheme }) => {
 	return (
 		<div className='releative z-30'>
-			<div className='bottom-0 text-white bg-discord-black py-24'>
-				<Container className='w-11/12 lg:flex lg:pt-0 lg:w-4/5' ignoreColor>
+			<div className='bottom-0 bg-discord-black py-24 text-white'>
+				<Container className='w-11/12 lg:flex lg:w-4/5 lg:pt-0' ignoreColor>
 					<div className='w-full lg:w-2/5'>
-						<h1 className='text-koreanbots-blue text-2xl font-bold'>국내 디스코드의 모든 것을 한 곳에서.</h1>
+						<h1 className='text-2xl font-bold text-koreanbots-blue'>
+							국내 디스코드의 모든 것을 한 곳에서.
+						</h1>
 						<span className='text-base'>2020-2023 한국 디스코드 리스트, All rights reserved.</span>
-						<div className='text-2xl flex space-x-1'>
+						<div className='flex space-x-1 text-2xl'>
 							<Link href='/discord'>
-
 								<i className='fab fa-discord inline-block w-full' />
-
 							</Link>
 							<a href='https://github.com/koreanbots'>
 								<i className='fab fa-github inline-block w-full' />
@@ -28,9 +28,9 @@ const Footer: React.FC<FooterProps> = ({ theme, setTheme }) => {
 							</a>
 						</div>
 					</div>
-					<div className='grid grow gap-2 grid-cols-2 md:grid-cols-7'>
+					<div className='grid grow grid-cols-2 gap-2 md:grid-cols-7'>
 						<div className='col-span-2 mb-2'>
-							<h2 className='text-koreanbots-blue text-base font-bold'>한국 디스코드 리스트</h2>
+							<h2 className='text-base font-bold text-koreanbots-blue'>한국 디스코드 리스트</h2>
 							<ul className='text-sm'>
 								<li>
 									<Link href='/about' className='hover:text-gray-300'>
@@ -50,7 +50,7 @@ const Footer: React.FC<FooterProps> = ({ theme, setTheme }) => {
 							</ul>
 						</div>
 						<div className='col-span-2 mb-2'>
-							<h2 className='text-koreanbots-blue text-base font-bold'>정책</h2>
+							<h2 className='text-base font-bold text-koreanbots-blue'>정책</h2>
 							<ul className='text-sm'>
 								<li>
 									<Link href='/tos' className='hover:text-gray-300'>
@@ -75,7 +75,7 @@ const Footer: React.FC<FooterProps> = ({ theme, setTheme }) => {
 							</ul>
 						</div>
 						<div className='col-span-1 mb-2'>
-							<h2 className='text-koreanbots-blue text-base font-bold'>커뮤니티</h2>
+							<h2 className='text-base font-bold text-koreanbots-blue'>커뮤니티</h2>
 							<ul className='text-sm'>
 								{/* <li>
 									<Link href='/partners'>
@@ -90,7 +90,7 @@ const Footer: React.FC<FooterProps> = ({ theme, setTheme }) => {
 							</ul>
 						</div>
 						<div className='col-span-2 mb-2'>
-							<h2 className='text-koreanbots-blue text-base font-bold'>기타</h2>
+							<h2 className='text-base font-bold text-koreanbots-blue'>기타</h2>
 							<div className='flex'>
 								<a className='mr-2 hover:text-gray-300'>다크모드</a>
 								<Toggle

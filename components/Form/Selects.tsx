@@ -1,9 +1,5 @@
 import React, { MouseEventHandler } from 'react'
-import ReactSelect, {
-	components,
-	MultiValueProps,
-	MultiValueRemoveProps,
-} from 'react-select'
+import ReactSelect, { components, MultiValueProps, MultiValueRemoveProps } from 'react-select'
 import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core'
 import { restrictToParentElement } from '@dnd-kit/modifiers'
 import {
@@ -20,8 +16,9 @@ const MultiValue = (props: MultiValueProps<Option>) => {
 		e.stopPropagation()
 	}
 	const innerProps = { ...props.innerProps, onMouseDown }
-	const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: props.data.value })
+	const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+		id: props.data.value,
+	})
 	const style = {
 		transform: CSS.Transform.toString(transform),
 		transition,
@@ -46,61 +43,80 @@ const MultiValueRemove = (props: MultiValueRemoveProps<Option>) => {
 	)
 }
 
-const Select: React.FC<SelectProps> = ({ placeholder, options, values, setValues, handleChange, handleTouch }) => {
+const Select: React.FC<SelectProps> = ({
+	placeholder,
+	options,
+	values,
+	setValues,
+	handleChange,
+	handleTouch,
+}) => {
 	const onSortEnd = (event: DragEndEvent) => {
 		const { active, over } = event
-		const newValue = arrayMove(values, values.findIndex(i => i === active.id), values.findIndex(i => i === over.id))
+		const newValue = arrayMove(
+			values,
+			values.findIndex((i) => i === active.id),
+			values.findIndex((i) => i === over.id)
+		)
 		setValues(newValue)
 	}
-	return <DndContext modifiers={[restrictToParentElement]} onDragEnd={onSortEnd} collisionDetection={closestCenter}>
-		<SortableContext
-			items={values}
-			strategy={horizontalListSortingStrategy}>
-			<ReactSelect
-				styles={{
-					placeholder: (provided) => {
-						return { ...provided, position: 'absolute' }
-					},
-					control: (provided) => {
-						return { ...provided, border: 'none' }
-					},
-					option: (provided) => {
-						return { ...provided, cursor: 'pointer', ':hover': {
-							opacity: '0.7'
-						} }
-					}
-				}} 
-				isMulti
-				className='border border-grey-light dark:border-transparent rounded' 
-				classNamePrefix='outline-none text-black dark:bg-very-black dark:text-white cursor-pointer ' 
-				placeholder={placeholder || '선택해주세요.'} 
-				options={options} 
-				onChange={handleChange} 
-				onBlur={handleTouch}
-				noOptionsMessage={() => '검색 결과가 없습니다.'}
-				value={values.map(el => ({ label: el, value: el}))}
-				components={{
-					MultiValue,
-					MultiValueRemove,
-				}}
-				closeMenuOnSelect={false}
-			/>
-		</SortableContext>
-	</DndContext> 
+	return (
+		<DndContext
+			modifiers={[restrictToParentElement]}
+			onDragEnd={onSortEnd}
+			collisionDetection={closestCenter}
+		>
+			<SortableContext items={values} strategy={horizontalListSortingStrategy}>
+				<ReactSelect
+					styles={{
+						placeholder: (provided) => {
+							return { ...provided, position: 'absolute' }
+						},
+						control: (provided) => {
+							return { ...provided, border: 'none' }
+						},
+						option: (provided) => {
+							return {
+								...provided,
+								cursor: 'pointer',
+								':hover': {
+									opacity: '0.7',
+								},
+							}
+						},
+					}}
+					isMulti
+					className='border-grey-light rounded border dark:border-transparent'
+					classNamePrefix='outline-none text-black dark:bg-very-black dark:text-white cursor-pointer '
+					placeholder={placeholder || '선택해주세요.'}
+					options={options}
+					onChange={handleChange}
+					onBlur={handleTouch}
+					noOptionsMessage={() => '검색 결과가 없습니다.'}
+					value={values.map((el) => ({ label: el, value: el }))}
+					components={{
+						MultiValue,
+						MultiValueRemove,
+					}}
+					closeMenuOnSelect={false}
+				/>
+			</SortableContext>
+		</DndContext>
+	)
 }
 
 interface SelectProps {
-  placeholder?: string
-  options: Option[]
+	placeholder?: string
+	options: Option[]
 	values: string[]
 	setValues: (value: string[]) => void
 	handleChange: (value: Option[]) => void
-  handleTouch: () => void
+	handleTouch: () => void
 }
 
 interface Option {
-  value: string
-  label: string
+	value: string
+	label: string
 }
 
 export default Select

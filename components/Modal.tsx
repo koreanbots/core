@@ -2,7 +2,15 @@ import { ReactNode } from 'react'
 import { Modal as ReactModal } from 'react-responsive-modal'
 import 'react-responsive-modal/styles.css'
 
-const Modal: React.FC<ModalProps> = ({ children, isOpen, onClose, closeIcon=false, dark, header, full=false }) => {
+const Modal: React.FC<ModalProps> = ({
+	children,
+	isOpen,
+	onClose,
+	closeIcon = false,
+	dark,
+	header,
+	full = false,
+}) => {
 	return (
 		<ReactModal
 			open={isOpen}
@@ -12,13 +20,13 @@ const Modal: React.FC<ModalProps> = ({ children, isOpen, onClose, closeIcon=fals
 			showCloseIcon={closeIcon}
 			styles={{
 				closeButton: {
-					color: dark ? 'white' : 'black'
+					color: dark ? 'white' : 'black',
 				},
 				modal: {
 					borderRadius: '10px',
 					background: dark ? '#2C2F33' : '#fbfbfb',
 					color: dark ? 'white' : 'black',
-					width: full ? '90%' : 'inherit'
+					width: full ? '90%' : 'inherit',
 				},
 			}}
 		>

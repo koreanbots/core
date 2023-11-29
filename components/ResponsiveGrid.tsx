@@ -1,7 +1,9 @@
 const ResponsiveGrid: React.FC<React.PropsWithChildren> = ({ children }) => {
-	return <div className='grid gap-x-4 grid-rows-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-10 -mb-10'>
-		{children}
-	</div>
+	return (
+		<div className='-mb-10 mt-10 grid grid-rows-1 gap-x-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+			{children}
+		</div>
+	)
 }
 
 export default ResponsiveGrid

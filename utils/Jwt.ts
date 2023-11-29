@@ -3,9 +3,18 @@ import * as jwt from 'jsonwebtoken'
 const publicPem = process.env.PUBLIC_PEM?.replace(/\\n/g, '\n')
 const privateKey = process.env.PRIVATE_KEY?.replace(/\\n/g, '\n')
 
-export function sign(payload: string | Record<string, unknown>, options?: JWTSignOption): string | null {
+export function sign(
+	payload: string | Record<string, unknown>,
+	options?: JWTSignOption
+): string | null {
 	try {
-		return jwt.sign(payload, privateKey, options ? { ...options, algorithm: 'RS256', allowInsecureKeySizes: true } : { algorithm: 'RS256', allowInsecureKeySizes: true })
+		return jwt.sign(
+			payload,
+			privateKey,
+			options
+				? { ...options, algorithm: 'RS256', allowInsecureKeySizes: true }
+				: { algorithm: 'RS256', allowInsecureKeySizes: true }
+		)
 	} catch {
 		return null
 	}
@@ -13,15 +22,15 @@ export function sign(payload: string | Record<string, unknown>, options?: JWTSig
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function verify(token?: string): any | null {
-	if(!token) return null
+	if (!token) return null
 	try {
 		return jwt.verify(token, publicPem)
-	} catch(e) {
-		if(e.name !== 'TokenExpiredError') console.error(e)
+	} catch (e) {
+		if (e.name !== 'TokenExpiredError') console.error(e)
 		return null
 	}
 }
 
 interface JWTSignOption {
-  expiresIn: number | string
+	expiresIn: number | string
 }

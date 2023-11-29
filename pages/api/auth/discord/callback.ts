@@ -13,8 +13,8 @@ import RequestHandler from '@utils/RequestHandler'
 
 const Callback = RequestHandler().get(async (req: ApiRequest, res) => {
 	const validate = await OauthCallbackSchema.validate(req.query)
-		.then(r => r)
-		.catch(e => {
+		.then((r) => r)
+		.catch((e) => {
 			ResponseWrapper(res, { code: 400, errors: e.errors })
 			return null
 		})
@@ -35,7 +35,7 @@ const Callback = RequestHandler().get(async (req: ApiRequest, res) => {
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded',
 		},
-	}).then(r => r.json())
+	}).then((r) => r.json())
 	if (token.error) return ResponseWrapper(res, { code: 400, errors: ['올바르지 않은 코드입니다.'] })
 
 	const user: DiscordUserInfo = await fetch(DiscordEnpoints.Me, {
@@ -43,7 +43,7 @@ const Callback = RequestHandler().get(async (req: ApiRequest, res) => {
 		headers: {
 			Authorization: `${token.token_type} ${token.access_token}`,
 		},
-	}).then(r => r.json())
+	}).then((r) => r.json())
 
 	const userToken = await update.assignToken({
 		id: user.id,
@@ -53,11 +53,13 @@ const Callback = RequestHandler().get(async (req: ApiRequest, res) => {
 		email: user.email,
 		username: user.username,
 		discriminator: user.discriminator,
-		verified: user.verified
+		verified: user.verified,
 	})
 
-	if(userToken === 1) return res.redirect(301, 'https://docs.koreanbots.dev/bots/account/unverified')
-	else if(userToken === 2) return res.redirect(301, 'https://docs.koreanbots.dev/bots/account/blocked')
+	if (userToken === 1)
+		return res.redirect(301, 'https://docs.koreanbots.dev/bots/account/unverified')
+	else if (userToken === 2)
+		return res.redirect(301, 'https://docs.koreanbots.dev/bots/account/blocked')
 	const info = verify(userToken)
 	res.setHeader(
 		'set-cookie',

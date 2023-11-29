@@ -4,8 +4,8 @@ import dynamic from 'next/dynamic'
 
 const Redirect = dynamic(() => import('@components/Redirect'))
 
-const Discord:NextPage = () => {
-	return <Redirect to={KoreanbotsDiscord}/>
+const Discord: NextPage = () => {
+	return <Redirect to={KoreanbotsDiscord} />
 }
 
 export default Discord

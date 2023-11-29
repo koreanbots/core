@@ -1,11 +1,11 @@
 const Logger = {
-	debug: function(message: string) {
+	debug: function (message: string) {
 		print('DEBUG', message, genStyle('cyan'))
 	},
-	warn: function(message: string) {
+	warn: function (message: string) {
 		print('WARN', message, genStyle('yellow'))
 	},
-	error: function(message: string) {
+	error: function (message: string) {
 		print('ERROR', message, genStyle('red', 'white'))
 	},
 }

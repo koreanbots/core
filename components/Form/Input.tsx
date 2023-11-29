@@ -1,12 +1,16 @@
 import { Field } from 'formik'
 
 const Input: React.FC<InputProps> = ({ name, placeholder, ...props }) => {
-	return <Field
-		{...props}
-		name={name}
-		className={'border-grey-light relative px-3 w-full h-10 text-black dark:text-white dark:bg-very-black border dark:border-transparent rounded outline-none'}
-		placeholder={placeholder}
-	/>
+	return (
+		<Field
+			{...props}
+			name={name}
+			className={
+				'border-grey-light relative h-10 w-full rounded border px-3 text-black outline-none dark:border-transparent dark:bg-very-black dark:text-white'
+			}
+			placeholder={placeholder}
+		/>
+	)
 }
 
 interface InputProps {

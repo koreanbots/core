@@ -4,9 +4,9 @@ import Markdown from './Markdown'
 const Message: React.FC<MessageProps> = ({ type, children }) => {
 	return (
 		<div
-			className={`${MessageColor[type]} px-6 py-4 rounded-md text-base mx-auto w-full text-left`}
+			className={`${MessageColor[type]} mx-auto w-full rounded-md px-6 py-4 text-left text-base`}
 		>
-			{ typeof children === 'string' ? <Markdown text={children} /> : children }
+			{typeof children === 'string' ? <Markdown text={children} /> : children}
 		</div>
 	)
 }

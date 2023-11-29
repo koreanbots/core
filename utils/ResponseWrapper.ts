@@ -19,7 +19,7 @@ export default function ResponseWrapper<T = unknown>(
 }
 
 interface ApiResponse {
-	status(status: string|number): void
+	status(status: string | number): void
 	setHeader(key: string, value: string): void
 	json(json: unknown): void
 }

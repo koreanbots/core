@@ -8,9 +8,12 @@ import { SearchQuerySchema } from '@utils/Yup'
 import { Server, List } from '@types'
 
 const SearchServers = RequestHandler().get(async (req: ApiRequest, res: NextApiResponse) => {
-	const validated = await SearchQuerySchema.validate({ q: req.query.q || req.query.query, page: req.query.page })
-		.then(el => el)
-		.catch(e => {
+	const validated = await SearchQuerySchema.validate({
+		q: req.query.q || req.query.query,
+		page: req.query.page,
+	})
+		.then((el) => el)
+		.catch((e) => {
 			ResponseWrapper(res, { code: 400, errors: e.errors })
 		})
 	if (!validated) return

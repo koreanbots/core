@@ -3,10 +3,9 @@ import Twemoji from 'twemoji'
 import { KoreanbotsEmoji } from './Constants'
 
 export const anchorHeader = {
-	type:    'output',
-	regex:   Heading,
-	replace: function (__match: string, id:string, title:string, level:number): string {
-
+	type: 'output',
+	regex: Heading,
+	replace: function (__match: string, id: string, title: string, level: number): string {
 		// github anchor style
 		const href = id.replace(ImageTag, '$1').replace(/"/gi, '')
 		const octicon_html = `<a class="anchor mr-1 align-middle" aria-hidden="true" href="#${href}">
@@ -16,26 +15,30 @@ export const anchorHeader = {
 		</a>`
 
 		return `<h${level} id="${href}">${octicon_html}${title}</h${level}>`
-	}
+	},
 }
 
 export const twemoji = {
 	type: 'output',
 	regex: `${Emoji}{1,2}`,
-	replace: function(__match: string, two: string, one: string) {
+	replace: function (__match: string, two: string, one: string) {
 		const parsed = __match || two || one
-		const emoj = Twemoji.parse(parsed, { folder: 'svg', ext: '.svg', base: 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/' })
-		if(!emoj) return parsed
+		const emoj = Twemoji.parse(parsed, {
+			folder: 'svg',
+			ext: '.svg',
+			base: 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/',
+		})
+		if (!emoj) return parsed
 		return emoj
-	} 
+	},
 }
 
 export const customEmoji = {
 	type: 'output',
 	regex: EmojiSyntax,
-	replace: function(__match: string, name: string): string {
-		const result = KoreanbotsEmoji.find(el => el.short_names.includes(name))
-		if(!name || !result) return `:${name}:`
+	replace: function (__match: string, name: string): string {
+		const result = KoreanbotsEmoji.find((el) => el.short_names.includes(name))
+		if (!name || !result) return `:${name}:`
 		return `<img class="emoji special" draggable="false" alt="${name}" src="${result.imageUrl}"/>`
-	}
+	},
 }

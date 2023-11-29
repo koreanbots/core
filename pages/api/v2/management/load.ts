@@ -1,4 +1,3 @@
-
 import { NextApiHandler } from 'next'
 import { getMainGuild } from '@utils/DiscordBot'
 import RequestHandler from '@utils/RequestHandler'

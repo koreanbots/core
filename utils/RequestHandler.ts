@@ -14,9 +14,9 @@ const limiter = rateLimit({
 	keyGenerator: (req) => req.headers['x-forwarded-for'] as string,
 	skip: (req, res) => {
 		res.setHeader('X-RateLimit-Global', 'true')
-		if(GlobalRatelimitIgnore.map(el => req.url.startsWith(el)).find(el => el)) return true
+		if (GlobalRatelimitIgnore.map((el) => req.url.startsWith(el)).find((el) => el)) return true
 		return false
-	}
+	},
 })
 const RequestHandler = () =>
 	nc<NextApiRequest, NextApiResponse>({
@@ -27,8 +27,7 @@ const RequestHandler = () =>
 			console.error(err)
 			Sentry.captureException(err)
 			return ResponseWrapper(res, { code: 500 })
-		}
-	})
-		.use(limiter)
+		},
+	}).use(limiter)
 
 export default RequestHandler

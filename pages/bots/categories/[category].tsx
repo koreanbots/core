@@ -20,62 +20,88 @@ const Markdown = dynamic(() => import('@components/Markdown'))
 const NSFW = dynamic(() => import('@components/NSFW'))
 
 const Category: NextPage<CategoryProps> = ({ data, query }) => {
-	const [ nsfw, setNSFW ] = useState<boolean>()
+	const [nsfw, setNSFW] = useState<boolean>()
 	const router = useRouter()
 	useEffect(() => {
 		setNSFW(localStorage.nsfw)
 	}, [])
-	if(!data || data.data.length === 0 || data.totalPage < Number(query.page)) return <NotFound message={data?.data.length === 0 ? '해당 카테고리에 해당되는 봇이 존재하지 않습니다.' : null} />
-	return <>
-		<Hero type='bots' header={`${query.category} 카테고리 봇들`} description={`다양한 "${query.category}" 카테고리의 봇들을 만나보세요.`} />
-		{
-			query.category === 'NSFW' && !nsfw ? <NSFW onClick={() => setNSFW(true)} onDisableClick={() => localStorage.nsfw = true} />
-				: <Container>
-					{
-						router.query.category === '빗금 명령어' && <Segment className='mb-4'>
-							<h1 className='text-2xl font-bold pt-3.5 pb-1'>빗금 명령어</h1>
-							<Markdown text={'빗금 명렁어는 디스코드 채팅창에 `/` 를 입력하여 사용할 수 있습니다.'} />
+	if (!data || data.data.length === 0 || data.totalPage < Number(query.page))
+		return (
+			<NotFound
+				message={
+					data?.data.length === 0 ? '해당 카테고리에 해당되는 봇이 존재하지 않습니다.' : null
+				}
+			/>
+		)
+	return (
+		<>
+			<Hero
+				type='bots'
+				header={`${query.category} 카테고리 봇들`}
+				description={`다양한 "${query.category}" 카테고리의 봇들을 만나보세요.`}
+			/>
+			{query.category === 'NSFW' && !nsfw ? (
+				<NSFW onClick={() => setNSFW(true)} onDisableClick={() => (localStorage.nsfw = true)} />
+			) : (
+				<Container>
+					{router.query.category === '빗금 명령어' && (
+						<Segment className='mb-4'>
+							<h1 className='pb-1 pt-3.5 text-2xl font-bold'>빗금 명령어</h1>
+							<Markdown
+								text={'빗금 명렁어는 디스코드 채팅창에 `/` 를 입력하여 사용할 수 있습니다.'}
+							/>
 						</Segment>
-					}
+					)}
 					<Advertisement />
 					<ResponsiveGrid>
-						{
-							data.data.map(bot => <BotCard key={bot.id} bot={bot} /> )
-						}
+						{data.data.map((bot) => (
+							<BotCard key={bot.id} bot={bot} />
+						))}
 					</ResponsiveGrid>
-					<Paginator totalPage={data.totalPage} currentPage={data.currentPage} pathname={`/bots/categories/${query.category}`} />
+					<Paginator
+						totalPage={data.totalPage}
+						currentPage={data.currentPage}
+						pathname={`/bots/categories/${query.category}`}
+					/>
 					<Advertisement />
 				</Container>
-		}
-	</>
+			)}
+		</>
+	)
 }
 
 export const getServerSideProps = async (ctx: Context) => {
 	let data: List<Bot>
-	if(!ctx.query.page) ctx.query.page = '1'
-	const validate = await botCategoryListArgumentSchema.validate(ctx.query).then(el => el).catch(() => null)
-	if(!validate || isNaN(Number(ctx.query.page))) data = null
-	else data = await get.list.category.load(JSON.stringify({ page: Number(ctx.query.page), category: ctx.query.category }))
+	if (!ctx.query.page) ctx.query.page = '1'
+	const validate = await botCategoryListArgumentSchema
+		.validate(ctx.query)
+		.then((el) => el)
+		.catch(() => null)
+	if (!validate || isNaN(Number(ctx.query.page))) data = null
+	else
+		data = await get.list.category.load(
+			JSON.stringify({ page: Number(ctx.query.page), category: ctx.query.category })
+		)
 	return {
 		props: {
 			data,
-			query: ctx.query
-		}
+			query: ctx.query,
+		},
 	}
 }
 
 interface CategoryProps {
-  data: List<Bot>
-  query: URLQuery
+	data: List<Bot>
+	query: URLQuery
 }
 
 interface Context extends NextPageContext {
-  query: URLQuery  
+	query: URLQuery
 }
 
 interface URLQuery extends ParsedUrlQuery {
-  category: string
-  page?: string
+	category: string
+	page?: string
 }
 
 export default Category

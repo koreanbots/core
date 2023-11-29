@@ -3,10 +3,8 @@ import dynamic from 'next/dynamic'
 
 import { SpecialEndPoints } from '@utils/Constants'
 
-
-const Docs = dynamic(()=> import('@components/Docs'))
+const Docs = dynamic(() => import('@components/Docs'))
 const Markdown = dynamic(() => import('@components/Markdown'))
-
 
 const Guidelines: NextPage<GuidelinesProps> = ({ content }) => {
 	return (
@@ -28,10 +26,9 @@ export const getStaticProps: GetStaticProps<GuidelinesProps> = async () => {
 	const json = await res.json()
 	return {
 		props: {
-			content: Buffer.from(json.content, 'base64').toString('utf-8')
-		}
+			content: Buffer.from(json.content, 'base64').toString('utf-8'),
+		},
 	}
 }
 
 export default Guidelines
-

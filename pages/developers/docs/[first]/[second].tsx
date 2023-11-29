@@ -11,89 +11,104 @@ import NotFound from 'pages/404'
 import Message from '@components/Message'
 
 const DeveloperLayout = dynamic(() => import('@components/DeveloperLayout'))
-const Markdown = dynamic(() => import ('@components/Markdown'))
+const Markdown = dynamic(() => import('@components/Markdown'))
 
 const docsDir = './api-docs/docs'
 const Docs: NextPage<DocsProps> = ({ docs }) => {
 	const router = useRouter()
-	const [ document, setDoc ] = useState<DocsData>(null)
+	const [document, setDoc] = useState<DocsData>(null)
 	useEffect(() => {
-		if(!router.query.first) return
-		let res = docs?.find(el => el.name === router.query.first)
-		if(router.query.second) res = res?.list?.find(el => el.name === router.query.second)
+		if (!router.query.first) return
+		let res = docs?.find((el) => el.name === router.query.first)
+		if (router.query.second) res = res?.list?.find((el) => el.name === router.query.second)
 		setDoc(res || { name: 'Not Found' })
 		setTimeout(highlightBlocks, 100)
 	}, [docs, router.query])
 
 	useEffect(() => highlightBlocks, [document])
-	if(document?.name === 'Not Found') return <NotFound />
-	return <DeveloperLayout enabled='docs' docs={docs} currentDoc={(router.query.second || router.query.first) as string}>
-		<div className='px-2'>
-			{
-				!document ? ''
-					: <Markdown text={document.text} options={{ openLinksInNewWindow: false }} components={{ message: Message, code }} allowedTag={['message']} />
-			}
-		</div>
-	</DeveloperLayout>
+	if (document?.name === 'Not Found') return <NotFound />
+	return (
+		<DeveloperLayout
+			enabled='docs'
+			docs={docs}
+			currentDoc={(router.query.second || router.query.first) as string}
+		>
+			<div className='px-2'>
+				{!document ? (
+					''
+				) : (
+					<Markdown
+						text={document.text}
+						options={{ openLinksInNewWindow: false }}
+						components={{ message: Message, code }}
+						allowedTag={['message']}
+					/>
+				)}
+			</div>
+		</DeveloperLayout>
+	)
 }
 
-export async function getStaticPaths () {
+export async function getStaticPaths() {
 	return {
 		paths: [],
-		fallback: true
+		fallback: true,
 	}
 }
 
-export async function getStaticProps () {
-	const docs = (await Promise.all((await readdir(docsDir)).map(async el => {
-		const isDir = (await lstat(join(docsDir, el))).isDirectory()
-		if(!isDir) {
-			return {
-				name: el.split('.').slice(0, -1).join('.'),
-				text: (await readFile(join(docsDir, el))).toString()
-			}
-		}
-		else {
-			return {
-				name: el,
-				list: await Promise.all((await readdir(join(docsDir, el))).map(async e => {
+export async function getStaticProps() {
+	const docs = (
+		await Promise.all(
+			(await readdir(docsDir)).map(async (el) => {
+				const isDir = (await lstat(join(docsDir, el))).isDirectory()
+				if (!isDir) {
 					return {
-						name: e.split('.').slice(0, -1).join('.'),
-						text: (await readFile(join(docsDir, el, e))).toString()
+						name: el.split('.').slice(0, -1).join('.'),
+						text: (await readFile(join(docsDir, el))).toString(),
 					}
-				}))
-			}
-		}
-	}))).sort((a, b) => {
-		if('list' in b && 'text' in a) return -1
+				} else {
+					return {
+						name: el,
+						list: await Promise.all(
+							(await readdir(join(docsDir, el))).map(async (e) => {
+								return {
+									name: e.split('.').slice(0, -1).join('.'),
+									text: (await readFile(join(docsDir, el, e))).toString(),
+								}
+							})
+						),
+					}
+				}
+			})
+		)
+	).sort((a, b) => {
+		if ('list' in b && 'text' in a) return -1
 		return a.name.localeCompare(b.name)
-	}) 
+	})
 
 	return {
-		props: { docs }
+		props: { docs },
 	}
 }
 
-function code({ children }:{ children: string }):JSX.Element {
+function code({ children }: { children: string }): JSX.Element {
 	const methods = {
 		get: 'text-emerald-400',
 		post: 'text-amber-400',
 		put: 'text-blue-500',
 		patch: 'text-amber-400',
-		delete: 'text-red-500'
+		delete: 'text-red-500',
 	}
-	return <code className={`${methods[String(children).toLowerCase()]}`}>
-		{children}
-	</code>
+	return <code className={`${methods[String(children).toLowerCase()]}`}>{children}</code>
 }
 function highlightBlocks() {
 	const nodes = window.document.querySelectorAll('pre code')
-	nodes.forEach(el => {
+	nodes.forEach((el) => {
 		window.hljs.highlightBlock(el)
 	})
 }
 interface DocsProps {
-  docs: DocsData[]
+	docs: DocsData[]
 }
 
 export default Docs

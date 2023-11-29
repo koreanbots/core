@@ -30,7 +30,7 @@ export const Status = {
 	},
 	streaming: {
 		text: '방송중',
-		color: 'violet-500'
+		color: 'violet-500',
 	},
 	null: {
 		text: '알 수 없음',
@@ -93,31 +93,31 @@ export const botCategories = [
 	'오버워치',
 	'리그 오브 레전드',
 	'배틀그라운드',
-	'마인크래프트'
+	'마인크래프트',
 ]
 
 export const botCategoryIcon = {
-	'관리': 'fas fa-cogs',
-	'뮤직': 'fas fa-music',
-	'전적': 'fas fa-puzzle-piece',
+	관리: 'fas fa-cogs',
+	뮤직: 'fas fa-music',
+	전적: 'fas fa-puzzle-piece',
 	'웹 대시보드': 'fas fa-sliders-h',
-	'로깅': 'fas fa-pencil-alt',
+	로깅: 'fas fa-pencil-alt',
 	'빗금 명령어': null,
-	'도박': 'fas fa-money-bill-alt',
-	'게임': 'fas fa-gamepad',
-	'밈': 'fas fa-image',
-	'레벨링': 'fas fa-angle-double-up',
-	'유틸리티': 'fas fa-tools',
-	'번역': 'fas fa-language',
-	'대화': 'fas fa-comments',
-	'NSFW': 'fas fa-exclamation-triangle',
-	'검색': 'fas fa-search',
-	'학교': 'fas fa-school',
-	'코로나19': 'fas fa-viruses',
-	'오버워치': 'fas fa-mask',
+	도박: 'fas fa-money-bill-alt',
+	게임: 'fas fa-gamepad',
+	밈: 'fas fa-image',
+	레벨링: 'fas fa-angle-double-up',
+	유틸리티: 'fas fa-tools',
+	번역: 'fas fa-language',
+	대화: 'fas fa-comments',
+	NSFW: 'fas fa-exclamation-triangle',
+	검색: 'fas fa-search',
+	학교: 'fas fa-school',
+	코로나19: 'fas fa-viruses',
+	오버워치: 'fas fa-mask',
 	'리그 오브 레전드': 'fas fa-chess',
-	'배틀그라운드': 'fas fa-meteor',
-	'마인크래프트': 'fas fa-cubes'
+	배틀그라운드: 'fas fa-meteor',
+	마인크래프트: 'fas fa-cubes',
 }
 
 export const serverCategories = [
@@ -133,22 +133,22 @@ export const serverCategories = [
 	'오버워치',
 	'리그 오브 레전드',
 	'배틀그라운드',
-	'마인크래프트'
+	'마인크래프트',
 ]
 
 export const serverCategoryIcon = {
-	'커뮤니티': 'fas fa-comments',
-	'친목': 'fas fa-user-friends',
-	'음악': 'fas fa-music',
+	커뮤니티: 'fas fa-comments',
+	친목: 'fas fa-user-friends',
+	음악: 'fas fa-music',
 	'IT & 과학': 'fas fa-flask',
-	'봇': 'fas fa-robot',
-	'교육': 'fas fa-graduation-cap',
-	'연애': 'fas fa-hand-holding-heart',
-	'게임': 'fas fa-gamepad',
-	'오버워치': 'fas fa-mask',
+	봇: 'fas fa-robot',
+	교육: 'fas fa-graduation-cap',
+	연애: 'fas fa-hand-holding-heart',
+	게임: 'fas fa-gamepad',
+	오버워치: 'fas fa-mask',
 	'리그 오브 레전드': 'fas fa-chess',
-	'배틀그라운드': 'fas fa-meteor',
-	'마인크래프트': 'fas fa-cubes'
+	배틀그라운드: 'fas fa-meteor',
+	마인크래프트: 'fas fa-cubes',
 }
 
 export const reportCats = [
@@ -171,24 +171,20 @@ export const serverReportCats = [
 	'기타',
 ]
 
-export const imageSafeHost = [
-	'koreanbots.dev',
-	'githubusercontent.com',
-	'cdn.discordapp.com'
-]
+export const imageSafeHost = ['koreanbots.dev', 'githubusercontent.com', 'cdn.discordapp.com']
 
 export const MessageColor = {
 	success: 'bg-emerald-200 text-emerald-800',
 	error: 'bg-red-200 text-red-800',
 	warning: 'bg-amber-50 text-amber-700',
-	info: 'bg-blue-200 text-blue-800'
+	info: 'bg-blue-200 text-blue-800',
 }
 
 export const BASE_URLs = {
 	api: 'https://discord.com/api',
 	invite: 'https://discord.gg',
 	cdn: 'https://cdn.discordapp.com',
-	camo: 'https://camo.koreanbots.dev'
+	camo: 'https://camo.koreanbots.dev',
 }
 
 export const BotBadgeType = (data: Bot) => {
@@ -196,23 +192,24 @@ export const BotBadgeType = (data: Bot) => {
 		servers: {
 			label: '서버수',
 			status: data.servers === 0 ? 'N/A' : formatNumber(data.servers),
-			color: '7289DA'
+			color: '7289DA',
 		},
 		votes: {
 			label: '하트',
 			status: `${formatNumber(data.votes)}`,
-			color: 'ef4444'
+			color: 'ef4444',
 		},
 		status: {
 			label: '상태',
 			status: Status[data.status]?.text || '알 수 없음',
-			color: {
-				online: '34d399',
-				idle: 'fcd34d',
-				dnd: 'ef4444',
-				streaming: '8b5cf6'
-			}[data.status] || '6b7280'
-		}
+			color:
+				{
+					online: '34d399',
+					idle: 'fcd34d',
+					dnd: 'ef4444',
+					streaming: '8b5cf6',
+				}[data.status] || '6b7280',
+		},
 	}
 }
 
@@ -221,49 +218,88 @@ export const ServerBadgeType = (data: Server) => {
 		members: {
 			label: '멤버수',
 			status: !data.members ? 'N/A' : formatNumber(data.members),
-			color: '7289DA'
+			color: '7289DA',
 		},
 		votes: {
 			label: '하트',
 			status: `${formatNumber(data.votes)}`,
-			color: 'ef4444'
+			color: 'ef4444',
 		},
 		boost: {
 			label: '부스트',
 			status: `${!data.boostTier ? 0 : data.boostTier}레벨`,
-			color: 'fe73fa'
-		}
+			color: 'fe73fa',
+		},
 	}
 }
-
 
 export const DiscordEnpoints = {
 	Token: BASE_URLs.api + '/oauth2/token',
 	Me: BASE_URLs.api + '/v9/users/@me',
 	Guilds: BASE_URLs.api + '/v9/users/@me/guilds',
-	InviteApplication: (id: string, perms: { [perm: string]: boolean }, scope: string, redirect?: string, guild_id?: string): string => `${BASE_URLs.api}/oauth2/authorize?client_id=${id ? id.split(' ')[0] : 'CLIENT_ID'}&permissions=${Object.keys(perms).filter(el => perms[el]).map(el => Number(el)).reduce((prev, curr) => BigInt(prev) | BigInt(curr), BigInt(0))}&scope=${scope ? encodeURI(scope) : 'bot'}${redirect ? `&redirect_uri=${encodeURIComponent(redirect)}` : ''}${guild_id ? `&guild_id=${guild_id}` : ''}`,
-	ServerInvite: (code: string): string => `${BASE_URLs.invite}/${code}`, 
+	InviteApplication: (
+		id: string,
+		perms: { [perm: string]: boolean },
+		scope: string,
+		redirect?: string,
+		guild_id?: string
+	): string =>
+		`${BASE_URLs.api}/oauth2/authorize?client_id=${
+			id ? id.split(' ')[0] : 'CLIENT_ID'
+		}&permissions=${Object.keys(perms)
+			.filter((el) => perms[el])
+			.map((el) => Number(el))
+			.reduce((prev, curr) => BigInt(prev) | BigInt(curr), BigInt(0))}&scope=${
+			scope ? encodeURI(scope) : 'bot'
+		}${redirect ? `&redirect_uri=${encodeURIComponent(redirect)}` : ''}${
+			guild_id ? `&guild_id=${guild_id}` : ''
+		}`,
+	ServerInvite: (code: string): string => `${BASE_URLs.invite}/${code}`,
 	CDN: class CDN {
 		static root = BASE_URLs.cdn
-		static emoji (id: string, options:ImageOptions={}) { return makeImageURL(`${this.root}/emojis/${id}`, options) }
-		static guild (id: string, hash: string, options:ImageOptions={}) { return makeImageURL(`${this.root}/icons/${id}/${hash}`, options) }
-		static default (tag: string|number, options:ImageOptions={}) { return makeImageURL(`${this.root}/embed/avatars/${!isNaN(Number(tag)) ? Number(tag) % 5 : 0}`, options) }
-		static user (id: string, hash: string, options:ImageOptions={}) { return makeImageURL(`${this.root}/avatars/${id}/${hash}`, options) }
-	}
+		static emoji(id: string, options: ImageOptions = {}) {
+			return makeImageURL(`${this.root}/emojis/${id}`, options)
+		}
+		static guild(id: string, hash: string, options: ImageOptions = {}) {
+			return makeImageURL(`${this.root}/icons/${id}/${hash}`, options)
+		}
+		static default(tag: string | number, options: ImageOptions = {}) {
+			return makeImageURL(
+				`${this.root}/embed/avatars/${!isNaN(Number(tag)) ? Number(tag) % 5 : 0}`,
+				options
+			)
+		}
+		static user(id: string, hash: string, options: ImageOptions = {}) {
+			return makeImageURL(`${this.root}/avatars/${id}/${hash}`, options)
+		}
+	},
 }
 
 export const KoreanbotsEndPoints = {
 	OG: class {
 		static root = 'https://og.koreanbots.dev'
 		static origin = 'https://koreanbots.dev'
-		static generate(id: string, name: string, bio: string, tags: string[], stats: string[], type: 'bot' | 'server') {
+		static generate(
+			id: string,
+			name: string,
+			bio: string,
+			tags: string[],
+			stats: string[],
+			type: 'bot' | 'server'
+		) {
 			const u = new URL(this.root)
 			u.pathname = name + '.png'
-			u.searchParams.append('image', this.origin + ( type === 'bot' ? KoreanbotsEndPoints.CDN.avatar(id, { format: 'webp', size: 256 }) : KoreanbotsEndPoints.CDN.icon(id, { format: 'webp', size: 256 }) ))
+			u.searchParams.append(
+				'image',
+				this.origin +
+					(type === 'bot'
+						? KoreanbotsEndPoints.CDN.avatar(id, { format: 'webp', size: 256 })
+						: KoreanbotsEndPoints.CDN.icon(id, { format: 'webp', size: 256 }))
+			)
 			u.searchParams.append('bio', bio)
 			u.searchParams.append('type', type)
-			tags.map(t => u.searchParams.append('tags', t))
-			stats.map(s => u.searchParams.append('stats', s))
+			tags.map((t) => u.searchParams.append('tags', t))
+			stats.map((s) => u.searchParams.append('stats', s))
 			return u.href
 		}
 		static bot(id: string, name: string, bio: string, tags: string[], stats: string[]) {
@@ -275,78 +311,106 @@ export const KoreanbotsEndPoints = {
 	},
 	CDN: class {
 		static root = '/api/image'
-		static avatar (id: string, options: KoreanbotsImageOptions) { return makeImageURL(`${this.root}/discord/avatars/${id}`, options) }
-		static icon (id: string,  options: KoreanbotsImageOptions) { return makeImageURL(`${this.root}/discord/icons/${id}`, options) }
+		static avatar(id: string, options: KoreanbotsImageOptions) {
+			return makeImageURL(`${this.root}/discord/avatars/${id}`, options)
+		}
+		static icon(id: string, options: KoreanbotsImageOptions) {
+			return makeImageURL(`${this.root}/discord/icons/${id}`, options)
+		}
 	},
 	URL: class {
 		static root = process.env.KOREANBOTS_URL || 'https://koreanbots.dev'
-		static bot (id: string) { return `${this.root}/bots/${id}` }
-		static server (id: string) { return `${this.root}/servers/${id}` }
-		static user (id: string) { return `${this.root}/users/${id}` }
-		static submittedBot(id: string, date: number) { return `${this.root}/pendingBots/${id}/${date}` }
-		static searchBot(query: string) { return `${this.root}/bots/search?q=${encodeURIComponent(query)}` }
-		static searchServer(query: string) { return `${this.root}/servers/search?q=${encodeURIComponent(query)}` }
+		static bot(id: string) {
+			return `${this.root}/bots/${id}`
+		}
+		static server(id: string) {
+			return `${this.root}/servers/${id}`
+		}
+		static user(id: string) {
+			return `${this.root}/users/${id}`
+		}
+		static submittedBot(id: string, date: number) {
+			return `${this.root}/pendingBots/${id}/${date}`
+		}
+		static searchBot(query: string) {
+			return `${this.root}/bots/search?q=${encodeURIComponent(query)}`
+		}
+		static searchServer(query: string) {
+			return `${this.root}/servers/search?q=${encodeURIComponent(query)}`
+		}
 	},
 	baseAPI: '/api/v2',
 	login: '/api/auth/discord',
-	logout: '/api/auth/discord/logout'
+	logout: '/api/auth/discord/logout',
 }
 
 export const SpecialEndPoints = {
 	Github: {
-		Content: (owner: string, repo: string, path: string) => `https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
-		Token: (clientID: string, clientSecret: string, code: string) => `https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${code}`,
-		Me: 'https://api.github.com/user'
+		Content: (owner: string, repo: string, path: string) =>
+			`https://api.github.com/repos/${owner}/${repo}/contents/${path}`,
+		Token: (clientID: string, clientSecret: string, code: string) =>
+			`https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${code}`,
+		Me: 'https://api.github.com/user',
 	},
 	HCaptcha: {
-		Verify: 'https://hcaptcha.com/siteverify'
-	}
+		Verify: 'https://hcaptcha.com/siteverify',
+	},
 }
 
-export const GlobalRatelimitIgnore = [
-	'/api/image/discord/avatars/'
-]
+export const GlobalRatelimitIgnore = ['/api/image/discord/avatars/']
 
 export const Oauth = {
-	discord: (clientID: string, scope: string) => `https://discord.com/oauth2/authorize?client_id=${clientID}&scope=${scope}&permissions=0&response_type=code&redirect_uri=${process.env.KOREANBOTS_URL}/api/auth/discord/callback&prompt=none`,
-	github: (clientID: string) => `https://github.com/login/oauth/authorize?client_id=${clientID}&redirect_uri=${process.env.KOREANBOTS_URL}/api/auth/github/callback`
+	discord: (clientID: string, scope: string) =>
+		`https://discord.com/oauth2/authorize?client_id=${clientID}&scope=${scope}&permissions=0&response_type=code&redirect_uri=${process.env.KOREANBOTS_URL}/api/auth/discord/callback&prompt=none`,
+	github: (clientID: string) =>
+		`https://github.com/login/oauth/authorize?client_id=${clientID}&redirect_uri=${process.env.KOREANBOTS_URL}/api/auth/github/callback`,
 }
-export const git = { 'github.com': { icon: 'github', text: 'GitHub' },  'gitlab.com':  { icon: 'gitlab', text: 'GitLab' }}
+export const git = {
+	'github.com': { icon: 'github', text: 'GitHub' },
+	'gitlab.com': { icon: 'gitlab', text: 'GitLab' },
+}
 
 export const KoreanbotsDiscord = 'https://discord.gg/JEh53MQ'
-export const ThemeColors = [{ name: '파랑', rgb: 'rgb(51, 102, 255)', hex: '#3366FF', color: 'koreanbots-blue' }, { name: '하양', rgb: 'rgb(251, 251, 251)', hex: '#FBFBFB', color: 'little-white' }, { name: '검정', rgb: 'rgb(27, 30, 35)', hex: '#1B1E23', color: 'very-black' }, { name: '보라', rgb: 'rgb(88, 101, 242)', hex: '#5865f2', color: 'discord-blurple' } ]
-export const KoreanbotsEmoji = [{
-	name: '한국 디스코드 리스트',
-	short_names: ['koreanbots', 'kbots', 'dbkr'],
-	emoticons: [],
-	keywords: ['koreanbots', '한국 디스코드 리스트', '한디리', 'kbots'],
-	imageUrl: '/logo.png'
-},
-{
-	name: 'Discord',
-	short_names: ['discord'],
-	emoticons: [],
-	keywords: ['discord', '디스코드', '디코'],
-	imageUrl: '/emojis/discord.svg'
-},
-{
-	name: 'Javascript',
-	short_names: ['javascript', 'js'],
-	emoticons: [],
-	keywords: ['javascript', 'js', '자바스크립트'],
-	imageUrl: '/emojis/javascript.png'
-},
-{
-	name: 'Python',
-	short_names: ['python', 'py'],
-	emoticons: [],
-	keywords: ['python', 'py', '파이썬'],
-	imageUrl: '/emojis/python.png'
-}]
+export const ThemeColors = [
+	{ name: '파랑', rgb: 'rgb(51, 102, 255)', hex: '#3366FF', color: 'koreanbots-blue' },
+	{ name: '하양', rgb: 'rgb(251, 251, 251)', hex: '#FBFBFB', color: 'little-white' },
+	{ name: '검정', rgb: 'rgb(27, 30, 35)', hex: '#1B1E23', color: 'very-black' },
+	{ name: '보라', rgb: 'rgb(88, 101, 242)', hex: '#5865f2', color: 'discord-blurple' },
+]
+export const KoreanbotsEmoji = [
+	{
+		name: '한국 디스코드 리스트',
+		short_names: ['koreanbots', 'kbots', 'dbkr'],
+		emoticons: [],
+		keywords: ['koreanbots', '한국 디스코드 리스트', '한디리', 'kbots'],
+		imageUrl: '/logo.png',
+	},
+	{
+		name: 'Discord',
+		short_names: ['discord'],
+		emoticons: [],
+		keywords: ['discord', '디스코드', '디코'],
+		imageUrl: '/emojis/discord.svg',
+	},
+	{
+		name: 'Javascript',
+		short_names: ['javascript', 'js'],
+		emoticons: [],
+		keywords: ['javascript', 'js', '자바스크립트'],
+		imageUrl: '/emojis/javascript.png',
+	},
+	{
+		name: 'Python',
+		short_names: ['python', 'py'],
+		emoticons: [],
+		keywords: ['python', 'py', '파이썬'],
+		imageUrl: '/emojis/python.png',
+	},
+]
 
 export const shortcutKeyMap: KeyMap = {
 	SHORTCUT_HELP: ['command+/', 'ctrl+/'],
-	CHANGE_THEME: ['command+shift+d', 'ctrl+shift+d']
+	CHANGE_THEME: ['command+shift+d', 'ctrl+shift+d'],
 }
 
 export const ErrorText = {
@@ -360,164 +424,173 @@ export const ErrorText = {
 	406: '연결을 받아드릴 수 없습니다.',
 	429: '지정된 시간에 너무 많은 요청을 보내셨습니다. 잠시 후 다시 시도해주세요.',
 	500: '서버 내부 오류가 발생하였습니다.',
-	502: '올바르지 않은 게이트웨이입니다.'
+	502: '올바르지 않은 게이트웨이입니다.',
 }
 
-export const ErrorMessage = ['지나가던 고양이가 선을 밟았어요..', '무언가 잘못되었어요..!', '이게 아닌데...', '어쩜 이렇게 오류가 또 나는건지?']
+export const ErrorMessage = [
+	'지나가던 고양이가 선을 밟았어요..',
+	'무언가 잘못되었어요..!',
+	'이게 아닌데...',
+	'어쩜 이렇게 오류가 또 나는건지?',
+]
 
-export const ServerIntroList = ['한국어를 배울 수 있는 최고의 공간입니다!', '김치의 다양한 요리법을 소개하는 서버입니다.', '좋아하는 노래를 들을 수 있는 곳 입니다.', '게임을 함께 할 사람을 찾을 수 있습니다.']
+export const ServerIntroList = [
+	'한국어를 배울 수 있는 최고의 공간입니다!',
+	'김치의 다양한 요리법을 소개하는 서버입니다.',
+	'좋아하는 노래를 들을 수 있는 곳 입니다.',
+	'게임을 함께 할 사람을 찾을 수 있습니다.',
+]
 export const BotSubmissionDenyReasonPresetsName = {
 	MISSING_VERIFY: '개발자 확인 불가',
 	OFFLINE: '봇 오프라인',
 	INVALID_CATEGORY: '올바르지 않은 카테고리',
 	PRIVATE: '프라이빗 봇',
 	LICENSE_VIOLATION: '오픈소스 라이선스 위반',
-	ABSENT_AT_DISCORD: '공식 디스코드 서버 미참여'
+	ABSENT_AT_DISCORD: '공식 디스코드 서버 미참여',
 }
 
 export const GuildPermissions = {
 	general: [
 		{
 			name: '채널 보기',
-			flag: 0x00000400
+			flag: 0x00000400,
 		},
 		{
 			name: '채널 관리하기',
 			flag: 0x00000010,
-			twofactor: true
+			twofactor: true,
 		},
 		{
 			name: '역할 관리하기',
 			flag: 0x10000000,
-			twofactor: true
+			twofactor: true,
 		},
 		{
 			name: '이모티콘 관리하기',
 			flag: 0x40000000,
-			twofactor: true
+			twofactor: true,
 		},
 		{
 			name: '감사 로그 보기',
-			flag: 0x00000080
+			flag: 0x00000080,
 		},
 		{
 			name: '웹후크 관리하기',
 			flag: 0x20000000,
-			twofactor: true
+			twofactor: true,
 		},
 		{
 			name: '서버 관리하기',
 			flag: 0x00000020,
-			twofactor: true
-		}
+			twofactor: true,
+		},
 	],
 	membership: [
 		{
 			name: '초대 코드 만들기',
-			flag: 0x00000001
+			flag: 0x00000001,
 		},
 		{
 			name: '별명 변경하기',
-			flag: 0x04000000
+			flag: 0x04000000,
 		},
 		{
 			name: '별명 관리하기',
-			flag: 0x08000000
+			flag: 0x08000000,
 		},
 		{
 			name: '멤버 추방하기',
 			flag: 0x00000002,
-			twofactor: true
+			twofactor: true,
 		},
 		{
 			name: '멤버 차단하기',
 			flag: 0x00000004,
-			twofactor: true
-		}
+			twofactor: true,
+		},
 	],
 	channel: [
 		{
 			name: '메세지 보내기',
-			flag: 0x00000800
+			flag: 0x00000800,
 		},
 		{
 			name: '링크 첨부',
-			flag: 0x00004000
+			flag: 0x00004000,
 		},
 		{
 			name: '파일 첨부',
-			flag: 0x00008000
+			flag: 0x00008000,
 		},
 		{
 			name: '반응 추가하기',
-			flag: 0x00000040
+			flag: 0x00000040,
 		},
 		{
 			name: '외부 이모티콘 사용',
-			flag: 0x00040000
+			flag: 0x00040000,
 		},
 		{
 			name: '@everyone, @here 모든 역할 멘션하기',
-			flag: 0x00020000
+			flag: 0x00020000,
 		},
 		{
 			name: '메세지 관리',
 			flag: 0x00002000,
-			twofactor: true
+			twofactor: true,
 		},
 		{
 			name: '메세지 기록 보기',
-			flag: 0x00010000
+			flag: 0x00010000,
 		},
 		{
 			name: '텍스트 음성 변환 메세지 전송',
-			flag: 0x00001000
+			flag: 0x00001000,
 		},
 		{
 			name: '빗금 명령어 사용',
-			flag: 0x80000000
-		}
+			flag: 0x80000000,
+		},
 	],
 	voice: [
 		{
 			name: '연결',
-			flag: 0x00100000
+			flag: 0x00100000,
 		},
 		{
 			name: '말하기',
-			flag: 0x00200000
+			flag: 0x00200000,
 		},
 		{
 			name: '동영상',
-			flag: 0x00000200
-
+			flag: 0x00000200,
 		},
 		{
 			name: '음성 감지 사용',
-			flag: 0x02000000
+			flag: 0x02000000,
 		},
 		{
 			name: '우선 발언권',
-			flag: 0x00000100
+			flag: 0x00000100,
 		},
 		{
 			name: '멤버들의 마이크 음소거하기',
-			flag: 0x00400000
+			flag: 0x00400000,
 		},
 		{
 			name: '멤버의 헤드셋 음소거하기',
-			flag: 0x00800000
+			flag: 0x00800000,
 		},
 		{
 			name: '멤버 이동',
-			flag: 0x01000000
-		}
+			flag: 0x01000000,
+		},
 	],
 	advanced: [
 		{
 			name: '관리자',
 			flag: 0x8,
-			twofactor: true
-		}
-	]
+			twofactor: true,
+		},
+	],
 }

@@ -5,7 +5,12 @@ import * as Emoji from 'node-emoji'
 
 import { anchorHeader, customEmoji, twemoji } from '@utils/Tools'
 
-const Markdown: React.FC<MarkdownProps> = ({ text, options={}, allowedTag=[], components={} }) => {
+const Markdown: React.FC<MarkdownProps> = ({
+	text,
+	options = {},
+	allowedTag = [],
+	components = {},
+}) => {
 	return (
 		<div className='markdown-body w-full'>
 			<MarkdownView
@@ -23,10 +28,10 @@ const Markdown: React.FC<MarkdownProps> = ({ text, options={}, allowedTag=[], co
 					tasklists: true,
 					ghCompatibleHeaderId: true,
 					encodeEmails: true,
-					...options
+					...options,
 				}}
 				components={components}
-				sanitizeHtml={html =>
+				sanitizeHtml={(html) =>
 					sanitizeHtml(html, {
 						allowedTags: [
 							'addr',
@@ -98,16 +103,16 @@ const Markdown: React.FC<MarkdownProps> = ({ text, options={}, allowedTag=[], co
 							'svg',
 							'path',
 							'input',
-							...allowedTag
+							...allowedTag,
 						],
 						allowedAttributes: false,
 						allowedClasses: {
 							'*': ['align-middle'],
 							a: ['anchor', 'mr-1'],
 							svg: ['octicon-link'],
-							img: ['emoji', 'special']
+							img: ['emoji', 'special'],
 						},
-						allowedStyles: {}
+						allowedStyles: {},
 					})
 				}
 			/>

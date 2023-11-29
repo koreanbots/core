@@ -1,18 +1,18 @@
 const Toggle: React.FC<ToggleProps> = ({ checked, onChange }: ToggleProps) => {
 	return (
 		<button
-			className='relative inline-block align-middle mr-2 w-10 outline-none select-none'
+			className='relative mr-2 inline-block w-10 select-none align-middle outline-none'
 			onClick={onChange}
 			onKeyPress={onChange}
 		>
 			<input
 				type='checkbox'
 				checked={checked}
-				className='absolute checked:right-0 block w-6 h-6 bg-white border-4 border-transparent rounded-full outline-none appearance-none cursor-pointer'
+				className='absolute block h-6 w-6 cursor-pointer appearance-none rounded-full border-4 border-transparent bg-white outline-none checked:right-0'
 				readOnly
 			/>
 			<span
-				className={`block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer ${
+				className={`block h-6 cursor-pointer overflow-hidden rounded-full bg-gray-300 ${
 					checked ? 'bg-koreanbots-blue' : ''
 				}`}
 			></span>

@@ -8,26 +8,28 @@ const Docs: React.FC<DocsProps> = ({ title, header, description, subheader, chil
 	const d = description || subheader
 	return (
 		<>
-			<NextSeo title={t} description={d}
+			<NextSeo
+				title={t}
+				description={d}
 				openGraph={{
 					title: t,
-					description: d
+					description: d,
 				}}
 			/>
-			<div className='dark:bg-discord-black bg-discord-blurple z-20'>
+			<div className='z-20 bg-discord-blurple dark:bg-discord-black'>
 				<Container className='py-20' ignoreColor>
-					<h1 className='mt-10 text-center text-gray-100 text-4xl font-bold sm:text-left'>
+					<h1 className='mt-10 text-center text-4xl font-bold text-gray-100 sm:text-left'>
 						{header}
 					</h1>
-					<h2 className='mt-5 text-center text-gray-200 text-xl font-medium sm:text-left'>
+					<h2 className='mt-5 text-center text-xl font-medium text-gray-200 sm:text-left'>
 						{description}
 					</h2>
-					<h2 className='mt-5 text-center text-gray-200 text-xl font-medium sm:text-left'>
+					<h2 className='mt-5 text-center text-xl font-medium text-gray-200 sm:text-left'>
 						{subheader}
 					</h2>
 				</Container>
 			</div>
-			<Container className='pt-10 pb-20'>
+			<Container className='pb-20 pt-10'>
 				<div>{children}</div>
 			</Container>
 		</>

@@ -9,9 +9,7 @@ const Login: React.FC<React.PropsWithChildren> = ({ children }) => {
 		localStorage.redirectTo = window.location.href
 		redirectTo(router, 'login')
 	})
-	return <>
-		{children}
-	</>
+	return <>{children}</>
 }
 
 export default Login

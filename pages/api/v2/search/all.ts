@@ -9,8 +9,8 @@ import { Bot, Server, List } from '@types'
 
 const Search = RequestHandler().get(async (req: ApiRequest, res) => {
 	const validated = await SearchQuerySchema.validate({ q: req.query.q || req.query.query, page: 1 })
-		.then(el => el)
-		.catch(e => {
+		.then((el) => el)
+		.catch((e) => {
 			ResponseWrapper(res, { code: 400, errors: e.errors })
 		})
 	if (!validated) return
@@ -27,7 +27,10 @@ const Search = RequestHandler().get(async (req: ApiRequest, res) => {
 	} catch {
 		return ResponseWrapper(res, { code: 400, message: '검색 문법이 잘못되었습니다.' })
 	}
-	return ResponseWrapper<{ bots: Bot[], servers: Server[] }>(res, { code: 200, data: { bots: botResult?.data || [], servers: serverResult?.data || [] } })
+	return ResponseWrapper<{ bots: Bot[]; servers: Server[] }>(res, {
+		code: 200,
+		data: { bots: botResult?.data || [], servers: serverResult?.data || [] },
+	})
 })
 
 interface ApiRequest extends NextApiRequest {

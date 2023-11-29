@@ -7,17 +7,16 @@ const ServerIcon = dynamic(() => import('@components/ServerIcon'))
 const Application: React.FC<ApplicationProps> = ({ type, id, name }) => {
 	return (
 		<Link href={`/developers/applications/${type + 's'}/${id}`} legacyBehavior>
-			<div className='relative px-2 py-4 text-center dark:bg-discord-black bg-little-white rounded-lg cursor-pointer transform hover:-translate-y-1 transition duration-100 ease-in'>
-				{
-					type === 'bot' ?
-						<DiscordAvatar userID={id} className='px-2 w-full rounded-xl' /> :
-						<ServerIcon id={id} className='px-2 w-full rounded-xl' />
-				}
-				<h2 className='pt-2 whitespace-nowrap text-xl font-medium truncate'>{name}</h2>
+			<div className='relative transform cursor-pointer rounded-lg bg-little-white px-2 py-4 text-center transition duration-100 ease-in hover:-translate-y-1 dark:bg-discord-black'>
+				{type === 'bot' ? (
+					<DiscordAvatar userID={id} className='w-full rounded-xl px-2' />
+				) : (
+					<ServerIcon id={id} className='w-full rounded-xl px-2' />
+				)}
+				<h2 className='truncate whitespace-nowrap pt-2 text-xl font-medium'>{name}</h2>
 			</div>
 		</Link>
 	)
-
 }
 
 interface ApplicationProps {

@@ -12,41 +12,46 @@ const Paginator = dynamic(() => import('@components/Paginator'))
 const Hero = dynamic(() => import('@components/Hero'))
 
 const ServerIndex: NextPage<ServerIndexProps> = ({ votes, trusted }) => {
-	return <>
-		<Hero type='servers' />
-		<Container className='pb-10'>
-			<Advertisement />
-			<h1 className='text-3xl font-bold mt-10 mb-2'>
-				<i className='far fa-heart mr-3 text-pink-600' /> 하트 랭킹
-			</h1>
-			<p className='text-base'>하트를 많이 받은 서버들의 순위입니다!</p>
-			<ResponsiveGrid>
-				{
-					votes.data.map(server=> <ServerCard type='list' key={server.id} server={server} />)
-				}
-			</ResponsiveGrid>
-			<Paginator totalPage={votes.totalPage} currentPage={votes.currentPage} pathname='/servers/list/votes' />
-			<Advertisement />
-			<h1 className='text-3xl font-bold mb-2'>
-				<i className='fa fa-check mr-3 mt-10 text-emerald-500' /> 신뢰된 서버
-			</h1>
-			<p className='text-base'>한국 디스코드 리스트에서 인증받은 신뢰할 수 있는 서버들입니다!!</p>
-			<ResponsiveGrid>
-				{
-					trusted.data.slice(0, 4).map(server=> <ServerCard type='list' key={server.id} server={server} />)
-				}
-			</ResponsiveGrid>
-			<Advertisement />
-		</Container>
-	</>
+	return (
+		<>
+			<Hero type='servers' />
+			<Container className='pb-10'>
+				<Advertisement />
+				<h1 className='mb-2 mt-10 text-3xl font-bold'>
+					<i className='far fa-heart mr-3 text-pink-600' /> 하트 랭킹
+				</h1>
+				<p className='text-base'>하트를 많이 받은 서버들의 순위입니다!</p>
+				<ResponsiveGrid>
+					{votes.data.map((server) => (
+						<ServerCard type='list' key={server.id} server={server} />
+					))}
+				</ResponsiveGrid>
+				<Paginator
+					totalPage={votes.totalPage}
+					currentPage={votes.currentPage}
+					pathname='/servers/list/votes'
+				/>
+				<Advertisement />
+				<h1 className='mb-2 text-3xl font-bold'>
+					<i className='fa fa-check mr-3 mt-10 text-emerald-500' /> 신뢰된 서버
+				</h1>
+				<p className='text-base'>한국 디스코드 리스트에서 인증받은 신뢰할 수 있는 서버들입니다!!</p>
+				<ResponsiveGrid>
+					{trusted.data.slice(0, 4).map((server) => (
+						<ServerCard type='list' key={server.id} server={server} />
+					))}
+				</ResponsiveGrid>
+				<Advertisement />
+			</Container>
+		</>
+	)
 }
 
-export const getServerSideProps = async() => {
+export const getServerSideProps = async () => {
 	const votes = await Query.get.serverList.votes.load(1)
 	const trusted = await Query.get.serverList.trusted.load(1)
 
-	return { props: { votes,trusted }}
-
+	return { props: { votes, trusted } }
 }
 
 interface ServerIndexProps {

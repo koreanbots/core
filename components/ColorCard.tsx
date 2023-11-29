@@ -3,7 +3,7 @@ const ColorCard: React.FC<ColorCardProps> = ({ header, first, second, className 
 		<div className={`rounded-lg p-10 ${className} shadow-lg`}>
 			<h2 className='text-2xl font-bold'>{header}</h2>
 			<p className='opacity-80'>
-				{first} 
+				{first}
 				<br />
 				{second}
 			</p>

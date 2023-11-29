@@ -17,8 +17,8 @@ const BotApplications = RequestHandler().patch(async (req: ApiRequest, res) => {
 	const csrfValidated = checkToken(req, res, req.body._csrf)
 	if (!csrfValidated) return
 	const validated = await DeveloperBotSchema.validate(req.body, { abortEarly: false })
-		.then(el => el)
-		.catch(e => {
+		.then((el) => el)
+		.catch((e) => {
 			ResponseWrapper(res, { code: 400, errors: e.errors })
 			return null
 		})
@@ -26,17 +26,24 @@ const BotApplications = RequestHandler().patch(async (req: ApiRequest, res) => {
 	if (!validated) return
 	const bot = await get.bot.load(req.query.id)
 	if (!bot) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })
-	if (!(bot.owners as User[]).find(el => el.id === user)) return ResponseWrapper(res, { code: 403 })
-	if(validated.webhookURL) {
+	if (!(bot.owners as User[]).find((el) => el.id === user))
+		return ResponseWrapper(res, { code: 403 })
+	if (validated.webhookURL) {
 		const key = await verifyWebhook(validated.webhookURL)
-		if(key === false) {
-			return ResponseWrapper(res, { code: 400, message: '웹후크 주소를 검증할 수 없습니다.', errors: ['웹후크 주소가 올바른지 확인해주세요.\n웹후크 주소 검증에 대한 자세한 내용은 API 문서를 참고해주세요.'] })
+		if (key === false) {
+			return ResponseWrapper(res, {
+				code: 400,
+				message: '웹후크 주소를 검증할 수 없습니다.',
+				errors: [
+					'웹후크 주소가 올바른지 확인해주세요.\n웹후크 주소 검증에 대한 자세한 내용은 API 문서를 참고해주세요.',
+				],
+			})
 		}
 		const client = webhookClients.bot.get(req.query.id)
-		if(client && validated.webhookURL !== client.url) {
+		if (client && validated.webhookURL !== client.url) {
 			destroyWebhookClient(req.query.id, 'bot')
 		}
-		await update.webhook(req.query.id, 'bots', { 
+		await update.webhook(req.query.id, 'bots', {
 			url: validated.webhookURL,
 			status: parseWebhookURL(validated.webhookURL) ? WebhookStatus.Discord : WebhookStatus.HTTP,
 			failedSince: null,
@@ -44,7 +51,7 @@ const BotApplications = RequestHandler().patch(async (req: ApiRequest, res) => {
 		})
 	} else {
 		destroyWebhookClient(req.query.id, 'bot')
-		await update.webhook(req.query.id, 'bots', { 
+		await update.webhook(req.query.id, 'bots', {
 			url: null,
 			status: WebhookStatus.None,
 			failedSince: null,

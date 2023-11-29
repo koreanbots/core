@@ -4,20 +4,27 @@ import { KoreanbotsEndPoints } from '@utils/Constants'
 
 const Image = dynamic(() => import('@components/Image'))
 
-const DiscordAvatar: React.FC<DiscordAvatarProps> = props => {
-	return <Image
-		{...props}
-		src={KoreanbotsEndPoints.CDN.avatar(props.userID, { format: 'webp', size: props.size ?? 256})}
-		fallbackSrc={KoreanbotsEndPoints.CDN.avatar(props.userID, { format: 'png', size: props.size ?? 256})}
-	/>
-	
+const DiscordAvatar: React.FC<DiscordAvatarProps> = (props) => {
+	return (
+		<Image
+			{...props}
+			src={KoreanbotsEndPoints.CDN.avatar(props.userID, {
+				format: 'webp',
+				size: props.size ?? 256,
+			})}
+			fallbackSrc={KoreanbotsEndPoints.CDN.avatar(props.userID, {
+				format: 'png',
+				size: props.size ?? 256,
+			})}
+		/>
+	)
 }
 
 interface DiscordAvatarProps {
 	alt?: string
 	userID: string
 	className?: string
-	size? : 128 | 256 | 512
+	size?: 128 | 256 | 512
 }
 
 interface ImageEvent extends Event {

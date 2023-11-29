@@ -20,8 +20,8 @@ const Widget = RequestHandler().get(async (req: ApiRequest, res: NextApiResponse
 		scale,
 		icon,
 	})
-		.then(el => el)
-		.catch(e => {
+		.then((el) => el)
+		.catch((e) => {
 			ResponseWrapper(res, { code: 400, errors: e.errors })
 			return null
 		})
@@ -34,8 +34,8 @@ const Widget = RequestHandler().get(async (req: ApiRequest, res: NextApiResponse
 	const userImage = !data.avatar
 		? null
 		: await get.images.user.load(
-			DiscordEnpoints.CDN.user(data.id, data.avatar, { format: 'png', size: 128 })
-		)
+				DiscordEnpoints.CDN.user(data.id, data.avatar, { format: 'png', size: 128 })
+		  )
 	const img =
 		userImage ||
 		(await get.images.user.load(

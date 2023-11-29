@@ -26,7 +26,7 @@ export const webhookClients = {
 }
 
 DiscordBot.on('ready', async () => {
-	console.log("I'm Ready")
+	console.log('Discord Client is ready')
 	await getMainGuild().members.fetch()
 	console.log(`Fetched ${getMainGuild().members.cache.size} Members`)
 })

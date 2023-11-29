@@ -32,42 +32,40 @@ const TextArea: React.FC<TextAreaProps> = ({
 			/>
 			<div ref={ref}>
 				<div className='absolute bottom-12 left-10 z-30'>
-					{
+					{!emojiPickerHidden && (
 						// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 						// @ts-ignore
-						!emojiPickerHidden && (
-							<Picker
-								title='선택해주세요'
-								emoji='sunglasses'
-								set='twitter'
-								enableFrequentEmojiSort
-								theme={theme}
-								showSkinTones={false}
-								onSelect={(e) => {
-									setEmojiPickerHidden(true)
-									setValue(value + ' ' + ((e as { native: string }).native || e.colons))
-								}}
-								i18n={{
-									search: '검색',
-									notfound: '검색 결과가 없습니다.',
-									categories: {
-										search: '검색 결과',
-										recent: '최근 사용',
-										people: '사람',
-										nature: '자연',
-										foods: '음식',
-										activity: '활동',
-										places: '장소',
-										objects: '사물',
-										symbols: '기호',
-										flags: '국기',
-										custom: '커스텀',
-									},
-								}}
-								custom={KoreanbotsEmoji}
-							/>
-						)
-					}
+						<Picker
+							title='선택해주세요'
+							emoji='sunglasses'
+							set='twitter'
+							enableFrequentEmojiSort
+							theme={theme}
+							showSkinTones={false}
+							onSelect={(e) => {
+								setEmojiPickerHidden(true)
+								setValue(value + ' ' + ((e as { native: string }).native || e.colons))
+							}}
+							i18n={{
+								search: '검색',
+								notfound: '검색 결과가 없습니다.',
+								categories: {
+									search: '검색 결과',
+									recent: '최근 사용',
+									people: '사람',
+									nature: '자연',
+									foods: '음식',
+									activity: '활동',
+									places: '장소',
+									objects: '사물',
+									symbols: '기호',
+									flags: '국기',
+									custom: '커스텀',
+								},
+							}}
+							custom={KoreanbotsEmoji}
+						/>
+					)}
 				</div>
 				<div className='absolute bottom-2 left-4 hidden sm:block'>
 					<div

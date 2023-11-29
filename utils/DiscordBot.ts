@@ -15,13 +15,28 @@ export const webhookClients = {
 	bot: new Discord.Collection<string, Discord.WebhookClient>(),
 	server: new Discord.Collection<string, Discord.WebhookClient>(),
 	internal: {
-		log: new Discord.WebhookClient({ url: process.env.LOG_WEBHOOK_URL ?? dummyURL }),
-		reviewLog: new Discord.WebhookClient({ url: process.env.REVIEW_LOG_WEBHOOK_URL ?? dummyURL }),
-		openReviewLog: new Discord.WebhookClient({
-			url: process.env.OPEN_REVIEW_LOG_WEBHOOK_URL ?? dummyURL,
-		}),
-		statsLog: new Discord.WebhookClient({ url: process.env.STATS_LOG_WEBHOOK_URL ?? dummyURL }),
-		reportChannel: new Discord.WebhookClient({ url: process.env.REPORT_WEBHOOK_URL ?? dummyURL }),
+		log: new Discord.WebhookClient(
+			{ url: process.env.LOG_WEBHOOK_URL ?? dummyURL },
+			{ allowedMentions: { parse: [] } }
+		),
+		reviewLog: new Discord.WebhookClient(
+			{ url: process.env.REVIEW_LOG_WEBHOOK_URL ?? dummyURL },
+			{ allowedMentions: { parse: [] } }
+		),
+		openReviewLog: new Discord.WebhookClient(
+			{
+				url: process.env.OPEN_REVIEW_LOG_WEBHOOK_URL ?? dummyURL,
+			},
+			{ allowedMentions: { parse: [] } }
+		),
+		statsLog: new Discord.WebhookClient(
+			{ url: process.env.STATS_LOG_WEBHOOK_URL ?? dummyURL },
+			{ allowedMentions: { parse: [] } }
+		),
+		reportChannel: new Discord.WebhookClient(
+			{ url: process.env.REPORT_WEBHOOK_URL ?? dummyURL },
+			{ allowedMentions: { parse: [] } }
+		),
 	},
 }
 

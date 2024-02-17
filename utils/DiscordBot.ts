@@ -46,10 +46,10 @@ DiscordBot.on('ready', async () => {
 	console.log(`Fetched ${getMainGuild().members.cache.size} Members`)
 })
 
-DiscordBot.login(process.env.DISCORD_TOKEN)
+DiscordBot.login(process.env.DISCORD_TOKEN ?? '')
 ServerListDiscordBot.login(process.env.DISCORD_SERVERLIST_TOKEN)
 
-export const getMainGuild = () => DiscordBot.guilds.cache.get(process.env.GUILD_ID)
+export const getMainGuild = () => DiscordBot.guilds.cache.get(process.env.GUILD_ID ?? '')
 
 export const discordLog = async (
 	type: string,

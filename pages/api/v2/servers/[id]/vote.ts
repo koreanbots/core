@@ -43,6 +43,7 @@ const ServerVote = RequestHandler()
 		const vote = await put.voteServer(user, server.id)
 		if (vote === null) return ResponseWrapper(res, { code: 401 })
 		else if (vote === true) {
+			get.server.clear(req.query.id)
 			sendWebhook(server, {
 				type: 'server',
 				data: {

@@ -2,7 +2,7 @@
 const { withSentryConfig } = require('@sentry/nextjs')
 const withPWA = require('next-pwa')({
 	disable: process.env.NODE_ENV !== 'production',
-	register: false
+	register: false,
 })
 const VERSION = require('./package.json').version
 
@@ -18,10 +18,11 @@ const NextConfig = {
 	},
 	env: {
 		NEXT_PUBLIC_RELEASE_VERSION: VERSION,
-		SENTRY_SKIP_AUTO_RELEASE: true
+		SENTRY_SKIP_AUTO_RELEASE: 'true',
 	},
-	experimental: { 
-		scrollRestoration: true
+	experimental: {
+		instrumentationHook: true,
+		scrollRestoration: true,
 	},
 	swcMinify: true,
 	redirects: async () => {
@@ -29,21 +30,23 @@ const NextConfig = {
 			{
 				source: '/developers',
 				destination: '/developers/applications',
-				permanent: true
+				permanent: true,
 			},
 			{
 				source: '/developers/docs',
 				destination: '/developers/docs/시작하기',
-				permanent: true
-			}
+				permanent: true,
+			},
 		]
 	},
-	sentry: process.env.CI ? {
-		disableServerWebpackPlugin: true,
-		disableClientWebpackPlugin: true,
-		hideSourceMaps: true,
-	} : {
-		hideSourceMaps: true,
-	},
+	sentry: process.env.CI
+		? {
+				disableServerWebpackPlugin: true,
+				disableClientWebpackPlugin: true,
+				hideSourceMaps: true,
+		  }
+		: {
+				hideSourceMaps: true,
+		  },
 }
 module.exports = withSentryConfig(withPWA(NextConfig))

@@ -61,6 +61,12 @@ const Search: React.FC = () => {
 		}, 1000)
 		return () => {
 			clearTimeout(timeout)
+			try {
+				abortController.current?.abort()
+				abortController.current = null
+			} catch (e) {
+				return null
+			}
 		}
 	}, [query])
 

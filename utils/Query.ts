@@ -301,8 +301,8 @@ async function getBotList(type: ListType, page = 1, query?: string): Promise<Lis
 		)[0][0]['count(*)']
 		res = (
 			await knex.raw(
-				'SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM bots WHERE `state` != "blocked" AND MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 16 OFFSET ?',
-				[decodeURI(query) + '*', decodeURI(query) + '*', ((page ? Number(page) : 1) - 1) * 16]
+				'SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM bots WHERE `state` != "blocked" AND MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 8 OFFSET ?',
+				[decodeURI(query) + '*', decodeURI(query) + '*', ((page ? Number(page) : 1) - 1) * 8]
 			)
 		)[0]
 	} else {
@@ -314,7 +314,7 @@ async function getBotList(type: ListType, page = 1, query?: string): Promise<Lis
 		type,
 		data: (await Promise.all(res.map(async (el) => await getBot(el.id)))).map((r) => ({ ...r })),
 		currentPage: page,
-		totalPage: Math.ceil(Number(count) / 16),
+		totalPage: Math.ceil(Number(count) / 8),
 	}
 }
 
@@ -402,12 +402,12 @@ async function getServerList(type: ListType, page = 1, query?: string): Promise<
 		)[0][0]['count(*)']
 		res = (
 			await knex.raw(
-				'SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM servers WHERE `state` != "blocked" AND last_updated >= ? AND MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 16 OFFSET ?',
+				'SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM servers WHERE `state` != "blocked" AND last_updated >= ? AND MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 8 OFFSET ?',
 				[
 					decodeURI(query) + '*',
 					new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
 					decodeURI(query) + '*',
-					((page ? Number(page) : 1) - 1) * 16,
+					((page ? Number(page) : 1) - 1) * 8,
 				]
 			)
 		)[0]
@@ -419,7 +419,7 @@ async function getServerList(type: ListType, page = 1, query?: string): Promise<
 		type,
 		data: (await Promise.all(res.map(async (el) => await getServer(el.id)))).map((r) => ({ ...r })),
 		currentPage: page,
-		totalPage: Math.ceil(Number(count) / 16),
+		totalPage: Math.ceil(Number(count) / 8),
 	}
 }
 

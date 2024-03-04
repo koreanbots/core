@@ -19,7 +19,7 @@ const Search: React.FC = () => {
 	const [recentSearch, setRecentSearch] = useState([])
 	const [data, setData] = useState<ResponseProps<ListAll>>(null)
 	const [loading, setLoading] = useState(false)
-	const [abortControl, setAbortControl] = useState(new AbortController())
+	const abortController = useRef(null)
 	const [hidden, setHidden] = useState(true)
 	useEffect(() => {
 		setQuery('')
@@ -32,26 +32,37 @@ const Search: React.FC = () => {
 		}
 	}, [router])
 	useOutsideClick(ref, () => setHidden(true))
-	const SearchResults = async (value: string) => {
-		setData(null)
-		setQuery(value)
-		try {
-			abortControl.abort()
-		} catch (e) {
-			return null
+
+	useEffect(() => {
+		if (query.length < 2) {
+			setData(null)
+			return
 		}
-		const controller = new AbortController()
-		setAbortControl(controller)
-		if (value.length > 1) setLoading(true)
-		const res = await Fetch<ListAll>(`/search/all?q=${encodeURIComponent(value)}`, {
-			signal: controller.signal,
-		}).catch((e) => {
-			if (e.name !== 'AbortError') throw e
-			else return
-		})
-		setData(res || {})
-		setLoading(false)
-	}
+		const timeout = setTimeout(async () => {
+			setData(null)
+			try {
+				if (abortController.current) {
+					abortController.current.abort()
+				}
+			} catch (e) {
+				return null
+			}
+			abortController.current = new AbortController()
+			if (query.length > 1) setLoading(true)
+			const res = await Fetch<ListAll>(`/search/all?q=${encodeURIComponent(query)}`, {
+				signal: abortController.current.signal,
+			}).catch((e) => {
+				if (e.name !== 'AbortError') throw e
+				else return
+			})
+			abortController.current = null
+			setData(res || {})
+			setLoading(false)
+		}, 1000)
+		return () => {
+			clearTimeout(timeout)
+		}
+	}, [query])
 
 	const onSubmit = () => {
 		if (query.length < 2) return
@@ -93,7 +104,7 @@ const Search: React.FC = () => {
 					placeholder='검색...'
 					value={query}
 					onChange={(e) => {
-						SearchResults(e.target.value)
+						setQuery(e.target.value)
 					}}
 					onKeyDown={(e) => {
 						if (e.key === 'Enter') {
@@ -208,7 +219,7 @@ const Search: React.FC = () => {
 											))}
 										</>
 									)
-								) : query.length < 3 ? (
+								) : query.length < 2 ? (
 									'최소 2글자 이상 입력해주세요.'
 								) : (
 									'검색어를 입력해주세요.'

@@ -314,7 +314,7 @@ async function getBotList(type: ListType, page = 1, query?: string): Promise<Lis
 		type,
 		data: (await Promise.all(res.map(async (el) => await getBot(el.id)))).map((r) => ({ ...r })),
 		currentPage: page,
-		totalPage: Math.ceil(Number(count) / 8),
+		totalPage: Math.ceil(Number(count) / (type === 'SEARCH' ? 8 : 16)),
 	}
 }
 
@@ -419,7 +419,7 @@ async function getServerList(type: ListType, page = 1, query?: string): Promise<
 		type,
 		data: (await Promise.all(res.map(async (el) => await getServer(el.id)))).map((r) => ({ ...r })),
 		currentPage: page,
-		totalPage: Math.ceil(Number(count) / 8),
+		totalPage: Math.ceil(Number(count) / (type === 'SEARCH' ? 8 : 16)),
 	}
 }
 

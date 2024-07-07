@@ -38,11 +38,11 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 				</h1>
 				<p className='text-base'>한국 디스코드 리스트에서 인증받은 신뢰할 수 있는 봇들입니다!!</p>
 				<ResponsiveGrid>
-					{trusted.data.slice(0, 8).map((bot) => (
+					{trusted.data.slice(0, 4).map((bot) => (
 						<BotCard key={bot.id} bot={bot} />
 					))}
 				</ResponsiveGrid>
-				{trusted.data.length > 8 && (
+				{trusted.data.length > 4 && (
 					<LongButton href='/bots/list/trusted' center>
 						더보기
 					</LongButton>

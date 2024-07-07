@@ -42,6 +42,11 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 						<BotCard key={bot.id} bot={bot} />
 					))}
 				</ResponsiveGrid>
+				{trusted.data.length > 4 && (
+					<LongButton href='/bots/list/trusted' center>
+						더보기
+					</LongButton>
+				)}
 				<h1 className='mb-2 mt-20 text-3xl font-bold'>
 					<i className='far fa-star mr-3 text-amber-500' /> 새로운 봇
 				</h1>

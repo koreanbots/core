@@ -1,5 +1,10 @@
 import React, { MouseEventHandler } from 'react'
-import ReactSelect, { components, MultiValueProps, MultiValueRemoveProps } from 'react-select'
+import ReactSelect, {
+	components,
+	MultiValueProps,
+	MultiValueRemoveProps,
+	OptionProps,
+} from 'react-select'
 import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core'
 import { restrictToParentElement } from '@dnd-kit/modifiers'
 import {
@@ -40,6 +45,17 @@ const MultiValueRemove = (props: MultiValueRemoveProps<Option>) => {
 				...props.innerProps,
 			}}
 		/>
+	)
+}
+
+const Option = ({ ...props }: OptionProps<Option>) => {
+	return (
+		<components.Option {...props}>
+			<div className='flex flex-col'>
+				<span>{props.data.label}</span>
+				<span className='text-sm font-light opacity-90'>{props.data.description}</span>
+			</div>
+		</components.Option>
 	)
 }
 
@@ -97,6 +113,7 @@ const Select: React.FC<SelectProps> = ({
 					components={{
 						MultiValue,
 						MultiValueRemove,
+						Option,
 					}}
 					closeMenuOnSelect={false}
 				/>
@@ -117,6 +134,7 @@ interface SelectProps {
 interface Option {
 	value: string
 	label: string
+	description?: string
 }
 
 export default Select

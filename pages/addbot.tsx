@@ -10,7 +10,7 @@ import HCaptcha from '@hcaptcha/react-hcaptcha'
 import { get } from '@utils/Query'
 import { cleanObject, parseCookie, redirectTo } from '@utils/Tools'
 import { AddBotSubmit, AddBotSubmitSchema } from '@utils/Yup'
-import { botCategories, library } from '@utils/Constants'
+import { botCategories, botCategoryDescription, library } from '@utils/Constants'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
 import { ResponseProps, SubmittedBot, Theme, User } from '@types'
@@ -235,7 +235,11 @@ const AddBot: NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 							error={errors.category && touched.category ? (errors.category as string) : null}
 						>
 							<Selects
-								options={botCategories.map((el) => ({ label: el, value: el }))}
+								options={botCategories.map((el) => ({
+									label: el,
+									value: el,
+									description: botCategoryDescription[el],
+								}))}
 								handleChange={(value) => {
 									setFieldValue(
 										'category',

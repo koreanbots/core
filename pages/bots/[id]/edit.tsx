@@ -11,7 +11,7 @@ import { getJosaPicker } from 'josa'
 import { get } from '@utils/Query'
 import { checkUserFlag, cleanObject, makeBotURL, parseCookie, redirectTo } from '@utils/Tools'
 import { ManageBot, ManageBotSchema } from '@utils/Yup'
-import { botCategories, library } from '@utils/Constants'
+import { botCategories, botCategoryDescription, library } from '@utils/Constants'
 import { Bot, Theme, User } from '@types'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
@@ -161,7 +161,7 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 							error={errors.category && touched.category ? (errors.category as string) : null}
 						>
 							<Selects
-								options={botCategories.map((el) => ({ label: el, value: el }))}
+								options={botCategories.map((el) => ({ label: el, value: el, description: botCategoryDescription[el] }))}
 								handleChange={(value) => {
 									setFieldValue(
 										'category',

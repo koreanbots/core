@@ -61,7 +61,11 @@ const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
 											{BotSubmissionDenyReasonPresetsName[data.reason] || data.reason}
 										</strong>
 									</p>
-									<div className='pt-2'>{DenyPresetsArticle[data.reason]}</div>
+									<div className='pt-2'>
+										{data.reason.includes('카테고리')
+											? DenyPresetsArticle.INVALID_CATEGORY
+											: DenyPresetsArticle[data.reason]}
+									</div>
 								</>
 							)}
 							<div className='pt-2'>

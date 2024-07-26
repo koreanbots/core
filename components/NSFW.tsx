@@ -15,7 +15,7 @@ const NSFW: React.FC<NSFWProps> = ({ onClick, onDisableClick }) => {
 							src='https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/26a0.svg'
 							className='emoji mr-2 w-8'
 						/>
-						해당 컨텐츠는 만19세 이상의 성인만 열람할 수 있습니다.
+						해당 콘텐츠는 만19세 이상의 성인만 열람할 수 있습니다.
 					</h1>
 					<p className='mb-3 text-lg'>계속하시겠습니까?</p>
 					<Button onClick={onClick}>

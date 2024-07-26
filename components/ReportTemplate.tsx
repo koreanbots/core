@@ -65,16 +65,16 @@ export const DMCA: FC<ReportTemplateProps> = ({ values, errors, touched, setFiel
 									권리자 본인임을 증명 (단체 소속인 경우 어떤 자격으로 단체를 대표하여 신고하는지
 									설명)
 								</li>
-								<li>본인의 권리를 입증 (원본 컨텐츠의 주소, 라이선스 등을 포함)</li>
+								<li>본인의 권리를 입증 (원본 콘텐츠의 주소, 라이선스 등을 포함)</li>
 							</ul>
 							<p className='mb-1 text-sm text-gray-400'>
-								컨텐츠를 추가로 첨부해야하는 경우{' '}
+								콘텐츠를 추가로 첨부해야하는 경우{' '}
 								<a
 									className='text-blue-400'
 									target='_blank'
 									rel='noreferrer'
 									href={`mailto:dmca@koreanbots.dev?subject=${encodeURI(
-										'[DMCA] 추가 컨텐츠'
+										'[DMCA] 추가 콘텐츠'
 									)}&body=${encodeURI('디스코드 태그:')}`}
 								>
 									dmca@koreanbots.dev

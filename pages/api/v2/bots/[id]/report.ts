@@ -39,7 +39,7 @@ const BotReport = RequestHandler()
 			})
 
 		if (!validated) return
-		await webhookClients.internal.reportChannel.send({
+		webhookClients.internal.reportChannel.send({
 			threadName: `봇-${bot.id}`,
 			content: `Reported by <@${user}> (${user})\nReported **${bot.name}** <@${bot.id}> (${bot.id})\nCategory ${req.body.category}\nDesc\n\`\`\`${req.body.description}\`\`\``,
 			allowedMentions: { parse: ['users'] },

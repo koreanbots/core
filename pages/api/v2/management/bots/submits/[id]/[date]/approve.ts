@@ -32,7 +32,7 @@ const ApproveBotSubmit = RequestHandler().post(async (req: ApiRequest, res) => {
 		)
 		.setTimestamp()
 	if (req.body.reviewer) embed.addFields({ name: '📃 정보', value: `심사자: ${req.body.reviewer}` })
-	await webhookClients.internal.reviewLog.send({ embeds: [embed] })
+	webhookClients.internal.reviewLog.send({ embeds: [embed] })
 	tracer.trace('botSubmits.approve', (span) => {
 		span.setTag('id', submit.id)
 		span.setTag('date', submit.date)

@@ -38,7 +38,7 @@ const DenyBotSubmit = RequestHandler().post(async (req: ApiRequest, res) => {
 					: ''
 			}${req.body.reviewer ? `심사자: ${req.body.reviewer}` : ''}`,
 		})
-	await webhookClients.internal.reviewLog.send({ embeds: [embed] })
+	webhookClients.internal.reviewLog.send({ embeds: [embed] })
 	const openEmbed = new EmbedBuilder()
 		.setTitle('거부')
 		.setColor(Colors.Red)
@@ -53,7 +53,7 @@ const DenyBotSubmit = RequestHandler().post(async (req: ApiRequest, res) => {
 					: '없음'
 			}`,
 		})
-	await webhookClients.internal.openReviewLog.send({ embeds: [openEmbed] })
+	webhookClients.internal.openReviewLog.send({ embeds: [openEmbed] })
 	tracer.trace('botSubmits.deny', (span) => {
 		span.setTag('id', submit.id)
 		span.setTag('date', submit.date)

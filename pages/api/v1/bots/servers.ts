@@ -52,7 +52,7 @@ const BotStats = RequestHandler()
 				version: 1,
 			})
 		get.bot.clear(bot)
-		await webhookClients.internal.statsLog.send({
+		webhookClients.internal.statsLog.send({
 			content: `[BOT/STATS] <@${botInfo.id}> (${botInfo.id})\n${makeDiscordCodeblock(
 				`${botInfo.servers > validated.servers ? '-' : '+'} ${botInfo.servers} -> ${
 					validated.servers

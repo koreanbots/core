@@ -38,7 +38,7 @@ const UserReport = RequestHandler()
 			})
 
 		if (!validated) return
-		await webhookClients.internal.reportChannel.send({
+		webhookClients.internal.reportChannel.send({
 			threadName: `유저-${userInfo.id}`,
 			content: `Reported by <@${user}> (${user})\nReported **${
 				userInfo.tag === '0'

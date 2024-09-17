@@ -39,7 +39,7 @@ const ServerReport = RequestHandler()
 			})
 
 		if (!validated) return
-		await webhookClients.internal.reportChannel.send({
+		webhookClients.internal.reportChannel.send({
 			threadName: `서버-${server.id}`,
 			content: `Reported by <@${user}> (${user})\nReported **${server.name}** (${server.id})\nCategory ${req.body.category}\nDesc\n\`\`\`${req.body.description}\`\`\``,
 			allowedMentions: { parse: ['users'] },

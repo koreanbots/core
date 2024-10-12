@@ -47,11 +47,11 @@ const ServerIndex: NextPage<ServerIndexProps> = ({ votes, trusted }) => {
 	)
 }
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
 	const votes = await Query.get.serverList.votes.load(1)
 	const trusted = await Query.get.serverList.trusted.load(1)
 
-	return { props: { votes, trusted } }
+	return { props: { votes, trusted }, revalidate: 60 }
 }
 
 interface ServerIndexProps {

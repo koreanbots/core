@@ -49,11 +49,11 @@ const Index: NextPage<IndexProps> = ({ bots, servers }) => {
 	)
 }
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
 	const bots = await Query.get.list.votes.load(1)
 	const servers = await Query.get.serverList.votes.load(1)
 
-	return { props: { bots, servers } }
+	return { props: { bots, servers }, revalidate: 60 }
 }
 
 interface IndexProps {

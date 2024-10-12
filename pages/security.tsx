@@ -1,4 +1,4 @@
-import { GetServerSideProps, NextPage } from 'next'
+import { GetStaticProps, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 
 import { User } from '@types'
@@ -87,11 +87,12 @@ const Security: NextPage<SecurityProps> = ({ bugReports }) => {
 	)
 }
 
-export const getServerSideProps: GetServerSideProps<SecurityProps> = async () => {
+export const getStaticProps: GetStaticProps<SecurityProps> = async () => {
 	return {
 		props: {
 			bugReports: await Promise.all(BUG_REPORTERS.map((u) => get.user.load(u))),
 		},
+		revalidate: 60,
 	}
 }
 

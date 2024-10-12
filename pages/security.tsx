@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import { User } from '@types'
 import { BUG_REPORTERS, BUG_REPORT_GROUPS } from '@utils/Constants'
 import { get } from '@utils/Query'
+import { PHASE_PRODUCTION_BUILD } from 'next/constants'
 
 const Docs = dynamic(() => import('@components/Docs'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
@@ -88,6 +89,14 @@ const Security: NextPage<SecurityProps> = ({ bugReports }) => {
 }
 
 export const getStaticProps: GetStaticProps<SecurityProps> = async () => {
+	if (process.env.NEXT_PHASE === PHASE_PRODUCTION_BUILD) {
+		return {
+			props: {
+				bugReports: [],
+			},
+			revalidate: 1,
+		}
+	}
 	return {
 		props: {
 			bugReports: await Promise.all(BUG_REPORTERS.map((u) => get.user.load(u))),

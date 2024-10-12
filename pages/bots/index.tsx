@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import { Bot, List } from '@types'
 import * as Query from '@utils/Query'
 import LongButton from '@components/LongButton'
+import { PHASE_PRODUCTION_BUILD } from 'next/constants'
 
 const Advertisement = dynamic(() => import('@components/Advertisement'))
 const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
@@ -66,6 +67,21 @@ const Index: NextPage<IndexProps> = ({ votes, newBots, trusted }) => {
 }
 
 export const getStaticProps = async () => {
+	if (process.env.NEXT_PHASE === PHASE_PRODUCTION_BUILD) {
+		const list = {
+			totalPage: 1,
+			currentPage: 1,
+			data: [],
+		}
+		return {
+			props: {
+				votes: list,
+				newBots: list,
+				trusted: list,
+			},
+			revalidate: 1,
+		}
+	}
 	const votes = await Query.get.list.votes.load(1)
 	const newBots = await Query.get.list.new.load(1)
 	const trusted = await Query.get.list.trusted.load(1)

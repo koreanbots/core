@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 
 import { Server, List } from '@types'
 import * as Query from '@utils/Query'
+import { PHASE_PRODUCTION_BUILD } from 'next/constants'
 
 const Advertisement = dynamic(() => import('@components/Advertisement'))
 const ResponsiveGrid = dynamic(() => import('@components/ResponsiveGrid'))
@@ -48,6 +49,20 @@ const ServerIndex: NextPage<ServerIndexProps> = ({ votes, trusted }) => {
 }
 
 export const getStaticProps = async () => {
+	if (process.env.NEXT_PHASE === PHASE_PRODUCTION_BUILD) {
+		const list = {
+			totalPage: 1,
+			currentPage: 1,
+			data: [],
+		}
+		return {
+			props: {
+				votes: list,
+				trusted: list,
+			},
+			revalidate: 1,
+		}
+	}
 	const votes = await Query.get.serverList.votes.load(1)
 	const trusted = await Query.get.serverList.trusted.load(1)
 

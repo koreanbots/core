@@ -1,11 +1,5 @@
 name: Publish by Manual
-on:
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Select the branch to deploy'
-        required: true
-        default: 'master'
+on: workflow_dispatch
 
 env:
   REGISTRY: ghcr.io
@@ -21,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: ${{ github.event.inputs.branch }}
+          ref: ${{ env.GITHUB_REF }}
           submodules: true
       - name: Parse image tag
         run: |

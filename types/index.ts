@@ -206,7 +206,7 @@ export interface List<T> {
 export interface SubmittedBot {
 	id: string
 	date: number
-	owners: User[]
+	owner: User
 	lib: Library
 	prefix: string
 	intro: string
@@ -377,4 +377,9 @@ export interface ResponseProps<T = Data> {
 
 interface Data<T = unknown> {
 	[key: string]: T
+}
+
+export enum ObjectType {
+	Bot = 1,
+	Server = 2,
 }

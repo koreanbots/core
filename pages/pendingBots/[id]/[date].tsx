@@ -7,7 +7,7 @@ import { get } from '@utils/Query'
 import { BotSubmissionDenyReasonPresetsName, git } from '@utils/Constants'
 import Day from '@utils/Day'
 
-import { SubmittedBot, User } from '@types'
+import { SubmittedBot } from '@types'
 
 import useClipboard from 'react-use-clipboard'
 import { ParsedUrlQuery } from 'querystring'
@@ -146,15 +146,12 @@ const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
 						))}
 					</div>
 					<h2 className='3xl mb-2 mt-2 font-bold'>제작자</h2>
-					{(data.owners as User[]).map((el) => (
-						<Owner
-							key={el.id}
-							id={el.id}
-							tag={el.tag}
-							globalName={el.globalName}
-							username={el.username}
-						/>
-					))}
+					<Owner
+						id={data.owner.id}
+						tag={data.owner.tag}
+						globalName={data.owner.globalName}
+						username={data.owner.username}
+					/>
 					<div className='list grid'>
 						{data.discord && (
 							<a

@@ -70,8 +70,8 @@ async function getBot(id: string, topLevel = true): Promise<Bot> {
 		])
 		.leftJoin('owners_mapping', 'bots.id', 'owners_mapping.target_id')
 		.where({ 'bots.id': id })
-		.orWhereRaw(`(bots.flags & ${BotFlags.trusted}) and bots.vanity=?`, [id])
-		.orWhereRaw(`(bots.flags & ${BotFlags.partnered}) and bots.vanity=?`, [id])
+		.orWhere({ vanity: id, trusted: true })
+		.orWhere({ vanity: id, partnered: true })
 		.groupBy('bots.id')) as any[]
 
 	if (res) {

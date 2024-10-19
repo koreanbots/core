@@ -90,7 +90,14 @@ async function getBot(id: string, topLevel = true): Promise<Bot> {
 		res.avatar = discordBot.avatar
 		res.name = name
 		res.category = JSON.parse(res.category)
-		res.owners = JSON.parse(res.owners)
+		try {
+			res.owners = JSON.parse(res.owners)
+		} catch (e) {
+			console.error(e)
+			console.log(res.owners)
+			res.owners = []
+		}
+
 
 		if (discordBot.flags.bitfield & UserFlags.BotHTTPInteractions) {
 			res.status = 'online'

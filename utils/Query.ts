@@ -759,11 +759,11 @@ async function updateWebhook(id: string, type: 'bots' | 'servers', value: Partia
 }
 
 async function updateOwners(id: string, owners: string[], type: 'bot' | 'server'): Promise<void> {
-	await knex('owners_mapping').where({ target: id }).del()
+	await knex('owners_mapping').where({ target_id: id }).del()
 	await knex('owners_mapping').insert(
 		owners.map((el) => ({
-			owner: el,
-			target: id,
+			user_id: el,
+			target_id: id,
 			type: type === 'bot' ? ObjectType.Bot : ObjectType.Server,
 		}))
 	)

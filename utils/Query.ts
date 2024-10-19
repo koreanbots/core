@@ -21,6 +21,7 @@ import {
 	Webhook,
 	BotSpec,
 	ServerSpec,
+	ObjectType,
 } from '@types'
 import {
 	botCategories,
@@ -35,143 +36,148 @@ import knex from './Knex'
 import { Bots, Servers } from './Mongo'
 import { DiscordBot, getMainGuild } from './DiscordBot'
 import { sign, verify } from './Jwt'
-import { camoUrl, formData, getYYMMDD, serialize } from './Tools'
+import { areArraysEqual, camoUrl, formData, getYYMMDD, serialize } from './Tools'
 import { AddBotSubmit, AddServerSubmit, ManageBot, ManageServer } from './Yup'
 import { markdownImage } from './Regex'
 
 export const imageRateLimit = new TLRU<unknown, number>({ maxAgeMs: 60000 })
 
 async function getBot(id: string, topLevel = true): Promise<Bot> {
-	const res = await knex('bots')
+	const [res] = (await knex('bots')
 		.select([
-			'id',
-			'flags',
-			'owners',
-			'lib',
-			'prefix',
-			'votes',
-			'servers',
-			'shards',
-			'intro',
-			'desc',
-			'web',
-			'git',
-			'url',
-			'category',
-			'status',
-			'trusted',
-			'partnered',
-			'discord',
-			'state',
-			'vanity',
-			'bg',
-			'banner',
+			'bots.id',
+			'bots.flags',
+			'bots.lib',
+			'bots.prefix',
+			'bots.votes',
+			'bots.servers',
+			'bots.shards',
+			'bots.intro',
+			'bots.desc',
+			'bots.web',
+			'bots.git',
+			'bots.url',
+			'bots.category',
+			'bots.status',
+			'bots.trusted',
+			'bots.partnered',
+			'bots.discord',
+			'bots.state',
+			'bots.vanity',
+			'bots.bg',
+			'bots.banner',
+			knex.raw('JSON_ARRAYAGG(owners_mapping.user_id) as owners'),
 		])
-		.where({ id })
-		.orWhere({ vanity: id, trusted: true })
-		.orWhere({ vanity: id, partnered: true })
-	if (res[0]) {
-		const discordBot = await get.discord.user.load(res[0].id)
+		.leftJoin('owners_mapping', 'bots.id', 'owners_mapping.target_id')
+		.where({ 'bots.id': id })
+		.orWhereRaw(`(bots.flags & ${BotFlags.trusted}) and bots.vanity=?`, [id])
+		.orWhereRaw(`(bots.flags & ${BotFlags.partnered}) and bots.vanity=?`, [id])
+		.groupBy('bots.id')) as any[]
+
+	if (res) {
+		const discordBot = await get.discord.user.load(res.id)
 		if (!discordBot) return null
 		const botMember = (await getMainGuild()
-			?.members?.fetch(res[0].id)
+			?.members?.fetch(res.id)
 			.catch((e) => e)) as GuildMember
 		const name = discordBot.displayName
-		res[0].flags =
-			res[0].flags |
+		res.flags =
+			res.flags |
 			(discordBot.flags.bitfield & DiscordUserFlags.VERIFIED_BOT ? BotFlags.verified : 0) |
-			(res[0].trusted ? BotFlags.trusted : 0) |
-			(res[0].partnered ? BotFlags.partnered : 0)
-		res[0].tag = discordBot.discriminator
-		res[0].avatar = discordBot.avatar
-		res[0].name = name
-		res[0].category = JSON.parse(res[0].category)
-		res[0].owners = JSON.parse(res[0].owners)
+			(res.trusted ? BotFlags.trusted : 0) |
+			(res.partnered ? BotFlags.partnered : 0)
+		res.tag = discordBot.discriminator
+		res.avatar = discordBot.avatar
+		res.name = name
+		res.category = JSON.parse(res.category)
+		res.owners = JSON.parse(res.owners)
 
 		if (discordBot.flags.bitfield & UserFlags.BotHTTPInteractions) {
-			res[0].status = 'online'
+			res.status = 'online'
 		} else if (botMember) {
 			if (!botMember.presence) {
-				res[0].status = 'offline'
+				res.status = 'offline'
 			} else {
-				res[0].status = botMember.presence.activities.some((r) => r.type === ActivityType.Streaming)
+				res.status = botMember.presence.activities.some((r) => r.type === ActivityType.Streaming)
 					? 'streaming'
 					: botMember.presence.status
 			}
 		} else {
-			res[0].status = null
+			res.status = null
 		}
-		delete res[0].trusted
-		delete res[0].partnered
+		delete res.trusted
+		delete res.partnered
 		if (topLevel) {
-			res[0].owners = await Promise.all(
-				res[0].owners.map(async (u: string) => await get._rawUser.load(u))
+			res.owners = await Promise.all(
+				res.owners.map(async (u: string) => await get._rawUser.load(u))
 			)
-			res[0].owners = res[0].owners.filter((el: User | null) => el).map((row: User) => ({ ...row }))
+			res.owners = res.owners.filter((el: User | null) => el).map((row: User) => ({ ...row }))
 		}
 
 		await knex('bots').update({ name }).where({ id })
 	}
 
-	return res[0] ?? null
+	return res ?? null
 }
 
 async function getServer(id: string, topLevel = true): Promise<Server> {
-	const res = await knex('servers')
-		.select([
-			'id',
-			'name',
-			'flags',
-			'intro',
-			'desc',
-			'votes',
-			'owners',
-			'category',
-			'invite',
-			'state',
-			'vanity',
-			'bg',
-			'banner',
-			'flags',
-		])
-		.where({ id })
-		.orWhereRaw(`(flags & ${ServerFlags.trusted}) and vanity=?`, [id])
-		.orWhereRaw(`(flags & ${ServerFlags.partnered}) and vanity=?`, [id])
-	if (res[0]) {
-		const data = await getServerData(res[0].id)
+	const [res] = await knex('servers')
+  .select([
+    'servers.id',
+    'servers.name',
+    'servers.flags',
+    'servers.intro',
+    'servers.desc',
+    'servers.votes',
+    knex.raw('JSON_ARRAYAGG(owners_mapping.user_id) as owners'),
+    'servers.category',
+    'servers.invite',
+    'servers.state',
+    'servers.vanity',
+    'servers.bg',
+    'servers.banner',
+    'servers.flags',
+  ])
+  .leftJoin('owners_mapping', 'servers.id', 'owners_mapping.target_id')
+  .where({ 'servers.id': id })
+  .orWhereRaw(`(servers.flags & ${ServerFlags.trusted}) and servers.vanity=?`, [id])
+  .orWhereRaw(`(servers.flags & ${ServerFlags.partnered}) and servers.vanity=?`, [id])
+  .groupBy('servers.id') as any[]
+
+	if (res) {
+		const data = await getServerData(res.id)
+		res.owners = JSON.parse(res.owners)
 		if (!data || +new Date() - +new Date(data.updatedAt) > 3 * 60 * 1000) {
-			if (res[0].state === 'ok') res[0].state = 'unreachable'
+			if (res.state === 'ok') res.state = 'unreachable'
 		} else {
-			res[0].flags =
-				res[0].flags |
+			res.flags =
+				res.flags |
 				(data.features.includes(GuildFeature.Partnered) && ServerFlags.discord_partnered) |
 				(data.features.includes(GuildFeature.Verified) && ServerFlags.verified)
-			if (
-				res[0].owners !== JSON.stringify([data.owner, ...data.admins]) ||
-				res[0].name !== data.name
-			)
-				await knex('servers')
-					.update({ name: data.name, owners: JSON.stringify([data.owner, ...data.admins]) })
-					.where({ id: res[0].id })
+			if (res.name !== data.name)
+				await knex('servers').update({ name: data.name }).where({ id: res.id })
+			if (!areArraysEqual(res.owners, [data.owner, ...data.admins])) {
+				updateOwners(res.id, [data.owner, ...data.admins], 'server')
+			}
 		}
-		delete res[0].owners
-		res[0].icon = data?.icon || null
-		res[0].members = data?.memberCount || null
-		res[0].emojis = data?.emojis || []
-		res[0].category = JSON.parse(res[0].category)
-		res[0].boostTier = data?.boostTier ?? null
+		delete res.owners
+		res.icon = data?.icon || null
+		res.members = data?.memberCount || null
+		res.emojis = data?.emojis || []
+		res.category = JSON.parse(res.category)
+		res.boostTier = data?.boostTier ?? null
 		if (topLevel) {
-			res[0].owner = (await get._rawUser.load(data?.owner || '')) || null
-			res[0].bots =
+			res.owner = (await get._rawUser.load(data?.owner || '')) || null
+			res.bots =
 				(await Promise.all(data?.bots.slice(0, 3).map((el) => get._rawBot.load(el)) || [])).filter(
 					(el) => el
 				) || null
 		} else {
-			res[0].owner = data?.owner || null
-			res[0].bots = data?.bots || null
+			res.owner = data?.owner || null
+			res.bots = data?.bots || null
 		}
 	}
-	return res[0] ?? null
+	return res ?? null
 }
 
 async function fetchServerOwners(id: string): Promise<User[] | null> {
@@ -191,14 +197,12 @@ async function getServerData(id: string): Promise<ServerData | null> {
 async function getUser(id: string, topLevel = true): Promise<User> {
 	const res = await knex('users').select(['id', 'flags', 'github']).where({ id })
 	if (res[0]) {
-		const ownedBots = await knex('bots')
-			.select(['id'])
-			.where('owners', 'like', `%${id}%`)
-			.orderBy('date', 'asc')
-		const ownedServer = await knex('servers')
-			.select(['id'])
-			.where('owners', 'like', `%${id}%`)
-			.orderBy('date', 'asc')
+		const ownedList = await knex('owners_mapping')
+			.select(['target_id', 'type'])
+			.where({ user_id: id })
+
+		const ownedBots = ownedList.filter((i) => i.type === ObjectType.Bot)
+		const ownedServers = ownedList.filter((i) => i.type === ObjectType.Server)
 
 		const discordUser = await get.discord.user.load(id)
 		res[0].tag = discordUser?.discriminator || '0000'
@@ -206,14 +210,14 @@ async function getUser(id: string, topLevel = true): Promise<User> {
 		res[0].globalName = discordUser?.displayName || 'Unknown User'
 		if (topLevel) {
 			res[0].bots = (
-				await Promise.all(ownedBots.map(async (b) => await get._rawBot.load(b.id)))
+				await Promise.all(ownedBots.map(async (b) => await get._rawBot.load(b.target_id)))
 			).filter((el: Bot | null) => el)
 			res[0].servers = (
-				await Promise.all(ownedServer.map(async (b) => await get._rawServer.load(b.id)))
+				await Promise.all(ownedServers.map(async (b) => await get._rawServer.load(b.target_id)))
 			).filter((el: Server | null) => el)
 		} else {
-			res[0].bots = ownedBots.map((el) => el.id)
-			res[0].servers = ownedServer.map((el) => el.id)
+			res[0].bots = ownedBots.map((el) => el.target_id)
+			res[0].servers = ownedServers.map((el) => el.target_id)
 		}
 	}
 	return res[0] || null
@@ -438,15 +442,13 @@ async function getBotSubmit(id: string, date: number): Promise<SubmittedBot> {
 			'git',
 			'discord',
 			'state',
-			'owners',
+			'owner',
 			'reason',
 		])
 		.where({ id, date })
 	if (res.length === 0) return null
 	res[0].category = JSON.parse(res[0].category)
-	res[0].owners = await Promise.all(
-		JSON.parse(res[0].owners).map(async (u: string) => await get.user.load(u))
-	)
+	res[0].owner = await get.user.load(res[0].owner)
 	return res[0]
 }
 
@@ -466,17 +468,16 @@ async function getBotSubmits(id: string): Promise<SubmittedBot[]> {
 			'git',
 			'discord',
 			'state',
-			'owners',
+			'owner',
 			'reason',
 		])
 		.orderBy('date', 'desc')
-		.where('owners', 'LIKE', `%${id}%`)
+		.where({ owner: id })
+	const owner = await get.user.load(id)
 	res = await Promise.all(
 		res.map(async (el) => {
 			el.category = JSON.parse(el.category)
-			el.owners = await Promise.all(
-				JSON.parse(el.owners).map(async (u: string) => await get.user.load(u))
-			)
+			el.owner = owner
 			return el
 		})
 	)
@@ -569,10 +570,7 @@ async function submitBot(
 	id: string,
 	data: AddBotSubmit
 ): Promise<1 | 2 | 3 | 4 | 5 | SubmittedBot> {
-	const submits = await knex('submitted')
-		.select(['id'])
-		.where({ state: 0 })
-		.andWhere('owners', 'LIKE', `%${id}%`)
+	const submits = await knex('submitted').select(['id']).where({ state: 0 })
 	if (submits.length > 1) return 1
 	const botId = data.id
 	const strikes = await get.botSubmitStrikes(botId)
@@ -591,7 +589,7 @@ async function submitBot(
 	await knex('submitted').insert({
 		id: botId,
 		date: date,
-		owners: JSON.stringify([id]),
+		owner: id,
 		lib: data.library,
 		prefix: data.prefix,
 		intro: data.intro,
@@ -629,22 +627,25 @@ async function submitServer(
 	await knex('servers').insert({
 		id: id,
 		name: serverData.name,
-		owners: JSON.stringify([serverData.owner, ...serverData.admins]),
 		intro: data.intro,
 		desc: data.desc,
 		category: JSON.stringify(data.category),
 		invite: data.invite,
 		token: sign({ id }),
 	})
+	await updateOwners(id, [serverData.owner, ...serverData.admins], 'server')
 	get.server.clear(id)
 	return true
 }
 
 async function getBotSpec(id: string, userID: string): Promise<BotSpec | null> {
 	const res = await knex('bots')
-		.select(['id', 'token', 'webhook_url', 'webhook_status'])
-		.where({ id })
-		.andWhere('owners', 'like', `%${userID}%`)
+		.select(['bots.id', 'bots.token', 'bots.webhook_url', 'bots.webhook_status'])
+		.leftJoin('owners_mapping', 'bots.id', 'owners_mapping.target_id')
+		.where('owners_mapping.user_id', userID)
+		.andWhere('owners_mapping.type', ObjectType.Bot)
+		.andWhere('bots.id', id)
+
 	if (!res[0]) return null
 	return {
 		id: res[0].id,
@@ -656,9 +657,12 @@ async function getBotSpec(id: string, userID: string): Promise<BotSpec | null> {
 
 async function getServerSpec(id: string, userID: string): Promise<ServerSpec | null> {
 	const res = await knex('servers')
-		.select(['id', 'token', 'webhook_url', 'webhook_status'])
-		.where({ id })
-		.andWhere('owners', 'like', `%${userID}%`)
+		.select(['servers.id', 'servers.token', 'servers.webhook_url', 'servers.webhook_status'])
+		.leftJoin('owners_mapping', 'servers.id', 'owners_mapping.target_id')
+		.where('owners_mapping.user_id', userID)
+		.andWhere('owners_mapping.type', ObjectType.Server)
+		.andWhere('servers.id', id)
+
 	if (!res[0]) return null
 	return {
 		id: res[0].id,
@@ -754,10 +758,15 @@ async function updateWebhook(id: string, type: 'bots' | 'servers', value: Partia
 	return true
 }
 
-async function updateOwner(id: string, owners: string[]): Promise<void> {
-	await knex('bots')
-		.where({ id })
-		.update({ owners: JSON.stringify(owners) })
+async function updateOwners(id: string, owners: string[], type: 'bot' | 'server'): Promise<void> {
+	await knex('owners_mapping').where({ target: id }).del()
+	await knex('owners_mapping').insert(
+		owners.map((el) => ({
+			owner: el,
+			target: id,
+			type: type === 'bot' ? ObjectType.Bot : ObjectType.Server,
+		}))
+	)
 	get.bot.clear(id)
 }
 
@@ -957,7 +966,7 @@ async function getBotSubmitStrikes(id: string) {
 }
 
 async function approveBotSubmission(id: string, date: number) {
-	const data = await knex('submitted')
+	const [data] = await knex('submitted')
 		.select([
 			'id',
 			'date',
@@ -971,27 +980,27 @@ async function approveBotSubmission(id: string, date: number) {
 			'git',
 			'discord',
 			'state',
-			'owners',
+			'owner',
 			'reason',
 		])
 		.where({ state: 0, id, date })
-	if (!data[0]) return false
+	if (!data) return false
 	await knex('submitted').where({ state: 0, id, date }).update({ state: 1 })
 	await knex('bots').insert({
 		id,
 		date,
-		owners: data[0].owners,
-		lib: data[0].lib,
-		prefix: data[0].prefix,
-		intro: data[0].intro,
-		desc: data[0].desc,
-		url: data[0].url,
-		web: data[0].web,
-		git: data[0].git,
-		category: data[0].category,
-		discord: data[0].discord,
+		lib: data.lib,
+		prefix: data.prefix,
+		intro: data.intro,
+		desc: data.desc,
+		url: data.url,
+		web: data.web,
+		git: data.git,
+		category: data.category,
+		discord: data.discord,
 		token: sign({ id }),
 	})
+	updateOwners(id, [data.owner], 'bot')
 	return true
 }
 
@@ -1246,7 +1255,9 @@ export const update = {
 	Github,
 	bot: updateBot,
 	server: updatedServer,
-	botOwners: updateOwner,
+	botOwners: (id: string, owners: string[]) => {
+		return updateOwners(id, owners, 'bot')
+	},
 	webhook: updateWebhook,
 	denyBotSubmission,
 	approveBotSubmission,

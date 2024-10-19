@@ -248,4 +248,10 @@ export function convertMetrixToGraph(data: MetrixData[], keyname?: string) {
 	}))
 }
 
+export function areArraysEqual<T>(a: T[], b: T[]): boolean {
+	return (
+		new Set(a).size === new Set(b).size && [...new Set(a)].every((item) => new Set(b).has(item))
+	)
+}
+
 export * from './ShowdownExtensions'

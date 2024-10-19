@@ -147,7 +147,7 @@ const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
 					</div>
 					<h2 className='3xl mb-2 mt-2 font-bold'>제작자</h2>
 					<Owner
-						id={data.id}
+						id={data.owner.id}
 						tag={data.owner.tag}
 						globalName={data.owner.globalName}
 						username={data.owner.username}

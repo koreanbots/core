@@ -57,7 +57,7 @@ const ServerApplication: NextPage<ServerApplicationProps> = ({
 		return res
 	}
 
-	if (!user) {
+	if (!user && typeof window !== 'undefined') {
 		localStorage.redirectTo = window.location.href
 		redirectTo(router, 'login')
 		return

@@ -52,7 +52,7 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 		return res
 	}
 
-	if (!user) {
+	if (!user && typeof window !== 'undefined') {
 		localStorage.redirectTo = window.location.href
 		redirectTo(router, 'login')
 		return

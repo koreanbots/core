@@ -190,16 +190,16 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 														href={`/users/${userCache.id}`}
 														className='block rounded-t px-4 py-2 hover:bg-gray-100 dark:hover:bg-discord-dark-hover'
 													>
-														<i className='fas fa-user' />
+														<i className='fas fa-user w-5' />
 														프로필
 													</Link>
 												</li>
 												<li>
 													<Link
 														href='/panel'
-														className='block px-4 py-2 hover:bg-gray-100 dark:hover:bg-discord-dark-hover'
+														className='block px-3 py-2 hover:bg-gray-100 dark:hover:bg-discord-dark-hover'
 													>
-														<i className='fas fa-cogs' />
+														<i className='fas fa-cogs mr-1 w-5' />
 														관리패널
 													</Link>
 												</li>
@@ -216,7 +216,8 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 														}}
 														className='block cursor-pointer rounded-b px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-discord-dark-hover'
 													>
-														<i className='fas fa-sign-out-alt' /> 로그아웃
+														<i className='fas fa-sign-out-alt' />
+														로그아웃
 													</a>
 												</li>
 											</ul>

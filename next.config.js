@@ -22,6 +22,7 @@ const NextConfig = {
 	},
 	experimental: {
 		instrumentationHook: true,
+		serverComponentsExternalPackages: ['dd-trace'],
 		scrollRestoration: true,
 	},
 	swcMinify: true,

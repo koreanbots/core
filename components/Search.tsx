@@ -138,7 +138,7 @@ const Search: React.FC = () => {
 										data.data.bots.map((el) => (
 											<Link key={el.id} href={makeBotURL(el)} legacyBehavior>
 												<li className='h-15 flex cursor-pointer px-3 py-2'>
-													<DiscordAvatar className='mt-1 h-12 w-12' size={128} userID={el.id} />
+													<DiscordAvatar className='mt-1 h-12 w-12' size={128} userID={el.id} hash={el.avatar}/>
 													<div className='ml-2'>
 														<h1 className='text-lg text-black dark:text-gray-100'>{el.name}</h1>
 														<p className='text-sm text-gray-400'>{el.intro}</p>
@@ -156,7 +156,7 @@ const Search: React.FC = () => {
 										data.data.servers.map((el) => (
 											<Link key={el.id} href={makeServerURL(el)} legacyBehavior>
 												<li className='h-15 flex cursor-pointer px-3 py-2'>
-													<ServerIcon className='mt-1 h-12 w-12' size={128} id={el.id} />
+													<ServerIcon className='mt-1 h-12 w-12' size={128} id={el.id} hash={el.icon} />
 													<div className='ml-2'>
 														<h1 className='text-lg text-black dark:text-gray-100'>{el.name}</h1>
 														<p className='text-sm text-gray-400'>{el.intro}</p>

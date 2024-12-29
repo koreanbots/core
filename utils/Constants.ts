@@ -334,12 +334,20 @@ export const KoreanbotsEndPoints = {
 		}
 	},
 	CDN: class {
-		static root = '//cdn.koreanbots.dev'
+		static root = '/api/image'
+		static cdn = '//cdn.koreanbots.dev'
+
 		static avatar(id: string, options: KoreanbotsImageOptions) {
-			return makeImageURL(`${this.root}/avatars/${id}`, options)
+			if (options.hash) {
+				return makeImageURL(`${this.cdn}/avatars/${id}/${options.hash}`, options)
+			}
+			return makeImageURL(`${this.root}/discord/avatars/${id}`, options)
 		}
 		static icon(id: string, options: KoreanbotsImageOptions) {
-			return makeImageURL(`${this.root}/icons/${id}`, options)
+			if (options.hash) {
+				return makeImageURL(`${this.cdn}/icons/${id}/${options.hash}`, options)
+			}
+			return makeImageURL(`${this.root}/discord/icons/${id}`, options)
 		}
 	},
 	URL: class {

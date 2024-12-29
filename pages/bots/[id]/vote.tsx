@@ -92,6 +92,7 @@ const VoteBot: NextPage<VoteBotProps> = ({ data, user, theme, csrfToken }) => {
 						<div className='text-center'>
 							<DiscordAvatar
 								userID={data.id}
+								hash={data.avatar}
 								className='mx-auto mb-4 h-52 w-52 rounded-full bg-white'
 							/>
 							<Tag

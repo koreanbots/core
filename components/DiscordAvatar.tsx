@@ -11,10 +11,12 @@ const DiscordAvatar: React.FC<DiscordAvatarProps> = (props) => {
 			src={KoreanbotsEndPoints.CDN.avatar(props.userID, {
 				format: 'webp',
 				size: props.size ?? 256,
+				hash: props.hash,
 			})}
 			fallbackSrc={KoreanbotsEndPoints.CDN.avatar(props.userID, {
 				format: 'png',
 				size: props.size ?? 256,
+				hash: props.hash,
 			})}
 		/>
 	)
@@ -25,6 +27,7 @@ interface DiscordAvatarProps {
 	userID: string
 	className?: string
 	size?: 128 | 256 | 512
+	hash?: string
 }
 
 interface ImageEvent extends Event {

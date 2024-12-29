@@ -122,7 +122,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 						</div>
 						<div className='w-full lg:flex'>
 							<div className='w-full text-center lg:w-2/12'>
-								<DiscordAvatar userID={data.id} size={256} className='w-full rounded-full' />
+								<DiscordAvatar userID={data.id} size={256} className='w-full rounded-full' hash={data.avatar}/>
 							</div>
 							<div className='w-full grow px-5 py-12 text-center lg:w-5/12 lg:text-left'>
 								<Tag

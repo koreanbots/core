@@ -90,7 +90,7 @@ const VoteServer: NextPage<VoteServerProps> = ({ data, user, theme, csrfToken })
 					</Link>
 					<Segment className='mb-16 py-8'>
 						<div className='text-center'>
-							<ServerIcon id={data.id} className='mx-auto mb-4 h-52 w-52 rounded-full bg-white' />
+							<ServerIcon id={data.id} className='mx-auto mb-4 h-52 w-52 rounded-full bg-white' hash={data.icon} />
 							<Tag
 								text={
 									<span>

@@ -64,7 +64,7 @@ const Security: NextPage<SecurityProps> = ({ bugReports }) => {
 					.filter((el) => el)
 					.map((u) => (
 						<div key={u.id} className='mr-2.5 flex items-center'>
-							<DiscordAvatar userID={u.id} size={128} className='mr-1 h-6 w-6 rounded-full' />
+							<DiscordAvatar userID={u.id} size={128} className='mr-1 h-6 w-6 rounded-full' hash={u.avatar} />
 							<span className='text-base font-semibold dark:text-gray-300'>
 								{u.globalName} {`(@${u.username})`}
 							</span>

@@ -70,7 +70,7 @@ const BotApplication: NextPage<BotApplicationProps> = ({ user, spec, bot, theme,
 			</p>
 			<div className='pt-6 lg:flex'>
 				<div className='lg:w-1/5'>
-					<DiscordAvatar userID={bot.id} />
+					<DiscordAvatar userID={bot.id} hash={bot.avatar} />
 				</div>
 				<div className='relative lg:w-4/5'>
 					<div className='mt-4'>

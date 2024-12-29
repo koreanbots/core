@@ -43,7 +43,7 @@ const ServerCard: React.FC<BotCardProps> = ({ type, server }) => {
 												<ServerIcon
 													size={128}
 													id={server.id}
-													hash={type === 'add' && server.icon}
+													hash={server.icon}
 													alt='Icon'
 													className='absolute -left-2 -top-8 mx-auto h-32 w-32 rounded-full bg-white'
 												/>

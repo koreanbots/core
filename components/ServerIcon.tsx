@@ -1,6 +1,6 @@
 import { SyntheticEvent } from 'react'
 import dynamic from 'next/dynamic'
-import { DiscordEnpoints, KoreanbotsEndPoints } from '@utils/Constants'
+import { KoreanbotsEndPoints } from '@utils/Constants'
 
 const Image = dynamic(() => import('@components/Image'))
 
@@ -9,16 +9,8 @@ const ServerIcon: React.FC<ServerIconProps> = ({ id, size, className, alt, hash 
 		<Image
 			className={className}
 			alt={alt}
-			src={
-				hash
-					? DiscordEnpoints.CDN.guild(id, hash, { format: 'webp', size: size ?? 256 })
-					: KoreanbotsEndPoints.CDN.icon(id, { format: 'webp', size: size ?? 256 })
-			}
-			fallbackSrc={
-				hash
-					? DiscordEnpoints.CDN.guild(id, hash, { format: 'png', size: size ?? 256 })
-					: KoreanbotsEndPoints.CDN.icon(id, { format: 'png', size: size ?? 256 })
-			}
+			src={KoreanbotsEndPoints.CDN.icon(id, { format: 'webp', size: size ?? 256, hash })}
+			fallbackSrc={KoreanbotsEndPoints.CDN.icon(id, { format: 'png', size: size ?? 256, hash })}
 		/>
 	)
 }

@@ -77,7 +77,7 @@ const ServerApplication: NextPage<ServerApplicationProps> = ({
 				<>
 					<div className='pt-6 lg:flex'>
 						<div className='lg:w-1/5'>
-							<ServerIcon id={server.id} />
+							<ServerIcon id={server.id} hash={server.icon} />
 						</div>
 						<div className='relative lg:w-4/5'>
 							<div className='mt-4'>

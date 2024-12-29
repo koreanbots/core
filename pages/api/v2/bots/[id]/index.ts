@@ -25,6 +25,7 @@ import {
 } from '@utils/Tools'
 import { discordLog, getMainGuild, webhookClients } from '@utils/DiscordBot'
 import { KoreanbotsEndPoints } from '@utils/Constants'
+import { userInfo } from 'os'
 
 const patchLimiter = rateLimit({
 	windowMs: 2 * 60 * 1000,
@@ -127,7 +128,7 @@ const Bots = RequestHandler()
 								: `${userinfo.username}#${userinfo.tag}`,
 						iconURL:
 							KoreanbotsEndPoints.URL.root +
-							KoreanbotsEndPoints.CDN.avatar(userinfo.id, { format: 'png', size: 256 }),
+							KoreanbotsEndPoints.CDN.avatar(userinfo.id, { format: 'png', size: 256, hash: userinfo.avatar }),
 						url: KoreanbotsEndPoints.URL.user(userinfo.id),
 					})
 					.setTitle('대기 중')

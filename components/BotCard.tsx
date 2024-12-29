@@ -34,6 +34,7 @@ const BotCard: React.FC<BotCardProps> = ({ manage = false, bot }) => {
 												<DiscordAvatar
 													size={128}
 													userID={bot.id}
+													hash={bot.avatar}
 													alt='Avatar'
 													className='absolute -left-2 -top-8 mx-auto h-32 w-32 rounded-full bg-white'
 												/>

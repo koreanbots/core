@@ -95,7 +95,7 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 				{({ errors, touched, values, setFieldTouched, setFieldValue }) => (
 					<Form>
 						<div className='text-center md:flex md:text-left'>
-							<DiscordAvatar userID={bot.id} className='mx-auto rounded-full md:mx-1' />
+							<DiscordAvatar userID={bot.id} className='mx-auto rounded-full md:mx-1' hash={bot.avatar}/>
 							<div className='px-8 py-6 md:w-2/3'>
 								<h1 className='text-3xl font-bold'>
 									{bot.name}#{bot.tag}
@@ -344,6 +344,7 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 																	<DiscordAvatar
 																		userID={el.id}
 																		size={128}
+																		hash={el.avatar}
 																		className='mr-1 h-6 w-6 rounded-full'
 																	/>{' '}
 																	{el.tag === '0'

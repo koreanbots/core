@@ -15,7 +15,7 @@ const Footer: React.FC<FooterProps> = ({ theme, setTheme }) => {
 						<h1 className='text-2xl font-bold text-koreanbots-blue'>
 							국내 디스코드의 모든 것을 한 곳에서.
 						</h1>
-						<span className='text-base'>2020-2023 한국 디스코드 리스트, All rights reserved.</span>
+						<span className='text-base'>2020-2025 한국 디스코드 리스트, All rights reserved.</span>
 						<div className='flex space-x-1 text-2xl'>
 							<Link href='/discord'>
 								<i className='fab fa-discord inline-block w-full' />

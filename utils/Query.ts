@@ -76,7 +76,7 @@ async function getBot(id: string, topLevel = true): Promise<Bot> {
 
 	if (res) {
 		const discordBot = await get.discord.user.load(res.id)
-		if (!discordBot) return null
+		if (!discordBot || Number(discordBot.discriminator) === 0) return null
 		const botMember = (await getMainGuild()
 			?.members?.fetch(res.id)
 			.catch((e) => e)) as GuildMember
@@ -121,28 +121,28 @@ async function getBot(id: string, topLevel = true): Promise<Bot> {
 }
 
 async function getServer(id: string, topLevel = true): Promise<Server> {
-	const [res] = await knex('servers')
-  .select([
-    'servers.id',
-    'servers.name',
-    'servers.flags',
-    'servers.intro',
-    'servers.desc',
-    'servers.votes',
-    knex.raw('JSON_ARRAYAGG(owners_mapping.user_id) as owners'),
-    'servers.category',
-    'servers.invite',
-    'servers.state',
-    'servers.vanity',
-    'servers.bg',
-    'servers.banner',
-    'servers.flags',
-  ])
-  .leftJoin('owners_mapping', 'servers.id', 'owners_mapping.target_id')
-  .where({ 'servers.id': id })
-  .orWhereRaw(`(servers.flags & ${ServerFlags.trusted}) and servers.vanity=?`, [id])
-  .orWhereRaw(`(servers.flags & ${ServerFlags.partnered}) and servers.vanity=?`, [id])
-  .groupBy('servers.id') as any[]
+	const [res] = (await knex('servers')
+		.select([
+			'servers.id',
+			'servers.name',
+			'servers.flags',
+			'servers.intro',
+			'servers.desc',
+			'servers.votes',
+			knex.raw('JSON_ARRAYAGG(owners_mapping.user_id) as owners'),
+			'servers.category',
+			'servers.invite',
+			'servers.state',
+			'servers.vanity',
+			'servers.bg',
+			'servers.banner',
+			'servers.flags',
+		])
+		.leftJoin('owners_mapping', 'servers.id', 'owners_mapping.target_id')
+		.where({ 'servers.id': id })
+		.orWhereRaw(`(servers.flags & ${ServerFlags.trusted}) and servers.vanity=?`, [id])
+		.orWhereRaw(`(servers.flags & ${ServerFlags.partnered}) and servers.vanity=?`, [id])
+		.groupBy('servers.id')) as any[]
 
 	if (res) {
 		const data = await getServerData(res.id)
@@ -316,7 +316,9 @@ async function getBotList(type: ListType, page = 1, query?: string): Promise<Lis
 
 	return {
 		type,
-		data: (await Promise.all(res.map(async (el) => await getBot(el.id, false)))).map((r) => ({ ...r })),
+		data: (await Promise.all(res.map(async (el) => await getBot(el.id, false)))).map((r) => ({
+			...r,
+		})),
 		currentPage: page,
 		totalPage: Math.ceil(Number(count) / (type === 'SEARCH' ? 8 : 16)),
 	}
@@ -421,7 +423,9 @@ async function getServerList(type: ListType, page = 1, query?: string): Promise<
 	}
 	return {
 		type,
-		data: (await Promise.all(res.map(async (el) => await getServer(el.id, false)))).map((r) => ({ ...r })),
+		data: (await Promise.all(res.map(async (el) => await getServer(el.id, false)))).map((r) => ({
+			...r,
+		})),
 		currentPage: page,
 		totalPage: Math.ceil(Number(count) / (type === 'SEARCH' ? 8 : 16)),
 	}

@@ -18,7 +18,7 @@ const Advertisement: React.FC<AdvertisementProps> = ({ size = 'short' }) => {
 							width: '100%',
 							height: size === 'short' ? '90px' : '330px',
 						}}
-						client='ca-pub-4672948131576368'
+						client='ca-pub-2436587688222951'
 						slot=''
 						format=''
 					/>

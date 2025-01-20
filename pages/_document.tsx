@@ -190,7 +190,7 @@ class MyDocument extends Document {
 					{/* SCRIPT */}
 					<script src='//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js'></script>
 					<script
-						data-ad-client='ca-pub-2090578791829639'
+						data-ad-client='ca-pub-4672948131576368'
 						async
 						src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
 					></script>

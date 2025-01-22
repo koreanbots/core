@@ -156,6 +156,7 @@ export enum BotFlags {
 	verified = 1 << 4,
 	premium = 1 << 5,
 	hackerthon = 1 << 6,
+	private = 1 << 7,
 }
 
 export enum ServerFlags {

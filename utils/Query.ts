@@ -76,7 +76,12 @@ async function getBot(id: string, topLevel = true): Promise<Bot> {
 
 	if (res) {
 		const discordBot = await get.discord.user.load(res.id)
-		if (!discordBot || Number(discordBot.discriminator) === 0) return null
+		if (!discordBot || Number(discordBot.discriminator) === 0) {
+			knex('bots')
+				.update({ state: 'deleted' })
+				.where({ id })
+				.then((r) => r)
+		}
 		const botMember = (await getMainGuild()
 			?.members?.fetch(res.id)
 			.catch((e) => e)) as GuildMember
@@ -239,41 +244,41 @@ async function getBotList(type: ListType, page = 1, query?: string): Promise<Lis
 	let res: { id: string }[]
 	let count: string | number
 	if (type === 'VOTE') {
-		count = (await knex('bots').whereNot({ state: 'blocked' }).count())[0]['count(*)']
+		count = (await knex('bots').where({ state: 'ok' }).count())[0]['count(*)']
 		res = await knex('bots')
 			.orderBy('votes', 'desc')
 			.orderBy('servers', 'desc')
 			.limit(16)
 			.offset(((page ? Number(page) : 1) - 1) * 16)
 			.select(['id'])
-			.whereNot({ state: 'blocked' })
+			.where({ state: 'ok' })
 	} else if (type === 'TRUSTED') {
-		count = (await knex('bots').where({ trusted: true }).count().whereNot({ state: 'blocked' }))[0][
+		count = (await knex('bots').where({ trusted: true }).count().where({ state: 'ok' }))[0][
 			'count(*)'
 		]
 		res = await knex('bots')
-			.whereNot({ state: 'blocked' })
+			.where({ state: 'ok' })
 			.where({ trusted: true })
 			.orderByRaw('RAND()')
 			.limit(16)
 			.offset(((page ? Number(page) : 1) - 1) * 16)
 			.select(['id'])
-			.whereNot({ state: 'blocked' })
+			.where({ state: 'ok' })
 	} else if (type === 'NEW') {
-		count = (await knex('bots').whereNot({ state: 'blocked' }).count())[0]['count(*)']
+		count = (await knex('bots').where({ state: 'ok' }).count())[0]['count(*)']
 		res = await knex('bots')
 			.orderBy('date', 'desc')
 			.limit(16)
 			.offset(((page ? Number(page) : 1) - 1) * 16)
 			.select(['id'])
-			.whereNot({ state: 'blocked' })
+			.where({ state: 'ok' })
 	} else if (type === 'PARTNERED') {
-		count = (
-			await knex('bots').where({ partnered: true }).andWhereNot({ state: 'blocked' }).count()
-		)[0]['count(*)']
+		count = (await knex('bots').where({ partnered: true }).andWhere({ state: 'ok' }).count())[0][
+			'count(*)'
+		]
 		res = await knex('bots')
 			.where({ partnered: true })
-			.andWhereNot({ state: 'blocked' })
+			.andWhere({ state: 'ok' })
 			.orderByRaw('RAND()')
 			.limit(16)
 			.offset(((page ? Number(page) : 1) - 1) * 16)
@@ -284,12 +289,12 @@ async function getBotList(type: ListType, page = 1, query?: string): Promise<Lis
 		count = (
 			await knex('bots')
 				.where('category', 'like', `%${decodeURI(query)}%`)
-				.andWhereNot({ state: 'blocked' })
+				.andWhere({ state: 'ok' })
 				.count()
 		)[0]['count(*)']
 		res = await knex('bots')
 			.where('category', 'like', `%${decodeURI(query)}%`)
-			.andWhereNot({ state: 'blocked' })
+			.andWhere({ state: 'ok' })
 			.orderBy('votes', 'desc')
 			.orderBy('servers', 'desc')
 			.limit(16)
@@ -299,13 +304,13 @@ async function getBotList(type: ListType, page = 1, query?: string): Promise<Lis
 		if (!query) throw new Error('쿼리가 누락되었습니다.')
 		count = (
 			await knex.raw(
-				'SELECT count(*) FROM bots WHERE `state` != "blocked" AND MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode)',
+				'SELECT count(*) FROM bots WHERE `state` = "ok" AND MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode)',
 				[decodeURI(query) + '*']
 			)
 		)[0][0]['count(*)']
 		res = (
 			await knex.raw(
-				'SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM bots WHERE `state` != "blocked" AND MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 8 OFFSET ?',
+				'SELECT id, votes, MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) as relevance FROM bots WHERE `state` = "ok" AND MATCH(`name`, `intro`, `desc`) AGAINST(? in boolean mode) ORDER BY relevance DESC, votes DESC LIMIT 8 OFFSET ?',
 				[decodeURI(query) + '*', decodeURI(query) + '*', ((page ? Number(page) : 1) - 1) * 8]
 			)
 		)[0]

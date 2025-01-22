@@ -88,7 +88,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 				) : (
 					<>
 						<div className='w-full pb-2'>
-							{data.state === 'private' ? (
+							{checkBotFlag(data.flags, 'private') ? (
 								<Message type='info'>
 									<h2 className='text-lg font-extrabold'>
 										해당 봇은 특수목적 봇이므로 초대하실 수 없습니다.
@@ -158,7 +158,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 								</p>
 							</div>
 							<div className='w-full lg:w-1/4'>
-								{data.state === 'ok' && (
+								{(data.state === 'ok' && !checkBotFlag(data.flags, 'private')) && (
 									<LongButton newTab href={`/bots/${router.query.id}/invite`}>
 										<h4 className='whitespace-nowrap'>
 											<i className='fas fa-user-plus text-discord-blurple' /> 초대하기

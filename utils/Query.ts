@@ -528,18 +528,19 @@ async function getWebhook(id: string, type: 'bots' | 'servers'): Promise<Webhook
 }
 
 async function voteBot(userID: string, botID: string): Promise<number | boolean> {
-	const user = await knex('users').select(['votes']).where({ id: userID })
-	const key = `bot:${botID}`
-	if (user.length === 0) return null
-	const date = +new Date()
-	const data = JSON.parse(user[0].votes)
-	const lastDate = data[key] || 0
-	if (date - lastDate < VOTE_COOLDOWN) return VOTE_COOLDOWN - (date - lastDate)
-	data[key] = date
+	const [vote] = await knex('votes').select('*').where({ user_id: userID, target: botID })
+	const date = new Date()
+	if (vote) {
+		const lastDate = vote.last_voted.getTime() || 0
+		if (date.getTime() - lastDate < VOTE_COOLDOWN)
+			return VOTE_COOLDOWN - (date.getTime() - lastDate)
+	}
+
 	await knex('bots').where({ id: botID }).increment('votes', 1)
-	await knex('users')
-		.where({ id: userID })
-		.update({ votes: JSON.stringify(data) })
+	await knex('votes')
+		.insert({ user_id: userID, target: botID, type: 0, last_voted: date })
+		.onConflict(['user_id', 'target', 'type'])
+		.merge({ last_voted: date })
 	const record = await Bots.updateOne(
 		{ _id: botID, 'voteMetrix.day': getYYMMDD() },
 		{ $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } }
@@ -554,18 +555,19 @@ async function voteBot(userID: string, botID: string): Promise<number | boolean>
 }
 
 async function voteServer(userID: string, serverID: string): Promise<number | boolean> {
-	const user = await knex('users').select(['votes']).where({ id: userID })
-	const key = `server:${serverID}`
-	if (user.length === 0) return null
-	const date = +new Date()
-	const data = JSON.parse(user[0].votes)
-	const lastDate = data[key] || 0
-	if (date - lastDate < VOTE_COOLDOWN) return VOTE_COOLDOWN - (date - lastDate)
-	data[key] = date
-	await knex('servers').where({ id: serverID }).increment('votes', 1)
-	await knex('users')
-		.where({ id: userID })
-		.update({ votes: JSON.stringify(data) })
+	const [vote] = await knex('votes').select('*').where({ user_id: userID, target: serverID })
+	const date = new Date()
+	if (vote) {
+		const lastDate = vote.last_voted.getTime() || 0
+		if (date.getTime() - lastDate < VOTE_COOLDOWN)
+			return VOTE_COOLDOWN - (date.getTime() - lastDate)
+	}
+
+	await knex('bots').where({ id: serverID }).increment('votes', 1)
+	await knex('votes')
+		.insert({ user_id: userID, target: serverID, type: 1, last_voted: date })
+		.onConflict(['user_id', 'target', 'type'])
+		.merge({ last_voted: date })
 	// const record = await Servers.updateOne({ _id: serverID, 'voteMetrix.day': getYYMMDD() }, { $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } })
 	// if(record.n === 0) await Servers.findByIdAndUpdate(serverID, { $push: { voteMetrix: { count: (await knex('servers').where({ id: serverID }))[0].votes } } }, { upsert: true })
 	return true

@@ -76,7 +76,10 @@ async function getBot(id: string, topLevel = true): Promise<Bot> {
 
 	if (res) {
 		const discordBot = await get.discord.user.load(res.id)
-		if (!discordBot || Number(discordBot.discriminator) === 0) {
+		if(!discordBot) {
+			return null
+		}
+		if (Number(discordBot.discriminator) === 0) {
 			knex('bots')
 				.update({ state: 'deleted' })
 				.where({ id })

@@ -39,6 +39,7 @@ import { sign, verify } from './Jwt'
 import { areArraysEqual, camoUrl, formData, getYYMMDD, serialize } from './Tools'
 import { AddBotSubmit, AddServerSubmit, ManageBot, ManageServer } from './Yup'
 import { markdownImage } from './Regex'
+import { Notification } from './Notifications'
 
 export const imageRateLimit = new TLRU<unknown, number>({ maxAgeMs: 60000 })
 
@@ -537,10 +538,20 @@ async function voteBot(userID: string, botID: string): Promise<number | boolean>
 	}
 
 	await knex('bots').where({ id: botID }).increment('votes', 1)
-	await knex('votes')
-		.insert({ user_id: userID, target: botID, type: 0, last_voted: date })
-		.onConflict(['user_id', 'target', 'type'])
-		.merge({ last_voted: date })
+
+	const votes = await knex('votes')
+		.select('id')
+		.where({ user_id: userID, target: botID, type: ObjectType.Bot })
+	if (votes.length === 0) {
+		await knex('votes').insert({
+			user_id: userID,
+			target: botID,
+			type: ObjectType.Bot,
+			last_voted: date,
+		})
+	} else {
+		await knex('votes').where({ id: votes[0].id }).update({ last_voted: date })
+	}
 	const record = await Bots.updateOne(
 		{ _id: botID, 'voteMetrix.day': getYYMMDD() },
 		{ $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } }
@@ -565,7 +576,7 @@ async function voteServer(userID: string, serverID: string): Promise<number | bo
 
 	await knex('bots').where({ id: serverID }).increment('votes', 1)
 	await knex('votes')
-		.insert({ user_id: userID, target: serverID, type: 1, last_voted: date })
+		.insert({ user_id: userID, target: serverID, type: ObjectType.Server, last_voted: date })
 		.onConflict(['user_id', 'target', 'type'])
 		.merge({ last_voted: date })
 	// const record = await Servers.updateOne({ _id: serverID, 'voteMetrix.day': getYYMMDD() }, { $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } })
@@ -949,6 +960,73 @@ export async function CaptchaVerify(response: string): Promise<boolean> {
 	return res.success
 }
 
+// FCM
+
+export async function addNotification({
+	token,
+	userId,
+	targetId,
+}: {
+	token: string
+	userId: string
+	targetId: string
+}) {
+	const [vote] = await knex('votes').select('id').where({ user_id: userId, target: targetId })
+
+	if (!vote) {
+		return 'Vote does not exist'
+	}
+
+	const voteId = vote.id
+
+	await knex('notifications').insert({
+		vote_id: voteId,
+		token,
+	})
+
+	return true
+}
+
+export async function removeNotification({
+	token,
+	targetId,
+}: {
+	token: string
+	targetId: string | null
+}) {
+	if (targetId === null) {
+		await knex('notifications').delete().where({ token })
+		return true
+	}
+
+	await knex('notifications').delete().where({ token, target: targetId })
+
+	return true
+}
+
+/**
+ * We consider that multiple devices could listen to the same topic.
+ * @param userId
+ * @param targetId
+ */
+export async function getNotifications(userId?: string, targetId?: string) {
+	const q = knex('notifications')
+		.select([
+			'notifications.*',
+			'votes.user_id as user_id',
+			'votes.target as target_id',
+			'votes.type as type',
+			'votes.last_voted as last_voted',
+		])
+		.leftJoin('votes', 'votes.id', 'notifications.vote_id')
+
+	if (userId) q.where('votes.user_id', userId)
+	if (targetId) q.where('votes.target', targetId)
+
+	const res = await q
+
+	return res as Notification[]
+}
 // Private APIs
 
 async function getBotSubmitList() {

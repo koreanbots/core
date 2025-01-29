@@ -44,3 +44,6 @@ package-lock.json
 
 # sub module
 api-docs/
+
+# Firebase
+service-account.json

@@ -77,7 +77,7 @@ async function getBot(id: string, topLevel = true): Promise<Bot> {
 
 	if (res) {
 		const discordBot = await get.discord.user.load(res.id)
-		if(!discordBot) {
+		if (!discordBot) {
 			return null
 		}
 		if (Number(discordBot.discriminator) === 0) {
@@ -979,10 +979,11 @@ export async function addNotification({
 
 	const voteId = vote.id
 
-	await knex('notifications').insert({
-		vote_id: voteId,
-		token,
-	})
+	const { length } = await knex('notifications').select('id').where({ token, vote_id: voteId })
+
+	if (length === 0) {
+		await knex('notifications').insert({ token, vote_id: voteId })
+	}
 
 	return true
 }

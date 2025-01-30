@@ -1,5 +1,7 @@
+/* eslint-disable no-var */
 import * as Yup from 'yup'
 import { Client } from 'discord.js'
+import NotificationManager from '@utils/Notifications'
 
 declare global {
 	interface Window {
@@ -9,10 +11,9 @@ declare global {
 			highlightBlock(e: Element): void
 		}
 	}
-	// eslint-disable-next-line no-var
 	var kodl: Client
-	// eslint-disable-next-line no-var
 	var serverlist: Client
+	var notification: NotificationManager
 	interface Navigator {
 		standalone?: boolean
 	}

@@ -552,6 +552,9 @@ async function voteBot(userID: string, botID: string): Promise<number | boolean>
 	} else {
 		await knex('votes').where({ id: votes[0].id }).update({ last_voted: date })
 	}
+
+	global.notification.refresh(userID, botID)
+
 	const record = await Bots.updateOne(
 		{ _id: botID, 'voteMetrix.day': getYYMMDD() },
 		{ $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } }
@@ -574,11 +577,14 @@ async function voteServer(userID: string, serverID: string): Promise<number | bo
 			return VOTE_COOLDOWN - (date.getTime() - lastDate)
 	}
 
-	await knex('bots').where({ id: serverID }).increment('votes', 1)
+	await knex('servers').where({ id: serverID }).increment('votes', 1)
 	await knex('votes')
 		.insert({ user_id: userID, target: serverID, type: ObjectType.Server, last_voted: date })
 		.onConflict(['user_id', 'target', 'type'])
 		.merge({ last_voted: date })
+
+	global.notification.refresh(userID, serverID)
+
 	// const record = await Servers.updateOne({ _id: serverID, 'voteMetrix.day': getYYMMDD() }, { $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } })
 	// if(record.n === 0) await Servers.findByIdAndUpdate(serverID, { $push: { voteMetrix: { count: (await knex('servers').where({ id: serverID }))[0].votes } } }, { upsert: true })
 	return true

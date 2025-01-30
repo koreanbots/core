@@ -140,6 +140,7 @@ const VoteBot: NextPage<VoteBotProps> = ({ data, user, theme, csrfToken }) => {
 											{Day(+new Date() + result.data?.retryAfter).fromNow()} 다시 투표하실 수
 											있습니다.
 										</h4>
+										<SetNotification id={data.id} />
 									</>
 								) : (
 									<p>{result.message}</p>

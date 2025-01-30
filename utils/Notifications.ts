@@ -40,6 +40,8 @@ export default class NotificationManager {
 		targetId: string
 		token: string
 	}): ReturnType<typeof removeNotificationData> {
+		console.log('Removing notification for', userId, targetId, token)
+		console.log('Ongoing timeouts:', Object.keys(this.timeouts))
 		clearTimeout(this.timeouts[`${userId}:${targetId}:${token}`])
 		return await removeNotificationData({ targetId, token })
 	}
@@ -53,8 +55,11 @@ export default class NotificationManager {
 			return
 		}
 
-		this.timeouts[`${noti.user_id}:${noti.target_id}:${noti.token}`] = setTimeout(() => {
+		const key = `${noti.user_id}:${noti.target_id}:${noti.token}`
+
+		this.timeouts[key] = setTimeout(() => {
 			this.pushNotification(noti)
+			clearTimeout(this.timeouts[key])
 		}, time)
 	}
 

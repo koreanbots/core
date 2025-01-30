@@ -19,6 +19,7 @@ export default class NotificationManager {
 
 	public constructor() {
 		this.initVotes()
+		console.log('NotificationManager initialized')
 	}
 
 	public async setNotification(userId: string, targetId: string) {
@@ -28,7 +29,9 @@ export default class NotificationManager {
 	}
 
 	public async scheduleNotification(noti: Notification) {
+		console.log('Scheduling notification for', noti.vote_id)
 		const time = noti.last_voted.getTime() + VOTE_COOLDOWN + 1000 * 60 - Date.now()
+		console.log('Time:', time)
 
 		if (time <= 0) {
 			return
@@ -56,6 +59,7 @@ export default class NotificationManager {
 	}
 
 	private async pushNotification(noti: Notification) {
+		console.log('Pushing notification for', noti.vote_id)
 		const isBot = noti.type === ObjectType.Bot
 		const target = isBot
 			? await get.bot.load(noti.target_id)

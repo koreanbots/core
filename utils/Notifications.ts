@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase-admin/app'
 import { KoreanbotsEndPoints, VOTE_COOLDOWN } from './Constants'
-import { get, getNotifications, removeNotification } from './Query'
+import { get, getNotifications, removeNotification as removeNotificationData } from './Query'
 import { ObjectType } from '@types'
 import { messaging } from 'firebase-admin'
 
@@ -15,7 +15,7 @@ export type Notification = {
 
 export default class NotificationManager {
 	private timeouts: Record<`${string}:${string}:${string}`, NodeJS.Timeout> = {}
-	private firebaseApp = initializeApp()
+	private firebaseApp: ReturnType<typeof initializeApp>
 
 	public constructor() {
 		this.initVotes()
@@ -26,6 +26,22 @@ export default class NotificationManager {
 		const noti = await getNotifications(userId, targetId)
 
 		if (!noti) return false
+	}
+
+	/**
+	 * This is a service. This removes the timeout and the notification data.
+	 */
+	public async removeNotification({
+		userId,
+		targetId,
+		token,
+	}: {
+		userId: string
+		targetId: string
+		token: string
+	}): ReturnType<typeof removeNotificationData> {
+		clearTimeout(this.timeouts[`${userId}:${targetId}:${token}`])
+		return await removeNotificationData({ targetId, token })
 	}
 
 	public async scheduleNotification(noti: Notification) {
@@ -86,7 +102,8 @@ export default class NotificationManager {
 			.catch((e) => {
 				if ('code' in e) {
 					if (e.code === 'messaging/registration-token-not-registered') {
-						removeNotification({
+						this.removeNotification({
+							userId: noti.user_id,
 							token: noti.token,
 							targetId: null,
 						})

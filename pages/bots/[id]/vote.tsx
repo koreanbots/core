@@ -12,13 +12,13 @@ import { ParsedUrlQuery } from 'querystring'
 import NotFound from 'pages/404'
 import { getToken } from '@utils/Csrf'
 import Captcha from '@components/Captcha'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Fetch from '@utils/Fetch'
 import Day from '@utils/Day'
 import { getJosaPicker } from 'josa'
 import { KoreanbotsEndPoints } from '@utils/Constants'
 import { NextSeo } from 'next-seo'
-import SetNotification from '@components/FCM'
+import SetNotification, { getFCMToken } from '@components/FCM'
 
 const Container = dynamic(() => import('@components/Container'))
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
@@ -31,7 +31,16 @@ const Message = dynamic(() => import('@components/Message'))
 
 const VoteBot: NextPage<VoteBotProps> = ({ data, user, theme, csrfToken }) => {
 	const [votingStatus, setVotingStatus] = useState(0)
-	const [result, setResult] = useState<ResponseProps<{ retryAfter?: number }>>(null)
+	const [result, setResult] =
+		useState<ResponseProps<{ retryAfter?: number; notificationSet: boolean }>>(null)
+	const fcmTokenRef = useRef<string | null>(null)
+
+	useEffect(() => {
+		getFCMToken().then((token) => {
+			fcmTokenRef.current = token
+		})
+	}, [])
+
 	const router = useRouter()
 	if (!data?.id) return <NotFound />
 	if (!user)
@@ -117,11 +126,15 @@ const VoteBot: NextPage<VoteBotProps> = ({ data, user, theme, csrfToken }) => {
 									<Captcha
 										dark={theme === 'dark'}
 										onVerify={async (key) => {
-											const res = await Fetch<{ retryAfter: number } | unknown>(
+											const res = await Fetch<{ retryAfter: number; notificationSet: boolean }>(
 												`/bots/${data.id}/vote`,
 												{
 													method: 'POST',
-													body: JSON.stringify({ _csrf: csrfToken, _captcha: key }),
+													body: JSON.stringify({
+														_csrf: csrfToken,
+														_captcha: key,
+														firebaseToken: fcmTokenRef.current,
+													}),
 												}
 											)
 											setResult(res)
@@ -131,7 +144,7 @@ const VoteBot: NextPage<VoteBotProps> = ({ data, user, theme, csrfToken }) => {
 								) : result.code === 200 ? (
 									<>
 										<h2 className='text-2xl font-bold'>해당 봇에 투표했습니다!</h2>
-										<SetNotification id={data.id} />
+										<SetNotification id={data.id} notificationSet={result.data.notificationSet} />
 									</>
 								) : result.code === 429 ? (
 									<>
@@ -140,7 +153,7 @@ const VoteBot: NextPage<VoteBotProps> = ({ data, user, theme, csrfToken }) => {
 											{Day(+new Date() + result.data?.retryAfter).fromNow()} 다시 투표하실 수
 											있습니다.
 										</h4>
-										<SetNotification id={data.id} />
+										<SetNotification id={data.id} notificationSet={result.data.notificationSet} />
 									</>
 								) : (
 									<p>{result.message}</p>

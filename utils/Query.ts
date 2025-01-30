@@ -1006,7 +1006,13 @@ export async function removeNotification({
 		return true
 	}
 
-	await knex('notifications').delete().where({ token, target: targetId })
+	await knex('notifications')
+		.delete()
+		.leftJoin('votes', 'votes.id', 'notifications.vote_id')
+		.where({
+			'notifications.token': token,
+			'votes.target': targetId,
+		})
 
 	return true
 }
@@ -1034,6 +1040,41 @@ export async function getNotifications(userId?: string, targetId?: string) {
 
 	return res as Notification[]
 }
+
+export async function getNotificationsByToken(token: string, targetId?: string) {
+	const q = knex('notifications')
+		.select([
+			'notifications.*',
+			'votes.user_id as user_id',
+			'votes.target as target_id',
+			'votes.type as type',
+			'votes.last_voted as last_voted',
+		])
+		.leftJoin('votes', 'votes.id', 'notifications.vote_id')
+		.where('notifications.token', token)
+
+	if (targetId) q.where('votes.target', targetId)
+
+	const res = await q
+
+	return res as Notification[]
+}
+
+export async function getNotificationsByUserId(userId: string) {
+	const res = await knex('notifications')
+		.select([
+			'notifications.*',
+			'votes.user_id as user_id',
+			'votes.target as target_id',
+			'votes.type as type',
+			'votes.last_voted as last_voted',
+		])
+		.leftJoin('votes', 'votes.id', 'notifications.vote_id')
+		.where('votes.user_id', userId)
+
+	return res as Notification[]
+}
+
 // Private APIs
 
 async function getBotSubmitList() {
@@ -1344,6 +1385,10 @@ export const get = {
 	botSubmitHistory: getBotSubmitHistory,
 	botSubmitStrikes: getBotSubmitStrikes,
 	serverOwners: fetchServerOwners,
+	notifications: {
+		user: getNotificationsByUserId,
+		token: getNotificationsByToken,
+	},
 }
 
 export const update = {

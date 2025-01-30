@@ -41,6 +41,15 @@ const BotVote = RequestHandler()
 		if (!captcha) return ResponseWrapper(res, { code: 400, message: '캡챠 검증에 실패하였습니다.' })
 
 		const vote = await put.voteBot(user, bot.id)
+
+		const token = req.body.firebaseToken
+		let notificationSet = false
+
+		if (token) {
+			const { length } = await get.notifications.token(token, bot.id)
+			notificationSet = !!length
+		}
+
 		if (vote === null) return ResponseWrapper(res, { code: 401 })
 		else if (vote === true) {
 			get.bot.clear(req.query.id)
@@ -55,8 +64,8 @@ const BotVote = RequestHandler()
 				},
 				timestamp: Date.now(),
 			})
-			return ResponseWrapper(res, { code: 200 })
-		} else return ResponseWrapper(res, { code: 429, data: { retryAfter: vote } })
+			return ResponseWrapper(res, { code: 200, data: { notificationSet } })
+		} else return ResponseWrapper(res, { code: 429, data: { retryAfter: vote, notificationSet } })
 	})
 
 interface ApiRequest extends NextApiRequest {
@@ -75,6 +84,7 @@ interface PostApiRequest extends ApiRequest {
 	body: {
 		_captcha: string
 		_csrf: string
+		firebaseToken?: string | null
 	}
 }
 export default BotVote

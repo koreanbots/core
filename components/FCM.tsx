@@ -4,16 +4,8 @@ import { getMessaging, getToken as getFirebaseToken } from 'firebase/messaging'
 import { useState } from 'react'
 import Button from './Button'
 
-function SetNotification({ id }: { id: string }) {
-	const [state, setState] = useState(0)
-	const [hold, setHold] = useState(false)
-
-	const getToken = async () => {
-		const p = await Notification.requestPermission()
-		if (p !== 'granted') {
-			return 'PERMISSION_DENIED'
-		}
-
+export async function getFCMToken() {
+	try {
 		const app = initializeApp({
 			apiKey: 'AIzaSyDWnwXCBaP1C627gfIBQxyZbmNnAU_b_1Q',
 			authDomain: 'koreanlist-e95d9.firebaseapp.com',
@@ -27,6 +19,28 @@ function SetNotification({ id }: { id: string }) {
 		const token = await getFirebaseToken(messaging, {
 			vapidKey: process.env.NEXT_PUBLIC_FCM_VAPID_KEY,
 		})
+		return token
+	} catch (e) {
+		return null
+	}
+}
+
+function SetNotification({ id, notificationSet }: { id: string; notificationSet: boolean }) {
+	const [state, setState] = useState(notificationSet ? 1 : 0)
+	const [hold, setHold] = useState(false)
+
+	const getToken = async () => {
+		const p = await Notification.requestPermission()
+		if (p !== 'granted') {
+			return 'PERMISSION_DENIED'
+		}
+
+		const token = await getFCMToken()
+
+		if (!token) {
+			setState(3)
+			return
+		}
 
 		const result = await Fetch('/users/notification', {
 			method: 'POST',
@@ -52,9 +66,13 @@ function SetNotification({ id }: { id: string }) {
 					disabled={hold}
 					onClick={() => {
 						setHold(true)
-						getToken().then(() => {
-							setHold(false)
-						})
+						getToken()
+							.then(() => {
+								setHold(false)
+							})
+							.catch(() => {
+								setState(3)
+							})
 					}}
 				>
 					<>
@@ -63,9 +81,46 @@ function SetNotification({ id }: { id: string }) {
 				</Button>
 			</>
 		),
+		1: (
+			<>
+				<p className='whitespace-pre-line text-lg font-normal'>
+					이 기기로 알림을 수신하고 있습니다. 알림을 해제하려면 아래 버튼을 눌러주세요.
+				</p>
+				<Button
+					disabled={hold}
+					onClick={() => {
+						setHold(true)
+						getFCMToken()
+							.then(async (token) => {
+								await Fetch('/users/notification', {
+									method: 'DELETE',
+									body: JSON.stringify({
+										token,
+										targetId: id,
+									}),
+								})
+								setHold(false)
+								setState(4)
+							})
+							.catch(() => {
+								setState(3)
+							})
+					}}
+				>
+					<>
+						<i className='far fa-bell-slash' /> {hold ? '설정 중...' : '알림 해제'}
+					</>
+				</Button>
+			</>
+		),
 		2: (
 			<>
 				<p className='whitespace-pre-line text-lg font-normal'>알림이 설정되었습니다.</p>
+			</>
+		),
+		4: (
+			<>
+				<p className='whitespace-pre-line text-lg font-normal'>알림이 해제되었습니다.</p>
 			</>
 		),
 	}

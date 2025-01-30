@@ -979,7 +979,7 @@ export async function addNotification({
 
 	const voteId = vote.id
 
-	const { length } = await knex('notifications').select('id').where({ token, vote_id: voteId })
+	const { length } = await knex('notifications').select('vote_id').where({ token, vote_id: voteId })
 
 	if (length === 0) {
 		await knex('notifications').insert({ token, vote_id: voteId })

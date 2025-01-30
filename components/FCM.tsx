@@ -6,6 +6,7 @@ import Button from './Button'
 
 function SetNotification({ id }: { id: string }) {
 	const [state, setState] = useState(0)
+	const [hold, setHold] = useState(false)
 
 	const getToken = async () => {
 		const p = await Notification.requestPermission()
@@ -47,9 +48,17 @@ function SetNotification({ id }: { id: string }) {
 				<p className='whitespace-pre-line text-lg font-normal'>
 					12시간 후에 이 기기로 알림을 받으려면 아래 버튼을 눌러주세요.
 				</p>
-				<Button onClick={() => getToken()}>
+				<Button
+					disabled={hold}
+					onClick={() => {
+						setHold(true)
+						getToken().then(() => {
+							setHold(false)
+						})
+					}}
+				>
 					<>
-						<i className='far fa-bell' /> 투표 알림 설정
+						<i className='far fa-bell' /> {hold ? '설정 중...' : '알림 설정'}
 					</>
 				</Button>
 			</>

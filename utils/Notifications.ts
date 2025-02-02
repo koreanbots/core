@@ -19,6 +19,7 @@ export default class NotificationManager {
 
 	public constructor() {
 		this.initVotes()
+		this.firebaseApp = initializeApp()
 		console.log('NotificationManager initialized')
 	}
 
@@ -92,7 +93,7 @@ export default class NotificationManager {
 				? KoreanbotsEndPoints.CDN.avatar(target.id, { size: 256 })
 				: KoreanbotsEndPoints.CDN.icon(target.id, { size: 256 }))
 
-		await messaging()
+		await messaging(this.firebaseApp)
 			.send({
 				token: noti.token,
 				notification: {

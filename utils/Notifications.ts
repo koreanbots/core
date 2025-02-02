@@ -93,7 +93,7 @@ export default class NotificationManager {
 				? KoreanbotsEndPoints.CDN.avatar(target.id, { size: 256 })
 				: KoreanbotsEndPoints.CDN.icon(target.id, { size: 256 }))
 
-		await messaging(this.firebaseApp)
+		await messaging()
 			.send({
 				token: noti.token,
 				notification: {

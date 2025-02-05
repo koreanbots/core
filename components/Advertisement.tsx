@@ -1,8 +1,6 @@
 import AdSense from 'react-adsense'
 
 const Advertisement: React.FC<AdvertisementProps> = ({ size = 'short' }) => {
-	return null
-	/*
 	return (
 		<div className='py-5'>
 			<div
@@ -28,7 +26,6 @@ const Advertisement: React.FC<AdvertisementProps> = ({ size = 'short' }) => {
 			</div>
 		</div>
 	)
-	*/
 }
 
 declare global {

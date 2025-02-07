@@ -58,6 +58,7 @@ const SearchComponent: FC<{
 const Search: NextPage<SearchProps> = ({ botData, serverData, priority, query }) => {
 	if (!query?.q) return <Redirect text={false} to='/' />
 	const list: ('bot' | 'server')[] = ['bot', 'server']
+	const resultNotExists = (!botData || botData.data.length === 0) && (!serverData || serverData.data.length === 0)
 	return (
 		<>
 			<Hero
@@ -67,7 +68,7 @@ const Search: NextPage<SearchProps> = ({ botData, serverData, priority, query })
 			/>
 			<Container>
 				<section id='list'>
-					<Advertisement />
+					{resultNotExists ? null : <Advertisement />}
 					{(priority === 'server' ? list.reverse() : list).map((el) => (
 						<SearchComponent
 							key={el}
@@ -76,7 +77,7 @@ const Search: NextPage<SearchProps> = ({ botData, serverData, priority, query })
 							type={el}
 						/>
 					))}
-					<Advertisement />
+					{resultNotExists ? null : <Advertisement />}
 				</section>
 			</Container>
 		</>

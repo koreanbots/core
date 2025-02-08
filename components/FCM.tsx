@@ -34,22 +34,25 @@ function SetNotification({ id, notificationSet }: { id: string; notificationSet:
 
 	const getToken = async () => {
 		if (!('serviceWorker' in navigator)) {
+			setState(4)
 			return 'NO_SERVICE_WORKER'
 		}
 
 		if (!('Notification' in window)) {
+			setState(4)
 			return 'NO_NOTIFICATION'
 		}
 
 		const p = await Notification.requestPermission()
 		if (p !== 'granted') {
+			setState(5)
 			return 'PERMISSION_DENIED'
 		}
 
 		const token = await getFCMToken()
 
 		if (!token) {
-			setState(3)
+			setState(4)
 			return
 		}
 
@@ -64,7 +67,7 @@ function SetNotification({ id, notificationSet }: { id: string; notificationSet:
 		if (result.code === 200) {
 			setState(2)
 		} else {
-			setState(3)
+			setState(4)
 		}
 	}
 	const components = {
@@ -82,7 +85,7 @@ function SetNotification({ id, notificationSet }: { id: string; notificationSet:
 								setHold(false)
 							})
 							.catch(() => {
-								setState(3)
+								setState(4)
 							})
 					}}
 				>
@@ -111,10 +114,10 @@ function SetNotification({ id, notificationSet }: { id: string; notificationSet:
 									}),
 								})
 								setHold(false)
-								setState(4)
+								setState(3)
 							})
 							.catch(() => {
-								setState(3)
+								setState(4)
 							})
 					}}
 				>
@@ -129,17 +132,31 @@ function SetNotification({ id, notificationSet }: { id: string; notificationSet:
 				<p className='whitespace-pre-line text-lg font-normal'>알림이 설정되었습니다.</p>
 			</>
 		),
-		4: (
+		3: (
 			<>
 				<p className='whitespace-pre-line text-lg font-normal'>알림이 해제되었습니다.</p>
+			</>
+		),
+		4: (
+			<>
+				<p className='whitespace-pre-line text-lg font-normal'>
+					알림을 설정할 수 없습니다. 사용하는 브라우저를 점검해주세요. {'\n'}
+					iOS 사용자는 Safari 브라우저에서 한국 디스코드 리스트를 홈 화면에 추가해야 합니다.
+				</p>
+			</>
+		),
+		5: (
+			<>
+				<p className='whitespace-pre-line text-lg font-normal'>
+					알림이 허용되지 않았습니다. 브라우저 설정에서 알림을 허용해주세요.
+				</p>
 			</>
 		),
 	}
 	return (
 		components[state] ?? (
 			<p className='whitespace-pre-line text-lg font-normal'>
-				알림을 설정할 수 없습니다. 사용하는 브라우저를 점검해주세요. {'\n'}
-				iOS 사용자는 Safari 브라우저에서 한국 디스코드 리스트를 홈 화면에 추가해야 합니다.
+				알림을 설정할 수 없습니다. 사용하는 브라우저를 점검해주세요.
 			</p>
 		)
 	)

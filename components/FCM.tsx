@@ -122,7 +122,7 @@ function SetNotification({ id, notificationSet }: { id: string; notificationSet:
 					}}
 				>
 					<>
-						<i className='far fa-bell-slash' /> {hold ? '설정 중...' : '알림 해제'}
+						<i className='far fa-bell-slash mr-1' /> {hold ? '설정 중...' : '알림 해제'}
 					</>
 				</Button>
 			</>

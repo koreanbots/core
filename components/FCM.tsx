@@ -15,9 +15,12 @@ export async function getFCMToken() {
 			appId: '1:716438516411:web:cddd6c7cc3b0571fa4af9e',
 		})
 
+		const worker = await navigator.serviceWorker.register('/vote-notification-sw.js')
+
 		const messaging = getMessaging(app)
 		const token = await getFirebaseToken(messaging, {
 			vapidKey: process.env.NEXT_PUBLIC_FCM_VAPID_KEY,
+			serviceWorkerRegistration: worker,
 		})
 		return token
 	} catch (e) {
@@ -30,6 +33,14 @@ function SetNotification({ id, notificationSet }: { id: string; notificationSet:
 	const [hold, setHold] = useState(false)
 
 	const getToken = async () => {
+		if (!('serviceWorker' in navigator)) {
+			return 'NO_SERVICE_WORKER'
+		}
+
+		if (!('Notification' in window)) {
+			return 'NO_NOTIFICATION'
+		}
+
 		const p = await Notification.requestPermission()
 		if (p !== 'granted') {
 			return 'PERMISSION_DENIED'
@@ -127,7 +138,8 @@ function SetNotification({ id, notificationSet }: { id: string; notificationSet:
 	return (
 		components[state] ?? (
 			<p className='whitespace-pre-line text-lg font-normal'>
-				알림을 설정할 수 없습니다. 사용하는 브라우저를 점검해주세요.
+				알림을 설정할 수 없습니다. 사용하는 브라우저를 점검해주세요. {'\n'}
+				iOS 사용자는 Safari 브라우저에서 한국 디스코드 리스트를 홈 화면에 추가해야 합니다.
 			</p>
 		)
 	)

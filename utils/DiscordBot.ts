@@ -1,5 +1,5 @@
 import * as Discord from 'discord.js'
-import NotificationManager from './Notifications'
+import NotificationManager from './NotificationManager'
 
 if (!global.kodl) {
 	global.kodl = new Discord.Client({
@@ -21,8 +21,8 @@ if (!global.kodl) {
 	global.serverlist.login(process.env.DISCORD_SERVERLIST_TOKEN)
 }
 
-if(!global.notification) {
-	global.notification = new NotificationManager() 
+if (!global.notification) {
+	global.notification = new NotificationManager()
 }
 
 export const DiscordBot = global.kodl as Discord.Client

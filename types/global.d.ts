@@ -1,7 +1,7 @@
 /* eslint-disable no-var */
 import * as Yup from 'yup'
 import { Client } from 'discord.js'
-import NotificationManager from '@utils/Notifications'
+import NotificationManager from '@utils/NotificationManager'
 
 declare global {
 	interface Window {

@@ -102,6 +102,9 @@ export default class NotificationManager {
 					imageUrl: image ?? undefined,
 				},
 				data: {
+					type: 'vote-available',
+					name: target.name,
+					imageUrl: image ?? undefined,
 					url: `/${isBot ? 'bots' : 'servers'}/${noti.target_id}`,
 				},
 			})

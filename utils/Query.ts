@@ -39,7 +39,7 @@ import { sign, verify } from './Jwt'
 import { areArraysEqual, camoUrl, formData, getYYMMDD, serialize } from './Tools'
 import { AddBotSubmit, AddServerSubmit, ManageBot, ManageServer } from './Yup'
 import { markdownImage } from './Regex'
-import { Notification } from './Notifications'
+import { Notification } from './NotificationManager'
 
 export const imageRateLimit = new TLRU<unknown, number>({ maxAgeMs: 60000 })
 

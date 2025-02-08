@@ -14,13 +14,21 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging()
 
+/*
+{
+	type: 'vote-available',
+	name: target.name,
+	imageUrl: image ?? undefined,
+	url: `/${isBot ? 'bots' : 'servers'}/${noti.target_id}`,
+}
+*/
+
 messaging.onBackgroundMessage(function (payload) {
-	console.log('[firebase-messaging-sw.js] Received background message ', payload)
-	// Customize notification here
-	const notificationTitle = payload.notification.title
+	if (payload.data.type !== 'vote-available') return
+	const notificationTitle = '투표 알림'
 	const notificationOptions = {
-		body: payload.notification.body,
-		icon: payload.notification.image,
+		body: `${payload.data.name}의 투표가 가능합니다.`,
+		icon: payload.data.imageUrl,
 	}
 	notificationOptions.data = payload.data
 

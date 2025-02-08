@@ -34,12 +34,14 @@ const VoteServer: NextPage<VoteServerProps> = ({ data, user, theme, csrfToken })
 	const [result, setResult] =
 		useState<ResponseProps<{ retryAfter?: number; notificationSet: boolean }>>(null)
 
-	const fcmTokenRef = useRef<string | null>(null)
+	const fcmTokenRef = useRef<string | null>('')
 
 	useEffect(() => {
-		getFCMToken().then((token) => {
-			fcmTokenRef.current = token
-		})
+		if ('Notification' in window && Notification.permission === 'granted') {
+			getFCMToken().then((token) => {
+				fcmTokenRef.current = token
+			})
+		}
 	}, [])
 
 	const router = useRouter()

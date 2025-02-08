@@ -96,11 +96,6 @@ export default class NotificationManager {
 		await messaging()
 			.send({
 				token: noti.token,
-				notification: {
-					title: '투표 알림',
-					body: `${target.name}의 투표가 가능합니다.`,
-					imageUrl: image ?? undefined,
-				},
 				data: {
 					type: 'vote-available',
 					name: target.name,

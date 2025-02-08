@@ -23,10 +23,11 @@ export default class NotificationManager {
 		console.log('NotificationManager initialized')
 	}
 
-	public async setNotification(userId: string, targetId: string) {
-		const noti = await getNotifications(userId, targetId)
+	public async setNotification(token: string, userId: string, targetId: string) {
+		const noti = await get.notifications.token(token, targetId)
 
 		if (!noti) return false
+		await this.scheduleNotification(noti)
 	}
 
 	/**
@@ -42,7 +43,6 @@ export default class NotificationManager {
 		token: string
 	}): ReturnType<typeof removeNotificationData> {
 		console.log('Removing notification for', userId, targetId, token)
-		console.log('Ongoing timeouts:', Object.keys(this.timeouts))
 		clearTimeout(this.timeouts[`${userId}:${targetId}:${token}`])
 		return await removeNotificationData({ targetId, token })
 	}

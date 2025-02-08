@@ -46,8 +46,8 @@ const BotVote = RequestHandler()
 		let notificationSet = false
 
 		if (token) {
-			const { length } = await get.notifications.token(token, bot.id)
-			notificationSet = !!length
+			const noti = await get.notifications.token(token, bot.id)
+			notificationSet = !!noti
 		}
 
 		if (vote === null) return ResponseWrapper(res, { code: 401 })

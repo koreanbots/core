@@ -991,6 +991,10 @@ export async function addNotification({
 		await knex('notifications').insert({ token, vote_id: voteId })
 	}
 
+	console.log('Notification added to database', token, userId, targetId)
+
+	global.notification.setNotification(token, userId, targetId)
+
 	return true
 }
 
@@ -1055,9 +1059,9 @@ export async function getNotificationsByToken(token: string, targetId?: string) 
 
 	if (targetId) q.where('votes.target', targetId)
 
-	const res = await q
+	const [res] = await q
 
-	return res as Notification[]
+	return res as Notification
 }
 
 export async function getNotificationsByUserId(userId: string) {

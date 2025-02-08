@@ -8,7 +8,7 @@ export const DESCRIPTION = '국내 디스코드의 모든 것을 한 곳에서 �
 export const THEME_COLOR = '#3366FF'
 export const DSKR_BOT_ID = '784618064167698472'
 
-export const VOTE_COOLDOWN = 15 * 60 * 1000
+export const VOTE_COOLDOWN = 3 * 60 * 1000
 export const BUG_REPORTERS = ['260303569591205888']
 export const BUG_REPORT_GROUPS = ['경북소프트웨어고등학교 해킹방어 그룹']
 export const Status = {

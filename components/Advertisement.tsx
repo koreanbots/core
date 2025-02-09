@@ -1,6 +1,8 @@
 import AdSense from 'react-adsense'
 
-const Advertisement: React.FC<AdvertisementProps> = ({ size = 'short' }) => {
+const Advertisement: React.FC<AdvertisementProps> = ({ size = 'short', disabled = false }) => {
+	if (disabled) return null
+
 	return (
 		<div className='py-5'>
 			<div
@@ -39,6 +41,7 @@ declare global {
 
 interface AdvertisementProps {
 	size?: 'short' | 'tall'
+	disabled?: boolean
 }
 
 export default Advertisement

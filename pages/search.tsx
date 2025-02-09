@@ -1,12 +1,12 @@
 import { NextPage, NextPageContext } from 'next'
-import type { FC } from 'react'
 import dynamic from 'next/dynamic'
 import { ParsedUrlQuery } from 'querystring'
+import type { FC } from 'react'
 
-import { List, Bot, Server } from '@types'
+import { Bot, List, Server } from '@types'
+import { KoreanbotsEndPoints } from '@utils/Constants'
 import { get } from '@utils/Query'
 import { SearchQuerySchema } from '@utils/Yup'
-import { KoreanbotsEndPoints } from '@utils/Constants'
 
 const Hero = dynamic(() => import('@components/Hero'))
 const Advertisement = dynamic(() => import('@components/Advertisement'))
@@ -58,6 +58,8 @@ const SearchComponent: FC<{
 const Search: NextPage<SearchProps> = ({ botData, serverData, priority, query }) => {
 	if (!query?.q) return <Redirect text={false} to='/' />
 	const list: ('bot' | 'server')[] = ['bot', 'server']
+	const resultNotExists =
+		(!botData || botData.data.length === 0) && (!serverData || serverData.data.length === 0)
 	return (
 		<>
 			<Hero
@@ -67,7 +69,7 @@ const Search: NextPage<SearchProps> = ({ botData, serverData, priority, query })
 			/>
 			<Container>
 				<section id='list'>
-					<Advertisement />
+					<Advertisement disabled={resultNotExists} />
 					{(priority === 'server' ? list.reverse() : list).map((el) => (
 						<SearchComponent
 							key={el}
@@ -76,7 +78,7 @@ const Search: NextPage<SearchProps> = ({ botData, serverData, priority, query })
 							type={el}
 						/>
 					))}
-					<Advertisement />
+					<Advertisement disabled={resultNotExists} />
 				</section>
 			</Container>
 		</>

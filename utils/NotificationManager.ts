@@ -42,15 +42,12 @@ export default class NotificationManager {
 		targetId: string
 		token: string
 	}): ReturnType<typeof removeNotificationData> {
-		console.log('Removing notification for', userId, targetId, token)
 		clearTimeout(this.timeouts[`${userId}:${targetId}:${token}`])
 		return await removeNotificationData({ targetId, token })
 	}
 
 	public async scheduleNotification(noti: Notification) {
-		console.log('Scheduling notification for', noti.vote_id)
 		const time = noti.last_voted.getTime() + VOTE_COOLDOWN + 1000 * 60 - Date.now()
-		console.log('Time:', time)
 
 		if (time <= 0) {
 			return
@@ -81,7 +78,6 @@ export default class NotificationManager {
 	}
 
 	private async pushNotification(noti: Notification) {
-		console.log('Pushing notification for', noti.vote_id)
 		const isBot = noti.type === ObjectType.Bot
 		const target = isBot
 			? await get.bot.load(noti.target_id)

@@ -1,4 +1,7 @@
+/* eslint-disable no-var */
 import * as Yup from 'yup'
+import { Client } from 'discord.js'
+import NotificationManager from '@utils/NotificationManager'
 
 declare global {
 	interface Window {
@@ -8,6 +11,9 @@ declare global {
 			highlightBlock(e: Element): void
 		}
 	}
+	var kodl: Client
+	var serverlist: Client
+	var notification: NotificationManager
 	interface Navigator {
 		standalone?: boolean
 	}
@@ -21,3 +27,5 @@ declare module 'yup' {
 declare module 'difflib' {
 	export function unifiedDiff(before: string, after: string): string[]
 }
+
+export {}

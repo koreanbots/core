@@ -1,13 +1,33 @@
 import * as Discord from 'discord.js'
+import NotificationManager from './NotificationManager'
 
-export const DiscordBot = new Discord.Client({
-	intents: Number(process.env.DISCORD_CLIENT_INTENTS ?? 32767),
-})
+if (!global.kodl) {
+	global.kodl = new Discord.Client({
+		intents: Number(process.env.DISCORD_CLIENT_INTENTS ?? 32767),
+	})
+	global.serverlist = new Discord.Client({
+		intents: [],
+	})
 
-export const ServerListDiscordBot = new Discord.Client({
-	intents: [],
-})
+	console.log('Discord Client is initializing')
 
+	global.kodl.on('ready', async () => {
+		console.log('Discord Client is ready')
+		await getMainGuild().members.fetch()
+		console.log(`Fetched ${getMainGuild().members.cache.size} Members`)
+	})
+
+	global.kodl.login(process.env.DISCORD_TOKEN ?? '')
+	global.serverlist.login(process.env.DISCORD_SERVERLIST_TOKEN)
+}
+
+if (!global.notification) {
+	global.notification = new NotificationManager()
+}
+
+export const DiscordBot = global.kodl as Discord.Client
+
+export const ServerListDiscordBot = global.serverlist as Discord.Client
 const dummyURL =
 	'https://discord.com/api/webhooks/123123123123123123/asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf'
 
@@ -39,15 +59,6 @@ export const webhookClients = {
 		),
 	},
 }
-
-DiscordBot.on('ready', async () => {
-	console.log('Discord Client is ready')
-	await getMainGuild().members.fetch()
-	console.log(`Fetched ${getMainGuild().members.cache.size} Members`)
-})
-
-DiscordBot.login(process.env.DISCORD_TOKEN ?? '')
-ServerListDiscordBot.login(process.env.DISCORD_SERVERLIST_TOKEN)
 
 export const getMainGuild = () => DiscordBot.guilds.cache.get(process.env.GUILD_ID ?? '')
 

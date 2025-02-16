@@ -39,6 +39,7 @@ import { sign, verify } from './Jwt'
 import { areArraysEqual, camoUrl, formData, getYYMMDD, serialize } from './Tools'
 import { AddBotSubmit, AddServerSubmit, ManageBot, ManageServer } from './Yup'
 import { markdownImage } from './Regex'
+import { Notification } from './NotificationManager'
 
 export const imageRateLimit = new TLRU<unknown, number>({ maxAgeMs: 60000 })
 
@@ -76,7 +77,7 @@ async function getBot(id: string, topLevel = true): Promise<Bot> {
 
 	if (res) {
 		const discordBot = await get.discord.user.load(res.id)
-		if(!discordBot) {
+		if (!discordBot) {
 			return null
 		}
 		if (Number(discordBot.discriminator) === 0) {
@@ -528,18 +529,32 @@ async function getWebhook(id: string, type: 'bots' | 'servers'): Promise<Webhook
 }
 
 async function voteBot(userID: string, botID: string): Promise<number | boolean> {
-	const user = await knex('users').select(['votes']).where({ id: userID })
-	const key = `bot:${botID}`
-	if (user.length === 0) return null
-	const date = +new Date()
-	const data = JSON.parse(user[0].votes)
-	const lastDate = data[key] || 0
-	if (date - lastDate < VOTE_COOLDOWN) return VOTE_COOLDOWN - (date - lastDate)
-	data[key] = date
+	const [vote] = await knex('votes').select('*').where({ user_id: userID, target: botID })
+	const date = new Date()
+	if (vote) {
+		const lastDate = vote.last_voted.getTime() || 0
+		if (date.getTime() - lastDate < VOTE_COOLDOWN)
+			return VOTE_COOLDOWN - (date.getTime() - lastDate)
+	}
+
 	await knex('bots').where({ id: botID }).increment('votes', 1)
-	await knex('users')
-		.where({ id: userID })
-		.update({ votes: JSON.stringify(data) })
+
+	const votes = await knex('votes')
+		.select('id')
+		.where({ user_id: userID, target: botID, type: ObjectType.Bot })
+	if (votes.length === 0) {
+		await knex('votes').insert({
+			user_id: userID,
+			target: botID,
+			type: ObjectType.Bot,
+			last_voted: date,
+		})
+	} else {
+		await knex('votes').where({ id: votes[0].id }).update({ last_voted: date })
+	}
+
+	global.notification.refresh(userID, botID)
+
 	const record = await Bots.updateOne(
 		{ _id: botID, 'voteMetrix.day': getYYMMDD() },
 		{ $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } }
@@ -554,18 +569,22 @@ async function voteBot(userID: string, botID: string): Promise<number | boolean>
 }
 
 async function voteServer(userID: string, serverID: string): Promise<number | boolean> {
-	const user = await knex('users').select(['votes']).where({ id: userID })
-	const key = `server:${serverID}`
-	if (user.length === 0) return null
-	const date = +new Date()
-	const data = JSON.parse(user[0].votes)
-	const lastDate = data[key] || 0
-	if (date - lastDate < VOTE_COOLDOWN) return VOTE_COOLDOWN - (date - lastDate)
-	data[key] = date
+	const [vote] = await knex('votes').select('*').where({ user_id: userID, target: serverID })
+	const date = new Date()
+	if (vote) {
+		const lastDate = vote.last_voted.getTime() || 0
+		if (date.getTime() - lastDate < VOTE_COOLDOWN)
+			return VOTE_COOLDOWN - (date.getTime() - lastDate)
+	}
+
 	await knex('servers').where({ id: serverID }).increment('votes', 1)
-	await knex('users')
-		.where({ id: userID })
-		.update({ votes: JSON.stringify(data) })
+	await knex('votes')
+		.insert({ user_id: userID, target: serverID, type: ObjectType.Server, last_voted: date })
+		.onConflict(['user_id', 'target', 'type'])
+		.merge({ last_voted: date })
+
+	global.notification.refresh(userID, serverID)
+
 	// const record = await Servers.updateOne({ _id: serverID, 'voteMetrix.day': getYYMMDD() }, { $inc: { 'voteMetrix.$.increasement': 1, 'voteMetrix.$.count': 1 } })
 	// if(record.n === 0) await Servers.findByIdAndUpdate(serverID, { $push: { voteMetrix: { count: (await knex('servers').where({ id: serverID }))[0].votes } } }, { upsert: true })
 	return true
@@ -947,6 +966,119 @@ export async function CaptchaVerify(response: string): Promise<boolean> {
 	return res.success
 }
 
+// FCM
+
+export async function addNotification({
+	token,
+	userId,
+	targetId,
+}: {
+	token: string
+	userId: string
+	targetId: string
+}) {
+	const [vote] = await knex('votes').select('id').where({ user_id: userId, target: targetId })
+
+	if (!vote) {
+		return 'Vote does not exist'
+	}
+
+	const voteId = vote.id
+
+	const { length } = await knex('notifications').select('vote_id').where({ token, vote_id: voteId })
+
+	if (length === 0) {
+		await knex('notifications').insert({ token, vote_id: voteId })
+	}
+
+	console.log('Notification added to database', token, userId, targetId)
+
+	global.notification.setNotification(token, userId, targetId)
+
+	return true
+}
+
+export async function removeNotification({
+	token,
+	targetId,
+}: {
+	token: string
+	targetId: string | null
+}) {
+	if (targetId === null) {
+		await knex('notifications').delete().where({ token })
+		return true
+	}
+
+	await knex('notifications')
+		.delete()
+		.leftJoin('votes', 'votes.id', 'notifications.vote_id')
+		.where({
+			'notifications.token': token,
+			'votes.target': targetId,
+		})
+
+	return true
+}
+
+/**
+ * We consider that multiple devices could listen to the same topic.
+ * @param userId
+ * @param targetId
+ */
+export async function getNotifications(userId?: string, targetId?: string) {
+	const q = knex('notifications')
+		.select([
+			'notifications.*',
+			'votes.user_id as user_id',
+			'votes.target as target_id',
+			'votes.type as type',
+			'votes.last_voted as last_voted',
+		])
+		.leftJoin('votes', 'votes.id', 'notifications.vote_id')
+
+	if (userId) q.where('votes.user_id', userId)
+	if (targetId) q.where('votes.target', targetId)
+
+	const res = await q
+
+	return res as Notification[]
+}
+
+export async function getNotificationsByToken(token: string, targetId?: string) {
+	const q = knex('notifications')
+		.select([
+			'notifications.*',
+			'votes.user_id as user_id',
+			'votes.target as target_id',
+			'votes.type as type',
+			'votes.last_voted as last_voted',
+		])
+		.leftJoin('votes', 'votes.id', 'notifications.vote_id')
+		.where('notifications.token', token)
+
+	if (targetId) q.where('votes.target', targetId)
+
+	const [res] = await q
+
+	return res as Notification
+}
+
+export async function getNotificationsByUserId(userId: string) {
+	const res = await knex('notifications')
+		.select([
+			'notifications.*',
+			'votes.user_id as user_id',
+			'votes.target as target_id',
+			'votes.type as type',
+			'votes.last_voted as last_voted',
+		])
+		.leftJoin('votes', 'votes.id', 'notifications.vote_id')
+		.where('votes.user_id', userId)
+
+	return res as Notification[]
+}
+
 // Private APIs
 
 async function getBotSubmitList() {
@@ -1257,6 +1389,10 @@ export const get = {
 	botSubmitHistory: getBotSubmitHistory,
 	botSubmitStrikes: getBotSubmitStrikes,
 	serverOwners: fetchServerOwners,
+	notifications: {
+		user: getNotificationsByUserId,
+		token: getNotificationsByToken,
+	},
 }
 
 export const update = {

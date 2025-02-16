@@ -41,6 +41,15 @@ const ServerVote = RequestHandler()
 		if (!captcha) return ResponseWrapper(res, { code: 400, message: '캡챠 검증에 실패하였습니다.' })
 
 		const vote = await put.voteServer(user, server.id)
+
+		const token = req.body.firebaseToken
+		let notificationSet = false
+
+		if (token) {
+			const result = await get.notifications.token(token, server.id)
+			notificationSet = !!result
+		}
+
 		if (vote === null) return ResponseWrapper(res, { code: 401 })
 		else if (vote === true) {
 			get.server.clear(req.query.id)
@@ -55,8 +64,8 @@ const ServerVote = RequestHandler()
 				},
 				timestamp: Date.now(),
 			})
-			return ResponseWrapper(res, { code: 200 })
-		} else return ResponseWrapper(res, { code: 429, data: { retryAfter: vote } })
+			return ResponseWrapper(res, { code: 200, data: { notificationSet } })
+		} else return ResponseWrapper(res, { code: 429, data: { retryAfter: vote, notificationSet } })
 	})
 
 interface ApiRequest extends NextApiRequest {
@@ -75,6 +84,7 @@ interface PostApiRequest extends ApiRequest {
 	body: {
 		_captcha: string
 		_csrf: string
+		firebaseToken?: string | null
 	}
 }
 export default ServerVote

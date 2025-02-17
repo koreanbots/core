@@ -507,10 +507,15 @@ async function getVote(
 	targetID: string,
 	type: 'bot' | 'server'
 ): Promise<number | null> {
-	const user = await knex('users').select(['votes']).where({ id: userID })
-	if (user.length === 0) return null
-	const data = JSON.parse(user[0].votes)
-	return data[`${type}:${targetID}`] || 0
+	const [vote] = await knex('votes')
+		.select('last_voted')
+		.where({
+			user_id: userID,
+			target: targetID,
+			type: type === 'bot' ? ObjectType.Bot : ObjectType.Server,
+		})
+	if (!vote) return null
+	return vote.last_voted.getTime() || 0
 }
 
 async function getWebhook(id: string, type: 'bots' | 'servers'): Promise<Webhook | null> {

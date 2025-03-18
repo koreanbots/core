@@ -16,7 +16,7 @@ import { get } from '@utils/Query'
 import Day from '@utils/Day'
 import { ReportSchema } from '@utils/Yup'
 import Fetch from '@utils/Fetch'
-import { checkBotFlag, checkUserFlag, formatNumber, parseCookie } from '@utils/Tools'
+import { camoUrl, checkBotFlag, checkUserFlag, formatNumber, parseCookie } from '@utils/Tools'
 import { getToken } from '@utils/Csrf'
 
 import NotFound from '../../404'
@@ -51,7 +51,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 			style={
 				bg
 					? {
-							background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${data.bg}") center top / cover no-repeat fixed`,
+							background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${camoUrl(data.bg)}") center top / cover no-repeat fixed`,
 					  }
 					: {}
 			}

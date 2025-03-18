@@ -18,7 +18,7 @@ const BotCard: React.FC<BotCardProps> = ({ manage = false, bot }) => {
 						<div
 							className='relative mx-auto h-full rounded-2xl bg-little-white text-black shadow-xl dark:bg-discord-black dark:text-white'
 							style={
-								checkBotFlag(bot.flags, 'trusted') && bot.banner
+								(checkBotFlag(bot.flags, 'trusted') || checkBotFlag(bot.flags, 'partnered')) && bot.banner
 									? {
 											background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${camoUrl(bot.banner)}") center top / cover no-repeat`,
 											color: 'white',

@@ -43,7 +43,7 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 	const [emojisModal, setEmojisModal] = useState(false)
 	const [ownersModal, setOwnersModal] = useState(false)
 	const [owners, setOwners] = useState<User[]>(null)
-	const bg = checkBotFlag(data?.flags, 'trusted') && data?.banner
+	const bg = (checkBotFlag(data?.flags, 'trusted') || checkBotFlag(data?.flags, 'partnered')) && data?.bg
 	const router = useRouter()
 	useEffect(() => {
 		if (data)

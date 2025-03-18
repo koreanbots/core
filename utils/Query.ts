@@ -733,6 +733,9 @@ async function updateBot(id: string, data: ManageBot): Promise<number> {
 			category: JSON.stringify(data.category),
 			intro: data.intro,
 			desc: data.desc,
+			vanity: data.vanity,
+			banner: data.banner,
+			bg: data.bg,
 		})
 		.where({ id })
 

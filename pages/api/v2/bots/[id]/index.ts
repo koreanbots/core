@@ -16,6 +16,7 @@ import {
 import RequestHandler from '@utils/RequestHandler'
 import { User } from '@types'
 import {
+	checkBotFlag,
 	checkUserFlag,
 	diff,
 	inspect,
@@ -25,7 +26,6 @@ import {
 } from '@utils/Tools'
 import { discordLog, getMainGuild, webhookClients } from '@utils/DiscordBot'
 import { KoreanbotsEndPoints } from '@utils/Constants'
-import { userInfo } from 'os'
 
 const patchLimiter = rateLimit({
 	windowMs: 2 * 60 * 1000,
@@ -211,7 +211,7 @@ const Bots = RequestHandler()
 		const csrfValidated = checkToken(req, res, req.body._csrf)
 		if (!csrfValidated) return
 
-		const validated = await ManageBotSchema.validate(req.body, { abortEarly: false })
+		const validated: ManageBot = await ManageBotSchema.validate(req.body, { abortEarly: false })
 			.then((el) => el)
 			.catch((e) => {
 				ResponseWrapper(res, { code: 400, errors: e.errors })
@@ -219,11 +219,16 @@ const Bots = RequestHandler()
 			})
 
 		if (!validated) return
-
+		if(!checkBotFlag(bot.flags, 'trusted') && !checkBotFlag(bot.flags, 'partnered') && (validated.vanity || validated.banner || validated.bg)) return ResponseWrapper(res, { code: 403, message: '해당 봇은 특전을 이용할 권한이 없습니다.' })
+		if (validated.vanity) {
+		const vanity = await get.bot.load(validated.vanity)
+		if(vanity && vanity.id !== bot.id) return ResponseWrapper(res, { code: 403, message: '이미 사용중인 한디리 커스텀 URL 입니다.', errors: ['다른 커스텀 URL로 다시 시도해주세요.'] })
+		}
 		const result = await update.bot(req.query.id, validated)
 		if (result === 0) return ResponseWrapper(res, { code: 400 })
 		else {
 			get.bot.clear(req.query.id)
+			get.bot.clear(bot.vanity)
 			const embed = new EmbedBuilder().setDescription(
 				`${bot.name} - <@${bot.id}> ([${bot.id}](${KoreanbotsEndPoints.URL.bot(bot.id)}))`
 			)
@@ -237,6 +242,9 @@ const Bots = RequestHandler()
 					discord: bot.discord,
 					intro: bot.intro,
 					category: JSON.stringify(bot.category),
+					vanity: bot.vanity,
+					banner: bot.banner,
+					bg: bot.bg,
 				},
 				{
 					prefix: validated.prefix,
@@ -247,6 +255,9 @@ const Bots = RequestHandler()
 					discord: validated.discord,
 					intro: validated.intro,
 					category: JSON.stringify(validated.category),
+					vanity: validated.vanity,
+					banner: validated.banner,
+					bg: validated.bg,
 				}
 			)
 			diffData.forEach((d) => {

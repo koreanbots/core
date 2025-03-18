@@ -37,7 +37,7 @@ const Modal = dynamic(() => import('@components/Modal'))
 const NSFW = dynamic(() => import('@components/NSFW'))
 
 const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken }) => {
-	const bg = checkBotFlag(data?.flags, 'trusted') && data?.banner
+	const bg = checkBotFlag(data?.flags, 'trusted') && data?.bg
 	const router = useRouter()
 	const [nsfw, setNSFW] = useState<boolean>()
 	const [reportModal, setReportModal] = useState(false)

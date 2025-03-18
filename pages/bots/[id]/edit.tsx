@@ -87,6 +87,9 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 					url: bot.url,
 					git: bot.git,
 					discord: bot.discord,
+					vanity: bot.vanity,
+					banner: bot.banner,
+					bg: bot.bg,
 					_csrf: csrfToken,
 				})}
 				validationSchema={ManageBotSchema}
@@ -270,6 +273,38 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 							</Segment>
 						</Label>
 						<Divider />
+						<h2 className='pt-2 text-2xl font-semibold text-koreanbots-green'>신뢰된 봇 특전 설정</h2>
+						<span className='mt-1 text-sm text-gray-400'>신뢰된 봇의 혜택을 만나보세요. (커스텀 URL과 배너/배경 이미지는 이용약관 및 가이드라인을 준수해야하며 위반 시 신뢰된 봇 자격이 박탈될 수 있습니다.)</span>
+						<Label
+							For='vanity'
+							label='한디리 커스텀 URL'
+							labelDesc='고유한 커스텀 URL을 설정해주세요.'
+							error={errors.vanity && touched.vanity ? errors.vanity : null}
+							
+						>
+							<div className='flex items-center'>
+								koreanbots.dev/bots/
+								<Input name='vanity' placeholder='koreanbots' />
+							</div>
+							
+						</Label>
+						<Label
+							For='banner'
+							label='배너 URL'
+							labelDesc='봇 목록의 카드에 표시되는 이미지입니다.'
+							error={errors.banner && touched.banner ? errors.banner : null}
+						>
+							<Input name='banner' placeholder='https://koreanbots.dev' />
+						</Label>
+						<Label
+							For='bg'
+							label='배경 URL'
+							labelDesc='봇 페이지 배경에 표시되는 이미지입니다.'
+							error={errors.bg && touched.bg ? errors.bg : null}
+						>
+							<Input name='bg' placeholder='https://koreanbots.dev' />
+						</Label>
+						<Divider />
 						<p className='mb-5 mt-2 text-base'>
 							<span className='font-semibold text-red-500'> *</span> = 필수 항목
 						</p>
@@ -278,6 +313,7 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 								<i className='far fa-save' /> 저장
 							</>
 						</Button>
+						
 					</Form>
 				)}
 			</Formik>

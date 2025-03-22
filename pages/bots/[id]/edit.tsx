@@ -619,6 +619,7 @@ export const getServerSideProps = async (ctx: Context) => {
 	const user = await get.Authorization(parsed?.token)
 	const bot = await get.bot.load(ctx.query.id)
 	const spec = await get.botSpec(ctx.query.id, user)
+	const spec = await get.botSpec(ctx.query.id, user || '')
 	return {
 		props: {
 			bot: { ...bot, banner: spec.banner, bg: spec.bg },

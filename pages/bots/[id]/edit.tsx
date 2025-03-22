@@ -617,9 +617,11 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 export const getServerSideProps = async (ctx: Context) => {
 	const parsed = parseCookie(ctx.req)
 	const user = await get.Authorization(parsed?.token)
+	const bot = await get.bot.load(ctx.query.id)
+	const spec = await get.botSpec(ctx.query.id, user)
 	return {
 		props: {
-			bot: await get.bot.load(ctx.query.id),
+			bot: { ...bot, banner: spec.banner, bg: spec.bg },
 			user: await get.user.load(user || ''),
 			csrfToken: getToken(ctx.req, ctx.res),
 		},

@@ -89,6 +89,8 @@ export interface BotSpec {
 	webhookURL: string | null
 	webhookStatus: WebhookStatus
 	token: string
+	banner: string | null
+	bg: string | null
 }
 
 export interface ServerSpec {

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 
-import { camoUrl, checkBotFlag, formatNumber, makeBotURL } from '@utils/Tools'
+import {  checkBotFlag, formatNumber, makeBotURL } from '@utils/Tools'
 import { Status } from '@utils/Constants'
 import { Bot } from '@types'
 
@@ -20,7 +20,7 @@ const BotCard: React.FC<BotCardProps> = ({ manage = false, bot }) => {
 							style={
 								(checkBotFlag(bot.flags, 'trusted') || checkBotFlag(bot.flags, 'partnered')) && bot.banner
 									? {
-											background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${camoUrl(bot.banner)}") center top / cover no-repeat`,
+											background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${bot.banner}") center top / cover no-repeat`,
 											color: 'white',
 									  }
 									: {}

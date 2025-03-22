@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 
-import { camoUrl, checkServerFlag, formatNumber, makeServerURL } from '@utils/Tools'
+import { checkServerFlag, formatNumber, makeServerURL } from '@utils/Tools'
 import { ServerData, ServerState } from '@types'
 import { DiscordEnpoints, DSKR_BOT_ID } from '@utils/Constants'
 
@@ -29,7 +29,7 @@ const ServerCard: React.FC<BotCardProps> = ({ type, server }) => {
 							style={
 								(checkServerFlag(server.flags, 'trusted') || checkServerFlag(server.flags, 'partnered')) && server.banner
 									? {
-											background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${camoUrl(server.banner)}") center top / cover no-repeat`,
+											background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${server.banner}") center top / cover no-repeat`,
 											color: 'white',
 									  }
 									: {}

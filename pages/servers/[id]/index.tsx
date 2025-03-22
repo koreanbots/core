@@ -15,7 +15,6 @@ import { get, safeImageHost } from '@utils/Query'
 import Day from '@utils/Day'
 import Fetch from '@utils/Fetch'
 import {
-	camoUrl,
 	checkBotFlag,
 	checkServerFlag,
 	checkUserFlag,
@@ -57,7 +56,7 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 			style={
 				bg
 					? {
-							background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${camoUrl(data.bg)}") center top / cover no-repeat fixed`,
+							background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${data.bg}") center top / cover no-repeat fixed`,
 					  }
 					: {}
 			}

@@ -2,7 +2,7 @@ import * as Yup from 'yup'
 import YupKorean from 'yup-locales-ko'
 import { ListType } from '@types'
 import { botCategories, library, reportCats, serverCategories } from '@utils/Constants'
-import { HTTPProtocol, ID, Prefix, Url, Vanity } from '@utils/Regex'
+import { HTTPProtocol, ID, Prefix, reservedVanity, Url, Vanity } from '@utils/Regex'
 
 Yup.setLocale(YupKorean)
 Yup.addMethod(Yup.array, 'unique', function (message, mapper = (a) => a) {
@@ -296,10 +296,11 @@ export const ManageBotSchema: Yup.SchemaOf<ManageBot> = Yup.object({
 		.min(100, '봇 설명은 최소 100자여야합니다.')
 		.max(1500, '봇 설명은 최대 1500자여야합니다.')
 		.required('봇 설명은 필수 항목입니다.'),
-		vanity: Yup.string()
+	vanity: Yup.string()
 	.min(3, '커스텀 URL은 최소 3자여야합니다.')
 	.max(32, '커스텀 URL은 최대 32자여야합니다.')
 	.matches(Vanity, '커스텀 URL은 영문만 포함할 수 있습니다.')
+	.matches(reservedVanity, '사용할 수 없는 커스텀 URL입니다.')
 	.nullable(),
 	banner: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')

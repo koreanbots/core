@@ -58,7 +58,7 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 		else return null
 	}
 
-	if (!bot) return <NotFound />
+	if (!bot?.id) return <NotFound />
 	if (!user)
 		return (
 			<Login>
@@ -618,10 +618,10 @@ export const getServerSideProps = async (ctx: Context) => {
 	const parsed = parseCookie(ctx.req)
 	const user = await get.Authorization(parsed?.token)
 	const bot = await get.bot.load(ctx.query.id)
-	const spec = await get.botSpec(bot?.id, user || '')
+	const spec = await get.botSpec(bot?.id || '', user || '')
 	return {
 		props: {
-			bot: { ...bot, banner: spec?.banner, bg: spec?.bg },
+			bot: { ...bot, banner: spec?.banner || null, bg: spec?.bg || null },
 			user: await get.user.load(user || ''),
 			csrfToken: getToken(ctx.req, ctx.res),
 		},

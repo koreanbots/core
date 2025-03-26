@@ -234,12 +234,35 @@ const Bots = RequestHandler()
 			})
 		if (validated.vanity) {
 			const vanity = await get.bot.load(validated.vanity)
-			if (vanity && vanity.id !== bot.id)
+			if (vanity && vanity.id !== bot.id) {
 				return ResponseWrapper(res, {
 					code: 403,
 					message: '이미 사용중인 한디리 커스텀 URL 입니다.',
 					errors: ['다른 커스텀 URL로 다시 시도해주세요.'],
 				})
+			}
+
+			await webhookClients.internal.noticeLog.send({
+				embeds: [
+					{
+						title: '한디리 커스텀 URL 변경',
+						description: `봇: ${bot.name} - <@${bot.id}> ([${bot.id}](${KoreanbotsEndPoints.URL.bot(
+							bot.id
+						)}))`,
+						fields: [
+							{
+								name: '이전',
+								value: bot.vanity || '없음',
+							},
+							{
+								name: '이후',
+								value: validated.vanity || '없음',
+							},
+						],
+						color: Colors.Blue,
+					}
+				],
+			})
 		}
 		const result = await update.bot(req.query.id, validated)
 		if (result === 0) return ResponseWrapper(res, { code: 400 })

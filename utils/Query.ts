@@ -101,8 +101,7 @@ async function getBot(id: string, topLevel = true): Promise<Bot> {
 		res.category = JSON.parse(res.category)
 		res.owners = JSON.parse(res.owners)
 		res.banner = res.banner ? camoUrl(res.banner) : null
-		res.bg = res.bg ? camoUrl(res.bg): null
-
+		res.bg = res.bg ? camoUrl(res.bg) : null
 
 		if (discordBot.flags.bitfield & UserFlags.BotHTTPInteractions) {
 			res.status = 'online'
@@ -679,7 +678,14 @@ async function submitServer(
 
 async function getBotSpec(id: string, userID: string): Promise<BotSpec | null> {
 	const res = await knex('bots')
-		.select(['bots.id', 'bots.token', 'bots.webhook_url', 'bots.webhook_status', 'bots.banner', 'bots.bg'])
+		.select([
+			'bots.id',
+			'bots.token',
+			'bots.webhook_url',
+			'bots.webhook_status',
+			'bots.banner',
+			'bots.bg',
+		])
 		.leftJoin('owners_mapping', 'bots.id', 'owners_mapping.target_id')
 		.where('owners_mapping.user_id', userID)
 		.andWhere('owners_mapping.type', ObjectType.Bot)

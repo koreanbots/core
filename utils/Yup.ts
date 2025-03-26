@@ -1,7 +1,13 @@
 import * as Yup from 'yup'
 import YupKorean from 'yup-locales-ko'
 import { ListType } from '@types'
-import { botCategories, library, reportCats, reservedVanityBypass, serverCategories } from '@utils/Constants'
+import {
+	botCategories,
+	library,
+	reportCats,
+	reservedVanityBypass,
+	serverCategories,
+} from '@utils/Constants'
 import { HTTPProtocol, ID, Prefix, reservedVanity, Url, Vanity } from '@utils/Regex'
 
 Yup.setLocale(YupKorean)
@@ -297,15 +303,18 @@ export const ManageBotSchema: Yup.SchemaOf<ManageBot> = Yup.object({
 		.max(1500, '봇 설명은 최대 1500자여야합니다.')
 		.required('봇 설명은 필수 항목입니다.'),
 	vanity: Yup.string()
-	.matches(Vanity, '커스텀 URL은 영문만 포함할 수 있습니다.')
-	.when('id', {
-		is: (id: string) => reservedVanityBypass.includes(id),
-		then: Yup.string(),
-		otherwise: Yup.string().matches(reservedVanity, '예약어가 포함되었거나 사용할 수 없는 커스텀 URL입니다.')
-	})
-	.min(2, '커스텀 URL은 최소 2자여야합니다.')
-	.max(32, '커스텀 URL은 최대 32자여야합니다.')
-	.nullable(),
+		.matches(Vanity, '커스텀 URL은 영문만 포함할 수 있습니다.')
+		.when('id', {
+			is: (id: string) => reservedVanityBypass.includes(id),
+			then: Yup.string(),
+			otherwise: Yup.string().matches(
+				reservedVanity,
+				'예약어가 포함되었거나 사용할 수 없는 커스텀 URL입니다.'
+			),
+		})
+		.min(2, '커스텀 URL은 최소 2자여야합니다.')
+		.max(32, '커스텀 URL은 최대 32자여야합니다.')
+		.nullable(),
 	banner: Yup.string()
 		.matches(HTTPProtocol, 'http:// 또는 https:// 로 시작해야합니다.')
 		.matches(Url, '올바른 배너 URL을 입력해주세요.')

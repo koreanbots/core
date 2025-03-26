@@ -353,7 +353,7 @@ export interface ImageOptions {
 export interface KoreanbotsImageOptions {
 	format?: 'webp' | 'png' | 'gif'
 	size?: 128 | 256 | 512
-	hash?: string;
+	hash?: string
 }
 
 export enum DiscordImageType {

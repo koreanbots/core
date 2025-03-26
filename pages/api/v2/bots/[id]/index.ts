@@ -128,7 +128,11 @@ const Bots = RequestHandler()
 								: `${userinfo.username}#${userinfo.tag}`,
 						iconURL:
 							KoreanbotsEndPoints.URL.root +
-							KoreanbotsEndPoints.CDN.avatar(userinfo.id, { format: 'png', size: 256, hash: userinfo.avatar }),
+							KoreanbotsEndPoints.CDN.avatar(userinfo.id, {
+								format: 'png',
+								size: 256,
+								hash: userinfo.avatar,
+							}),
 						url: KoreanbotsEndPoints.URL.user(userinfo.id),
 					})
 					.setTitle('대기 중')
@@ -219,10 +223,23 @@ const Bots = RequestHandler()
 			})
 
 		if (!validated) return
-		if(!checkBotFlag(bot.flags, 'trusted') && !checkBotFlag(bot.flags, 'partnered') && (validated.vanity || validated.banner || validated.bg)) return ResponseWrapper(res, { code: 403, message: '해당 봇은 특전을 이용할 권한이 없습니다.' })
+		if (
+			!checkBotFlag(bot.flags, 'trusted') &&
+			!checkBotFlag(bot.flags, 'partnered') &&
+			(validated.vanity || validated.banner || validated.bg)
+		)
+			return ResponseWrapper(res, {
+				code: 403,
+				message: '해당 봇은 특전을 이용할 권한이 없습니다.',
+			})
 		if (validated.vanity) {
-		const vanity = await get.bot.load(validated.vanity)
-		if(vanity && vanity.id !== bot.id) return ResponseWrapper(res, { code: 403, message: '이미 사용중인 한디리 커스텀 URL 입니다.', errors: ['다른 커스텀 URL로 다시 시도해주세요.'] })
+			const vanity = await get.bot.load(validated.vanity)
+			if (vanity && vanity.id !== bot.id)
+				return ResponseWrapper(res, {
+					code: 403,
+					message: '이미 사용중인 한디리 커스텀 URL 입니다.',
+					errors: ['다른 커스텀 URL로 다시 시도해주세요.'],
+				})
 		}
 		const result = await update.bot(req.query.id, validated)
 		if (result === 0) return ResponseWrapper(res, { code: 400 })

@@ -1,5 +1,12 @@
 import urlRegex from 'url-regex-safe'
-const reservedVanityConst = [ 'koreanbots', 'koreanservers', 'koreanlist', 'kbots', 'kodl', 'discord' ]
+const reservedVanityConst = [
+	'koreanbots',
+	'koreanservers',
+	'koreanlist',
+	'kbots',
+	'kodl',
+	'discord',
+]
 
 export const ID = /^[0-9]{17,}$/
 export const Vanity = /^[A-Za-z\d-]+$/

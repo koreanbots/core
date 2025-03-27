@@ -57,6 +57,10 @@ export const webhookClients = {
 			{ url: process.env.REPORT_WEBHOOK_URL ?? dummyURL },
 			{ allowedMentions: { parse: [] } }
 		),
+		noticeLog: new Discord.WebhookClient(
+			{ url: process.env.NOTICE_LOG_WEBHOOK_URL ?? dummyURL },
+			{ allowedMentions: { parse: [] } }
+		),
 	},
 }
 

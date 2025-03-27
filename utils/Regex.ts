@@ -1,4 +1,12 @@
 import urlRegex from 'url-regex-safe'
+const reservedVanityConst = [
+	'koreanbots',
+	'koreanservers',
+	'koreanlist',
+	'kbots',
+	'kodl',
+	'discord',
+]
 
 export const ID = /^[0-9]{17,}$/
 export const Vanity = /^[A-Za-z\d-]+$/
@@ -12,3 +20,4 @@ export const Heading = '<h\\d id="(.+?)">(.*?)<\\/h(\\d)>'
 export const EmojiSyntax = ':(\\w+):'
 export const ImageTag = /<img\s[^>]*?alt\s*=\s*['"]([^'"]*?)['"][^>]*?>/
 export const markdownImage = /!\[([^\]]*)\]\((.*?)\s*("(?:.*[^"])")?\s*\)/g
+export const reservedVanity = new RegExp(`^((?!${reservedVanityConst.join('|')}).)*$`, 'i') // 예약되지 않음을 확인

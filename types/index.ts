@@ -89,6 +89,8 @@ export interface BotSpec {
 	webhookURL: string | null
 	webhookStatus: WebhookStatus
 	token: string
+	banner: string | null
+	bg: string | null
 }
 
 export interface ServerSpec {
@@ -351,7 +353,7 @@ export interface ImageOptions {
 export interface KoreanbotsImageOptions {
 	format?: 'webp' | 'png' | 'gif'
 	size?: 128 | 256 | 512
-	hash?: string;
+	hash?: string
 }
 
 export enum DiscordImageType {

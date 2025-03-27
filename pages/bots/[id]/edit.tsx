@@ -9,7 +9,7 @@ import { ParsedUrlQuery } from 'querystring'
 import { getJosaPicker } from 'josa'
 
 import { get } from '@utils/Query'
-import { checkUserFlag, cleanObject, makeBotURL, parseCookie, redirectTo } from '@utils/Tools'
+import { checkBotFlag, checkUserFlag, cleanObject, makeBotURL, parseCookie, redirectTo } from '@utils/Tools'
 import { ManageBot, ManageBotSchema } from '@utils/Yup'
 import { botCategories, botCategoryDescription, library } from '@utils/Constants'
 import { Bot, Theme, User } from '@types'
@@ -58,7 +58,7 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 		else return null
 	}
 
-	if (!bot) return <NotFound />
+	if (!bot?.id) return <NotFound />
 	if (!user)
 		return (
 			<Login>
@@ -70,6 +70,7 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 		!checkUserFlag(user.flags, 'staff')
 	)
 		return <Forbidden />
+	const isPerkAvailable = checkBotFlag(bot.flags, 'trusted') || checkBotFlag(bot.flags, 'partnered')
 	return (
 		<Container paddingTop className='pb-10 pt-5'>
 			<NextSeo title={`${bot.name} 수정하기`} description='봇의 정보를 수정합니다.' />
@@ -87,6 +88,9 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 					url: bot.url,
 					git: bot.git,
 					discord: bot.discord,
+					vanity: isPerkAvailable && bot.vanity,
+					banner: isPerkAvailable && bot.banner,
+					bg: isPerkAvailable && bot.bg,
 					_csrf: csrfToken,
 				})}
 				validationSchema={ManageBotSchema}
@@ -269,6 +273,44 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 								<Markdown text={values.desc} />
 							</Segment>
 						</Label>
+						{
+							isPerkAvailable && (
+								<>
+								<Divider />
+								<h2 className='pt-2 text-2xl font-semibold text-koreanbots-green'>신뢰된 봇 특전 설정</h2>
+								<span className='mt-1 text-sm text-gray-400'>신뢰된 봇의 혜택을 만나보세요. (커스텀 URL과 배너/배경 이미지는 이용약관 및 가이드라인을 준수해야하며 위반 시 신뢰된 봇 자격이 박탈될 수 있습니다.)</span>
+								<Label
+									For='vanity'
+									label='한디리 커스텀 URL'
+									labelDesc='고유한 커스텀 URL을 설정해주세요.'
+									error={errors.vanity && touched.vanity ? errors.vanity : null}
+									
+								>
+									<div className='flex items-center'>
+										koreanbots.dev/bots/
+										<Input name='vanity' placeholder='koreanbots' />
+									</div>
+									
+								</Label>
+								<Label
+									For='banner'
+									label='배너 URL'
+									labelDesc='봇 목록의 카드에 표시되는 이미지입니다.'
+									error={errors.banner && touched.banner ? errors.banner : null}
+								>
+									<Input name='banner' placeholder='https://koreanbots.dev/logo.png' />
+								</Label>
+								<Label
+									For='bg'
+									label='배경 URL'
+									labelDesc='봇 페이지 배경에 표시되는 이미지입니다.'
+									error={errors.bg && touched.bg ? errors.bg : null}
+								>
+									<Input name='bg' placeholder='https://koreanbots.dev/logo.png' />
+								</Label>
+								</>
+							)
+						}
 						<Divider />
 						<p className='mb-5 mt-2 text-base'>
 							<span className='font-semibold text-red-500'> *</span> = 필수 항목
@@ -278,6 +320,7 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 								<i className='far fa-save' /> 저장
 							</>
 						</Button>
+						
 					</Form>
 				)}
 			</Formik>
@@ -574,9 +617,11 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 export const getServerSideProps = async (ctx: Context) => {
 	const parsed = parseCookie(ctx.req)
 	const user = await get.Authorization(parsed?.token)
+	const bot = await get.bot.load(ctx.query.id)
+	const spec = await get.botSpec(bot?.id || '', user || '')
 	return {
 		props: {
-			bot: await get.bot.load(ctx.query.id),
+			bot: { ...bot, banner: spec?.banner || null, bg: spec?.bg || null },
 			user: await get.user.load(user || ''),
 			csrfToken: getToken(ctx.req, ctx.res),
 		},

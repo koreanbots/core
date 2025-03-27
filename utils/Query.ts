@@ -100,6 +100,8 @@ async function getBot(id: string, topLevel = true): Promise<Bot> {
 		res.name = name
 		res.category = JSON.parse(res.category)
 		res.owners = JSON.parse(res.owners)
+		res.banner = res.banner ? camoUrl(res.banner) : null
+		res.bg = res.bg ? camoUrl(res.bg) : null
 
 		if (discordBot.flags.bitfield & UserFlags.BotHTTPInteractions) {
 			res.status = 'online'
@@ -676,7 +678,14 @@ async function submitServer(
 
 async function getBotSpec(id: string, userID: string): Promise<BotSpec | null> {
 	const res = await knex('bots')
-		.select(['bots.id', 'bots.token', 'bots.webhook_url', 'bots.webhook_status'])
+		.select([
+			'bots.id',
+			'bots.token',
+			'bots.webhook_url',
+			'bots.webhook_status',
+			'bots.banner',
+			'bots.bg',
+		])
 		.leftJoin('owners_mapping', 'bots.id', 'owners_mapping.target_id')
 		.where('owners_mapping.user_id', userID)
 		.andWhere('owners_mapping.type', ObjectType.Bot)
@@ -688,6 +697,8 @@ async function getBotSpec(id: string, userID: string): Promise<BotSpec | null> {
 		token: res[0].token,
 		webhookURL: res[0].webhook_url,
 		webhookStatus: res[0].webhook_status,
+		banner: res[0].banner,
+		bg: res[0].bg,
 	}
 }
 
@@ -733,6 +744,9 @@ async function updateBot(id: string, data: ManageBot): Promise<number> {
 			category: JSON.stringify(data.category),
 			intro: data.intro,
 			desc: data.desc,
+			vanity: data.vanity,
+			banner: data.banner,
+			bg: data.bg,
 		})
 		.where({ id })
 

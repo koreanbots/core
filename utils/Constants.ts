@@ -626,3 +626,10 @@ export const GuildPermissions = {
 		},
 	],
 }
+
+export const reservedVanityBypass = [
+	'653534001742741552',
+	'784618064167698472',
+	'653083797763522580',
+	'807561475014262785',
+]

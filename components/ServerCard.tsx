@@ -27,7 +27,9 @@ const ServerCard: React.FC<BotCardProps> = ({ type, server }) => {
 						<div
 							className='relative mx-auto h-full rounded-2xl bg-little-white text-black shadow-xl dark:bg-discord-black dark:text-white'
 							style={
-								checkServerFlag(server.flags, 'trusted') && server.banner
+								(checkServerFlag(server.flags, 'trusted') ||
+									checkServerFlag(server.flags, 'partnered')) &&
+								server.banner
 									? {
 											background: `linear-gradient(to right, rgba(34, 36, 38, 0.68), rgba(34, 36, 38, 0.68)), url("${server.banner}") center top / cover no-repeat`,
 											color: 'white',

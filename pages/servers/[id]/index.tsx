@@ -42,7 +42,8 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 	const [emojisModal, setEmojisModal] = useState(false)
 	const [ownersModal, setOwnersModal] = useState(false)
 	const [owners, setOwners] = useState<User[]>(null)
-	const bg = checkBotFlag(data?.flags, 'trusted') && data?.banner
+	const bg =
+		(checkBotFlag(data?.flags, 'trusted') || checkBotFlag(data?.flags, 'partnered')) && data?.bg
 	const router = useRouter()
 	useEffect(() => {
 		if (data)
@@ -143,7 +144,12 @@ const Servers: NextPage<ServersProps> = ({ data, desc, date, user, theme }) => {
 						</div>
 						<div className='w-full lg:flex'>
 							<div className='w-full text-center lg:w-2/12'>
-								<ServerIcon id={data.id} size={256} className='w-full rounded-full' hash={data.icon} />
+								<ServerIcon
+									id={data.id}
+									size={256}
+									className='w-full rounded-full'
+									hash={data.icon}
+								/>
 							</div>
 							<div className='w-full grow px-5 py-12 text-center lg:w-5/12 lg:text-left'>
 								<h1 className='mb-2 mt-3 text-4xl font-bold' style={bg ? { color: 'white' } : {}}>

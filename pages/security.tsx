@@ -42,7 +42,7 @@ const Security: NextPage<SecurityProps> = ({ bugReports }) => {
 			</ul>
 			<h1 className='mb-3 mt-6 text-3xl font-bold text-koreanbots-blue'>범위</h1>
 			<ul className='list-inside list-disc'>
-				{['koreanbots.dev 및 *.koreanbots.dev', 'kbots.link', '디스코드.한국'].map((el) => (
+				{['koreanbots.dev 및 *.koreanbots.dev', 'listing.kr', 'discordlist.kr', '디스코드.한국'].map((el) => (
 					<li key={el}>{el}</li>
 				))}
 			</ul>

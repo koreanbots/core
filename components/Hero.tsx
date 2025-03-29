@@ -27,7 +27,8 @@ const Hero: React.FC<HeroProps> = ({ type = 'all', header, description }) => {
 			<div className='mb-8 bg-discord-blurple text-gray-100 dark:bg-discord-black md:p-0'>
 				<Container className='pb-16 pt-24 md:pb-20' ignoreColor>
 					<h1 className='hidden text-left text-3xl font-bold md:block'>
-						{header && `${header} - `}한국 디스코드 리스트
+						{header && `${header} - `} {{ bots: '봇 | ', servers: '서버 | ' }[type]}한국 디스코드
+						리스트
 					</h1>
 					<h1 className='text-center text-3xl font-semibold md:hidden'>
 						{header && (
@@ -36,7 +37,7 @@ const Hero: React.FC<HeroProps> = ({ type = 'all', header, description }) => {
 								<br />
 							</span>
 						)}
-						한국 디스코드 리스트
+						{{ bots: '봇 | ', servers: '서버 | ' }[type]}한국 디스코드 리스트
 					</h1>
 					<p className='font-base mt-2 text-center text-xl sm:text-left'>
 						{description ||

@@ -1,5 +1,6 @@
-import dynamic from 'next/dynamic'
 import { NextSeo } from 'next-seo'
+import dynamic from 'next/dynamic'
+import { useState } from 'react'
 
 import {
 	botCategories,
@@ -13,6 +14,7 @@ const Tag = dynamic(() => import('@components/Tag'))
 const Search = dynamic(() => import('@components/Search'))
 
 const Hero: React.FC<HeroProps> = ({ type = 'all', header, description }) => {
+	const [showAllCategories, setShowAllCategories] = useState(false)
 	const link = `/${type}/categories`
 	return (
 		<>
@@ -109,32 +111,35 @@ const Hero: React.FC<HeroProps> = ({ type = 'all', header, description }) => {
 									bigger
 									href={type === 'bots' ? '/bots/list/votes' : '/servers/list/votes'}
 								/>
-								{(type === 'bots' ? botCategories : serverCategories).slice(0, 4).map((t) => (
-									<Tag
-										key={t}
-										text={
-											<>
-												<i
-													className={(type === 'bots' ? botCategoryIcon : serverCategoryIcon)[t]}
-												/>{' '}
-												{t}
-											</>
-										}
-										dark
-										bigger
-										href={`${link}/${t}`}
-									/>
-								))}
+								{(type === 'bots' ? botCategories : serverCategories)
+									.slice(0, showAllCategories ? undefined : 4)
+									.map((t) => (
+										<Tag
+											key={t}
+											text={
+												<>
+													<i
+														className={(type === 'bots' ? botCategoryIcon : serverCategoryIcon)[t]}
+													/>{' '}
+													{t}
+												</>
+											}
+											dark
+											bigger
+											href={`${link}/${t}`}
+										/>
+									))}
 								<Tag
 									key='tag'
 									text={
 										<>
-											<i className='fas fa-tag' /> 카테고리 더보기
+											<i className='fas fa-tag' />{' '}
+											{showAllCategories ? '간략히 보기' : '카테고리 더보기'}
 										</>
 									}
 									dark
 									bigger
-									href={link}
+									onClick={() => setShowAllCategories(!showAllCategories)}
 								/>
 							</>
 						)}

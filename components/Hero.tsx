@@ -131,6 +131,7 @@ const Hero: React.FC<HeroProps> = ({ type = 'all', header, description }) => {
 									))}
 								<Tag
 									key='tag'
+									className='cursor-pointer'
 									text={
 										<>
 											<i className='fas fa-tag' />{' '}

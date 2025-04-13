@@ -10,7 +10,7 @@ import { getJosaPicker } from 'josa'
 
 import { get } from '@utils/Query'
 import { checkBotFlag, checkUserFlag, cleanObject, makeBotURL, parseCookie, redirectTo } from '@utils/Tools'
-import { ManageBot, ManageBotSchema } from '@utils/Yup'
+import { ManageBot, getManageBotSchema } from '@utils/Yup'
 import { botCategories, botCategoryDescription, library } from '@utils/Constants'
 import { Bot, Theme, User } from '@types'
 import { getToken } from '@utils/Csrf'
@@ -93,7 +93,7 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 					bg: isPerkAvailable && bot.bg,
 					_csrf: csrfToken,
 				})}
-				validationSchema={ManageBotSchema}
+				validationSchema={getManageBotSchema(isPerkAvailable)}
 				onSubmit={submitBot}
 			>
 				{({ errors, touched, values, setFieldTouched, setFieldValue }) => (

@@ -1,14 +1,16 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import dynamic from 'next/dynamic'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Logo from 'public/logo-transparent.png'
+import { useEffect, useState } from 'react'
 
-import { redirectTo } from '@utils/Tools'
-import Fetch from '@utils/Fetch'
 import { Nullable, User, UserCache } from '@types'
+import Fetch from '@utils/Fetch'
+import { redirectTo } from '@utils/Tools'
 
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 
@@ -60,13 +62,19 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 								dev ? 'dark:text-koreanbots-blue ' : ''
 							}logofont text-large whitespace-no-wrap mr-4 inline-block py-2 font-semibold uppercase leading-relaxed hover:text-gray-300 sm:text-2xl`}
 						>
-							{dev ? (
-								<>
-									<i className='fas fa-tools mr-1' /> DEVELOPERS
-								</>
-							) : (
-								'KOREANLIST'
-							)}
+              {dev ? (
+              <>
+                <i className='fas fa-tools mr-1' /> DEVELOPERS
+              </>
+              ) : (
+                <Image
+                  src={Logo}
+                  alt='Koreanbots'
+                  width={100}
+                  height={100}
+                  className='h-10 w-10'
+                />
+              )}
 						</Link>
 						<button
 							className='block cursor-pointer rounded border border-solid border-transparent bg-transparent px-3 py-1 text-xl leading-none outline-none focus:outline-none dark:text-gray-200 lg:hidden'

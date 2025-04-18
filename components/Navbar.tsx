@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import { Nullable, User, UserCache } from '@types'
 import Fetch from '@utils/Fetch'
 import { redirectTo } from '@utils/Tools'
+import Search from './Search'
 
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 
@@ -51,9 +52,20 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 			setUserCache(null)
 		}
 	}, [token])
+	const [scrolled, setScrolled] = useState(false)
+	
+	useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 80)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+	}, [])
+	
 	return (
-		<>
-			<nav className='fixed top-0 z-40 flex w-full flex-wrap items-center justify-between bg-discord-blurple px-2 py-3 text-gray-100 dark:bg-discord-black lg:absolute'>
+		<div className='fixed top-0 left-0 right-0 z-50'>
+			<nav className={`fixed top-0 z-40 flex w-full flex-wrap items-center justify-between px-2 py-2 text-gray-100 transition-colors duration-300 backdrop-blur-sm ${
+    scrolled || dev ? 'bg-discord-blurple dark:bg-discord-black' : 'bg-discord-blurple/30 dark:bg-discord-black/30'
+  } lg:absolute`}>
+    
 				<div className='container mx-auto flex flex-wrap items-center justify-between px-4'>
 					<div className='relative flex w-full justify-between lg:w-auto lg:justify-start'>
 						<Link
@@ -168,7 +180,12 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 							</li>
 						</ul>
 					</div>
-					<div className='hidden grow items-center bg-white lg:flex lg:bg-transparent lg:shadow-none'>
+          {scrolled && (
+            <div className='hidden grow items-center justify-center px-6 lg:flex'>
+              <Search compact />
+            </div>
+          )}
+					<div className='hidden  lg:flex lg:items-center lg:bg-transparent lg:shadow-none'>
 						<ul className='flex list-none flex-col lg:ml-auto lg:flex-row'>
 							<li
 								className='flex items-center outline-none'
@@ -376,7 +393,7 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 					)}
 				</div>
 			</div>
-		</>
+		</div>
 	)
 }
 

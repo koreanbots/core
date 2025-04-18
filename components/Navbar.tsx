@@ -1,14 +1,14 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
-import { redirectTo } from '@utils/Tools'
-import Fetch from '@utils/Fetch'
 import { Nullable, User, UserCache } from '@types'
+import Fetch from '@utils/Fetch'
+import { redirectTo } from '@utils/Tools'
 
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 
@@ -51,7 +51,7 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 	}, [token])
 	return (
 		<>
-			<nav className='fixed top-0 z-40 flex w-full flex-wrap items-center justify-between bg-discord-blurple px-2 py-3 text-gray-100 dark:bg-discord-black lg:absolute'>
+			<nav className='fixed top-0 z-40 flex w-full flex-wrap items-center justify-between bg-discord-blurple px-2 py-3 text-gray-100 dark:bg-discord-black'>
 				<div className='container mx-auto flex flex-wrap items-center justify-between px-4'>
 					<div className='relative flex w-full justify-between lg:w-auto lg:justify-start'>
 						<Link

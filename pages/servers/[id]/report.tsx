@@ -1,23 +1,23 @@
-import { NextPage } from 'next'
-import Link from 'next/link'
-import dynamic from 'next/dynamic'
 import { Field, Form, Formik } from 'formik'
+import { NextPage } from 'next'
+import dynamic from 'next/dynamic'
+import Link from 'next/link'
 
-import { Server, CsrfContext, ResponseProps, User } from '@types'
+import { CsrfContext, ResponseProps, Server, User } from '@types'
 import { get } from '@utils/Query'
 import { makeServerURL, parseCookie } from '@utils/Tools'
 
 import { ParsedUrlQuery } from 'querystring'
 
-import NotFound from 'pages/404'
-import { getToken } from '@utils/Csrf'
 import { DMCA, TextField } from '@components/ReportTemplate'
-import { useState } from 'react'
+import { serverReportCats } from '@utils/Constants'
+import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
 import { ReportSchema } from '@utils/Yup'
 import { getJosaPicker } from 'josa'
-import { serverReportCats } from '@utils/Constants'
 import { NextSeo } from 'next-seo'
+import NotFound from 'pages/404'
+import { useState } from 'react'
 
 const Container = dynamic(() => import('@components/Container'))
 const Message = dynamic(() => import('@components/Message'))
@@ -37,7 +37,7 @@ const ReportServer: NextPage<ReportServerProps> = ({ data, user, csrfToken }) =>
 			<NextSeo title={`${data.name} 신고하기`} />
 			<Link href={makeServerURL(data)} className='text-blue-500 hover:opacity-80'>
 				<i className='fas fa-arrow-left mb-3 mt-3' /> <strong>{data.name}</strong>
-				{getJosaPicker('로')(data.name)}돌아가기
+				{getJosaPicker('로')(data.name)} 돌아가기
 			</Link>
 			{reportRes?.code === 200 ? (
 				<Message type='success'>

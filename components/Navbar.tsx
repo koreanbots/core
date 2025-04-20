@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react'
 import { Nullable, User, UserCache } from '@types'
 import Fetch from '@utils/Fetch'
 import { redirectTo } from '@utils/Tools'
-import Search from './Search'
 
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 
@@ -55,7 +54,7 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 	const [scrolled, setScrolled] = useState(false)
 	
 	useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 80)
+    const handleScroll = () => setScrolled(window.scrollY > 160)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
 	}, [])
@@ -180,11 +179,6 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 							</li>
 						</ul>
 					</div>
-          {scrolled && (
-            <div className='hidden grow items-center justify-center px-6 lg:flex'>
-              <Search compact />
-            </div>
-          )}
 					<div className='hidden  lg:flex lg:items-center lg:bg-transparent lg:shadow-none'>
 						<ul className='flex list-none flex-col lg:ml-auto lg:flex-row'>
 							<li

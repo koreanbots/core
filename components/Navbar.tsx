@@ -64,7 +64,6 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 			<nav className={`fixed top-0 z-40 flex w-full flex-wrap items-center justify-between px-2 py-2 text-gray-100 transition-colors duration-300 backdrop-blur-sm ${
     scrolled || dev ? 'bg-discord-blurple dark:bg-discord-black' : 'bg-discord-blurple/30 dark:bg-discord-black/30'
   } lg:absolute`}>
-    
 				<div className='container mx-auto flex flex-wrap items-center justify-between px-4'>
 					<div className='relative flex w-full justify-between lg:w-auto lg:justify-start'>
 						<Link

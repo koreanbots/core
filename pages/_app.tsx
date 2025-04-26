@@ -1,28 +1,28 @@
-import Head from 'next/head'
+import { DefaultSeo } from 'next-seo'
 import App, { AppContext, AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
+import Head from 'next/head'
 import { Router, useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { DefaultSeo } from 'next-seo'
-import { GlobalHotKeys } from 'react-hotkeys'
 import NProgress from 'nprogress'
-import Package from '../package.json'
+import { useEffect, useState } from 'react'
 import ReactGA from 'react-ga'
+import { GlobalHotKeys } from 'react-hotkeys'
+import Package from '../package.json'
 
+import { Theme } from '@types'
+import { DESCRIPTION, shortcutKeyMap, THEME_COLOR, TITLE } from '@utils/Constants'
 import Logger from '@utils/Logger'
 import { handlePWA, parseCookie, parseDockerhubTag, systemTheme } from '@utils/Tools'
-import { DESCRIPTION, shortcutKeyMap, THEME_COLOR, TITLE } from '@utils/Constants'
-import { Theme } from '@types'
 
 const Footer = dynamic(() => import('@components/Footer'))
 const Navbar = dynamic(() => import('@components/Navbar'))
 const Modal = dynamic(() => import('@components/Modal'))
 
+import PlatformDisplay from '@components/PlatformDisplay'
+import '@fortawesome/fontawesome-free/css/all.css'
+import 'rc-tooltip/assets/bootstrap_white.css'
 import '../app.css'
 import '../github-markdown.css'
-import 'rc-tooltip/assets/bootstrap_white.css'
-import '@fortawesome/fontawesome-free/css/all.css'
-import PlatformDisplay from '@components/PlatformDisplay'
 
 // Progress Bar
 NProgress.configure({ showSpinner: false })

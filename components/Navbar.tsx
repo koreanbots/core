@@ -2,8 +2,10 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import dynamic from 'next/dynamic'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Logo from 'public/logo-transparent.png'
 import { useEffect, useState } from 'react'
 
 import { Nullable, User, UserCache } from '@types'
@@ -49,9 +51,12 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 			setUserCache(null)
 		}
 	}, [token])
+	
 	return (
-		<>
-			<nav className='fixed top-0 z-40 flex w-full flex-wrap items-center justify-between bg-discord-blurple px-2 py-3 text-gray-100 dark:bg-discord-black'>
+		<div className='fixed top-0 left-0 right-0 z-50'>
+			<nav className={`fixed top-0 z-40 flex w-full flex-wrap items-center justify-between px-2 py-2 text-gray-100 transition-colors duration-300 backdrop-blur-sm ${
+    dev ? 'bg-discord-blurple dark:bg-discord-black' : 'bg-discord-blurple/30 dark:bg-discord-black/30'
+  } lg:absolute`}>
 				<div className='container mx-auto flex flex-wrap items-center justify-between px-4'>
 					<div className='relative flex w-full justify-between lg:w-auto lg:justify-start'>
 						<Link
@@ -60,13 +65,19 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 								dev ? 'dark:text-koreanbots-blue ' : ''
 							}logofont text-large whitespace-no-wrap mr-4 inline-block py-2 font-semibold uppercase leading-relaxed hover:text-gray-300 sm:text-2xl`}
 						>
-							{dev ? (
-								<>
-									<i className='fas fa-tools mr-1' /> DEVELOPERS
-								</>
-							) : (
-								'KOREANLIST'
-							)}
+              {dev ? (
+              <>
+                <i className='fas fa-tools mr-1' /> DEVELOPERS
+              </>
+              ) : (
+                <Image
+                  src={Logo}
+                  alt='Koreanbots'
+                  width={100}
+                  height={100}
+                  className='h-10 w-10'
+                />
+              )}
 						</Link>
 						<button
 							className='block cursor-pointer rounded border border-solid border-transparent bg-transparent px-3 py-1 text-xl leading-none outline-none focus:outline-none dark:text-gray-200 lg:hidden'
@@ -160,7 +171,7 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 							</li>
 						</ul>
 					</div>
-					<div className='hidden grow items-center bg-white lg:flex lg:bg-transparent lg:shadow-none'>
+					<div className='hidden  lg:flex lg:items-center lg:bg-transparent lg:shadow-none'>
 						<ul className='flex list-none flex-col lg:ml-auto lg:flex-row'>
 							<li
 								className='flex items-center outline-none'
@@ -368,7 +379,7 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 					)}
 				</div>
 			</div>
-		</>
+		</div>
 	)
 }
 

@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
-import dynamic from 'next/dynamic'
-import { makeBotURL, makeServerURL, redirectTo } from '@utils/Tools'
+import { Bot, ResponseProps, Server } from '@types'
 import Fetch from '@utils/Fetch'
-import { Bot, Server, ResponseProps } from '@types'
+import { makeBotURL, makeServerURL, redirectTo } from '@utils/Tools'
+import dynamic from 'next/dynamic'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect, useRef, useState } from 'react'
 
 import Day from '@utils/Day'
 import useOutsideClick from '@utils/useOutsideClick'
@@ -12,7 +12,11 @@ import useOutsideClick from '@utils/useOutsideClick'
 const DiscordAvatar = dynamic(() => import('@components/DiscordAvatar'))
 const ServerIcon = dynamic(() => import('@components/ServerIcon'))
 
-const Search: React.FC = () => {
+interface SearchProps {
+	compact?: boolean
+}
+
+const Search: React.FC<SearchProps> = ({ compact = false }) => {
 	const router = useRouter()
 	const ref = useRef()
 	const [query, setQuery] = useState('')
@@ -101,12 +105,13 @@ const Search: React.FC = () => {
 	}
 
 	return (
-		<div onFocus={() => setHidden(false)} ref={ref}>
-			<div className='relative z-10 mt-5 flex w-full rounded-lg bg-white text-black dark:bg-very-black dark:text-gray-100'>
+		<div className={`relative w-full z-10 ${compact ? '' : 'mt-5'}`}>
+			<div onFocus={() => setHidden(false)} ref={ref}>
+				<div className={`relative z-10 flex w-full items-center bg-white text-black dark:bg-very-black dark:text-gray-100 ${compact ? 'h-10 px-3 rounded-md' : 'rounded-lg'}`}>
 				<input
 					type='search'
 					maxLength={50}
-					className='h-16 grow border-0 border-none bg-transparent px-7 py-3 pr-20 text-xl shadow outline-none'
+					className={`grow border-0 border-none bg-transparent pr-20 shadow outline-none ${compact ? 'h-10 text-sm' : 'h-16 px-7 py-3 text-xl'}`}
 					placeholder='검색...'
 					value={query}
 					onChange={(e) => {
@@ -119,14 +124,14 @@ const Search: React.FC = () => {
 					}}
 				/>
 				<button
-					className='cusor-pointer absolute right-0 top-0 mr-5 mt-5 outline-none'
+					className='absolute right-4 top-1/2 -translate-y-1/2 outline-none'
 					onClick={onSubmit}
 				>
-					<i className='fas fa-search text-2xl text-gray-600 hover:text-gray-700' />
+					<i className={`fas fa-search text-gray-600 hover:text-gray-700 ${compact ? 'text-sm' : 'text-2xl'}`} />
 				</button>
 			</div>
 			<div className={`relative ${hidden ? 'hidden' : 'block'} z-50`}>
-				<div className='pin-t pin-l absolute my-2 h-60 w-full overflow-y-scroll rounded bg-white text-black shadow-md dark:bg-very-black dark:text-gray-100 md:h-80'>
+				<div className='absolute top-full mt-2 max-h-60 w-full overflow-y-auto rounded bg-white text-black shadow-md dark:bg-very-black dark:text-gray-100 md:h-80'>
 					<ul>
 						{data && data.code === 200 ? (
 							<div className='grid lg:grid-cols-2'>
@@ -172,7 +177,7 @@ const Search: React.FC = () => {
 								<li className='px-3 py-3.5'>검색중입니다...</li>
 							</ul>
 						) : (
-							<ul>
+							<ul className='px-3 py-3.5'>
 								{query && data ? (
 									data.message?.includes('문법') ? (
 										<li className='px-3 py-3.5'>
@@ -194,10 +199,10 @@ const Search: React.FC = () => {
 									)
 								) : query.length === 0 ? (
 									!recentSearch || !Array.isArray(recentSearch) || recentSearch.length === 0 ? (
-										<li className='px-3 py-3.5'>최근 검색 기록이 없습니다.</li>
+										<li >최근 검색 기록이 없습니다.</li>
 									) : (
 										<>
-											<li className='h-15 cursor-pointer px-3 py-2 font-semibold'>
+											<li className='h-15 cursor-pointer font-semibold'>
 												최근 검색어
 												<button
 													className='absolute right-0 pr-10 text-sm text-red-500 hover:opacity-90'
@@ -236,6 +241,7 @@ const Search: React.FC = () => {
 				</div>
 			</div>
 		</div>
+    </div>
 	)
 }
 

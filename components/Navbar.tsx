@@ -51,12 +51,16 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 			setUserCache(null)
 		}
 	}, [token])
-	
+
 	return (
-		<div className='fixed top-0 left-0 right-0 z-50'>
-			<nav className={`fixed top-0 z-40 flex w-full flex-wrap items-center justify-between px-2 py-2 text-gray-100 transition-colors duration-300 backdrop-blur-sm ${
-    dev ? 'bg-discord-blurple dark:bg-discord-black' : 'bg-discord-blurple/30 dark:bg-discord-black/30'
-  } lg:absolute`}>
+		<div className='fixed left-0 right-0 top-0 z-50'>
+			<nav
+				className={`fixed top-0 z-40 flex w-full flex-wrap items-center justify-between px-2 py-2 text-gray-100 backdrop-blur-sm transition-colors duration-300 ${
+					dev
+						? 'bg-discord-blurple dark:bg-discord-black'
+						: 'bg-discord-blurple/90 dark:bg-discord-black/30'
+				} lg:absolute`}
+			>
 				<div className='container mx-auto flex flex-wrap items-center justify-between px-4'>
 					<div className='relative flex w-full justify-between lg:w-auto lg:justify-start'>
 						<Link
@@ -65,19 +69,13 @@ const Navbar: React.FC<NavbarProps> = ({ token }) => {
 								dev ? 'dark:text-koreanbots-blue ' : ''
 							}logofont text-large whitespace-no-wrap mr-4 inline-block py-2 font-semibold uppercase leading-relaxed hover:text-gray-300 sm:text-2xl`}
 						>
-              {dev ? (
-              <>
-                <i className='fas fa-tools mr-1' /> DEVELOPERS
-              </>
-              ) : (
-                <Image
-                  src={Logo}
-                  alt='Koreanbots'
-                  width={100}
-                  height={100}
-                  className='h-10 w-10'
-                />
-              )}
+							{dev ? (
+								<>
+									<i className='fas fa-tools mr-1' /> DEVELOPERS
+								</>
+							) : (
+								<Image src={Logo} alt='Koreanbots' width={100} height={100} className='h-10 w-10' />
+							)}
 						</Link>
 						<button
 							className='block cursor-pointer rounded border border-solid border-transparent bg-transparent px-3 py-1 text-xl leading-none outline-none focus:outline-none dark:text-gray-200 lg:hidden'

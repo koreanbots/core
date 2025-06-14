@@ -289,6 +289,7 @@ const Bots = RequestHandler()
 					category: JSON.stringify(bot.category),
 					vanity: bot.vanity,
 					banner: bot.banner,
+					enforcements: JSON.stringify(bot.enforcements),
 					bg: bot.bg,
 				},
 				{
@@ -302,6 +303,7 @@ const Bots = RequestHandler()
 					category: JSON.stringify(validated.category),
 					vanity: validated.vanity,
 					banner: validated.banner,
+					enforcements: JSON.stringify(validated.enforcements),
 					bg: validated.bg,
 				}
 			)

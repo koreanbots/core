@@ -62,6 +62,7 @@ async function getBot(id: string, topLevel = true): Promise<Bot> {
 			'bots.status',
 			'bots.trusted',
 			'bots.partnered',
+			'bots.enforcements',
 			'bots.discord',
 			'bots.state',
 			'bots.vanity',
@@ -102,7 +103,7 @@ async function getBot(id: string, topLevel = true): Promise<Bot> {
 		res.owners = JSON.parse(res.owners)
 		res.banner = res.banner ? camoUrl(res.banner) : null
 		res.bg = res.bg ? camoUrl(res.bg) : null
-
+		res.enforcements = JSON.parse(res.enforcements ?? '"[]"')
 		if (discordBot.flags.bitfield & UserFlags.BotHTTPInteractions) {
 			res.status = 'online'
 		} else if (botMember) {
@@ -448,6 +449,7 @@ async function getBotSubmit(id: string, date: number): Promise<SubmittedBot> {
 			'id',
 			'date',
 			'category',
+			'enforcements',
 			'lib',
 			'prefix',
 			'intro',
@@ -463,6 +465,7 @@ async function getBotSubmit(id: string, date: number): Promise<SubmittedBot> {
 		.where({ id, date })
 	if (res.length === 0) return null
 	res[0].category = JSON.parse(res[0].category)
+	res[0].enforcements = JSON.parse(res[0].enforcements || '"[]"')
 	res[0].owner = await get.user.load(res[0].owner)
 	return res[0]
 }
@@ -474,6 +477,7 @@ async function getBotSubmits(id: string): Promise<SubmittedBot[]> {
 			'id',
 			'date',
 			'category',
+			'enforcements',
 			'lib',
 			'prefix',
 			'intro',
@@ -492,6 +496,7 @@ async function getBotSubmits(id: string): Promise<SubmittedBot[]> {
 	res = await Promise.all(
 		res.map(async (el) => {
 			el.category = JSON.parse(el.category)
+			el.enforcements = JSON.parse(el.enforcements)
 			el.owner = owner
 			return el
 		})
@@ -636,6 +641,7 @@ async function submitBot(
 		git: data.git,
 		url: data.url,
 		category: JSON.stringify(data.category),
+		enforcements: JSON.stringify(data.enforcements),
 		discord: data.discord,
 		state: 0,
 	})
@@ -745,6 +751,7 @@ async function updateBot(id: string, data: ManageBot): Promise<number> {
 			intro: data.intro,
 			desc: data.desc,
 			vanity: data.vanity,
+			enforcements: JSON.stringify(data.enforcements),
 			banner: data.banner,
 			bg: data.bg,
 		})
@@ -1134,6 +1141,7 @@ async function approveBotSubmission(id: string, date: number) {
 			'id',
 			'date',
 			'category',
+			'enforcements',
 			'lib',
 			'prefix',
 			'intro',
@@ -1160,6 +1168,7 @@ async function approveBotSubmission(id: string, date: number) {
 		web: data.web,
 		git: data.git,
 		category: data.category,
+		enforcements: data.enforcements,
 		discord: data.discord,
 		token: sign({ id }),
 	})

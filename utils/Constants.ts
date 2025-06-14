@@ -120,6 +120,11 @@ export const botCategoryDescription = {
 	마인크래프트: '게임 "마인크래프트"에 관련된 기능을 다룹니다.',
 }
 
+export const botEnforcements = {
+	'서버 참여가 강제되는 명령어가 있습니다': 'JOIN_PARTIALLY_ENFORCED',
+	'서버 참여 없이는 봇을 사용할 수 없습니다': 'JOIN_ENFORCED',
+}
+
 export const botCategoryIcon = {
 	관리: 'fas fa-cogs',
 	뮤직: 'fas fa-music',

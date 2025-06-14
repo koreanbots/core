@@ -21,7 +21,7 @@ const Label: React.FC<LabelProps> = ({
 							<span className='align-text-top text-base font-semibold text-red-500'> *</span>
 						)}
 					</h3>
-					{labelDesc}
+					<span className='whitespace-pre-line'>{labelDesc}</span>
 				</div>
 			)}
 			<div className={short ? 'col-span-1' : 'col-span-3'}>

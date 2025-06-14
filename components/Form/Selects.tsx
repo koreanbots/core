@@ -109,7 +109,10 @@ const Select: React.FC<SelectProps> = ({
 					onChange={handleChange}
 					onBlur={handleTouch}
 					noOptionsMessage={() => '검색 결과가 없습니다.'}
-					value={values.map((el) => ({ label: el, value: el }))}
+					value={values.map((el) => ({
+						label: Object.values(options).find(({ value }) => value === el)?.label || el,
+						value: el,
+					}))}
 					components={{
 						MultiValue,
 						MultiValueRemove,

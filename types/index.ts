@@ -1,3 +1,4 @@
+import { botEnforcements } from '@utils/Constants'
 import type { GuildFeature } from 'discord.js'
 import type { IncomingMessage } from 'http'
 import type { NextPageContext } from 'next'
@@ -25,10 +26,13 @@ export interface Bot {
 	url: string | null
 	discord: string | null
 	vanity: string | null
+	enforcements: BotEnforcementKeys[]
 	bg: string
 	banner: string
 	owners: User[] | string[]
 }
+
+export type BotEnforcementKeys = 'JOIN_ENFORCED' | 'JOIN_PARTIALLY_ENFORCED'
 
 export interface RawGuild {
 	id: string

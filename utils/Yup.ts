@@ -3,6 +3,7 @@ import YupKorean from 'yup-locales-ko'
 import { ListType } from '@types'
 import {
 	botCategories,
+	botEnforcements,
 	library,
 	reportCats,
 	reservedVanityBypass,
@@ -174,6 +175,7 @@ export const AddBotSubmitSchema: Yup.SchemaOf<AddBotSubmit> = Yup.object({
 		.min(100, '봇 설명은 최소 100자여야합니다.')
 		.max(1500, '봇 설명은 최대 1500자여야합니다.')
 		.required('봇 설명은 필수 항목입니다.'),
+	enforcements: Yup.array(Yup.string().oneOf(Object.values(botEnforcements))),
 	_csrf: Yup.string().required(),
 	_captcha: Yup.string().required(),
 })
@@ -190,6 +192,7 @@ export interface AddBotSubmit {
 	category: string | string[]
 	intro: string
 	desc: string
+	enforcements: string[]
 	_csrf: string
 	_captcha: string
 }
@@ -303,6 +306,7 @@ export function getManageBotSchema(perkAvailable = false) {
 			.min(100, '봇 설명은 최소 100자여야합니다.')
 			.max(1500, '봇 설명은 최대 1500자여야합니다.')
 			.required('봇 설명은 필수 항목입니다.'),
+		enforcements: Yup.array(Yup.string().oneOf(Object.values(botEnforcements))),
 		_csrf: Yup.string().required(),
 	}
 
@@ -349,6 +353,7 @@ export interface ManageBot {
 	desc: string
 	vanity: string
 	banner: string
+	enforcements: string[]
 	bg: string
 	_csrf: string
 }

@@ -122,7 +122,7 @@ export const botCategoryDescription = {
 
 export const botEnforcements = {
 	'서버 참여가 강제되는 명령어가 있습니다': 'JOIN_PARTIALLY_ENFORCED',
-	'서버 참여 없이는 봇을 사용할 수 없습니다': 'JOIN_ENFORCED',
+	'서버 참여 없이는 봇의 핵심 기능을 사용할 수 없습니다': 'JOIN_ENFORCED',
 }
 
 export const botCategoryIcon = {

@@ -8,6 +8,10 @@ import { SearchQuerySchema } from '@utils/Yup'
 import { Bot, Server, List } from '@types'
 
 const Search = RequestHandler().get(async (req: ApiRequest, res) => {
+	const auth = req.headers.authorization
+		? await get.BotAuthorization(req.headers.authorization)
+		: await get.Authorization(req.cookies.token)
+	if (!auth) return ResponseWrapper(res, { code: 401 })
 	const validated = await SearchQuerySchema.validate({ q: req.query.q || req.query.query, page: 1 })
 		.then((el) => el)
 		.catch((e) => {

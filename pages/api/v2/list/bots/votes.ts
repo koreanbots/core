@@ -6,6 +6,10 @@ import { Bot, List } from '@types'
 import Yup from '@utils/Yup'
 
 const VotesList = RequestHandler().get(async (req, res) => {
+	const auth = req.headers.authorization
+		? await get.BotAuthorization(req.headers.authorization)
+		: await get.Authorization(req.cookies.token)
+	if (!auth) return ResponseWrapper(res, { code: 401 })
 	const page = await Yup.number()
 		.positive()
 		.integer()

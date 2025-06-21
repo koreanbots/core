@@ -36,6 +36,10 @@ const patchLimiter = rateLimit({
 })
 const Servers = RequestHandler()
 	.get(async (req: GetApiRequest, res) => {
+		const auth = req.headers.authorization
+			? await get.BotAuthorization(req.headers.authorization)
+			: await get.Authorization(req.cookies.token)
+		if (!auth) return ResponseWrapper(res, { code: 401 })
 		const server = await get.server.load(req.query.id)
 		if (!server) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 서버 입니다.' })
 		else {

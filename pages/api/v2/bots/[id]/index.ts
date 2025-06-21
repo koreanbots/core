@@ -39,6 +39,10 @@ const patchLimiter = rateLimit({
 })
 const Bots = RequestHandler()
 	.get(async (req: GetApiRequest, res) => {
+		const auth = req.headers.authorization
+			? await get.BotAuthorization(req.headers.authorization)
+			: await get.Authorization(req.cookies.token)
+		if (!auth) return ResponseWrapper(res, { code: 401 })
 		const bot = await get.bot.load(req.query.id)
 		if (!bot) return ResponseWrapper(res, { code: 404, message: '존재하지 않는 봇입니다.' })
 		else {
@@ -200,7 +204,7 @@ const Bots = RequestHandler()
 
 		const isPerkAvailable =
 			checkBotFlag(bot.flags, 'partnered') || checkBotFlag(bot.flags, 'trusted')
-		
+
 		const userInfo = await get.user.load(user)
 		if (
 			['reported', 'blocked', 'archived'].includes(bot.state) &&
@@ -219,7 +223,8 @@ const Bots = RequestHandler()
 		const csrfValidated = checkToken(req, res, req.body._csrf)
 		if (!csrfValidated) return
 
-		const validated: ManageBot = await getManageBotSchema(isPerkAvailable).validate(req.body, { abortEarly: false })
+		const validated: ManageBot = await getManageBotSchema(isPerkAvailable)
+			.validate(req.body, { abortEarly: false })
 			.then((el) => el)
 			.catch((e) => {
 				ResponseWrapper(res, { code: 400, errors: e.errors })

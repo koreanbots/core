@@ -5,6 +5,8 @@ import type { NextPageContext } from 'next'
 
 export type Nullable<T> = T | null
 
+export type ValueOf<T> = T[keyof T]
+
 export interface Bot {
 	id: string
 	name: string
@@ -32,7 +34,7 @@ export interface Bot {
 	owners: User[] | string[]
 }
 
-export type BotEnforcementKeys = 'JOIN_ENFORCED' | 'JOIN_PARTIALLY_ENFORCED'
+export type BotEnforcementKeys = ValueOf<typeof botEnforcements>
 
 export interface RawGuild {
 	id: string

@@ -2,6 +2,7 @@
 import * as Yup from 'yup'
 import { Client } from 'discord.js'
 import NotificationManager from '@utils/NotificationManager'
+import { CacheManager } from '@utils/Query'
 
 declare global {
 	interface Window {
@@ -14,6 +15,7 @@ declare global {
 	var kodl: Client
 	var serverlist: Client
 	var notification: NotificationManager
+	var get: CacheManager
 	interface Navigator {
 		standalone?: boolean
 	}

@@ -1199,7 +1199,7 @@ async function viewBot(id: string) {
 		await Bots.findByIdAndUpdate(id, { $push: { viewMetrix: { count: 0 } } }, { upsert: true })
 }
 
-export const get = {
+const _get = {
 	discord: {
 		user: new DataLoader(
 			async (ids: string[]) =>
@@ -1413,6 +1413,14 @@ export const get = {
 		token: getNotificationsByToken,
 	},
 }
+
+export type CacheManager = typeof _get
+
+if (!global.get) {
+	global.get = _get
+}
+
+export const get = global.get
 
 export const update = {
 	assignToken,

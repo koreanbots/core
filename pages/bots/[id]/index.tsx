@@ -9,7 +9,7 @@ import Tooltip from 'rc-tooltip'
 
 import { SnowflakeUtil } from 'discord.js'
 import { ParsedUrlQuery } from 'querystring'
-import { Bot, ResponseProps, Theme, User } from '@types'
+import { Bot, BotEnforcementKeys, ResponseProps, Theme, User } from '@types'
 
 import { git, KoreanbotsEndPoints, reportCats, Status } from '@utils/Constants'
 import { get } from '@utils/Query'
@@ -116,13 +116,34 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 										로 문의해주세요.
 									</p>
 								</Message>
+							) : data.enforcements.length > 0 ? (
+								<Message type='warning'>
+									<h2 className='text-lg font-extrabold'>이 봇은 기능에 제한을 두고 있습니다.</h2>
+									<p>
+										{Object.entries({
+											JOIN_ENFORCED:
+												'봇의 핵심 기능은 봇의 디스코드 서버에 참여해야 사용할 수 있습니다.',
+											JOIN_PARTIALLY_ENFORCED:
+												'봇의 일부 명령어는 봇의 디스코드 서버에 참여해야 사용할 수 있습니다.',
+										})
+											.filter((el) => data.enforcements.includes(el[0] as BotEnforcementKeys))
+											.map(([k, v]) => (
+												<li key={k}>{v}</li>
+											))}
+									</p>
+								</Message>
 							) : (
 								''
 							)}
 						</div>
 						<div className='w-full lg:flex'>
 							<div className='w-full text-center lg:w-2/12'>
-								<DiscordAvatar userID={data.id} size={256} className='w-full rounded-full' hash={data.avatar}/>
+								<DiscordAvatar
+									userID={data.id}
+									size={256}
+									className='w-full rounded-full'
+									hash={data.avatar}
+								/>
 							</div>
 							<div className='w-full grow px-5 py-12 text-center lg:w-5/12 lg:text-left'>
 								<Tag
@@ -158,7 +179,7 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 								</p>
 							</div>
 							<div className='w-full lg:w-1/4'>
-								{(data.state === 'ok' && !checkBotFlag(data.flags, 'private')) && (
+								{data.state === 'ok' && !checkBotFlag(data.flags, 'private') && (
 									<LongButton newTab href={`/bots/${router.query.id}/invite`}>
 										<h4 className='whitespace-nowrap'>
 											<i className='fas fa-user-plus text-discord-blurple' /> 초대하기

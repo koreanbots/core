@@ -175,7 +175,7 @@ export const AddBotSubmitSchema: Yup.SchemaOf<AddBotSubmit> = Yup.object({
 		.min(100, '봇 설명은 최소 100자여야합니다.')
 		.max(1500, '봇 설명은 최대 1500자여야합니다.')
 		.required('봇 설명은 필수 항목입니다.'),
-	enforcements: Yup.array(Yup.string().oneOf(Object.values(botEnforcements))),
+	enforcements: Yup.array(Yup.string().oneOf(Object.keys(botEnforcements))),
 	_csrf: Yup.string().required(),
 	_captcha: Yup.string().required(),
 })
@@ -306,7 +306,7 @@ export function getManageBotSchema(perkAvailable = false) {
 			.min(100, '봇 설명은 최소 100자여야합니다.')
 			.max(1500, '봇 설명은 최대 1500자여야합니다.')
 			.required('봇 설명은 필수 항목입니다.'),
-		enforcements: Yup.array(Yup.string().oneOf(Object.values(botEnforcements))),
+		enforcements: Yup.array(Yup.string().oneOf(Object.keys(botEnforcements))),
 		_csrf: Yup.string().required(),
 	}
 

@@ -368,8 +368,8 @@ const AddBot: NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 						>
 							<Selects
 								options={Object.entries(botEnforcements).map(([k, v]) => ({
-									label: k,
-									value: v,
+									label: v.label,
+									value: k,
 								}))}
 								handleChange={(value) => {
 									setFieldValue(

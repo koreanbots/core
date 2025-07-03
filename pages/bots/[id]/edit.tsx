@@ -78,7 +78,6 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 	)
 		return <Forbidden />
 	const isPerkAvailable = checkBotFlag(bot.flags, 'trusted') || checkBotFlag(bot.flags, 'partnered')
-	console.log(bot.enforcements)
 	return (
 		<Container paddingTop className='pb-10 pt-5'>
 			<NextSeo title={`${bot.name} 수정하기`} description='봇의 정보를 수정합니다.' />
@@ -341,8 +340,8 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 						>
 							<Selects
 								options={Object.entries(botEnforcements).map(([k, v]) => ({
-									label: k,
-									value: v,
+									label: v.label,
+									value: k,
 								}))}
 								handleChange={(value) => {
 									setFieldValue(

@@ -34,7 +34,7 @@ export interface Bot {
 	owners: User[] | string[]
 }
 
-export type BotEnforcementKeys = ValueOf<typeof botEnforcements>
+export type BotEnforcementKeys = keyof typeof botEnforcements
 
 export interface RawGuild {
 	id: string

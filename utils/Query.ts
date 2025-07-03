@@ -103,7 +103,7 @@ async function getBot(id: string, topLevel = true): Promise<Bot> {
 		res.owners = JSON.parse(res.owners)
 		res.banner = res.banner ? camoUrl(res.banner) : null
 		res.bg = res.bg ? camoUrl(res.bg) : null
-		res.enforcements = JSON.parse(res.enforcements ?? '"[]"')
+		res.enforcements = JSON.parse(res.enforcements ?? '[]')
 		if (discordBot.flags.bitfield & UserFlags.BotHTTPInteractions) {
 			res.status = 'online'
 		} else if (botMember) {
@@ -465,7 +465,7 @@ async function getBotSubmit(id: string, date: number): Promise<SubmittedBot> {
 		.where({ id, date })
 	if (res.length === 0) return null
 	res[0].category = JSON.parse(res[0].category)
-	res[0].enforcements = JSON.parse(res[0].enforcements || '"[]"')
+	res[0].enforcements = JSON.parse(res[0].enforcements || '[]')
 	res[0].owner = await get.user.load(res[0].owner)
 	return res[0]
 }

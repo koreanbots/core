@@ -9,9 +9,9 @@ import Tooltip from 'rc-tooltip'
 
 import { SnowflakeUtil } from 'discord.js'
 import { ParsedUrlQuery } from 'querystring'
-import { Bot, BotEnforcementKeys, ResponseProps, Theme, User } from '@types'
+import { Bot, ResponseProps, Theme, User } from '@types'
 
-import { git, KoreanbotsEndPoints, reportCats, Status } from '@utils/Constants'
+import { botEnforcements, git, KoreanbotsEndPoints, reportCats, Status } from '@utils/Constants'
 import { get } from '@utils/Query'
 import Day from '@utils/Day'
 import { ReportSchema } from '@utils/Yup'
@@ -120,16 +120,9 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 								<Message type='warning'>
 									<h2 className='text-lg font-extrabold'>이 봇은 기능에 제한을 두고 있습니다.</h2>
 									<p>
-										{Object.entries({
-											JOIN_ENFORCED:
-												'봇의 핵심 기능은 봇의 디스코드 서버에 참여해야 사용할 수 있습니다.',
-											JOIN_PARTIALLY_ENFORCED:
-												'봇의 일부 명령어는 봇의 디스코드 서버에 참여해야 사용할 수 있습니다.',
-										})
-											.filter((el) => data.enforcements.includes(el[0] as BotEnforcementKeys))
-											.map(([k, v]) => (
-												<li key={k}>{v}</li>
-											))}
+										{data.enforcements.map((i) => (
+											<li key={i}>{botEnforcements[i].description}</li>
+										))}
 									</p>
 								</Message>
 							) : (

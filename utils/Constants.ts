@@ -120,6 +120,25 @@ export const botCategoryDescription = {
 	마인크래프트: '게임 "마인크래프트"에 관련된 기능을 다룹니다.',
 }
 
+export const botEnforcements = {
+	JOIN_PARTIALLY_ENFORCED: {
+		label: '서버 참여가 필요한 기능이 있습니다',
+		description: '봇의 일부 명령어는 봇의 디스코드 서버에 참여해야 사용할 수 있습니다.',
+	},
+	JOIN_ENFORCED: {
+		label: '서버 참여 없이는 봇의 핵심 기능을 사용할 수 없습니다',
+		description: '봇의 핵심 기능은 봇의 디스코드 서버에 참여해야 사용할 수 있습니다.',
+	},
+	LICENSE_PARTIALLY_ENFORCED: {
+		label: '유료 구매가 필요한 기능이 있습니다',
+		description: '봇의 일부 명령어는 유료 구매가 필요합니다.',
+	},
+	LICENSE_ENFORCED: {
+		label: '유료 구매 없이는 봇의 핵심 기능을 사용할 수 없습니다',
+		description: '유료 구매 없이는 봇의 핵심 기능을 사용할 수 없습니다.',
+	},
+} as const
+
 export const botCategoryIcon = {
 	관리: 'fas fa-cogs',
 	뮤직: 'fas fa-music',

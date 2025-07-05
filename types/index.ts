@@ -1,8 +1,11 @@
+import { botEnforcements } from '@utils/Constants'
 import type { GuildFeature } from 'discord.js'
 import type { IncomingMessage } from 'http'
 import type { NextPageContext } from 'next'
 
 export type Nullable<T> = T | null
+
+export type ValueOf<T> = T[keyof T]
 
 export interface Bot {
 	id: string
@@ -25,10 +28,13 @@ export interface Bot {
 	url: string | null
 	discord: string | null
 	vanity: string | null
+	enforcements: BotEnforcementKeys[]
 	bg: string
 	banner: string
 	owners: User[] | string[]
 }
+
+export type BotEnforcementKeys = keyof typeof botEnforcements
 
 export interface RawGuild {
 	id: string

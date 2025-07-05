@@ -10,7 +10,7 @@ import HCaptcha from '@hcaptcha/react-hcaptcha'
 import { get } from '@utils/Query'
 import { cleanObject, parseCookie, redirectTo } from '@utils/Tools'
 import { AddBotSubmit, AddBotSubmitSchema } from '@utils/Yup'
-import { botCategories, botCategoryDescription, library } from '@utils/Constants'
+import { botCategories, botCategoryDescription, botEnforcements, library } from '@utils/Constants'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
 import { ResponseProps, SubmittedBot, Theme, User } from '@types'
@@ -57,6 +57,7 @@ const AddBot: NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 - 어떤
 - 기능
 - 있나요?`,
+		enforcements: [],
 		_csrf: csrfToken,
 		_captcha: 'captcha',
 	}
@@ -354,6 +355,34 @@ const AddBot: NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 							<Segment>
 								<Markdown text={values.desc} />
 							</Segment>
+						</Label>
+						<Divider />
+						<Label
+							For='enforcements'
+							label='필수 고지 내용'
+							labelDesc='내용에 해당하는 경우 필수로 선택해야 합니다.'
+							required
+							error={
+								errors.enforcements && touched.enforcements ? (errors.enforcements as string) : null
+							}
+						>
+							<Selects
+								options={Object.entries(botEnforcements).map(([k, v]) => ({
+									label: v.label,
+									value: k,
+								}))}
+								handleChange={(value) => {
+									setFieldValue(
+										'enforcements',
+										value.map((v) => v.value)
+									)
+								}}
+								handleTouch={() => setFieldTouched('enforcements', true)}
+								values={values.enforcements ?? ([] as string[])}
+								setValues={(value) => {
+									setFieldValue('enforcements', value)
+								}}
+							/>
 						</Label>
 						<Divider />
 						<p className='mb-5 mt-2 text-base'>

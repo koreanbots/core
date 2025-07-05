@@ -9,9 +9,16 @@ import { ParsedUrlQuery } from 'querystring'
 import { getJosaPicker } from 'josa'
 
 import { get } from '@utils/Query'
-import { checkBotFlag, checkUserFlag, cleanObject, makeBotURL, parseCookie, redirectTo } from '@utils/Tools'
+import {
+	checkBotFlag,
+	checkUserFlag,
+	cleanObject,
+	makeBotURL,
+	parseCookie,
+	redirectTo,
+} from '@utils/Tools'
 import { ManageBot, getManageBotSchema } from '@utils/Yup'
-import { botCategories, botCategoryDescription, library } from '@utils/Constants'
+import { botCategories, botCategoryDescription, botEnforcements, library } from '@utils/Constants'
 import { Bot, Theme, User } from '@types'
 import { getToken } from '@utils/Csrf'
 import Fetch from '@utils/Fetch'
@@ -82,6 +89,7 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 					prefix: bot.prefix,
 					library: bot.lib,
 					category: bot.category,
+					enforcements: bot.enforcements,
 					intro: bot.intro,
 					desc: bot.desc,
 					website: bot.web,
@@ -98,8 +106,12 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 			>
 				{({ errors, touched, values, setFieldTouched, setFieldValue }) => (
 					<Form>
-						<div className='text-center md:flex md:text-left'>
-							<DiscordAvatar userID={bot.id} className='mx-auto rounded-full md:mx-1' hash={bot.avatar}/>
+						<div className='text-ceznter md:flex md:text-left'>
+							<DiscordAvatar
+								userID={bot.id}
+								className='mx-auto rounded-full md:mx-1'
+								hash={bot.avatar}
+							/>
 							<div className='px-8 py-6 md:w-2/3'>
 								<h1 className='text-3xl font-bold'>
 									{bot.name}#{bot.tag}
@@ -165,7 +177,11 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 							error={errors.category && touched.category ? (errors.category as string) : null}
 						>
 							<Selects
-								options={botCategories.map((el) => ({ label: el, value: el, description: botCategoryDescription[el] }))}
+								options={botCategories.map((el) => ({
+									label: el,
+									value: el,
+									description: botCategoryDescription[el],
+								}))}
 								handleChange={(value) => {
 									setFieldValue(
 										'category',
@@ -273,24 +289,26 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 								<Markdown text={values.desc} />
 							</Segment>
 						</Label>
-						{
-							isPerkAvailable && (
-								<>
+						{isPerkAvailable && (
+							<>
 								<Divider />
-								<h2 className='pt-2 text-2xl font-semibold text-koreanbots-green'>신뢰된 봇 특전 설정</h2>
-								<span className='mt-1 text-sm text-gray-400'>신뢰된 봇의 혜택을 만나보세요. (커스텀 URL과 배너/배경 이미지는 이용약관 및 가이드라인을 준수해야하며 위반 시 신뢰된 봇 자격이 박탈될 수 있습니다.)</span>
+								<h2 className='pt-2 text-2xl font-semibold text-koreanbots-green'>
+									신뢰된 봇 특전 설정
+								</h2>
+								<span className='mt-1 text-sm text-gray-400'>
+									신뢰된 봇의 혜택을 만나보세요. (커스텀 URL과 배너/배경 이미지는 이용약관 및
+									가이드라인을 준수해야하며 위반 시 신뢰된 봇 자격이 박탈될 수 있습니다.)
+								</span>
 								<Label
 									For='vanity'
 									label='한디리 커스텀 URL'
 									labelDesc='고유한 커스텀 URL을 설정해주세요.'
 									error={errors.vanity && touched.vanity ? errors.vanity : null}
-									
 								>
 									<div className='flex items-center'>
 										koreanbots.dev/bots/
 										<Input name='vanity' placeholder='koreanbots' />
 									</div>
-									
 								</Label>
 								<Label
 									For='banner'
@@ -308,9 +326,36 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 								>
 									<Input name='bg' placeholder='https://koreanbots.dev/logo.png' />
 								</Label>
-								</>
-							)
-						}
+							</>
+						)}
+						<Divider />
+						<Label
+							For='enforcements'
+							label='필수 고지 내용'
+							labelDesc='내용에 해당하는 경우 필수로 선택해야 합니다.'
+							required
+							error={
+								errors.enforcements && touched.enforcements ? (errors.enforcements as string) : null
+							}
+						>
+							<Selects
+								options={Object.entries(botEnforcements).map(([k, v]) => ({
+									label: v.label,
+									value: k,
+								}))}
+								handleChange={(value) => {
+									setFieldValue(
+										'enforcements',
+										value.map((v) => v.value)
+									)
+								}}
+								handleTouch={() => setFieldTouched('enforcements', true)}
+								values={values.enforcements ?? ([] as string[])}
+								setValues={(value) => {
+									setFieldValue('enforcements', value)
+								}}
+							/>
+						</Label>
 						<Divider />
 						<p className='mb-5 mt-2 text-base'>
 							<span className='font-semibold text-red-500'> *</span> = 필수 항목
@@ -320,7 +365,6 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 								<i className='far fa-save' /> 저장
 							</>
 						</Button>
-						
 					</Form>
 				)}
 			</Formik>

@@ -121,6 +121,10 @@ export const botCategoryDescription = {
 }
 
 export const botEnforcements = {
+	NONE: {
+		label: '해당사항이 없습니다.',
+		description: '',
+	},
 	JOIN_PARTIALLY_ENFORCED: {
 		label: '서버 참여가 필요한 기능이 있습니다',
 		description: '봇의 일부 명령어는 봇의 디스코드 서버에 참여해야 사용할 수 있습니다.',

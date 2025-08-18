@@ -641,7 +641,7 @@ async function submitBot(
 		git: data.git,
 		url: data.url,
 		category: JSON.stringify(data.category),
-		enforcements: JSON.stringify(data.enforcements.filter((el) => el !== 'NONE')),
+		enforcements: JSON.stringify(data.enforcements),
 		discord: data.discord,
 		state: 0,
 	})
@@ -751,7 +751,7 @@ async function updateBot(id: string, data: ManageBot): Promise<number> {
 			intro: data.intro,
 			desc: data.desc,
 			vanity: data.vanity,
-			enforcements: JSON.stringify(data.enforcements.filter((el) => el !== 'NONE')),
+			enforcements: JSON.stringify(data.enforcements),
 			banner: data.banner,
 			bg: data.bg,
 		})

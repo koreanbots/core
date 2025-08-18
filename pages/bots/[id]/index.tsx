@@ -116,13 +116,15 @@ const Bots: NextPage<BotsProps> = ({ data, desc, date, user, theme, csrfToken })
 										로 문의해주세요.
 									</p>
 								</Message>
-							) : data.enforcements.length > 0 ? (
+							) : data.enforcements.filter((i) => i !== 'NONE').length > 0 ? (
 								<Message type='warning'>
 									<h2 className='text-lg font-extrabold'>이 봇은 기능에 제한을 두고 있습니다.</h2>
 									<p>
-										{data.enforcements.map((i) => (
-											<li key={i}>{botEnforcements[i].description}</li>
-										))}
+										{data.enforcements
+											.filter((i) => i !== 'NONE')
+											.map((i) => (
+												<li key={i}>{botEnforcements[i].description}</li>
+											))}
 									</p>
 								</Message>
 							) : (

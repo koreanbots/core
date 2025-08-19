@@ -368,7 +368,7 @@ const AddBot: NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 						>
 							<Selects
 								options={Object.entries(botEnforcements)
-									.filter(([k, v]) => k === 'NONE' || !values.enforcements.includes('NONE'))
+									.filter(([k]) => k === 'NONE' || !values.enforcements.includes('NONE'))
 									.map(([k, v]) => ({
 										label: v.label,
 										value: k,

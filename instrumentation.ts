@@ -7,5 +7,6 @@ export async function register() {
 			version: packageJson.version,
 			env: process.env.DD_ENV,
 		})
+		tracer.use('next')
 	}
 }

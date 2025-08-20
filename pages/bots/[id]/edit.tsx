@@ -339,20 +339,30 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 							}
 						>
 							<Selects
-								options={Object.entries(botEnforcements).map(([k, v]) => ({
-									label: v.label,
-									value: k,
-								}))}
-								handleChange={(value) => {
-									setFieldValue(
-										'enforcements',
-										value.map((v) => v.value)
-									)
+								options={Object.entries(botEnforcements)
+									.filter(([k]) => k === 'NONE' || !values.enforcements.includes('NONE'))
+									.map(([k, v]) => ({
+										label: v.label,
+										value: k,
+									}))}
+								handleChange={(values) => {
+									if (values.some((i) => i.value === 'NONE')) {
+										setFieldValue('enforcements', ['NONE'])
+									} else {
+										setFieldValue(
+											'enforcements',
+											values.map((v) => v.value)
+										)
+									}
 								}}
 								handleTouch={() => setFieldTouched('enforcements', true)}
 								values={values.enforcements ?? ([] as string[])}
-								setValues={(value) => {
-									setFieldValue('enforcements', value)
+								setValues={(values) => {
+									if (values.includes('NONE')) {
+										setFieldValue('enforcements', ['NONE'])
+									} else {
+										setFieldValue('enforcements', values)
+									}
 								}}
 							/>
 						</Label>

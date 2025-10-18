@@ -176,6 +176,16 @@ const AddBot: NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 										있습니다.
 									</li>
 									<li>또한, 봇을 등록하게 되면 작성하신 모든 정보는 웹과 API에 공개됩니다.</li>
+									<li>
+										봇 심사에 대한 자세한 내용은{' '}
+										<Link
+											href='https://contents.koreanbots.dev/bot-review'
+											className='text-blue-500 hover:text-blue-600'
+										>
+											봇 심사 가이드
+										</Link>
+										를 참고해주세요.
+									</li>
 								</ul>
 							</Message>
 						</div>
@@ -187,8 +197,8 @@ const AddBot: NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 							<div className='flex items-center'>
 								<CheckBox name='agree' />
 								<strong className='ml-2 text-sm'>
-									해당 내용을 숙지하였으며, 모두 이행하였고 위 내용에 해당하는 거부 사유는 답변받지
-									않는다는 점을 이해합니다.
+									위 내용을 모두 숙지하였으며, 이행하지 않은 경우 심사가 거부될 수 있다는 것을
+									이해합니다.
 								</strong>
 							</div>
 						</Label>

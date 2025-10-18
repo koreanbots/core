@@ -180,6 +180,8 @@ const AddBot: NextPage<AddBotProps> = ({ logged, user, csrfToken, theme }) => {
 										봇 심사에 대한 자세한 내용은{' '}
 										<Link
 											href='https://contents.koreanbots.dev/bot-review'
+											rel='noreferrer'
+											target='_blank'
 											className='text-blue-500 hover:text-blue-600'
 										>
 											봇 심사 가이드

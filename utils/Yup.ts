@@ -467,6 +467,8 @@ export const ExceedLimitScehma: Yup.SchemaOf<ExceedLimit> = Yup.object({
 })
 
 export interface ExceedLimit {
+	_csrf: string
+	_captcha: string
 	servers: number
 	shards: number
 }

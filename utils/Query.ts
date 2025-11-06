@@ -1,27 +1,27 @@
+import DataLoader from 'dataloader'
+import { ActivityType, User as DiscordUser, GuildFeature, GuildMember, UserFlags } from 'discord.js'
 import fetch from 'node-fetch'
 import { TLRU } from 'tlru'
-import DataLoader from 'dataloader'
-import { ActivityType, GuildFeature, GuildMember, User as DiscordUser, UserFlags } from 'discord.js'
 
 import {
 	Bot,
-	Server,
-	User,
-	ListType,
-	List,
-	TokenRegister,
 	BotFlags,
-	DiscordUserFlags,
-	SubmittedBot,
+	BotSpec,
 	DiscordTokenInfo,
+	DiscordUserFlags,
+	List,
+	ListType,
+	Nullable,
+	ObjectType,
+	RawGuild,
+	Server,
 	ServerData,
 	ServerFlags,
-	RawGuild,
-	Nullable,
-	Webhook,
-	BotSpec,
 	ServerSpec,
-	ObjectType,
+	SubmittedBot,
+	TokenRegister,
+	User,
+	Webhook,
 } from '@types'
 import {
 	botCategories,
@@ -32,14 +32,14 @@ import {
 	VOTE_COOLDOWN,
 } from './Constants'
 
-import knex from './Knex'
-import { Bots, Servers } from './Mongo'
 import { DiscordBot, getMainGuild } from './DiscordBot'
 import { sign, verify } from './Jwt'
+import knex from './Knex'
+import { Bots, Servers } from './Mongo'
+import { Notification } from './NotificationManager'
+import { markdownImage } from './Regex'
 import { areArraysEqual, camoUrl, formData, getYYMMDD, serialize } from './Tools'
 import { AddBotSubmit, AddServerSubmit, ManageBot, ManageServer } from './Yup'
-import { markdownImage } from './Regex'
-import { Notification } from './NotificationManager'
 
 export const imageRateLimit = new TLRU<unknown, number>({ maxAgeMs: 60000 })
 
@@ -198,7 +198,7 @@ async function fetchServerOwners(id: string): Promise<User[] | null> {
 		? [
 				await get._rawUser.load(data.owner),
 				...(await Promise.all(data.admins.map((el) => get._rawUser.load(el)))),
-		  ].filter((el) => el)
+			].filter((el) => el)
 		: null
 }
 
@@ -778,7 +778,7 @@ async function updatedServer(id: string, data: ManageServer) {
 /**
  * @returns 1 - Limit of 100k servers
  * @returns 2 - Limit of 10M servers
- * @returns 3 - Limit of 100 shards
+ * @returns 3 - Limit of 200 shards
  */
 async function updateServer(id: string, servers: number, shards: number) {
 	const bot = await get.bot.load(id)

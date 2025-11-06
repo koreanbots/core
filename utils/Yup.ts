@@ -459,4 +459,16 @@ export interface EditBotOwner {
 	_captcha: string
 }
 
+export const ExceedLimitScehma: Yup.SchemaOf<ExceedLimit> = Yup.object({
+	servers: Yup.number().integer().moreThan(-1, '서버 수는 0보다 커야합니다.').required(),
+	shards: Yup.number().integer().moreThan(-1, '샤드 수는 0보다 커야합니다.').required(),
+	_csrf: Yup.string().required(),
+	_captcha: Yup.string().required(),
+})
+
+export interface ExceedLimit {
+	servers: number
+	shards: number
+}
+
 export default Yup

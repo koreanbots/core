@@ -780,11 +780,18 @@ async function updatedServer(id: string, data: ManageServer) {
  * @returns 2 - Limit of 10M servers
  * @returns 3 - Limit of 200 shards
  */
-async function updateServer(id: string, servers: number, shards: number) {
+async function updateServer(
+	id: string,
+	servers: number,
+	shards: number,
+	force = false
+): Promise<number | void> {
 	const bot = await get.bot.load(id)
-	if (bot.servers < 10000 && servers >= 10000) return 1
-	else if (bot.servers < 1000000 && servers >= 1000000) return 2
-	if (bot.shards < 200 && shards >= 200) return 3
+	if (!force) {
+		if (bot.servers < 10000 && servers >= 10000) return 1
+		else if (bot.servers < 1000000 && servers >= 1000000) return 2
+		if (bot.shards < 200 && shards >= 200) return 3
+	}
 	await knex('bots')
 		.update({
 			servers: servers === undefined ? bot.servers : servers,

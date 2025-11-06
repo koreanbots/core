@@ -30,14 +30,14 @@ const BotLimit = RequestHandler().patch(async (req: PostApiRequest, res) => {
 	const captcha = await CaptchaVerify(validated._captcha)
 	if (!captcha) return
 
-	const response = await update.updateServer(
+	await update.updateServer(
 		bot.id,
 		validated.servers,
 		validated.shards == 0 ? undefined : validated.shards,
 		true
 	)
-	console.log(response)
 	get.user.clear(user)
+
 	await discordLog(
 		'BOT/EXCEED_LIMIT',
 		userinfo.id,
@@ -46,18 +46,10 @@ const BotLimit = RequestHandler().patch(async (req: PostApiRequest, res) => {
 		),
 		null,
 		makeDiscordCodeblock(
-			`${bot.servers > validated.servers ? '-' : '+'} ${bot.servers} -> ${
-				validated.servers
-			} (${bot.servers > validated.servers ? '▼' : '▲'}${Math.abs(validated.servers - bot.servers)})
-    + ${
-			bot.servers >= 1000000
-				? '서버수 제한 해제 (1000000+)'
-				: bot.servers >= 10000
-					? '서버수 제한 해제 (10000+)'
-					: ''
-		}
-    + ${bot.shards >= 200 ? '샤드수 제한 해제' : ''}
-    `,
+			`${bot.servers > validated.servers ? '-' : '+'} ${bot.servers} -> ${validated.servers} (${bot.servers > validated.servers ? '▼' : '▲'}${Math.abs(validated.servers - bot.servers)})\n` +
+				`${validated.servers >= 1000000 ? '+ 서버수 제한 해제 (1000000+)\n' : ''}` +
+				`${validated.servers >= 10000 && validated.servers < 1000000 ? '+ 서버수 제한 해제 (10000+)\n' : ''}` +
+				`${validated.shards >= 200 ? '+ 샤드수 제한 해제\n' : ''}`,
 			'diff'
 		)
 	)

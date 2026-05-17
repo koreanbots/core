@@ -14,7 +14,8 @@ if (!global.kodl) {
 	global.kodl.on('ready', async () => {
 		console.log('Discord Client is ready')
 		await getMainGuild().members.fetch()
-		console.log(`Fetched ${getMainGuild().members.cache.size} Members`)
+		await getBotGuild().members.fetch()
+		console.log(`Fetched ${getMainGuild().members.cache.size} + ${getBotGuild().members.cache.size} Members`)
 	})
 
 	global.kodl.login(process.env.DISCORD_TOKEN ?? '')
@@ -65,6 +66,8 @@ export const webhookClients = {
 }
 
 export const getMainGuild = () => DiscordBot.guilds.cache.get(process.env.GUILD_ID ?? '')
+
+export const getBotGuild = () => DiscordBot.guilds.cache.get(process.env.BOT_GUILD_ID ?? '')
 
 export const discordLog = async (
 	type: string,

@@ -34,7 +34,7 @@ import {
 
 import knex from './Knex'
 import { Bots, Servers } from './Mongo'
-import { DiscordBot, getMainGuild } from './DiscordBot'
+import { DiscordBot, getBotGuild, getMainGuild } from './DiscordBot'
 import { sign, verify } from './Jwt'
 import { areArraysEqual, camoUrl, formData, getYYMMDD, serialize } from './Tools'
 import { AddBotSubmit, AddServerSubmit, ManageBot, ManageServer } from './Yup'
@@ -87,9 +87,13 @@ async function getBot(id: string, topLevel = true): Promise<Bot> {
 				.where({ id })
 				.then((r) => r)
 		}
-		const botMember = (await getMainGuild()
-			?.members?.fetch(res.id)
-			.catch((e) => e)) as GuildMember
+		const botMember =
+			((await getMainGuild()
+				?.members?.fetch(res.id)
+				.catch((e) => null)) ??
+			((await getBotGuild()
+				?.members?.fetch(res.id)
+				.catch((e) => null))) as GuildMember)
 		const name = discordBot.displayName
 		res.flags =
 			res.flags |

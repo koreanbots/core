@@ -17,7 +17,7 @@ import {
 	parseCookie,
 	redirectTo,
 } from '@utils/Tools'
-import { ManageBot, getManageBotSchema } from '@utils/Yup'
+import { ExceedLimit, ManageBot, getManageBotSchema } from '@utils/Yup'
 import { botCategories, botCategoryDescription, botEnforcements, library } from '@utils/Constants'
 import { Bot, Theme, User } from '@types'
 import { getToken } from '@utils/Csrf'
@@ -49,6 +49,7 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 	const [adminModal, setAdminModal] = useState(false)
 	const [transferModal, setTransferModal] = useState(false)
 	const [deleteModal, setDeleteModal] = useState(false)
+	const [limitModal, setLimitModal] = useState(false)
 	const router = useRouter()
 
 	async function submitBot(value: ManageBot) {
@@ -136,7 +137,9 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 											{data.message || '오류가 발생했습니다.'}
 										</h2>
 										<ul className='list-inside list-disc'>
-											{data.errors?.map((el, n) => <li key={n}>{el}</li>)}
+											{data.errors?.map((el, n) => (
+												<li key={n}>{el}</li>
+											))}
 										</ul>
 									</Message>
 								</div>
@@ -655,6 +658,77 @@ const ManageBotPage: NextPage<ManageBotProps> = ({ bot, user, csrfToken, theme }
 												type='submit'
 											>
 												<i className='fas fa-trash' /> 삭제
+											</Button>
+										</Form>
+									)}
+								</Formik>
+							</Modal>
+						</div>
+					</Segment>
+				</div>
+			)}
+			{checkUserFlag(user.flags, 'staff') && (
+				<div className='py-4'>
+					<Divider />
+					<h2 className='pb-2 text-2xl font-semibold'>한디리 스탭 전용</h2>
+					<Segment>
+						<div className='items-center lg:flex'>
+							<div className='grow py-1'>
+								<h3 className='text-lg font-semibold'>서버수/샤드수 제한 해제</h3>
+								<p className='text-gray-400'>10000서버, 1000000서버, 200샤드 제한을 해제합니다.</p>
+							</div>
+							<Button
+								onClick={() => setLimitModal(true)}
+								className='lg:w-1/8 h-10 bg-koreanbots-blue text-white hover:opacity-80'
+							>
+								<i className='fas fa-unlock' /> 제한 해제
+							</Button>
+							<Modal
+								full
+								header={`${bot.name} 서버/샤드수 제한 해제`}
+								isOpen={limitModal}
+								dark={theme === 'dark'}
+								onClose={() => setLimitModal(false)}
+								closeIcon
+							>
+								<Formik
+									initialValues={{
+										_captcha: '',
+										_csrf: csrfToken,
+										servers: bot.servers,
+										shards: bot.shards ?? 0,
+									}}
+									onSubmit={async (value) => {
+										const res = await Fetch(`/bots/${bot.id}/limit`, {
+											method: 'PATCH',
+											body: JSON.stringify(cleanObject<ExceedLimit>(value)),
+										})
+										if (res.code === 200) {
+											alert('성공적으로 수정하였습니다.')
+											router.push(makeBotURL(bot))
+										} else alert(res.message)
+									}}
+								>
+									{({ values, setFieldValue }) => (
+										<Form>
+											<div className='py-4'>
+												<h2 className='text-md my-1'>설정하실 서버 수를 입력해주세요.</h2>
+												<Input name='servers' placeholder={String(bot.servers)} type='number' />
+												<h2 className='text-md my-1'>설정하실 샤드 수를 입력해주세요.</h2>
+												<Input name='shards' placeholder={String(bot.shards)} type='number' />
+											</div>
+											<Captcha
+												dark={theme === 'dark'}
+												onVerify={(k) => setFieldValue('_captcha', k)}
+											/>
+											<Button
+												disabled={!values._captcha}
+												className={`mt-4 bg-koreanbots-blue text-white ${
+													!values._captcha ? 'opacity-80' : 'hover:opacity-80'
+												}`}
+												type='submit'
+											>
+												<i className='fas fa-save' /> 저장
 											</Button>
 										</Form>
 									)}

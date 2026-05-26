@@ -24,7 +24,7 @@ import {
 	objectDiff,
 	serialize,
 } from '@utils/Tools'
-import { discordLog, getMainGuild, webhookClients } from '@utils/DiscordBot'
+import { discordLog, getBotGuild, getMainGuild, webhookClients } from '@utils/DiscordBot'
 import { KoreanbotsEndPoints } from '@utils/Constants'
 
 const patchLimiter = rateLimit({
@@ -181,6 +181,7 @@ const Bots = RequestHandler()
 			return ResponseWrapper(res, { code: 400, message: '봇 이름을 입력해주세요.' })
 		await remove.bot(bot.id)
 		await getMainGuild().members.cache.get(bot.id)?.kick('봇 삭제됨.')
+		await getBotGuild().members.cache.get(bot.id)?.kick('봇 삭제됨.')
 		get.user.clear(user)
 		await discordLog(
 			'BOT/DELETE',

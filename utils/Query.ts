@@ -32,7 +32,9 @@ import {
 	VOTE_COOLDOWN,
 } from './Constants'
 
-import { DiscordBot, getMainGuild } from './DiscordBot'
+import knex from './Knex'
+import { Bots, Servers } from './Mongo'
+import { DiscordBot, getBotGuild, getMainGuild } from './DiscordBot'
 import { sign, verify } from './Jwt'
 import knex from './Knex'
 import { Bots, Servers } from './Mongo'
@@ -87,9 +89,13 @@ async function getBot(id: string, topLevel = true): Promise<Bot> {
 				.where({ id })
 				.then((r) => r)
 		}
-		const botMember = (await getMainGuild()
-			?.members?.fetch(res.id)
-			.catch((e) => e)) as GuildMember
+		const botMember =
+			((await getMainGuild()
+				?.members?.fetch(res.id)
+				.catch((e) => null)) ??
+			((await getBotGuild()
+				?.members?.fetch(res.id)
+				.catch((e) => null))) as GuildMember)
 		const name = discordBot.displayName
 		res.flags =
 			res.flags |

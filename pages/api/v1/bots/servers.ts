@@ -51,6 +51,14 @@ const BotStats = RequestHandler()
 				} 이상으로 설정하실 수 없습니다. 문의해주세요.`,
 				version: 1,
 			})
+		if (d === 3)
+			return ResponseWrapper(res, {
+				code: 403,
+				message: `샤드 수를 ${
+					[null, null, null, '200개'][d]
+				} 이상으로 설정하실 수 없습니다. 문의해주세요.`,
+				version: 1,
+			})
 		get.bot.clear(bot)
 		webhookClients.internal.statsLog.send({
 			content: `[BOT/STATS] <@${botInfo.id}> (${botInfo.id})\n${makeDiscordCodeblock(

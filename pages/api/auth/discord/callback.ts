@@ -28,7 +28,6 @@ const Callback = RequestHandler().get(async (req: ApiRequest, res) => {
 			client_id: process.env.DISCORD_CLIENT_ID,
 			redirect_uri: process.env.KOREANBOTS_URL + '/api/auth/discord/callback',
 			client_secret: process.env.DISCORD_CLIENT_SECRET,
-			scope: process.env.DISCORD_SCOPE,
 			grant_type: 'authorization_code',
 			code: req.query.code,
 		}),

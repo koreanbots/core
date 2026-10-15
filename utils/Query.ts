@@ -22,6 +22,7 @@ import {
 	BotSpec,
 	ServerSpec,
 	ObjectType,
+	UserFlags as KoreanbotsUserFlags,
 } from '@types'
 import {
 	botCategories,
@@ -35,6 +36,7 @@ import {
 import knex from './Knex'
 import { Bots, Servers } from './Mongo'
 import { DiscordBot, getBotGuild, getMainGuild } from './DiscordBot'
+import { getBotReviewerStatus } from './DiscordOAuth'
 import { sign, verify } from './Jwt'
 import { areArraysEqual, camoUrl, formData, getYYMMDD, serialize } from './Tools'
 import { AddBotSubmit, AddServerSubmit, ManageBot, ManageServer } from './Yup'
@@ -887,6 +889,8 @@ async function assignToken(info: TokenRegister): Promise<string | 1 | 2> {
 		.where({ id: info.id || '' })
 	let t: string
 	if (!info.verified) return 1
+	if (token[0]?.perm && token[0].perm !== 'user') return 2
+	const isBotReviewer = await getBotReviewerStatus(info.access_token)
 	if (token.length === 0) {
 		t = sign({ id: info.id }, { expiresIn: '30d' })
 		await knex('users').insert({
@@ -916,7 +920,17 @@ async function assignToken(info: TokenRegister): Promise<string | 1 | 2> {
 				}),
 			})
 			.where({ id: info.id })
-	if (token[0].perm && token[0].perm !== 'user') return 2
+	if (isBotReviewer !== null) {
+		await knex('users')
+			.where({ id: info.id })
+			.update({
+				flags: isBotReviewer
+					? knex.raw('?? | ?', ['flags', KoreanbotsUserFlags.botreviewer])
+					: knex.raw('?? & ?', ['flags', ~KoreanbotsUserFlags.botreviewer]),
+			})
+		get.user.clear(info.id)
+		get._rawUser.clear(info.id)
+	}
 	if (!verify(token[0]?.token ?? '')) {
 		t = sign({ id: info.id }, { expiresIn: '30d' })
 		await knex('users').update({ token: t }).where({ id: info.id })

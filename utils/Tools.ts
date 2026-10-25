@@ -26,17 +26,19 @@ export function handlePWA(): boolean {
 
 export function formatNumber(value: number): string {
 	if (!value) return '0'
-	const suffixes = ['', '만', '억', '조', '해']
-	const suffixNum = Math.floor(('' + value).length / 4)
-	let shortValue: number = parseFloat(
-		(suffixNum != 0 ? value / Math.pow(10000, suffixNum) : value).toPrecision(2)
-	)
-	if (shortValue % 1 != 0) {
-		shortValue = Number(shortValue.toFixed(1))
+	// 유효숫자 두 자리로 먼저 반올림해야 9999 → 1만, 9999999 → 1000만 처럼 단위가 올바르게 올라간다
+	const rounded = Number(value.toPrecision(2))
+	const units: [number, string][] = [
+		[1e16, '경'],
+		[1e12, '조'],
+		[1e8, '억'],
+		[1e4, '만'],
+	]
+	for (const [unit, suffix] of units) {
+		if (Math.abs(rounded) >= unit) return Number((rounded / unit).toFixed(1)) + suffix
 	}
-	if (suffixNum === 1 && shortValue < 1) return shortValue * 10 + '천'
-	else if (shortValue === 1000) return '1천'
-	return shortValue + suffixes[suffixNum]
+	if (Math.abs(rounded) >= 1000) return Math.floor(rounded / 1000) + '천'
+	return String(rounded)
 }
 
 function checkFlag(base: number, required: number) {

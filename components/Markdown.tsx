@@ -1,15 +1,23 @@
-import { FunctionComponent } from 'react'
+import { FunctionComponent, ImgHTMLAttributes } from 'react'
 import MarkdownView from 'react-showdown'
 import sanitizeHtml from 'sanitize-html'
 import * as Emoji from 'node-emoji'
 
-import { anchorHeader, customEmoji, twemoji } from '@utils/Tools'
+import { anchorHeader, camoUrl, customEmoji, twemoji } from '@utils/Tools'
+
+function MarkdownImage({ alt = '', ...props }: ImgHTMLAttributes<HTMLImageElement>) {
+	return (
+		<img {...props} alt={alt} src={camoUrl(props.src ?? '')} className={props.className ?? ''} />
+	)
+}
 
 const Markdown: React.FC<MarkdownProps> = ({
 	text,
 	options = {},
 	allowedTag = [],
-	components = {},
+	components = {
+		img: MarkdownImage,
+	},
 }) => {
 	return (
 		<div className='markdown-body w-full'>

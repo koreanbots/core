@@ -38,7 +38,7 @@ import { DiscordBot, getBotGuild, getMainGuild } from './DiscordBot'
 import { sign, verify } from './Jwt'
 import { areArraysEqual, camoUrl, formData, getYYMMDD, serialize } from './Tools'
 import { AddBotSubmit, AddServerSubmit, ManageBot, ManageServer } from './Yup'
-import { markdownImage } from './Regex'
+import { HTMLImageSource, markdownImage } from './Regex'
 import { Notification } from './NotificationManager'
 
 export const imageRateLimit = new TLRU<unknown, number>({ maxAgeMs: 60000 })
@@ -1199,24 +1199,45 @@ async function approveBotSubmission(id: string, date: number) {
 
 export function safeImageHost(text: string) {
 	return (
-		text?.replace(
-			markdownImage,
-			(
-				matches: string,
-				alt: string | undefined,
-				link: string | undefined,
-				description: string | undefined
-			): string => {
-				try {
-					const url = new URL(link)
-					return `![${alt || description || ''}](${
-						imageSafeHost.find((el) => url.host.endsWith(el)) ? link : camoUrl(link)
-					})`
-				} catch {
-					return matches
+		text
+			?.replace(
+				markdownImage,
+				(
+					matches: string,
+					alt: string | undefined,
+					link: string | undefined,
+					description: string | undefined
+				): string => {
+					try {
+						const url = new URL(link)
+						return `![${alt || description || ''}](${
+							imageSafeHost.find((el) => url.host.endsWith(el)) ? link : camoUrl(link)
+						})`
+					} catch {
+						return matches
+					}
 				}
-			}
-		) || null
+			)
+			?.replace(
+				HTMLImageSource,
+				(
+					matches: string,
+					srcPrefix: string,
+					link: string | undefined,
+					srcSuffix: string
+				): string => {
+					try {
+						const url = new URL(link)
+						if (url.protocol !== 'http:' && url.protocol !== 'https:') return matches
+						const safeLink = imageSafeHost.find((el) => url.host.endsWith(el))
+							? link
+							: camoUrl(link)
+						return `${srcPrefix}${safeLink}${srcSuffix}`
+					} catch {
+						return matches
+					}
+				}
+			) || null
 	)
 }
 

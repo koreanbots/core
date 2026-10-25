@@ -19,5 +19,6 @@ export const Emoji =
 export const Heading = '<h\\d id="(.+?)">(.*?)<\\/h(\\d)>'
 export const EmojiSyntax = ':(\\w+):'
 export const ImageTag = /<img\s[^>]*?alt\s*=\s*['"]([^'"]*?)['"][^>]*?>/
+export const HTMLImageSource = /(<img\b[^>]*\ssrc\s*=\s*['"])([^'"]*?)(['"])/gi
 export const markdownImage = /!\[([^\]]*)\]\((.*?)\s*("(?:.*[^"])")?\s*\)/g
 export const reservedVanity = new RegExp(`^((?!${reservedVanityConst.join('|')}).)*$`, 'i') // 예약되지 않음을 확인

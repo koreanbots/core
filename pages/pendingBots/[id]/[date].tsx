@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { NextSeo } from 'next-seo'
 
 import { get } from '@utils/Query'
+import { checkUserFlag, parseCookie } from '@utils/Tools'
 import { BotSubmissionDenyReasonPresetsName, git } from '@utils/Constants'
 import Day from '@utils/Day'
 
@@ -202,15 +203,28 @@ const PendingBot: NextPage<PendingBotProps> = ({ data }) => {
 }
 
 export const getServerSideProps = async (ctx: Context) => {
+	const parsed = parseCookie(ctx.req)
+	const userID = await get.Authorization(parsed?.token)
+	if (!userID) return { notFound: true }
+
+	const user = await get.user.load(userID)
+	if (!user) return { notFound: true }
+
 	const data = await get.botSubmit.load(JSON.stringify(ctx.query))
+	if (
+		!data ||
+		(data.owner?.id !== user.id &&
+			!checkUserFlag(user.flags, 'staff') &&
+			!checkUserFlag(user.flags, 'botreviewer'))
+	)
+		return { notFound: true }
+
 	return {
 		props: {
-			data: data
-				? {
-						...data,
-						strikes: await get.botSubmitStrikes(data.id),
-				  }
-				: null,
+			data: {
+				...data,
+				strikes: await get.botSubmitStrikes(data.id),
+			},
 		},
 	}
 }

@@ -284,6 +284,7 @@ export const DiscordEnpoints = {
 	Token: BASE_URLs.api + '/oauth2/token',
 	Me: BASE_URLs.api + '/v9/users/@me',
 	Guilds: BASE_URLs.api + '/v9/users/@me/guilds',
+	GuildMember: (id: string) => `${BASE_URLs.api}/v10/users/@me/guilds/${id}/member`,
 	InviteApplication: (
 		id: string,
 		perms: { [perm: string]: boolean },
@@ -416,7 +417,11 @@ export const GlobalRatelimitIgnore = ['/api/image/discord/avatars/']
 
 export const Oauth = {
 	discord: (clientID: string, scope: string) =>
-		`https://discord.com/oauth2/authorize?client_id=${clientID}&scope=${scope}&permissions=0&response_type=code&redirect_uri=${process.env.KOREANBOTS_URL}/api/auth/discord/callback&prompt=none`,
+		`https://discord.com/oauth2/authorize?client_id=${clientID}&scope=${encodeURIComponent(
+			scope
+		)}&permissions=0&response_type=code&redirect_uri=${
+			process.env.KOREANBOTS_URL
+		}/api/auth/discord/callback`,
 	github: (clientID: string) =>
 		`https://github.com/login/oauth/authorize?client_id=${clientID}&redirect_uri=${process.env.KOREANBOTS_URL}/api/auth/github/callback`,
 }

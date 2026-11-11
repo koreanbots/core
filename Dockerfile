@@ -11,5 +11,6 @@ RUN yarn install --frozen-lockfile --production=true && yarn cache clean
 COPY next.config.js ./
 COPY public ./public
 COPY .next ./.next
+COPY api-docs ./api-docs
 
 CMD ["yarn", "start"]

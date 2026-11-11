@@ -10,6 +10,12 @@ test('format Number', () => {
 	expect(formatNumber(9999)).toBe('1만')
 	expect(formatNumber(959999)).toBe('96만')
 	expect(formatNumber(999999)).toBe('100만')
+	expect(formatNumber(9999999)).toBe('1000만')
+	expect(formatNumber(10000000)).toBe('1000만')
+	expect(formatNumber(12345678)).toBe('1200만')
+	expect(formatNumber(99999999)).toBe('1억')
+	expect(formatNumber(123456789)).toBe('1.2억')
+	expect(formatNumber(1e16)).toBe('1경')
 })
 
 test('checking Permission', () => {

@@ -40,7 +40,7 @@ import { getBotReviewerStatus } from './BotReviewer'
 import { sign, verify } from './Jwt'
 import { areArraysEqual, camoUrl, formData, getYYMMDD, serialize } from './Tools'
 import { AddBotSubmit, AddServerSubmit, ManageBot, ManageServer } from './Yup'
-import { markdownImage } from './Regex'
+import { HTMLImageSource, markdownImage } from './Regex'
 import { Notification } from './NotificationManager'
 
 export const imageRateLimit = new TLRU<unknown, number>({ maxAgeMs: 60000 })
@@ -791,7 +791,7 @@ async function updatedServer(id: string, data: ManageServer) {
 /**
  * @returns 1 - Limit of 100k servers
  * @returns 2 - Limit of 10M servers
- * @returns 3 - Limit of 100 shards
+ * @returns 3 - Limit of 200 shards
  */
 async function updateServer(id: string, servers: number, shards: number) {
 	const bot = await get.bot.load(id)
@@ -1147,6 +1147,15 @@ async function getBotSubmitHistory(id: string): Promise<SubmittedBot[]> {
 	)
 }
 
+async function getBotSubmitHistoryByUser(id: string): Promise<SubmittedBot[]> {
+	const res = await knex('submitted').select(['id', 'date']).where({
+		owner: id,
+	})
+	return await Promise.all(
+		res.map((b) => get.botSubmit.load(JSON.stringify({ id: b.id, date: b.date })))
+	)
+}
+
 async function denyBotSubmission(id: string, date: number, reason?: string) {
 	await knex('submitted')
 		.update({ state: 2, reason: reason || null })
@@ -1204,24 +1213,45 @@ async function approveBotSubmission(id: string, date: number) {
 
 export function safeImageHost(text: string) {
 	return (
-		text?.replace(
-			markdownImage,
-			(
-				matches: string,
-				alt: string | undefined,
-				link: string | undefined,
-				description: string | undefined
-			): string => {
-				try {
-					const url = new URL(link)
-					return `![${alt || description || ''}](${
-						imageSafeHost.find((el) => url.host.endsWith(el)) ? link : camoUrl(link)
-					})`
-				} catch {
-					return matches
+		text
+			?.replace(
+				markdownImage,
+				(
+					matches: string,
+					alt: string | undefined,
+					link: string | undefined,
+					description: string | undefined
+				): string => {
+					try {
+						const url = new URL(link)
+						return `![${alt || description || ''}](${
+							imageSafeHost.find((el) => url.host.endsWith(el)) ? link : camoUrl(link)
+						})`
+					} catch {
+						return matches
+					}
 				}
-			}
-		) || null
+			)
+			?.replace(
+				HTMLImageSource,
+				(
+					matches: string,
+					srcPrefix: string,
+					link: string | undefined,
+					srcSuffix: string
+				): string => {
+					try {
+						const url = new URL(link)
+						if (url.protocol !== 'http:' && url.protocol !== 'https:') return matches
+						const safeLink = imageSafeHost.find((el) => url.host.endsWith(el))
+							? link
+							: camoUrl(link)
+						return `${srcPrefix}${safeLink}${srcSuffix}`
+					} catch {
+						return matches
+					}
+				}
+			) || null
 	)
 }
 

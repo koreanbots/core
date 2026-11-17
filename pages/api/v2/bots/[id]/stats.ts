@@ -66,6 +66,13 @@ const BotStats = RequestHandler()
 					[null, '1만', '100만'][d]
 				} 이상으로 설정하실 수 없습니다. 문의해주세요.`,
 			})
+		if (d === 3)
+			return ResponseWrapper(res, {
+				code: 403,
+				message: `샤드 수를 ${
+					[null, null, null, '200개'][d]
+				} 이상으로 설정하실 수 없습니다. 문의해주세요.`,
+			})
 		get.bot.clear(req.query.id)
 		if (validated.servers && botInfo.servers !== validated.servers) {
 			sendWebhook(botInfo, {

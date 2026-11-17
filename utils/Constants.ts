@@ -416,11 +416,7 @@ export const GlobalRatelimitIgnore = ['/api/image/discord/avatars/']
 
 export const Oauth = {
 	discord: (clientID: string, scope: string) =>
-		`https://discord.com/oauth2/authorize?client_id=${clientID}&scope=${encodeURIComponent(
-			scope
-		)}&permissions=0&response_type=code&redirect_uri=${
-			process.env.KOREANBOTS_URL
-		}/api/auth/discord/callback`,
+		`https://discord.com/oauth2/authorize?client_id=${clientID}&scope=${scope}&permissions=0&response_type=code&redirect_uri=${process.env.KOREANBOTS_URL}/api/auth/discord/callback&prompt=none`,
 	github: (clientID: string) =>
 		`https://github.com/login/oauth/authorize?client_id=${clientID}&redirect_uri=${process.env.KOREANBOTS_URL}/api/auth/github/callback`,
 }

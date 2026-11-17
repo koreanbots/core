@@ -36,7 +36,7 @@ import {
 import knex from './Knex'
 import { Bots, Servers } from './Mongo'
 import { DiscordBot, getBotGuild, getMainGuild } from './DiscordBot'
-import { getBotReviewerStatus } from './DiscordOAuth'
+import { getBotReviewerStatus } from './BotReviewer'
 import { sign, verify } from './Jwt'
 import { areArraysEqual, camoUrl, formData, getYYMMDD, serialize } from './Tools'
 import { AddBotSubmit, AddServerSubmit, ManageBot, ManageServer } from './Yup'
@@ -890,7 +890,7 @@ async function assignToken(info: TokenRegister): Promise<string | 1 | 2> {
 	let t: string
 	if (!info.verified) return 1
 	if (token[0]?.perm && token[0].perm !== 'user') return 2
-	const isBotReviewer = await getBotReviewerStatus(info.access_token)
+	const isBotReviewer = await getBotReviewerStatus(info.id)
 	if (token.length === 0) {
 		t = sign({ id: info.id }, { expiresIn: '30d' })
 		await knex('users').insert({

@@ -1,5 +1,5 @@
 import knex from '../utils/Knex'
-import { getBotReviewerStatus } from '../utils/DiscordOAuth'
+import { getBotReviewerStatus } from '../utils/BotReviewer'
 import { get, update } from '../utils/Query'
 import { TokenRegister, UserFlags } from '../types'
 
@@ -7,7 +7,7 @@ jest.mock('../utils/Knex', () => ({
 	__esModule: true,
 	default: Object.assign(jest.fn(), { raw: jest.fn((sql, bindings) => ({ sql, bindings })) }),
 }))
-jest.mock('../utils/DiscordOAuth')
+jest.mock('../utils/BotReviewer')
 jest.mock('../utils/DiscordBot', () => ({}))
 jest.mock('../utils/Mongo', () => ({}))
 jest.mock('../utils/Jwt', () => ({ sign: () => 'session-token', verify: () => ({ id: 'user' }) }))
@@ -59,7 +59,7 @@ test.each([
 ])('syncs reviewer status %s without replacing other flag bits', async (status, sql, mask) => {
 	statusMock.mockResolvedValue(status as boolean)
 	await expect(update.assignToken(userInfo)).resolves.toBe('session-token')
-	expect(statusMock).toHaveBeenCalledWith('access-token')
+	expect(statusMock).toHaveBeenCalledWith('user')
 	expect(query.where).toHaveBeenCalledWith({ id: 'user' })
 	expect(query.update).toHaveBeenCalledWith({ flags: { sql, bindings: ['flags', mask] } })
 	expect(get.user.clear).toHaveBeenCalledWith('user')

@@ -284,7 +284,6 @@ export const DiscordEnpoints = {
 	Token: BASE_URLs.api + '/oauth2/token',
 	Me: BASE_URLs.api + '/v9/users/@me',
 	Guilds: BASE_URLs.api + '/v9/users/@me/guilds',
-	GuildMember: (id: string) => `${BASE_URLs.api}/v10/users/@me/guilds/${id}/member`,
 	InviteApplication: (
 		id: string,
 		perms: { [perm: string]: boolean },

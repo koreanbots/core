@@ -1,7 +1,7 @@
 import { GetStaticProps, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 
-import { SpecialEndPoints } from '@utils/Constants'
+import { getGithubContent } from '@utils/GithubContent'
 
 const Button = dynamic(() => import('@components/Button'))
 const Divider = dynamic(() => import('@components/Divider'))
@@ -31,13 +31,9 @@ interface VerificationProps {
 }
 
 export const getStaticProps: GetStaticProps<VerificationProps> = async () => {
-	const res = await fetch(
-		SpecialEndPoints.Github.Content('koreanbots', 'verification', 'README.md')
-	)
-	const json = await res.json()
 	return {
 		props: {
-			content: Buffer.from(json.content, 'base64').toString('utf-8'),
+			content: await getGithubContent('verification', 'README.md'),
 		},
 	}
 }

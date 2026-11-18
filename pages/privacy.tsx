@@ -1,8 +1,7 @@
 import { GetStaticProps, NextPage } from 'next'
 import dynamic from 'next/dynamic'
-import fetch from 'node-fetch'
 
-import { SpecialEndPoints } from '@utils/Constants'
+import { getGithubContent } from '@utils/GithubContent'
 
 const Docs = dynamic(() => import('@components/Docs'))
 const Markdown = dynamic(() => import('@components/Markdown'))
@@ -16,13 +15,9 @@ const Privacy: NextPage<PrivacyProps> = ({ content }) => {
 }
 
 export const getStaticProps: GetStaticProps<PrivacyProps> = async () => {
-	const res = await fetch(
-		SpecialEndPoints.Github.Content('koreanbots', 'terms', 'privacy-policy.md')
-	)
-	const json = await res.json()
 	return {
 		props: {
-			content: Buffer.from(json.content, 'base64').toString('utf-8'),
+			content: await getGithubContent('terms', 'privacy-policy.md'),
 		},
 	}
 }

@@ -1,7 +1,7 @@
 import { GetStaticProps, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 
-import { SpecialEndPoints } from '@utils/Constants'
+import { getGithubContent } from '@utils/GithubContent'
 
 const Docs = dynamic(() => import('@components/Docs'))
 const Markdown = dynamic(() => import('@components/Markdown'))
@@ -19,13 +19,9 @@ interface CommunityRuleProps {
 }
 
 export const getStaticProps: GetStaticProps<CommunityRuleProps> = async () => {
-	const res = await fetch(
-		SpecialEndPoints.Github.Content('koreanbots', 'terms', 'community-rule.md')
-	)
-	const json = await res.json()
 	return {
 		props: {
-			content: Buffer.from(json.content, 'base64').toString('utf-8'),
+			content: await getGithubContent('terms', 'community-rule.md'),
 		},
 	}
 }
